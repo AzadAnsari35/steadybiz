@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48.953" height="49.999" viewBox="0 0 48.953 49.999">
+  <g id="facebook" transform="translate(-1577 -1004)">
+    <g id="whatsapp" transform="translate(1577 1004)">
+      <rect id="Rectangle_1413" data-name="Rectangle 1413" width="48.953" height="48.953" rx="6" fill="#4267b2"/>
+    </g>
+    <g id="Group_804" data-name="Group 804" transform="translate(80.472 6.122)">
+      <path id="facebook-2" data-name="facebook" d="M22.536,6.641h3.651V.282A47.149,47.149,0,0,0,20.868,0C9.315,0,12.458,13.083,12,15H6.187v7.11H12V40h7.123V22.111h5.575L25.579,15H19.118c.313-4.706-1.268-8.36,3.418-8.36Z" transform="translate(1504.341 1007.879)" fill="#fff"/>
+    </g>
+  </g>
+</svg>
