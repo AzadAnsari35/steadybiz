@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const miniCssPlugin = new MiniCssExtractPlugin({
   filename: "[name].css",
   chunkFilename: "[id].css"
@@ -17,6 +18,7 @@ const uglifyJsPlugin = new UglifyJsPlugin({
   test: /\.min\.js$/i,
 });
 
+const dotEnv=new Dotenv();
 
 module.exports = (env, argv)=> {
   const isDevelopment = argv.mode === 'development';
@@ -38,7 +40,10 @@ module.exports = (env, argv)=> {
         children: false,
         maxModules: 0
     },
-    port: 3001
+    port: 3000
+},
+node: {
+  fs: "empty"
 },
 resolve: {
   modules: ['src/scripts', 'node_modules'],
@@ -97,7 +102,7 @@ resolve: {
     ]
   },
   plugins: [
-    uglifyJsPlugin,htmlPlugin,miniCssPlugin
+    uglifyJsPlugin,htmlPlugin,miniCssPlugin,dotEnv
     
   ]
 };
