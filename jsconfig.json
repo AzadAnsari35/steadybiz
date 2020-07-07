@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "target": "es2017",
+      "allowSyntheticDefaultImports": false,
+      "baseUrl": "./",
+      "paths": {
+        "Config/*": ["src/config/*"],
+        "Components/*": ["src/client/components/*"],
+        "Constants/*": ["src/client/constants/*"],
+        "Helpers/*": ["src/client/helpers/*"],
+        "Views/*": ["src/client/views/*"],
+        "Widgets/*": ["src/client/widgets/*"],
+        "App/*": ["src/*"]
+      }
+    },
+    "exclude": ["node_modules", "dist"]
+  }
