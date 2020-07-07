@@ -1,14 +1,15 @@
 import React, { Fragment } from "react";
+import Router from "App/client/router";
+import Header from "Components/UserControls/Header";
+import Footer from "Components/UserControls/Footer";
 
-import Header from "./../../components/UserControls/Header";
-import Footer from "./../../components/UserControls/Footer";
 
 const Layout = () => {
   return (
     <Fragment>
-      <Header />
-      {/* <div>Content based on Route goes here</div> */}
-      {React.cloneElement(children)}
+           
+      <Header /> 
+      <Router/>
       <Footer />
     </Fragment>
   );

@@ -26,7 +26,7 @@ module.exports = (env, argv)=> {
     optimization: {
       nodeEnv: argv.mode
     },
-    entry: path.join(__dirname, "src", "index.js"),
+    entry: path.join(__dirname, "src/client", "client.js"),
     output: {
       path: path.join(__dirname, "build"),
       filename: "bundle.js",
@@ -52,7 +52,13 @@ module.exports = (env, argv)=> {
       extensions: ['.jsx', '.js'],
       unsafeCache: true,
       alias: {
-        components: path.resolve(__dirname, 'src', 'scripts', 'client/components')
+        Config: path.resolve(__dirname, 'src/config'),
+        Components: path.resolve(__dirname, 'src/client/components'),
+        Constants: path.resolve(__dirname, 'src/client/constants'),
+        Helpers: path.resolve(__dirname, 'src/client/helpers'),
+        Views: path.resolve(__dirname, 'src/client/views'),
+        Widgets: path.resolve(__dirname, 'src/client/widgets'),
+        App: path.resolve(__dirname, 'src')
       }
     },
     module: {

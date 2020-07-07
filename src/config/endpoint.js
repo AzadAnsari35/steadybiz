@@ -1,4 +1,4 @@
-import config from './index.js';
+import config from './index';
 export default {
     flights : {
         flightRevalidate :config.API.url+'/flights/flightRevalidate',
