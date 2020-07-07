@@ -4,7 +4,7 @@ import {home} from "Views/"
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
   
-const Router = () => (
+const Routers = () => (
   <Switch>
     <Route exact path="/xyz" component={home}/>
     <PrivateRoute exact path="/private" component={()=> <div>private</div>} />
@@ -13,4 +13,4 @@ const Router = () => (
   </Switch>
 );
 
-export default Router;
+export default Routers;
