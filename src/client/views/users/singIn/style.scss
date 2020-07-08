@@ -1,0 +1,17 @@
+$root: ".SignIn";
+
+#{$root} {
+  background-image: url("./signin_background.png");
+
+  &-container {
+    width: 1400px;
+
+    &-left {
+      width: 540px;
+    }
+
+    &-right {
+      width: 480px;
+    }
+  }
+}
