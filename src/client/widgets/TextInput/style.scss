@@ -13,5 +13,9 @@ $root: ".TextInput";
     border-radius: 4px;
     height: 44px;
     padding: 0 20px;
+    &:focus {
+      outline: none;
+      border: 2px solid $gulfBlue;
+    }
   }
 }
