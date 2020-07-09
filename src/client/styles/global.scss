@@ -1,4 +1,4 @@
-@import "./_variables.scss";
+@import "./variables.scss";
 @import "./_fonts.scss";
 
 body {
@@ -631,4 +631,8 @@ p {
 
 .route-wrapper {
   min-height: calc(100vh - 150px);
+}
+
+.line-height-36 {
+  line-height: 36px;
 }

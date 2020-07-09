@@ -1,14 +1,15 @@
 import React from "react";
 import MenuIcon from "@material-ui/icons/Menu";
-import "./style.scss";
 import FlightIcon from "@material-ui/icons/Flight";
 import CallIcon from "@material-ui/icons/Call";
 import MailIcon from "@material-ui/icons/Mail";
-import Avatar from "../../../widgets/Avatar";
 import SimplePopover from "Widgets/Popover";
-import { Link } from "react-router-dom";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import SideDrawer from "Widgets/SideDrawer";
+import UserCreditLimit from "Components/UserControls/UserCreditLimit";
+import Avatar from "Widgets/Avatar";
+
+import "./style.scss";
 
 const isAuthenticated = true;
 
@@ -47,7 +48,7 @@ const Header = () => {
 
         {isAuthenticated ? (
           <div
-            className="Header-right-loggedin d-flex align-items-center cursor-pointer"
+            className="Header-right__loggedin d-flex align-items-center cursor-pointer"
             onClick={handleClick}
           >
             <Avatar>OT</Avatar>
@@ -71,41 +72,7 @@ const Header = () => {
           </div>
         )}
         <SimplePopover handleClose={handleClose} anchorEl={anchorEl}>
-          <div className="HeaderPopover br-6">
-            <div className="HeaderPopover-head">
-              <Avatar classes="HeaderPopover-head-avatar font-primary-medium-36">
-                OT
-              </Avatar>
-              <div className="HeaderPopover-head__detail pl-24 d-flex flex-direction-column">
-                <span className=" HeaderPopover-head__detail-name font-primary-medium-24">
-                  Ok Travels
-                </span>
-                <span className="HeaderPopover-head__detail-email font-primary-semibold-16">
-                  oktravels@yopmail.com
-                </span>
-              </div>
-            </div>
-            <div className="HeaderPopover-body font-primary-semibold-18 p-12">
-              <div className="HeaderPopover-body-creditdetails  pb-4">
-                <span name="office-name">Steady Biz</span>{" "}
-                <span name="office-id">[DXBOKT0000]</span>
-              </div>
-              <div className="HeaderPopover-body-creditlimit">
-                <span>Credit Limit Balance :</span> <span>$</span>{" "}
-                <span>2000</span>
-              </div>
-            </div>
-
-            <div className="horizontal-grey-divider"></div>
-
-            <div className="HeaderPopover-foot font-primary-medium-18 d-flex flex-direction-column cursor-pointer my-6">
-              <Link className="pb-12" to="#">
-                Manage Profile
-              </Link>
-              <Link to="#">Change Password</Link>
-              <Link to="#">Signout</Link>
-            </div>
-          </div>
+          <UserCreditLimit />
         </SimplePopover>
       </div>
       <SideDrawer showDrawer={showDrawer} setShowDrawer={setShowDrawer} />

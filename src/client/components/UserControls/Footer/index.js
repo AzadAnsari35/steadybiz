@@ -2,7 +2,7 @@ import React from "react";
 import CallIcon from "@material-ui/icons/Call";
 import CopyrightIcon from "@material-ui/icons/Copyright";
 
-import { displayImage } from "../../../helpers/utils";
+import { displayImage } from "Helpers/utils";
 
 import "./style.scss";
 

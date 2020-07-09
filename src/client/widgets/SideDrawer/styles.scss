@@ -1,100 +1,79 @@
+@import "../../styles/variables.scss";
+@import "../../styles//mixins.scss";
+@import "../../styles/functions.scss";
+
 $root: ".SideDrawer";
 
-@function calculateRem($size) {
-  @return $size / 16px * 1rem;
-}
-
 #{$root} {
-  &-list {
-    padding-top: calculateRem(100px);
-  }
+  padding-top: calculateRem(100px);
 
-  &-list-item {
+  &-list {
     min-width: 325px;
     display: flex;
     align-items: center;
-
     padding: 16px 28px;
     cursor: pointer;
+
+    & svg {
+      color: $paleSky;
+      fill: $paleSky;
+    }
+
+    &:hover {
+      background: $cornflowerBlueLight 0% 0% no-repeat padding-box;
+      border-left: 2px solid $cornflowerBlue;
+      padding-left: 26px;
+    }
+
+    &:hover svg {
+      color: $cornflowerBlue;
+      fill: $cornflowerBlue;
+    }
+
+    &__icon {
+      display: inline-flex;
+      min-width: 58px;
+    }
+
+    &__text {
+      flex: 1 1 auto;
+      min-width: 0;
+      color: $tuna;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    &:hover &__text {
+      color: $cornflowerBlue;
+    }
   }
 
-  &-list-item svg {
-    color: #6d757d;
-    fill: #6d757d;
-  }
-
-  &-list-item__icon {
-    display: inline-flex;
-    min-width: 58px;
-  }
-
-  &-list-item__text {
-    flex: 1 1 auto;
-    min-width: 0;
-    color: #353a40;
-    text-decoration: none;
-    text-transform: uppercase;
-  }
-
-  &-list-item:hover &-list-item__text {
-    color: #4285f4;
-  }
-
-  &-list-item:hover {
-    background: #4285f421 0% 0% no-repeat padding-box;
-    border-left: 2px solid #4285f4;
-    padding-left: 26px;
-  }
-
-  &-list-item:hover svg {
-    color: #4285f4;
-    fill: #4285f4;
-  }
-
-  &-togglelist-item {
+  &-toggleList {
     padding-left: 86px;
 
     cursor: pointer;
-    color: #65686d;
+    color: $shuttleGray;
     text-decoration: none;
     letter-spacing: 0.25px;
     display: inline-block;
     width: 100%;
     box-sizing: border-box;
-  }
 
-  &-togglelist-item:hover {
-    font-family: "Montserrat SemiBold";
-    color: #4285f4;
-    letter-spacing: 0px;
-    border-left: 2px solid #4285f4;
-    padding-left: 84px;
-    background: #4285f421 0% 0% no-repeat padding-box;
-  }
-
-  &-selected {
-    color: #4285f4;
-    font-family: "Montserrat SemiBold";
-  }
-}
-
-@mixin scrollbars($size, $foreground-color, $background-color) {
-  // For Google Chrome
-  &::-webkit-scrollbar {
-    width: $size;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $foreground-color;
-    border-radius: 10px;
-    height: 100px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: $background-color;
+    &:hover {
+      font-family: "Montserrat SemiBold";
+      color: $cornflowerBlue;
+      letter-spacing: 0px;
+      border-left: 2px solid $cornflowerBlue;
+      padding-left: 84px;
+      background: $cornflowerBlueLight 0% 0% no-repeat padding-box;
+    }
+    &-selected {
+      color: $cornflowerBlue;
+      font-family: "Montserrat SemiBold";
+    }
   }
 }
 
 .drawer {
-  @include scrollbars(10px, #979797, #ffffff);
+  @include scrollbars(10px, $dustyGray, $white);
 }

@@ -1,0 +1,54 @@
+@import "../../../styles/variables";
+
+$root: ".HeaderPopover";
+
+#{$root} {
+  &-head {
+    padding: 16px;
+    display: flex;
+    padding-right: 70px;
+    background-color: $mystic;
+    align-items: center;
+
+    .HeaderPopover-head-avatar {
+      width: 60px;
+      height: 60px;
+    }
+
+    &__detail {
+      &-name {
+        color: $black;
+        opacity: 0.76;
+      }
+
+      &-email {
+        color: $black;
+        opacity: 0.48;
+      }
+    }
+  }
+
+  &-body {
+    &-creditDetails {
+      color: $black;
+      opacity: 0.63;
+    }
+
+    &-creditLimit {
+      color: $black;
+      opacity: 0.4;
+    }
+  }
+
+  &-foot {
+    a {
+      text-decoration: none;
+      color: $black;
+      opacity: 0.45;
+      padding: 6px 12px;
+    }
+    a:hover {
+      background-color: $mercury;
+    }
+  }
+}

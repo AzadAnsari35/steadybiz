@@ -1,3 +1,5 @@
+@import "../../styles/variables.scss";
+
 $root: ".TextInput";
 #{$root} {
   &-label {
@@ -7,9 +9,13 @@ $root: ".TextInput";
     box-sizing: border-box;
     margin: 0;
     width: 100%;
-    border: 1px solid #000000;
+    border: 1px solid $black5;
     border-radius: 4px;
     height: 44px;
     padding: 0 20px;
+    &:focus {
+      outline: none;
+      border: 2px solid $gulfBlue;
+    }
   }
 }

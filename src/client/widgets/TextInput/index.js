@@ -14,7 +14,6 @@ const TextInput = (props) => {
     register,
     validation,
   } = props;
-  console.log("root", classes.root);
 
   return (
     <div className={`TextInput ${classes.root ? classes.root : ""}`}>
