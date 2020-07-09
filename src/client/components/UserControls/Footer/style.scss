@@ -1,5 +1,7 @@
+@import "../../../styles/variables";
+
 $root: ".Footer";
 
 #{$root} {
-  background-color: #ffffff;
+  background-color: $white;
 }

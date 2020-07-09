@@ -1,70 +1,23 @@
+@import "../../../styles/variables";
+
 $root: ".Header";
 
 #{$root} {
-  background-color: #fff;
+  background-color: $white;
   position: sticky;
   top: 0px;
   padding: 10px 40px;
   z-index: 1202;
   &-left__logo {
     padding: 10px;
-    background-color: #05164d;
+    background-color: $gulfBlue;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
     margin-right: 20px;
   }
-  &-right-loggedin {
-    color: #707070;
+  &-right__loggedin {
+    color: $doveGray;
   }
-}
-
-.HeaderPopover {
-  &-head {
-    padding: 16px;
-    display: flex;
-    padding-right: 70px;
-    background-color: #dbe4eb;
-    align-items: center;
-
-    .HeaderPopover-head-avatar {
-      width: 70px;
-      height: 70px;
-    }
-
-    &__detail {
-      &-name {
-        color: #000000c2;
-      }
-
-      &-email {
-        color: #0000007a;
-      }
-    }
-  }
-
-  &-body {
-    &-creditdetails {
-      color: #000000a1;
-    }
-
-    &-creditlimit {
-      color: #00000066;
-    }
-  }
-
-  &-foot {
-    a {
-      text-decoration: none;
-      color: #00000073;
-      padding: 6px 12px;
-    }
-    a:hover {
-      background-color: #e2e2e2;
-    }
-  }
-}
-
-.HeaderPopover-head-avatar {
 }

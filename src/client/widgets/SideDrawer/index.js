@@ -107,18 +107,17 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       variant="persistent"
       classes={{ paper: "drawer" }}
     >
-      <nav className="SideDrawer-list">
+      <nav className="SideDrawer">
         {drawerData.map((row, index) => (
-          <>
+          <div key={index}>
             <div
-              className="SideDrawer-list-item"
+              className="SideDrawer-list"
               onClick={row.clickFunc ? row.clickFunc : ""}
-              key={index}
             >
-              <div className="SideDrawer-list-item__icon">{row.icon}</div>
+              <div className="SideDrawer-list__icon">{row.icon}</div>
               <Link
                 to={row.link}
-                className="SideDrawer-list-item__text font-primary-semibold-18"
+                className="SideDrawer-list__text font-primary-semibold-18"
               >
                 {row.text}
               </Link>
@@ -134,15 +133,17 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
                 >
                   <Link
                     to={subrow.link}
-                    className={`SideDrawer-togglelist-item font-primary-semibold-16 py-12  ${
-                      isSelected(subrow.link) ? `SideDrawer-selected` : ""
+                    className={`SideDrawer-toggleList font-primary-semibold-16 py-12  ${
+                      isSelected(subrow.link)
+                        ? `SideDrawer-toggleList-selected`
+                        : ""
                     }`}
                   >
                     {subrow.text}
                   </Link>
                 </Collapse>
               ))}
-          </>
+          </div>
         ))}
       </nav>
     </Drawer>

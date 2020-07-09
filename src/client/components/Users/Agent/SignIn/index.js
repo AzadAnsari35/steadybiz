@@ -1,13 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import TextInput from "../../../../widgets/TextInput";
-import Button from "../../../../widgets/Button";
+import TextInput from "Widgets/TextInput";
+import Button from "Widgets/Button";
+import { regex } from "Helpers/validator";
 
 const SignInForm = () => {
   const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
-  }; //
+  const onSubmit = (data) => {}; //
 
   return (
     <div>
@@ -23,7 +22,7 @@ const SignInForm = () => {
           validation={{
             required: "This input is required.",
             pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              value: regex.email,
               message: "Please enter a valid email id",
             },
           }}
