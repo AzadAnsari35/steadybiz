@@ -15,4 +15,4 @@ const Router = () => (
   </Switch>
 );
 
-export default Router;
+export default Routers;

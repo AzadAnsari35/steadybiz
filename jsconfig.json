@@ -10,6 +10,9 @@
         "Helpers/*": ["src/client/helpers/*"],
         "Views/*": ["src/client/views/*"],
         "Widgets/*": ["src/client/widgets/*"],
+        "Reducers/*": ["src/client/reducers/*"],
+        "Actions/*": ["src/client/actions/*"],
+        "Client/*": ["src/client/*"],
         "App/*": ["src/*"]
       }
     },

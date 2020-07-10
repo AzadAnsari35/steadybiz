@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import Router from "App/client/router";
+import Routers from "App/client/routers";
 import Header from "Components/UserControls/Header";
 import Footer from "Components/UserControls/Footer";
 import "../../styles/global.scss";
@@ -9,7 +9,7 @@ const Layout = () => {
     <Fragment>
       <Header />
       <div className="route-wrapper">
-        <Router />
+        <Routers />
       </div>
       <Footer />
     </Fragment>
