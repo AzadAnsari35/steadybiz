@@ -1,0 +1,8 @@
+@import "./../../styles/variables";
+$root: '.Text';
+
+#{$root} {
+  &.text-blue {
+    color: $biscay;
+  }
+}

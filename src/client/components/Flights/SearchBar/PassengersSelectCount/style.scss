@@ -1,0 +1,38 @@
+$root: ".PassengersSelectCount";
+
+#{$root} {
+  width: 242px;
+  &-row {
+    margin-bottom: 20px;
+  }
+  &-left {
+    &__ageLimit {
+      color: #A4A4A4;
+    }
+  }
+  &-right {
+    &__count {
+      margin: 0 32px;
+    }
+    &__action {
+      .btn {
+        &-secondary {
+          min-width: 35px;
+          height: 28px;
+          border-color: #D4D4D4;
+          border-radius: 3px;
+          color: #436BEC;
+          &:first-child {
+            border-right: none;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+          &:last-child {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+        }
+      }
+    }
+  }
+}

@@ -96,11 +96,18 @@ p {
 
 // Fonts with basic properties
 
+.font-primary-regular-12 {
+  @extend .font-primary-regular;
+  font-size: 12px;
+  line-height: 15px;
+}
+
 .font-primary-regular-14 {
   @extend .font-primary-regular;
   font-size: 14px;
   line-height: 25px;
 }
+
 .font-primary-regular-16 {
   @extend .font-primary-regular;
   font-size: 16px;
@@ -123,6 +130,12 @@ p {
   @extend .font-primary-regular;
   font-size: 20px;
   line-height: 24px;
+}
+
+.font-primary-medium-12 {
+  @extend .font-primary-medium;
+  font-size: 12px;
+  line-height: 14px;
 }
 
 .font-primary-medium-14 {
@@ -483,6 +496,10 @@ p {
 
 .mr-14 {
   margin-right: 14px;
+}
+
+.mr-24 {
+  margin-right: 24px;
 }
 
 // Margin Bottom

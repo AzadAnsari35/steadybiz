@@ -1,7 +1,8 @@
 import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import Layout from "../client/containers/layout";
+
+import Layout from "./containers/layout/index";
 
 const MyApp = (props) => (
   <BrowserRouter>
