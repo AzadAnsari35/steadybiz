@@ -5,7 +5,7 @@ import Search from "Views/search/index";
 import PrivateRoute from "./privateRoute";
 import PublicRoute from "./publicRoute";
 
-const Router = () => (
+const Routes = () => (
   <Switch>
     <Route exact path="/" component={home} />
     <PrivateRoute exact path="/search" component={Search} />
@@ -15,4 +15,4 @@ const Router = () => (
   </Switch>
 );
 
-export default Routers;
+export default Routes;
