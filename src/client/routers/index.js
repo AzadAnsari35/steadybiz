@@ -1,10 +1,10 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { home } from "Views/";
-import PrivateRoute from "./privateRoute";
-import PublicRoute from "./publicRoute";
-
-const Router = () => (
+import {home} from "Views/"
+import PrivateRoute from './privateRoute';
+import PublicRoute from './publicRoute';
+  
+const Routers = () => (
   <Switch>
     <Route exact path="" component={home} />
     <PrivateRoute exact path="/private" component={() => <div>private</div>} />
@@ -18,4 +18,4 @@ const Router = () => (
   </Switch>
 );
 
-export default Router;
+export default Routers;

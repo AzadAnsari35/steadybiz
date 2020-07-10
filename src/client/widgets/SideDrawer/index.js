@@ -24,7 +24,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
     {
       text: "Dashboard",
       icon: <DashboardIcon style={{ fontSize: 30 }} />,
-      link: "/search",
+      link: "#",
     },
 
     {
@@ -56,19 +56,24 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
 
         {
           text: "Deal & Commission",
+          link: "#",
         },
 
         {
           text: "Markup & Discount",
+          link: "#",
         },
         {
           text: "Productivity Group",
+          link: "#",
         },
         {
           text: "Invoice Details",
+          link: "#",
         },
         {
           text: "Account Statement",
+          link: "#",
         },
       ],
     },
@@ -79,6 +84,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       clickFunc: () => setShowReport(!showReport),
       show: showReport,
       subList: [],
+      link: "#",
     },
 
     {
@@ -87,6 +93,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       clickFunc: () => setShowConfig(!showConfig),
       show: showConfig,
       subList: [],
+      link: "#",
     },
 
     {
@@ -95,6 +102,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       clickFunc: () => setShowSetting(!showSetting),
       show: showSetting,
       subList: [],
+      link: "#",
     },
   ];
 
@@ -112,11 +120,11 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           <div key={index}>
             <div
               className="SideDrawer-list"
-              onClick={row.clickFunc ? row.clickFunc : ""}
+              {...(row.clickFunc && { onClick: row.clickFunc })}
             >
               <div className="SideDrawer-list__icon">{row.icon}</div>
               <Link
-                to={row.link}
+                to={row.link || "#"}
                 className="SideDrawer-list__text font-primary-semibold-18"
               >
                 {row.text}

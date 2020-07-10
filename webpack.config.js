@@ -18,10 +18,13 @@ const uglifyJsPlugin = new UglifyJsPlugin({
   test: /\.min\.js$/i,
 });
 
-const dotEnv = new Dotenv();
+const dotEnv = new Dotenv({
+  path: "./.env",
+});
 
 module.exports = (env, argv) => {
   const isDevelopment = argv.mode === "development";
+
   return {
     optimization: {
       nodeEnv: argv.mode,
@@ -33,13 +36,13 @@ module.exports = (env, argv) => {
       publicPath: "/",
     },
     mode: argv.mode,
-    devtool: isDevelopment ? "#eval-source-map" : "source-map",
+    devtool: isDevelopment ? "eval-source-map" : "source-map",
     devServer: {
       stats: {
         children: false,
         maxModules: 0,
       },
-      port: 3000,
+      port: env.PORT,
       historyApiFallback: true,
     },
     node: {
@@ -56,6 +59,9 @@ module.exports = (env, argv) => {
         Helpers: path.resolve(__dirname, "src/client/helpers"),
         Views: path.resolve(__dirname, "src/client/views"),
         Widgets: path.resolve(__dirname, "src/client/widgets"),
+        Reducers: path.resolve(__dirname, "src/client/reducers"),
+        Actions: path.resolve(__dirname, "src/client/actions"),
+        Client: path.resolve(__dirname, "src/client"),
         App: path.resolve(__dirname, "src"),
       },
     },
