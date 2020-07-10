@@ -6,10 +6,15 @@ import PublicRoute from './publicRoute';
   
 const Routers = () => (
   <Switch>
-    <Route exact path="/xyz" component={home}/>
-    <PrivateRoute exact path="/private" component={()=> <div>private</div>} />
-    <PublicRoute  exact path="/public" restricted={true} component={()=> <div>public</div>} />
-    <PublicRoute  exact path="/public1"  component={()=> <div>public</div>} />
+    <Route exact path="" component={home} />
+    <PrivateRoute exact path="/private" component={() => <div>private</div>} />
+    <PublicRoute
+      exact
+      path="/public"
+      restricted={true}
+      component={() => <div>public</div>}
+    />
+    <PublicRoute exact path="/public1" component={() => <div>public</div>} />
   </Switch>
 );
 
