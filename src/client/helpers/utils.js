@@ -1,3 +1,4 @@
+import config from 'Config/';
 export const displayImage = (name,path='images') =>
 {
   
@@ -5,4 +6,8 @@ export const displayImage = (name,path='images') =>
 }
 export const isLogin = ()=>{
     return true;
+}
+export const isDevelopment =() =>
+{
+return (config.mode.environment!=='production')
 }
