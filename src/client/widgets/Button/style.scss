@@ -1,0 +1,25 @@
+@import "../../styles/variables.scss";
+
+$root: ".btn";
+
+#{$root} {
+  text-transform: uppercase;
+  padding: 0 14px;
+  min-width: 110px;
+  height: 40px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: "Montserrat SemiBold";
+  cursor: pointer;
+  &-primary {
+    background-color: $gulfBlue;
+    color: $white;
+    border: none;
+  }
+  &-secondary {
+    background-color: transparent;
+    color: $gulfBlue;
+    border: 1px solid $gulfBlue;
+  }
+}

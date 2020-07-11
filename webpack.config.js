@@ -1,16 +1,16 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
 const miniCssPlugin = new MiniCssExtractPlugin({
   filename: "[name].css",
-  chunkFilename: "[id].css"
+  chunkFilename: "[id].css",
 });
 
-const htmlPlugin =  new HtmlWebpackPlugin({
+const htmlPlugin = new HtmlWebpackPlugin({
   filename: "index.html",
-  template: path.join(__dirname, "src", "index.html")
+  template: path.join(__dirname, "src", "index.html"),
 });
 
 const uglifyJsPlugin = new UglifyJsPlugin({
@@ -18,55 +18,52 @@ const uglifyJsPlugin = new UglifyJsPlugin({
   test: /\.min\.js$/i,
 });
 
-const dotEnv=new Dotenv({
-  path : './.env'
+const dotEnv = new Dotenv({
+  path: "./.env",
 });
 
-module.exports = (env, argv)=> {
-  const isDevelopment = argv.mode === 'development';
- 
+module.exports = (env, argv) => {
+  const isDevelopment = argv.mode === "development";
+
   return {
     optimization: {
-      nodeEnv: argv.mode
+      nodeEnv: argv.mode,
     },
     entry: path.join(__dirname, "src/client", "client.js"),
     output: {
       path: path.join(__dirname, "build"),
       filename: "bundle.js",
-      publicPath: '/'
+      publicPath: "/",
     },
     mode: argv.mode,
-    devtool: isDevelopment
-      ? 'eval-source-map'
-      : 'source-map',
+    devtool: isDevelopment ? "eval-source-map" : "source-map",
     devServer: {
       stats: {
         children: false,
-        maxModules: 0
+        maxModules: 0,
       },
       port: env.PORT,
       historyApiFallback: true,
-      contentBase: __dirname + "/public/",
     },
     node: {
-      fs: "empty"
+      fs: "empty",
     },
     resolve: {
-      modules: ['src/scripts', 'node_modules'],
-      extensions: ['.jsx', '.js'],
+      modules: ["src/scripts", "node_modules"],
+      extensions: [".jsx", ".js"],
       unsafeCache: true,
       alias: {
-        Config: path.resolve(__dirname, 'src/config'),
-        Components: path.resolve(__dirname, 'src/client/components'),
-        Constants: path.resolve(__dirname, 'src/client/constants'),
-        Helpers: path.resolve(__dirname, 'src/client/helpers'),
-        Views: path.resolve(__dirname, 'src/client/views'),
-        Widgets: path.resolve(__dirname, 'src/client/widgets'),
-        Reducers: path.resolve(__dirname, 'src/client/reducers'),
-        Actions: path.resolve(__dirname, 'src/client/actions'),
-        Client: path.resolve(__dirname, 'src/client'),
-        App: path.resolve(__dirname, 'src')
-      }
+        Config: path.resolve(__dirname, "src/config"),
+        Components: path.resolve(__dirname, "src/client/components"),
+        Constants: path.resolve(__dirname, "src/client/constants"),
+        Helpers: path.resolve(__dirname, "src/client/helpers"),
+        Views: path.resolve(__dirname, "src/client/views"),
+        Widgets: path.resolve(__dirname, "src/client/widgets"),
+        Reducers: path.resolve(__dirname, "src/client/reducers"),
+        Actions: path.resolve(__dirname, "src/client/actions"),
+        Client: path.resolve(__dirname, "src/client"),
+        App: path.resolve(__dirname, "src"),
+      },
     },
     module: {
       rules: [
@@ -74,23 +71,22 @@ module.exports = (env, argv)=> {
           test: /.(js|jsx)$/,
           exclude: /node_modules/,
           use: {
-            loader: "babel-loader"
-          }
+            loader: "babel-loader",
+          },
         },
         {
           test: /\.(sa|sc|c)ss$/,
           use: [
-            isDevelopment
-              ? "style-loader"
-              : MiniCssExtractPlugin.loader,
+            isDevelopment ? "style-loader" : MiniCssExtractPlugin.loader,
             {
               loader: "css-loader",
               options: {
-                importLoaders: 1
-              }
+                importLoaders: 1,
+                url: false,
+              },
             },
-            "sass-loader"
-          ]
+            "sass-loader",
+          ],
         },
         {
           test: /\.(png|jpg|jp(e)g|gif|svg)$/i,
@@ -98,10 +94,10 @@ module.exports = (env, argv)=> {
             {
               loader: "url-loader",
               options: {
-                limit: 8192
-              }
-            }
-          ]
+                limit: 8192,
+              },
+            },
+          ],
         },
         {
           test: /\.(ttf|eot|svg|jpg|jp(e)g|png|woff(2)?)(\?[a-z0-9=&.]+)?$/,
@@ -109,15 +105,14 @@ module.exports = (env, argv)=> {
             {
               loader: "file-loader",
               options: {
-                name: "[path][name]-[hash:8].[ext]"
-              }
-            }
-          ]
-        }
-      ]
+                name: "[path][name]-[hash:8].[ext]",
+                emitFile: false,
+              },
+            },
+          ],
+        },
+      ],
     },
-    plugins: [
-      uglifyJsPlugin,htmlPlugin,miniCssPlugin,dotEnv
-    ]
+    plugins: [uglifyJsPlugin, htmlPlugin, miniCssPlugin, dotEnv],
   };
 };
