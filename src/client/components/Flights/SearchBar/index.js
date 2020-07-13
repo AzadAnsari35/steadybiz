@@ -69,8 +69,12 @@ const SearchBar = () => {
     <div className="SearchBar" style={{ backgroundImage: `url(${displayImage("searchBackground.png")})` }}>
       <div className="SearchBar-panel">
         <div className="SearchBar-panel__basicSearch d-flex">
-          <MultiSelect options={segmentTypes} />
-          <MultiSelect options={tripTypes} />
+          <MultiSelect
+            labelKey="segmentLabel"
+            options={segmentTypes}
+            valueKey="segmentValue"
+          />
+          <MultiSelect options={tripTypes} width={164} />
           <DropdownBox onClick={handlePassengerCountDropdownClick} isContentVisible={isPassengerCountDropdownOpen}>
             <PassengersSelectCount onOutsideClick={handlePassengerCountDropdownClick} />
           </DropdownBox>
@@ -120,9 +124,11 @@ const SearchBar = () => {
                     <MultiSelect
                       closeMenuOnSelect={false}
                       isMulti
+                      labelKey="airlineLabel"
                       options={airlinesOptions}
                       placeholder="Airline Preference"
                       showValue
+                      valueKey="airlineValue"
                       width="156"
                     />
                     <MultiSelect

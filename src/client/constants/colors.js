@@ -1,6 +1,7 @@
 const colors = {
   alto: "#D1D1D1",
   alto1: "#d8d8d8",
+  alto2: "#D4D4D4",
   athensGray: "#F1F4F6",
   athensGray1: "#F9FAFB",
   biscay: "#1C466C",
@@ -40,6 +41,7 @@ const colors = {
   $silver1: "#bdbdbd",
   silverChalice: "#AAA",
   silverChalice1: "#B0B0B0",
+  silverChalice2: "#A4A4A4",
   sushi: "#6DBA3C",
   tara: "#E3F7EB",
   tuna: "#353A40",

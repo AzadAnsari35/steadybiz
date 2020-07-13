@@ -33,8 +33,9 @@ const DatesRangePicker = () => {
 
   const renderCalendarBottomInfo = () => {
     return (
-      <div className="RenderCalendarBottomInfo d-flex justify-content-between align-items-center">
-        <div className="RenderCalendarBottomInfo-left font-primary-regular-12">Lowest fare</div>
+      <div className="RenderCalendarBottomInfo d-flex justify-content-end align-items-center">
+        {/* WILL BE IMPLEMENTED IN UPCOMING RELEASE */}
+        {/* <div className="RenderCalendarBottomInfo-left font-primary-regular-12">Lowest fare</div> */}
         <div className="RenderCalendarBottomInfo-right d-flex">
           <Button isLinkType secondary text="Reset" onClick={handleDateReset} />
           <Button isLinkType text="Apply" onClick={handleDateSubmit} />

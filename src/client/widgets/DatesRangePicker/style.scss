@@ -164,6 +164,11 @@ $root: ".DatesRangePicker";
                                 background: $zircon;
                               }
                             }
+                            &__blocked {
+                              &_out_of_range {
+                                color: $gray;
+                              }
+                            }
                           }
                         }
                       }

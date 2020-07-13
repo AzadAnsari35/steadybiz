@@ -1,3 +1,4 @@
+@import "./../../../../styles/variables";
 $root: ".PassengersSelectCount";
 
 #{$root} {
@@ -7,7 +8,7 @@ $root: ".PassengersSelectCount";
   }
   &-left {
     &__ageLimit {
-      color: #A4A4A4;
+      color: $silverChalice2;
     }
   }
   &-right {
@@ -19,9 +20,9 @@ $root: ".PassengersSelectCount";
         &-secondary {
           min-width: 35px;
           height: 28px;
-          border-color: #D4D4D4;
+          border-color: $alto2;
           border-radius: 3px;
-          color: #436BEC;
+          color: $royalBlue;
           &:first-child {
             border-right: none;
             border-top-right-radius: 0;

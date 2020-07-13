@@ -3,7 +3,7 @@ $root: ".MultiSelect";
 
 #{$root} {
   min-width: 90px;
-
+  position: relative;
   .react-select {
     &-container {
       font-family: "Montserrat Medium";

@@ -17,8 +17,8 @@ const DropdownBox = props => {
 
 
   return (
-    <div className="DropdownBox d-flex align-items-center" onClick={handleDropdownClick}>
-      <div className="DropdownBox-title d-flex align-items-center justify-content-between">
+    <div className="DropdownBox d-flex align-items-center">
+      <div className="DropdownBox-title d-flex align-items-center justify-content-between" onClick={handleDropdownClick}>
         <div className="font-primary-medium-14">
           {placeholder}
         </div>
