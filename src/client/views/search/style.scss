@@ -1,0 +1,9 @@
+$root: ".Search";
+
+#{$root} {
+  box-sizing: border-box;
+  background-image: url("./../../../../public/assets/images/searchBackground.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 342px 144px 144px;
+}

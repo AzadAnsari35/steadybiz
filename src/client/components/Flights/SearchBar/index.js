@@ -66,7 +66,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="SearchBar" style={{ backgroundImage: `url(${displayImage("searchBackground.png")})` }}>
+    <div className="SearchBar">
       <div className="SearchBar-panel">
         <div className="SearchBar-panel__basicSearch d-flex">
           <MultiSelect
