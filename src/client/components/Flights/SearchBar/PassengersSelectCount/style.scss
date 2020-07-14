@@ -1,0 +1,39 @@
+@import "../../../../styles/variables";
+$root: ".PassengersSelectCount";
+
+#{$root} {
+  width: 242px;
+  &-row {
+    margin-bottom: 20px;
+  }
+  &-left {
+    &__ageLimit {
+      color: $silverChalice2;
+    }
+  }
+  &-right {
+    &__count {
+      margin: 0 32px;
+    }
+    &__action {
+      .btn {
+        &-secondary {
+          min-width: 35px;
+          height: 28px;
+          border-color: $alto2;
+          border-radius: 3px;
+          color: $royalBlue;
+          &:first-child {
+            border-right: none;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+          &:last-child {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+        }
+      }
+    }
+  }
+}

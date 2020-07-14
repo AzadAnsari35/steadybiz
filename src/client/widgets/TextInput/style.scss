@@ -17,5 +17,8 @@ $root: ".TextInput";
       outline: none;
       border: 2px solid $gulfBlue;
     }
+    &::placeholder {
+      color: #00000080;
+    }
   }
 }

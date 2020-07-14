@@ -1,0 +1,91 @@
+@import "../../styles/variables.scss";
+
+$root: ".Panel";
+
+#{$root} {
+  &-header {
+    height: 100px;
+    padding-right: 30px;
+    &__icon {
+      width: 70px;
+      height: 100%;
+      background-color: $biscay;
+      display: flex;
+      align-items: center;
+      border-radius: 6px 90px 90px 0px;
+      &.rounded {
+        border-bottom-left-radius: 6px;
+      }
+      .icon {
+        margin-left: 14px;
+      }
+    }
+    &__content {
+      padding: 0 16px;
+    }
+    &__action {
+      &-title {
+        color: $biscay;
+      }
+    }
+  }
+  &-body {
+    padding: 32px 70px;
+    &.no-padding {
+      padding: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  #{$root} {
+    &-header {
+      position: relative;
+      min-height: 64px;
+      height: auto;
+      flex-direction: column;
+      padding-right: 0;
+      padding-bottom: 16px;
+      &__icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        justify-content: center;
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        &.rounded {
+          border-bottom-left-radius: 50%;
+        }
+        .icon {
+          margin-left: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          svg {
+            width: 22px;
+            height: 22px;
+          }
+        }
+      }
+      &__content {
+        padding: 32px 10px 0;
+        width: calc(100% - 20px);
+        margin-bottom: 10px;
+      }
+      &__action {
+        margin-right: 10px;
+        &-title {
+          color: $biscay;
+        }
+      }
+    }
+    &-body {
+      padding: 16px 8px 20px;
+      &.no-padding {
+        padding: 0;
+      }
+    }
+  }
+}

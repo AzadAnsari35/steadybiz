@@ -8,6 +8,7 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import SideDrawer from "Widgets/SideDrawer";
 import UserCreditLimit from "Components/UserControls/UserCreditLimit";
 import Avatar from "Widgets/Avatar";
+import colors from "Constants/colors";
 
 import "./style.scss";
 
@@ -40,7 +41,7 @@ const Header = () => {
           <div className="Header-left__logo">
             <FlightIcon
               fontSize="large"
-              style={{ color: "#fff", transform: "rotate(90deg)" }}
+              style={{ color: colors.white, transform: "rotate(90deg)" }}
             />
           </div>
           <div className="font-primary-medium-30">OK Travel</div>

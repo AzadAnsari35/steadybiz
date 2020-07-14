@@ -96,11 +96,18 @@ p {
 
 // Fonts with basic properties
 
+.font-primary-regular-12 {
+  @extend .font-primary-regular;
+  font-size: 12px;
+  line-height: 15px;
+}
+
 .font-primary-regular-14 {
   @extend .font-primary-regular;
   font-size: 14px;
-  line-height: 25px;
+  line-height: 18px;
 }
+
 .font-primary-regular-16 {
   @extend .font-primary-regular;
   font-size: 16px;
@@ -123,6 +130,12 @@ p {
   @extend .font-primary-regular;
   font-size: 20px;
   line-height: 24px;
+}
+
+.font-primary-medium-12 {
+  @extend .font-primary-medium;
+  font-size: 12px;
+  line-height: 14px;
 }
 
 .font-primary-medium-14 {
@@ -358,6 +371,10 @@ p {
   padding-top: 20px;
 }
 
+.pt-36 {
+  padding-top: 36px;
+}
+
 // Padding Horizontal
 .px-16 {
   padding: 0 16px;
@@ -414,11 +431,15 @@ p {
   padding-bottom: 24px;
 }
 
-.pb-36 {
-  padding-bottom: 36px;
+.pb-30 {
+  padding-bottom: 30px;
 }
 
-.pb-30 {
+.pb-32 {
+  padding-bottom: 32px;
+}
+
+.pb-36 {
   padding-bottom: 36px;
 }
 
@@ -429,6 +450,10 @@ p {
 
 .pl-8 {
   padding-left: 8px;
+}
+
+.pl-10 {
+  padding-left: 10px;
 }
 
 .pl-16 {
@@ -483,6 +508,10 @@ p {
 
 .mr-14 {
   margin-right: 14px;
+}
+
+.mr-24 {
+  margin-right: 24px;
 }
 
 // Margin Bottom
@@ -617,6 +646,10 @@ p {
 
 .br-6 {
   border-radius: 6px;
+}
+
+.br-6 {
+  border-radius: 4px;
 }
 
 /* divider */

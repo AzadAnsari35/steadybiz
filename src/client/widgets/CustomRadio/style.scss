@@ -1,0 +1,10 @@
+$root: ".CustomRadio";
+
+#{$root} {
+  width: 328px;
+  &-radio {
+    &[type="radio"] {
+      transform: scale(1.5);
+    }
+  }
+}
