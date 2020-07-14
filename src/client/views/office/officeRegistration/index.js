@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import BoxRadio from "Widgets/BoxRadio";
+import { BoxRadio, Panel } from "Widgets";
 import OfficeRegistrationForm from "Components/Offices/Office/OfficeRegistration";
 import OfficeInvitationForm from "Components/Offices/Office/OfficeInvitation";
 import Grid from "@material-ui/core/Grid";
 import PeopleIcon from "@material-ui/icons/People";
-import Panel from "Widgets/Panel";
+import colors from "Constants/colors";
 import "./style.scss";
 
 const INVITE = "Invite";
@@ -45,7 +45,7 @@ const OfficeRegistration = () => {
             id="flightDetailsPanel"
             title="Agency Registration"
             panelHeaderIcon={
-              <PeopleIcon style={{ fontSize: 30, color: "#ffffff" }} />
+              <PeopleIcon style={{ fontSize: 30, color: colors.white }} />
             }
             panelIconMarginLeft={"14"}
             showHeaderContent

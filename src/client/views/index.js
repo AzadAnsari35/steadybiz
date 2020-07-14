@@ -1,2 +1,3 @@
-import home from './home'
-export {home};
+import Home from "./home";
+import OfficeRegistration from "./office/officeRegistration";
+export { Home, OfficeRegistration };

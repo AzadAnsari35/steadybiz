@@ -1,11 +1,7 @@
 import React from "react";
-import Text from "Widgets/Text";
 import Grid from "@material-ui/core/Grid";
-import SelectWithTextInput from "Widgets/SelectWithTextInput";
-import TextInput from "Widgets/TextInput";
-import Button from "Widgets/Button";
+import { TextInput, SelectWithTextInput, Text, Button } from "Widgets";
 import { useForm } from "react-hook-form";
-import CustomRadio from "Widgets/CustomRadio";
 import { regex } from "Helpers/validator";
 
 import "./style.scss";
