@@ -1,0 +1,47 @@
+@import "../../styles/variables.scss";
+
+$root: ".SelectWithTextInput";
+
+#{$root} {
+  &-label {
+    margin-bottom: 8px;
+  }
+
+  &-container {
+    position: relative;
+
+    &-select {
+      position: absolute;
+      width: calc(30% - 40px) !important;
+      padding: 10px 20px;
+
+      &:after {
+        content: "";
+        background-color: #00000080;
+        height: 17px;
+        width: 1px;
+        position: absolute;
+        top: 12.5px;
+        right: 12px;
+        left: auto;
+        transform: none;
+        transition: none;
+        border-bottom: none;
+      }
+    }
+
+    &-input {
+      box-sizing: border-box;
+      margin: 0;
+      width: 100%;
+      border: 1px solid $black5;
+      border-radius: 4px;
+      height: 44px;
+      padding: 0 20px 0 200px;
+      padding-left: 30%;
+      &::placeholder {
+        color: #00000080;
+      }
+    }
+  }
+}

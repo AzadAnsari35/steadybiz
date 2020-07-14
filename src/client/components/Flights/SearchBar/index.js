@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Grid } from "@material-ui/core";
-import FlightIcon from '@material-ui/icons/Flight';
+import FlightIcon from "@material-ui/icons/Flight";
 
 import { displayImage } from "Helpers/utils";
 import colors from "Constants/colors";
@@ -14,12 +14,13 @@ import MultiSelect from "Widgets/MultiSelect/index";
 import PassengersSelectCount from "./PassengersSelectCount/index";
 import RoundedButton from "Widgets/RoundedButton/index";
 import Text from "Widgets/Text/index";
+import { useForm } from "react-hook-form";
 
 import "./style.scss";
 
 const segmentTypes = [
-  { value: "RT", label: "Return" },
-  { value: "OW", label: "One-way" },
+  { segmentValue: "RT", segmentLabel: "Return" },
+  { segmentValue: "OW", segmentLabel: "One-way" },
 ];
 
 const tripTypes = [
@@ -30,32 +31,41 @@ const tripTypes = [
 ];
 
 const airlinesOptions = [
-  { value: "FZ", label: "Flydubai (FZ)"},
-  { value: "G9", label: "Air Arabia (G9)"},
-  { value: "WY", label: "Oman Air (WY)"},
-  { value: "EY", label: "Etihad Airways (EY)"},
-  { value: "ET", label: "Ethiopian Airlines (ET)"},
+  { airlineValue: "FZ", airlineLabel: "Flydubai (FZ)" },
+  { airlineValue: "G9", airlineLabel: "Air Arabia (G9)" },
+  { airlineValue: "WY", airlineLabel: "Oman Air (WY)" },
+  { airlineValue: "EY", airlineLabel: "Etihad Airways (EY)" },
+  { airlineValue: "ET", airlineLabel: "Ethiopian Airlines (ET)" },
 ];
 
 const gdsAggregatorOptions = [
-  { value: "1S", label: "Sabre (1S)"},
-  { value: "1A", label: "Amadeus (1A)"},
-  { value: "1G", label: "Travelport (1G)"},
-  { value: "TF", label: "Travelfusion (TF)"},
-  { value: "HH", label: "HitchHiker (HH)"},
+  { value: "1S", label: "Sabre (1S)" },
+  { value: "1A", label: "Amadeus (1A)" },
+  { value: "1G", label: "Travelport (1G)" },
+  { value: "TF", label: "Travelfusion (TF)" },
+  { value: "HH", label: "HitchHiker (HH)" },
 ];
 
 const directConnectOptions = [
-  { value: "FZ", label: "Flydubai (FZ)"},
-  { value: "G9", label: "Air Arabia (G9)"},
-  { value: "WY", label: "Oman Air (WY)"},
-  { value: "EY", label: "Etihad Airways (EY)"},
-  { value: "ET", label: "Airlines (ET)"},
+  { value: "FZ", label: "Flydubai (FZ)" },
+  { value: "G9", label: "Air Arabia (G9)" },
+  { value: "WY", label: "Oman Air (WY)" },
+  { value: "EY", label: "Etihad Airways (EY)" },
+  { value: "ET", label: "Airlines (ET)" },
 ];
 
 const SearchBar = () => {
   const [expandAdvanceSearch, setExpandAdvanceSearch] = useState(false);
-  const [isPassengerCountDropdownOpen, setIsPassengerCountDropdownOpen] = useState(false);
+  const [
+    isPassengerCountDropdownOpen,
+    setIsPassengerCountDropdownOpen,
+  ] = useState(false);
+  const { register, handleSubmit, errors, control, setValue, watch } = useForm({
+    defaultValues: {
+      title: { label: "Mr", value: "mr" },
+      firstName: "Azad",
+    },
+  });
 
   const handlePassengerCountDropdownClick = () => {
     setIsPassengerCountDropdownOpen(!isPassengerCountDropdownOpen);
@@ -73,10 +83,22 @@ const SearchBar = () => {
             labelKey="segmentLabel"
             options={segmentTypes}
             valueKey="segmentValue"
+            control={control}
+            name="segmentTypes"
           />
-          <MultiSelect options={tripTypes} width={164} />
-          <DropdownBox onClick={handlePassengerCountDropdownClick} isContentVisible={isPassengerCountDropdownOpen}>
-            <PassengersSelectCount onOutsideClick={handlePassengerCountDropdownClick} />
+          <MultiSelect
+            options={tripTypes}
+            width={164}
+            control={control}
+            name="tripTypes"
+          />
+          <DropdownBox
+            onClick={handlePassengerCountDropdownClick}
+            isContentVisible={isPassengerCountDropdownOpen}
+          >
+            <PassengersSelectCount
+              onOutsideClick={handlePassengerCountDropdownClick}
+            />
           </DropdownBox>
         </div>
         <div className="SearchBar-panel__inputs">
@@ -116,10 +138,18 @@ const SearchBar = () => {
             <Grid item xs={12} md={10} className="d-flex align-items-center">
               <div className="d-flex">
                 <div className="d-flex align-items-center mr-24">
-                  <Text className="font-primary-medium-16 mr-16" text="Advance Search" style={{ color: colors.royalBlue }} />
-                  <ExpandArrow isHorizontal expand={expandAdvanceSearch} onClick={handleAdvanceSearchClick} />
+                  <Text
+                    className="font-primary-medium-16 mr-16"
+                    text="Advance Search"
+                    style={{ color: colors.royalBlue }}
+                  />
+                  <ExpandArrow
+                    isHorizontal
+                    expand={expandAdvanceSearch}
+                    onClick={handleAdvanceSearchClick}
+                  />
                 </div>
-                {expandAdvanceSearch &&
+                {expandAdvanceSearch && (
                   <div className="d-flex align-items-center">
                     <MultiSelect
                       closeMenuOnSelect={false}
@@ -130,6 +160,8 @@ const SearchBar = () => {
                       showValue
                       valueKey="airlineValue"
                       width="156"
+                      control={control}
+                      name="airlinesOptions"
                     />
                     <MultiSelect
                       closeMenuOnSelect={false}
@@ -138,24 +170,37 @@ const SearchBar = () => {
                       options={gdsAggregatorOptions}
                       showValue
                       width="158"
+                      control={control}
+                      name="gdsAggregatorOptions"
                     />
-                    <MultiSelect options={directConnectOptions} placeholder="Direct Connect" width="136" />
+                    <MultiSelect
+                      options={directConnectOptions}
+                      placeholder="Direct Connect"
+                      width="136"
+                      control={control}
+                      name="directConnectOptions"
+                    />
                   </div>
-                }
+                )}
               </div>
             </Grid>
             <Grid item xs={12} md={2}>
               <Button
                 className="SearchBar-panel__advanceSearch-searchFlight"
-                icon={<FlightIcon style={{ color: colors.white, transform: "rotate(90deg)" }} />}
+                icon={
+                  <FlightIcon
+                    style={{ color: colors.white, transform: "rotate(90deg)" }}
+                  />
+                }
                 text="search flight"
+                type="submit"
               />
             </Grid>
           </Grid>
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default SearchBar;
