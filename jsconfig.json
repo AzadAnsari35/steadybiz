@@ -12,6 +12,8 @@
         "Widgets/*": ["src/client/widgets/*"],
         "Reducers/*": ["src/client/reducers/*"],
         "Actions/*": ["src/client/actions/*"],
+        "CustomHooks/*": ["src/client/customhooks/*"],
+
         "Client/*": ["src/client/*"],
         "App/*": ["src/*"]
       }

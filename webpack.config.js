@@ -61,6 +61,7 @@ module.exports = (env, argv) => {
         Widgets: path.resolve(__dirname, "src/client/widgets"),
         Reducers: path.resolve(__dirname, "src/client/reducers"),
         Actions: path.resolve(__dirname, "src/client/actions"),
+        CustomHooks: path.resolve(__dirname, "src/client/customhooks"),
         Client: path.resolve(__dirname, "src/client"),
         App: path.resolve(__dirname, "src"),
       },

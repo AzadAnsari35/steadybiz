@@ -3,9 +3,13 @@ import {HttpVerbsConstant} from 'Constants/commonConstant';
 export const httpRequest = async (reqType, data, header, apiUrl) => {
   // eslint-disable-next-line no-useless-catch
   try {
+    
     switch (reqType) {
+      
       case HttpVerbsConstant.POST: {
+        
         var response = await axios.post(apiUrl, data, { headers: header });
+        
         return response.data;
       }
       case HttpVerbsConstant.PUT: {

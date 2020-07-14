@@ -1,9 +1,8 @@
-const actionTypeConstant ={
+export const  actionTypeConstant ={
    users:{
-       signIn:"users.signIn"
+       signIn:"usersSignIn"
    } ,
    masters:{
     countriesList:"master.countriesList"
    }
 };
-export default actionTypeConstant;

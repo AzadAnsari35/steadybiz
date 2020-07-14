@@ -2,7 +2,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 export default {
     api: {
-    url : process.env.API_URL
+    url : process.env.API_URL,
+    travelndc_url:process.env.TRAVELNDC_API
     },
     client:{
         app_host: process.env.APP_HOST,

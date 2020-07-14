@@ -5,4 +5,4 @@ export const HttpVerbsConstant = {
     DELETE: 3
   };
 
-  export default {HttpVerbsConstant};
+  
