@@ -1,12 +1,12 @@
 import {apiReqeust,utils,Response} from 'Helpers/';
-import endpoint from 'Config/endpoint';
+
 
  const commonAction = (_endpoint,_data) => {
 	return async (dispatch) => {
 		
 		try
 		{
-		_data=null;	
+		
 		const res = await apiReqeust.httpRequest(
             _endpoint.httpVerb,
             _data,

@@ -28,7 +28,8 @@ export const checkError=(apiResponse) =>
 {
   if (!apiResponse.items.success)
   {
-    return apiResponse.items.data.message;
+    alert(apiResponse.items.error);
+    return apiResponse.items.error.message;
   }
   else
     return "";
