@@ -1,0 +1,13 @@
+$root: ".ExpandArrow";
+
+#{$root} {
+  margin-left: 12px;
+  &.is-background {
+    box-sizing: border-box;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #f1f4f6;
+    margin-left: 0;
+  }
+}

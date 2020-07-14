@@ -6,23 +6,27 @@ const Button = (props) => {
   const {
     className,
     disabled = false,
+    icon,
+    isLinkType = false,
     secondary,
     text,
+    type = "button",
     onClick,
-    type = "submit",
   } = props;
 
   return (
     <button
-      type="button"
-      className={`btn btn-${!secondary ? "primary" : "secondary"} ${
+      type={type}
+      className={`btn${isLinkType ? "-link" : ""} ${isLinkType ? `btn-link__${!secondary
+        ? "primary" : "secondary"}` : `btn-${!secondary ? "primary" : "secondary"}`} ${
         !!className ? className : ""
-      } ${!!disabled ? "btn-disabled" : ""}`}
+      } ${!!disabled ? "btn-disabled" : ""} d-flex justify-content-center align-items-center`}
       onClick={onClick}
       disabled={disabled}
       type={type}
     >
-      {text}
+      <span className={`btn-text ${!!icon ? "add-margin" : ""}`}>{text}</span>
+      {!!icon && icon}
     </button>
   );
 };
