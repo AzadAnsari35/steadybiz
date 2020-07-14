@@ -1,5 +1,6 @@
-@import "./../../styles/variables";
-$root: '.Text';
+@import "../../styles/variables.scss";
+
+$root: ".Text";
 
 #{$root} {
   &.text-blue {
