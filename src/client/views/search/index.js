@@ -7,7 +7,9 @@ import "./style.scss";
 const Search = () => {
   return (
     <div className="Search">
-      <SearchBar />
+      <div className="Search-panel">
+        <SearchBar />
+      </div>
     </div>
   )
 };

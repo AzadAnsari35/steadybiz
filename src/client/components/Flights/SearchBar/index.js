@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from 'react-router-dom';
 import { Grid } from "@material-ui/core";
 import FlightIcon from '@material-ui/icons/Flight';
 
@@ -54,6 +55,7 @@ const directConnectOptions = [
 ];
 
 const SearchBar = () => {
+  const history = useHistory();
   const [expandAdvanceSearch, setExpandAdvanceSearch] = useState(false);
   const [isPassengerCountDropdownOpen, setIsPassengerCountDropdownOpen] = useState(false);
 
@@ -67,92 +69,91 @@ const SearchBar = () => {
 
   return (
     <div className="SearchBar">
-      <div className="SearchBar-panel">
-        <div className="SearchBar-panel__basicSearch d-flex">
-          <MultiSelect
-            labelKey="segmentLabel"
-            options={segmentTypes}
-            valueKey="segmentValue"
-          />
-          <MultiSelect options={tripTypes} width={164} />
-          <DropdownBox onClick={handlePassengerCountDropdownClick} isContentVisible={isPassengerCountDropdownOpen}>
-            <PassengersSelectCount onOutsideClick={handlePassengerCountDropdownClick} />
-          </DropdownBox>
-        </div>
-        <div className="SearchBar-panel__inputs">
-          <Grid container spacing={1}>
-            <Grid item xs={12} md={4}>
-              <AutoSuggest
-                label="Departure City / Airport"
-                icon={
-                  <img
-                    alt="departure"
-                    src={displayImage("departure.svg")}
-                    className="SearchBar-panel__inputs-autoSuggestIcon"
-                  />
-                }
-              />
-            </Grid>
-            {!isPassengerCountDropdownOpen && <RoundedButton />}
-            <Grid item xs={12} md={4}>
-              <AutoSuggest
-                label="Arrival City / Airport"
-                icon={
-                  <img
-                    alt="arrival"
-                    src={displayImage("arrival.svg")}
-                    className="SearchBar-panel__inputs-autoSuggestIcon"
-                  />
-                }
-              />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <DatesRangePicker />
-            </Grid>
+      <div className="SearchBar-basicSearch d-flex">
+        <MultiSelect
+          labelKey="segmentLabel"
+          options={segmentTypes}
+          valueKey="segmentValue"
+        />
+        <MultiSelect options={tripTypes} width={164} />
+        <DropdownBox onClick={handlePassengerCountDropdownClick} isContentVisible={isPassengerCountDropdownOpen}>
+          <PassengersSelectCount onOutsideClick={handlePassengerCountDropdownClick} />
+        </DropdownBox>
+      </div>
+      <div className="SearchBar-inputs">
+        <Grid container spacing={1}>
+          <Grid item xs={12} md={4}>
+            <AutoSuggest
+              label="Departure City / Airport"
+              icon={
+                <img
+                  alt="departure"
+                  src={displayImage("departure.svg")}
+                  className="SearchBar-inputs__autoSuggestIcon"
+                />
+              }
+            />
           </Grid>
-        </div>
-        <div className="SearchBar-panel__advanceSearch d-flex">
-          <Grid container spacing={1}>
-            <Grid item xs={12} md={10} className="d-flex align-items-center">
-              <div className="d-flex">
-                <div className="d-flex align-items-center mr-24">
-                  <Text className="font-primary-medium-16 mr-16" text="Advance Search" style={{ color: colors.royalBlue }} />
-                  <ExpandArrow isHorizontal expand={expandAdvanceSearch} onClick={handleAdvanceSearchClick} />
-                </div>
-                {expandAdvanceSearch &&
-                  <div className="d-flex align-items-center">
-                    <MultiSelect
-                      closeMenuOnSelect={false}
-                      isMulti
-                      labelKey="airlineLabel"
-                      options={airlinesOptions}
-                      placeholder="Airline Preference"
-                      showValue
-                      valueKey="airlineValue"
-                      width="156"
-                    />
-                    <MultiSelect
-                      closeMenuOnSelect={false}
-                      isMulti
-                      placeholder="GDS & Aggregator"
-                      options={gdsAggregatorOptions}
-                      showValue
-                      width="158"
-                    />
-                    <MultiSelect options={directConnectOptions} placeholder="Direct Connect" width="136" />
-                  </div>
-                }
+          {!isPassengerCountDropdownOpen && <RoundedButton />}
+          <Grid item xs={12} md={4}>
+            <AutoSuggest
+              label="Arrival City / Airport"
+              icon={
+                <img
+                  alt="arrival"
+                  src={displayImage("arrival.svg")}
+                  className="SearchBar-inputs__autoSuggestIcon"
+                />
+              }
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <DatesRangePicker />
+          </Grid>
+        </Grid>
+      </div>
+      <div className="SearchBar-advanceSearch d-flex">
+        <Grid container spacing={1}>
+          <Grid item xs={12} md={10} className="d-flex align-items-center">
+            <div className="d-flex">
+              <div className="d-flex align-items-center mr-24">
+                <Text className="font-primary-medium-16 mr-16" text="Advance Search" style={{ color: colors.royalBlue }} />
+                <ExpandArrow isHorizontal expand={expandAdvanceSearch} onClick={handleAdvanceSearchClick} />
               </div>
-            </Grid>
-            <Grid item xs={12} md={2}>
-              <Button
-                className="SearchBar-panel__advanceSearch-searchFlight"
-                icon={<FlightIcon style={{ color: colors.white, transform: "rotate(90deg)" }} />}
-                text="search flight"
-              />
-            </Grid>
+              {expandAdvanceSearch &&
+                <div className="d-flex align-items-center">
+                  <MultiSelect
+                    closeMenuOnSelect={false}
+                    isMulti
+                    labelKey="airlineLabel"
+                    options={airlinesOptions}
+                    placeholder="Airline Preference"
+                    showValue
+                    valueKey="airlineValue"
+                    width="156"
+                  />
+                  <MultiSelect
+                    closeMenuOnSelect={false}
+                    isMulti
+                    placeholder="GDS & Aggregator"
+                    options={gdsAggregatorOptions}
+                    showValue
+                    width="158"
+                  />
+                  <MultiSelect options={directConnectOptions} placeholder="Direct Connect" width="136" />
+                </div>
+              }
+            </div>
           </Grid>
-        </div>
+          <Grid item xs={12} md={2}>
+            <Button
+              className="SearchBar-advanceSearch__searchFlight"
+              icon={<FlightIcon style={{ color: colors.white, transform: "rotate(90deg)" }} />}
+              text="search flight"
+              onClick={() => history.push("/availability")}
+            />
+          </Grid>
+        </Grid>
       </div>
     </div>
   )

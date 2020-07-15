@@ -1,0 +1,151 @@
+@import "./../../../../styles/variables";
+$root: ".FlightItineraryCard";
+
+#{$root} {
+  background-color: $white;
+  border-radius: 6px;
+  width: 100%;
+  position: relative;
+  &-content {
+    padding: 12px 20px 12px 0;
+  }
+  &-top {
+    margin-bottom: 2px;
+    &__leftSection {
+      width: 950px;
+      .segmentType {
+        height: 28px;
+        width: 124px;
+        border-radius: 0 4px 4px 0;
+        background-color: $mystic;
+        padding: 0 14px;
+        .icon {
+          &.MuiSvgIcon-root {
+            color: $black;
+            transform: rotate(90deg);
+            height: 18px;
+            width: 18px;
+            margin-right: 8px;
+          }
+        }
+      }
+      .segmentDetail {
+        .airline {
+          padding: 14px 20px;
+          margin-right: 68px;
+          &-icon {
+            border-radius: 4px;
+            background-color: $gray;
+            margin-right: 10px;
+            width: 40px;
+            height: 40px;
+          }
+          &-name {
+            width: 80px;
+          }
+        }
+        .departureTime, .arrivalTime {
+          width: 130px;
+        }
+        .arrivalTime {
+          .arrivalDate {
+            color: $red;
+          }
+        }
+        .stopsInfo {
+          width: 292px;
+          height: 52px;
+          margin: 0 80px;
+          .MuiSvgIcon-root {
+            color: $gray;
+            transform: rotate(90deg);
+            height: 24px;
+            width: 24px;
+            margin-right: 2px;
+          }
+          .stops {
+            margin: 5px 0;
+          }
+          .stop-names {
+            & > div {
+              position: relative;
+              &:first-child {
+                right: 39px;
+              }
+              &:last-child {
+                left: 23px;
+              }
+            }
+          }
+        }
+      }
+    }
+    &__rightSection {
+      &-seatsFareInfo {
+        position: absolute;
+        top: 12px;
+        right: 0;
+        .Text {
+          margin-right: 22px;
+        }
+        .Tag {
+          position: initial;
+        }
+      }
+      &-priceSelectFlight {
+        padding: 72px 0 44px 0;
+        .price {
+          margin-bottom: 10px;
+          .MuiSvgIcon-root {
+            color: $royalBlue;
+          }
+        }
+      }
+    }
+  }
+  &-bottom {
+    padding-left: 20px;
+    &__leftAction, &__rightAction {
+      .MuiSvgIcon-root {
+        color: $gray;
+        margin-right: 6px;
+      }
+      .Text {
+        color: $royalBlue;
+      }
+    }
+    &__rightAction {
+      & > div {
+        &:first-child {
+          border-right: 1px solid $gray;
+          padding-right: 12px;
+        }
+        &:last-child {
+          padding-left: 12px;
+          .Text {
+            padding-right: 8px;
+          }
+        }
+      }
+    }
+  }
+  &-flightDetails {
+    &__tabs {
+      border-top: 1px solid rgba(141, 141, 141, 0.6);
+      padding: 20px 20px 0 20px;
+      .tab {
+        margin: 0 38px;
+        padding-bottom: 6px;
+        &:first-child {
+          margin-left: 0;
+        }
+        &.active {
+          border-bottom: 2px solid $gray;
+        }
+      }
+    }
+    &__content {
+      padding: 40px 20px 20px;
+    }
+  }
+}
