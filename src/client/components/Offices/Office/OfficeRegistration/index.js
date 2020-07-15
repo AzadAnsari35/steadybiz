@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import Grid from "@material-ui/core/Grid";
+import React, { useEffect } from 'react';
+import Grid from '@material-ui/core/Grid';
 import {
   SelectWithTextInput,
   MultiSelect,
@@ -7,29 +7,50 @@ import {
   Button,
   CustomRadio,
   Text,
-} from "Widgets";
+} from 'Widgets';
 
-import { useForm } from "react-hook-form";
-import { regex } from "Helpers/validator";
+import { useForm } from 'react-hook-form';
+import { regex } from 'Helpers/validator';
+import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
+// import useAPi from 'Hooks/useApi';
+// import endpoint from 'Config/endpoint';
+import './style.scss';
+import endpoint from 'Config/endpoint';
 
-import "./style.scss";
+const todosApi = 'https://jsonplaceholder.typicode.com/todos';
 
 const OfficeRegistrationForm = () => {
-  const { register, handleSubmit, errors, control, setValue, watch } = useForm({
-    defaultValues: {
-      title: { label: "Mr", value: "mr" },
-    },
-  });
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    setValue,
+    watch,
+  } = useForm();
+
+  const [regResponse, postRegResponse] = regEndpoint();
 
   useEffect(() => {
-    setValue("settlementOptions", "advanceDeposit");
+    setValue('settlementOptions', 'advanceDeposit');
   }, []);
 
+  const regEndpoint = () => {
+    return useAsyncEndpoint((data) => ({
+      _endpoint: endpoint.user.login,
+      data,
+    }));
+  };
+
   const onSubmit = (data, e) => {
-    console.log("data", data);
+    console.log('data', data);
     e.target.reset();
-    const { confirmPassword, ...request } = data;
-    console.log("request", request);
+    const { ...request } = data;
+    //    const requestJson = request.data;
+    console.log('request', data);
+    postRegResponse(data);
+
+    // console.log(res);
   };
 
   return (
@@ -49,24 +70,24 @@ const OfficeRegistrationForm = () => {
               name="firstName"
               selectInputName="title"
               data={[
-                { label: "Mr", value: "mr" },
-                { label: "Mrs", value: "mrs" },
+                { label: 'Mr', value: 'mr' },
+                { label: 'Mrs', value: 'mrs' },
               ]}
               label="First Name"
               placeholder="First Name"
               selectPlaceholder="Title"
               errors={errors}
               register={register}
-              validation={{
-                required: "Please enter the first name.",
-                pattern: {
-                  value: regex.name,
-                  message: "Please enter the alphabets only.",
-                },
-              }}
-              selectValidation={{
-                required: "Please enter the title.",
-              }}
+              // validation={{
+              //   required: 'Please enter the first name.',
+              //   pattern: {
+              //     value: regex.name,
+              //     message: 'Please enter the alphabets only.',
+              //   },
+              // }}
+              // selectValidation={{
+              //   required: 'Please enter the title.',
+              // }}
               control={control}
             />
           </Grid>
@@ -77,17 +98,17 @@ const OfficeRegistrationForm = () => {
               errors={errors}
               placeholder="Last Name"
               label="Last Name"
-              validation={{
-                required: "Please enter the last name.",
-                minLength: {
-                  value: 2,
-                  message: "Please enter minimum two alphabets",
-                },
-                pattern: {
-                  value: regex.name,
-                  message: "Please enter the alphabets only.",
-                },
-              }}
+              // validation={{
+              //   required: 'Please enter the last name.',
+              //   minLength: {
+              //     value: 2,
+              //     message: 'Please enter minimum two alphabets',
+              //   },
+              //   pattern: {
+              //     value: regex.name,
+              //     message: 'Please enter the alphabets only.',
+              //   },
+              // }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -95,18 +116,18 @@ const OfficeRegistrationForm = () => {
               name="mobile"
               selectInputName="mobileDialCode"
               data={[
-                { label: "India", value: "IN (+91)" },
-                { label: "Canada", value: "CA (+1)" },
+                { label: 'India', value: 'IN (+91)' },
+                { label: 'Canada', value: 'CA (+1)' },
               ]}
               label="Mobile Number"
               placeholder="Mobile Number"
               selectPlaceholder="Dial Code"
               errors={errors}
               register={register}
-              validation={{ required: "Please enter the first name." }}
-              selectValidation={{
-                required: "Please enter the country code.",
-              }}
+              // validation={{ required: 'Please enter the first name.' }}
+              // selectValidation={{
+              //   required: 'Please enter the country code.',
+              // }}
               control={control}
               showValue
             />
@@ -119,10 +140,10 @@ const OfficeRegistrationForm = () => {
               label="Email"
               placeholder="Email"
               validation={{
-                required: "Please enter the email.",
+                required: 'Please enter the email.',
                 pattern: {
                   value: regex.email,
-                  message: "Please enter valid email id.",
+                  message: 'Please enter valid email id.',
                 },
               }}
             />
@@ -135,14 +156,14 @@ const OfficeRegistrationForm = () => {
               errors={errors}
               label="Password"
               validation={{
-                required: "Please enter the password.",
+                required: 'Please enter the password.',
                 minLength: {
                   value: 8,
-                  message: "Please enter minimum eight characters",
+                  message: 'Please enter minimum eight characters',
                 },
                 maxLength: {
                   value: 16,
-                  message: "Please enter maximum sixteen characters",
+                  message: 'Please enter maximum sixteen characters',
                 },
               }}
             />
@@ -154,10 +175,10 @@ const OfficeRegistrationForm = () => {
               register={register}
               errors={errors}
               label="Confirm Password"
-              validation={{
-                validate: (value) =>
-                  value === watch("password") || "Passwords don't match.",
-              }}
+              // validation={{
+              //   validate: (value) =>
+              //     value === watch('password') || "Passwords don't match.",
+              // }}
             />
           </Grid>
           <Grid item xs={12}>
@@ -174,13 +195,13 @@ const OfficeRegistrationForm = () => {
               errors={errors}
               label="Agency Name"
               placeholder="Agency Name"
-              validation={{
-                required: "Please enter the agency name.",
-                pattern: {
-                  value: regex.alphanumeric,
-                  message: "Please enter valid agency name.",
-                },
-              }}
+              // validation={{
+              //   required: 'Please enter the agency name.',
+              //   pattern: {
+              //     value: regex.alphanumeric,
+              //     message: 'Please enter valid agency name.',
+              //   },
+              // }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -190,9 +211,9 @@ const OfficeRegistrationForm = () => {
               errors={errors}
               placeholder="Address Line 1"
               label="Address Line 1"
-              validation={{
-                required: "Please enter the address line 1.",
-              }}
+              // validation={{
+              //   required: 'Please enter the address line 1.',
+              // }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -202,9 +223,9 @@ const OfficeRegistrationForm = () => {
               errors={errors}
               placeholder="Address Line 2"
               label="Address Line 2"
-              validation={{
-                required: "Please enter the address line 2.",
-              }}
+              // validation={{
+              //   required: 'Please enter the address line 2.',
+              // }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -212,15 +233,15 @@ const OfficeRegistrationForm = () => {
               label="Country"
               name="countryCode"
               options={[
-                { label: "India", value: "IN" },
-                { label: "Canada", value: "CN" },
+                { label: 'India', value: 'IN' },
+                { label: 'Canada', value: 'CN' },
               ]}
               placeholder="Country"
               showBorder={true}
               changeStyle={true}
               control={control}
               errors={errors}
-              validation={{ required: "Please enter the country" }}
+              // validation={{ required: 'Please enter the country' }}
               showValue
               width="auto"
             />
@@ -231,15 +252,15 @@ const OfficeRegistrationForm = () => {
               label="City"
               name="cityCode"
               options={[
-                { label: "New Delhi", value: "DEL" },
-                { label: "Mumbai", value: "BOM" },
+                { label: 'New Delhi', value: 'DEL' },
+                { label: 'Mumbai', value: 'BOM' },
               ]}
               placeholder="City"
               showBorder={true}
               changeStyle={true}
               control={control}
               errors={errors}
-              validation={{ required: "Please enter the city" }}
+              //validation={{ required: 'Please enter the city' }}
               width="auto"
             />
           </Grid>
@@ -251,9 +272,9 @@ const OfficeRegistrationForm = () => {
               errors={errors}
               label="Zip Code"
               placeholder="Zip Code"
-              validation={{
-                required: "Please enter the address zip code.",
-              }}
+              // validation={{
+              //   required: 'Please enter the address zip code.',
+              // }}
             />
           </Grid>
 
@@ -262,15 +283,15 @@ const OfficeRegistrationForm = () => {
               label="No of Users"
               name="noOfUserRequested"
               options={[
-                { label: "1", value: "1" },
-                { label: "2", value: "2" },
+                { label: '1', value: '1' },
+                { label: '2', value: '2' },
               ]}
               placeholder="No of Users"
               showBorder={true}
               changeStyle={true}
               control={control}
               errors={errors}
-              validation={{ required: "Please enter the no of users" }}
+              // validation={{ required: 'Please enter the no of users' }}
               width="auto"
             />
           </Grid>
@@ -280,18 +301,18 @@ const OfficeRegistrationForm = () => {
               name="phone"
               selectInputName="phoneDialCode"
               data={[
-                { label: "India", value: "IN (+91)" },
-                { label: "Canada", value: "CA (+1)" },
+                { label: 'India', value: 'IN (+91)' },
+                { label: 'Canada', value: 'CA (+1)' },
               ]}
               label="Phone Number"
               placeholder="Phone Number"
               selectPlaceholder="Country Code"
               errors={errors}
               register={register}
-              validation={{ required: "Please enter the phone number." }}
-              selectValidation={{
-                required: "Please enter the country code.",
-              }}
+              // validation={{ required: 'Please enter the phone number.' }}
+              // selectValidation={{
+              //   required: 'Please enter the country code.',
+              // }}
               control={control}
               showValue
             />
