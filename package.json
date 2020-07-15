@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack --mode development",
     "dev": "webpack-dev-server --env.PORT=3100 --mode development --hot --open",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production  --env.PORT=3100"
   },
   "keywords": [],
   "author": "",
@@ -31,11 +31,14 @@
     "css-loader": "^3.6.0",
     "dotenv": "^8.2.0",
     "dotenv-webpack": "^1.8.0",
+    "eslint": "^7.4.0",
+    "eslint-plugin-react": "^7.20.3",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "mini-css-extract-plugin": "^0.9.0",
     "moment": "^2.27.0",
     "node-sass": "^4.14.1",
+    "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dates": "^21.8.0",
     "react-dom": "^16.13.1",

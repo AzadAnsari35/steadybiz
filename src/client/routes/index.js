@@ -1,19 +1,30 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { home } from "Views/";
+import { Home, OfficeRegistration } from "Views/";
 import Search from "Views/search/index";
 import Availability from "Views/availability/index";
 import PrivateRoute from "./privateRoute";
 import PublicRoute from "./publicRoute";
+import routes from "Constants/routes";
 
 const Routes = () => (
   <Switch>
-    <Route exact path="/" component={home} />
-    <PrivateRoute exact path="/search" component={Search} />
-    <PrivateRoute exact path="/availability" component={Availability} />
+    <Route exact path="/" component={Home} />
+    <PrivateRoute exact path={routes.flight.search} component={Search} />
+    <PrivateRoute exact path={routes.flight.availability} component={Availability} />
     <PrivateRoute exact path="/private" component={() => <div>private</div>} />
-    <PublicRoute exact path="/public" restricted={true} component={() => <div>public</div>} />
+    <PublicRoute
+      exact
+      path="/public"
+      restricted={true}
+      component={() => <div>public</div>}
+    />
     <PublicRoute exact path="/public1" component={() => <div>public</div>} />
+    <PublicRoute
+      exact
+      path={routes.office.registration}
+      component={OfficeRegistration}
+    />
   </Switch>
 );
 

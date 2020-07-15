@@ -1,11 +1,16 @@
-import axios from 'axios';
-import {HttpVerbsConstant} from 'Constants/commonConstant';
+import axios from "axios";
+import { HttpVerbsConstant } from "Constants/commonConstant";
+
 export const httpRequest = async (reqType, data, header, apiUrl) => {
   // eslint-disable-next-line no-useless-catch
   try {
+    
     switch (reqType) {
+      
       case HttpVerbsConstant.POST: {
+        
         var response = await axios.post(apiUrl, data, { headers: header });
+        
         return response.data;
       }
       case HttpVerbsConstant.PUT: {
@@ -17,21 +22,17 @@ export const httpRequest = async (reqType, data, header, apiUrl) => {
         return response;
       }
       case HttpVerbsConstant.GET: {
-        
         const response = await axios.get(apiUrl, { headers: header });
         return response.data;
       }
       default:
-        throw new Error('wrong verb passed');
+        throw new Error("wrong verb passed");
     }
   } catch (aerror) {
     if (aerror.response) {
-      if(aerror.response.data)
-      {
+      if (aerror.response.data) {
         throw new Error(JSON.stringify(aerror.response.data));
-      }
-      else
-      throw aerror;
+      } else throw aerror;
     }
     throw aerror;
     //   if (error.response) {

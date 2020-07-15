@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
 
-import actionTypeConstant from "Constants/actionTypeConstant";
+import {actionTypeConstant} from "Constants/";
 import  {reducerState,createFilteredReducer} from './commonReducer';
 
 // export default combineReducers({

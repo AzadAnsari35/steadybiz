@@ -1,7 +1,10 @@
-import React from "react";
-import SignInForm from "Components/Users/Agent/SignIn";
+import React, { useState } from 'react';
+import SignInForm from 'Components/Users/Agent/SignIn';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Backdrop from '@material-ui/core/Backdrop';
+import PrimaryLoader from 'Widgets/PrimaryLoader';
 
-import "./style.scss";
+import './style.scss';
 
 const Home = () => {
   return (
