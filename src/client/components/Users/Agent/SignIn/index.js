@@ -8,13 +8,10 @@ import commonAction from 'Actions/';
 import endpoint from 'Config/endpoint';
 import { utils } from 'Helpers/index';
 
-const SignInForm = (props) => {
-  const { setLoading } = props;
-
+const SignInForm = () => {
   const { register, handleSubmit, watch, errors } = useForm();
   const [error, setError] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
-  // const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const apiResponse = useSelector((state) => state.usersSignIn);
@@ -30,13 +27,9 @@ const SignInForm = (props) => {
     //alert(apiResponse.items.success);
   };
 
-  const onSubmit = async (data, e) => {
+  const onSubmit = (data) => {
     try {
-      // const postData = { ...data };
-      setLoading(true);
-      await dispatch(commonAction(endpoint.user.login, data));
-      setLoading(false);
-      e.target.reset();
+      dispatch(commonAction(endpoint.user.login, data));
     } catch (err) {
       showError(err, setError);
     }
