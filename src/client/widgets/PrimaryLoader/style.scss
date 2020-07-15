@@ -1,0 +1,11 @@
+@import "../../styles/variables";
+
+$root: ".PrimaryLoader";
+
+#{$root} {
+  background-color: rgba($color: $black1, $alpha: 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 150px);
+}

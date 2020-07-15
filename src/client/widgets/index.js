@@ -14,6 +14,7 @@ import Toast from "./Toast";
 import Text from "./Text";
 import MultiSelect from "./MultiSelect";
 import Panel from "./Panel";
+import PrimaryLoader from "./PrimaryLoader";
 export {
   Avatar,
   TextInput,
@@ -31,4 +32,5 @@ export {
   SelectWithTextInput,
   Toast,
   Text,
+  PrimaryLoader,
 };
