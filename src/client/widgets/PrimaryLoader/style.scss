@@ -1,9 +1,12 @@
-@import "../../styles/variables";
+@import '../../styles/variables';
 
-$root: ".PrimaryLoader";
+$root: '.PrimaryLoader';
 
 #{$root} {
-  background-color: rgba($color: $black1, $alpha: 0.2);
+  background-color: rgba($color: $black1, $alpha: 0.4);
+  z-index: 9999;
+  width: 100%;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;

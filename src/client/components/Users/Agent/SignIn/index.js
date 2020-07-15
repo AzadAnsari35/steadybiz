@@ -30,12 +30,13 @@ const SignInForm = (props) => {
     //alert(apiResponse.items.success);
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data, e) => {
     try {
       // const postData = { ...data };
       setLoading(true);
       await dispatch(commonAction(endpoint.user.login, data));
       setLoading(false);
+      e.target.reset();
     } catch (err) {
       showError(err, setError);
     }
