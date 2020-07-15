@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { TextInput, Button, Toast, PrimaryLoader } from "Widgets";
-import { regex } from "Helpers/validator";
-import { showError } from "Helpers/utils";
-import { useDispatch, useSelector } from "react-redux";
-import commonAction from "Actions/";
-import endpoint from "Config/endpoint";
-import { utils } from "Helpers/index";
+import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { TextInput, Button, Toast, PrimaryLoader } from 'Widgets';
+import { regex } from 'Helpers/validator';
+import { showError } from 'Helpers/utils';
+import { useDispatch, useSelector } from 'react-redux';
+import commonAction from 'Actions/';
+import endpoint from 'Config/endpoint';
+import { utils } from 'Helpers/index';
 
 const SignInForm = (props) => {
   const { setLoading } = props;
 
   const { register, handleSubmit, watch, errors } = useForm();
   const [error, setError] = useState(null);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState('');
   // const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const apiResponse = useSelector((state) => state.usersSignIn);
-
   useEffect(() => {
     postLogin();
   }, [apiResponse]);
@@ -26,7 +25,6 @@ const SignInForm = (props) => {
   const postLogin = () => {
     if (apiResponse.items != null) {
       const errMsg = utils.checkError(apiResponse);
-      console.log("errorMsg", errMsg);
       setErrorMsg(errMsg);
     }
     //alert(apiResponse.items.success);
@@ -57,13 +55,13 @@ const SignInForm = (props) => {
             errors={errors}
             label="Email ID"
             validation={{
-              required: "This input is required.",
+              required: 'This input is required.',
               pattern: {
                 value: regex.email,
-                message: "Please enter a valid email id",
+                message: 'Please enter a valid email id',
               },
             }}
-            classes={{ root: "mb-16", input: "" }}
+            classes={{ root: 'mb-16', input: '' }}
           />
           <TextInput
             type="password"
@@ -72,7 +70,7 @@ const SignInForm = (props) => {
             errors={errors}
             label="Password"
             validation={{
-              required: "This input is required.",
+              required: 'This input is required.',
             }}
           />
           <div className="d-flex justify-content-end">
