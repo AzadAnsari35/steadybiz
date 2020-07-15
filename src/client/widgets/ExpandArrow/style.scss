@@ -1,0 +1,15 @@
+@import "../../styles/variables.scss";
+
+$root: ".ExpandArrow";
+
+#{$root} {
+  margin-left: 12px;
+  &.is-background {
+    box-sizing: border-box;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: $athensGray;
+    margin-left: 0;
+  }
+}

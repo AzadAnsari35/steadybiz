@@ -1,18 +1,19 @@
 import React, { Fragment } from "react";
-import Routers from "App/client/routers";
+import Routes from "App/client/Routes";
 import Header from "Components/UserControls/Header";
 import Footer from "Components/UserControls/Footer";
-
+import "../../styles/global.scss";
 
 const Layout = () => {
   return (
     <Fragment>
-           
-      <Header /> 
-      <Routers/>
+      <Header />
+      <div className="route-wrapper">
+        <Routes />
+      </div>
       <Footer />
     </Fragment>
   );
-}
+};
 
 export default Layout;

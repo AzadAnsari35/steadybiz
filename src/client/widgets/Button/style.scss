@@ -1,0 +1,53 @@
+@import "../../styles/variables.scss";
+
+$root: ".btn";
+
+#{$root} {
+  text-transform: uppercase;
+  padding: 0 14px;
+  min-width: 110px;
+  height: 40px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: "Montserrat SemiBold";
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  &-primary {
+    background-color: $gulfBlue;
+    color: $white;
+    border: none;
+  }
+  &-secondary {
+    background-color: transparent;
+    color: $gulfBlue;
+    border: 1px solid $gulfBlue;
+  }
+  &-link {
+    padding: 0;
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+    &__primary, &__secondary {
+      font-family: "Montserrat Medium";
+      font-size: 16px;
+      line-height: 19px;
+      border: none;
+      background: none;
+    }
+    &__primary {
+      color: $royalBlue;
+    }
+    &__secondary {
+      color: $black6;
+    }
+  }
+  &-text {
+    &.add-margin {
+      margin-right: 14px;
+    }
+  }
+}

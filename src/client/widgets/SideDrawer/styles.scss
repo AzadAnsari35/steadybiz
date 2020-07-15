@@ -1,0 +1,79 @@
+@import "../../styles/variables.scss";
+@import "../../styles//mixins.scss";
+@import "../../styles/functions.scss";
+
+$root: ".SideDrawer";
+
+#{$root} {
+  padding-top: calculateRem(100px);
+
+  &-list {
+    min-width: 325px;
+    display: flex;
+    align-items: center;
+    padding: 16px 28px;
+    cursor: pointer;
+
+    & svg {
+      color: $paleSky;
+      fill: $paleSky;
+    }
+
+    &:hover {
+      background: $cornflowerBlueLight 0% 0% no-repeat padding-box;
+      border-left: 2px solid $cornflowerBlue;
+      padding-left: 26px;
+    }
+
+    &:hover svg {
+      color: $cornflowerBlue;
+      fill: $cornflowerBlue;
+    }
+
+    &__icon {
+      display: inline-flex;
+      min-width: 58px;
+    }
+
+    &__text {
+      flex: 1 1 auto;
+      min-width: 0;
+      color: $tuna;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    &:hover &__text {
+      color: $cornflowerBlue;
+    }
+  }
+
+  &-toggleList {
+    padding-left: 86px;
+
+    cursor: pointer;
+    color: $shuttleGray;
+    text-decoration: none;
+    letter-spacing: 0.25px;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+
+    &:hover {
+      font-family: "Montserrat SemiBold";
+      color: $cornflowerBlue;
+      letter-spacing: 0px;
+      border-left: 2px solid $cornflowerBlue;
+      padding-left: 84px;
+      background: $cornflowerBlueLight 0% 0% no-repeat padding-box;
+    }
+    &-selected {
+      color: $cornflowerBlue;
+      font-family: "Montserrat SemiBold";
+    }
+  }
+}
+
+.drawer {
+  @include scrollbars(10px, $dustyGray, $white);
+}

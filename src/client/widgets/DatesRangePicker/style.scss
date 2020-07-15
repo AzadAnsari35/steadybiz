@@ -1,0 +1,214 @@
+@import "./../../styles/variables";
+$root: ".DatesRangePicker";
+
+#{$root} {
+  height: 100%;
+  position: relative;
+  .DateRangePicker {
+    width: 100%;
+    height: 100%;
+    & > div {
+      height: 100%;
+    }
+    .DateRangePickerInput {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      .DateInput {
+        width: calc(50% - 4px);
+        height: 100%;
+        &_input {
+          height: 100%;
+          box-sizing: border-box;
+          border: 1px solid $gulfBlue1;
+          border-radius: 4px;
+          padding-left: 64px;
+          color: $black;
+          font-family: "Montserrat Medium";
+          font-size: 18px;
+          line-height: 22px;
+          cursor: pointer;
+          &::-webkit-input-placeholder {
+            color: $black;
+          }        
+          &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: $black;
+          }
+          &::placeholder {
+            color: $black;
+          }
+          &:focus {
+            outline: none;
+          }
+        }
+        &:first-of-type {
+          margin-right: 4px;
+        }
+        &:last-of-type {
+          margin-left: 4px;
+        }
+        &_fang {
+          display: none;
+        }
+      }
+      &_arrow {
+        display: none;
+      }
+      &_calendarIcon {
+        position: absolute;
+        z-index: 1;
+        display: flex;
+        &:focus {
+          outline: none;
+        }
+        svg {
+          opacity: 0.3;
+        }
+      }
+    }
+
+    &_picker {
+      .DayPicker {
+        width: 955px !important;
+        & > div > div {
+          width: 955px !important;
+        }
+        &__withBorder {
+          box-shadow: 0px 0px 6px $black1;
+          border-radius: 4px;
+        }
+        &_weekHeaders {
+          &__horizontal {
+            margin-left: 0;
+          }
+        }
+        &_weekHeader {
+          padding: 0 !important;
+          top: 100px;
+          left: 42px !important;
+          &_li {
+            width: 60px !important;
+            font-size: 20px;
+            line-height: 24px;
+            color: $black;
+            font-family: "Montserrat Medium";
+          }
+          &:last-of-type {
+            left: 492px !important;
+          }
+        }
+        .CalendarMonthGrid {
+          width: auto !important;
+          padding: 0 27px;
+          &__horizontal {
+            left: 0;
+          }
+          &_month {
+            &__horizontal {
+              width: 50%;
+              .CalendarMonth {
+                padding: 0 15px !important;
+              }
+            }
+          }
+        }
+        &_focusRegion {
+          .DayPickerNavigation {
+            &_button {
+              position: absolute;
+              top: 30px;
+              &:first-child {
+                left: 30px;
+              }
+              &:last-child {
+                right: 30px;
+              }
+            }
+          }
+          .CalendarMonthGrid {
+            &_month {
+              &__horizontal {
+                .CalendarMonth {
+                  &_caption {
+                    padding-top: 28px;
+                    font-family: "Montserrat SemiBold";
+                    font-size: 22px;
+                    padding-bottom: 100px;
+                  }
+                  &_table {
+                    tbody {
+                      tr {
+                        td {
+                          &.CalendarDay {
+                            border-top: 2px solid $white;
+                            border-bottom: 2px solid $white;
+                            border-right: none;
+                            border-left: none;
+                            font-size: 18px;
+                            line-height: 22px;
+                            border-radius: 6px;
+                            color: $black;
+                            outline: none;
+                            &__selected {
+                              background: $royalBlue;
+                              color: $white;
+                              &_span {
+                                border-radius: 0;
+                                background: $zircon;
+                              }
+                            }
+                            &__hovered {
+                              &_span {
+                                border-radius: 0;
+                                background: $zircon;
+                              }
+                            }
+                            &__blocked {
+                              &_out_of_range {
+                                color: $gray;
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        &_transitionContainer {
+          width: 955px !important;
+          height: 512px !important;
+        }
+        .RenderCalendarBottomInfo {
+          border-top: 1px solid $alto1;
+          padding: 32px 30px;
+          &-right {
+            .btn-link {
+              &:first-child {
+                margin-right: 15px;
+              }
+              &:last-child {
+                margin-left: 15px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  &-arrivalIcon {
+    position: absolute;
+    left: 50%;
+    top: 8px;
+    vertical-align: middle;
+    padding: 10px;
+    margin: 0 5px 0 10px;
+    svg {
+      opacity: 0.3;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+@import "../../../styles/variables";
+
+$root: ".Footer";
+
+#{$root} {
+  background-color: $white;
+  box-shadow: 0px -3px 6px #00000029;
+}

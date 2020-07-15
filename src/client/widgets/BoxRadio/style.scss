@@ -1,0 +1,42 @@
+@import "../../styles/variables.scss";
+
+$root: ".BoxRadio";
+
+#{$root} {
+  &-label {
+    cursor: pointer;
+    background-color: $white;
+    padding: 12px 28px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border: 1px solid $gulfBlue;
+  }
+
+  &-selected {
+    color: $white;
+    background-color: $gulfBlue;
+    &:before {
+      content: "";
+      display: block;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid;
+      color: $gulfBlue;
+      position: absolute;
+      left: 50%;
+      top: 39px;
+      transform: translate(-50%, 50%);
+    }
+
+    &.radio-selected {
+      color: $white;
+      background-color: $gulfBlue;
+    }
+  }
+  &-default-radio {
+    display: none;
+  }
+}

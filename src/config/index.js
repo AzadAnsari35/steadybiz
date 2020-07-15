@@ -1,14 +1,15 @@
 import dotenv from 'dotenv';
 dotenv.config();
 export default {
-    API: {
-    url : process.env.API_URL
+    api: {
+    url : process.env.API_URL,
+    travelndc_url:process.env.TRAVELNDC_API
     },
-    CLIENT:{
+    client:{
         app_host: process.env.APP_HOST,
-        port: process.env.PORTa
+        port: process.env.PORT
     },
-    MODE:{
-        environment :process.env.REACT_ENV
+    mode:{
+        environment :process.env.NODE_ENV
     }
 }

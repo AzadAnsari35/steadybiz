@@ -1,0 +1,9 @@
+@import "../../styles/variables.scss";
+
+$root: ".Text";
+
+#{$root} {
+  &.text-blue {
+    color: $biscay;
+  }
+}

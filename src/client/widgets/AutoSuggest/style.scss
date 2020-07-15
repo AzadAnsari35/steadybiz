@@ -1,0 +1,111 @@
+@import "./../../styles/variables";
+$root: ".AutoSuggest";
+
+#{$root} {
+  position: relative;
+  .MuiAutocomplete {
+    &-root {
+      &:focus {
+        outline: none;
+      }
+      .MuiFormControl-root {
+        &:focus {
+          outline: none;
+        }
+        .MuiInputBase-root {
+          &:focus {
+            outline: none;
+          }
+        }
+        .MuiInputLabel {
+          &-outlined {
+            transform: translate(66px, 20px) scale(1);
+            font-family: "Montserrat Medium";
+            font-size: 18px;
+            line-height: 22px;
+            color: inherit;
+            z-index: initial;
+          }
+          &-shrink {
+            display: none;
+          }
+        }
+      }
+      .MuiOutlinedInput {
+        &-root {
+          &:hover {
+            .MuiOutlinedInput-notchedOutline {
+              border-color: $gulfBlue1;
+            }
+          }
+          &.Mui-focused {
+            .MuiOutlinedInput-notchedOutline {
+              border-color: $gulfBlue1;
+              border-width: 1px;
+            }
+          }
+        }
+        &-notchedOutline {
+          border-color: $gulfBlue1;
+          top: 0;
+          &:focus {
+            outline: none;
+          }
+          legend {
+            display: none;
+          }
+        }
+      }
+    }
+    &-endAdornment {
+      display: none;
+    }
+    &-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child {
+      padding-left: 56px;
+    }
+    &-inputRoot[class*="MuiOutlinedInput-root"] {
+      padding: 11px;
+    }
+  }
+}
+
+.MuiAutocomplete-popper {
+  .MuiAutocomplete {
+    &-listbox {
+      padding: 0;
+    }
+    &-option {
+      border-radius: 4px;
+      margin: 1px;
+      padding: 14px 24px;
+      display: block;
+      &[data-focus="true"] {
+        background-color: $zircon;
+      }
+      .listItem {
+        &.nested {
+          padding-left: 36px;
+        }
+        &__left {
+          &-icon {
+            margin-right: 20px;
+          }
+          .top-text {
+            margin-bottom: 4px;
+          }
+          .bottom-text {
+            color: $gray;
+          }
+        }
+      }
+    }
+    &-paper {
+      box-shadow: 0px 0px 6px $black1;
+      margin-left: 1px;
+    }
+    &-noOptions {
+      font-family: "Montserrat Medium";
+    }
+  }
+}
+
