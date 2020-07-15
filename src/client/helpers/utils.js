@@ -9,28 +9,22 @@ export const isLogin = () => {
 export const isDevelopment = () => {
   return config.mode.environment !== "production";
 };
-export const showError = (exception,errorMessage)=>
-{
+export const showError = (exception, errorMessage) => {
   errorMessage(exception.message);
 };
 export const getItemFromLocalStorage = (key) => {
-	return localStorage.getItem(key);
+  return localStorage.getItem(key);
 };
-export const appendHeader =(endpoint) =>
-{
-  const token =getItemFromLocalStorage('userToken');
+export const appendHeader = (endpoint) => {
+  const token = getItemFromLocalStorage("userToken");
   return {
-    'Content-Type': 'application/json',
-    ...(endpoint.auth && { Authorization: `Bearer ${token}` })
+    "Content-Type": "application/json",
+    ...(endpoint.auth && { Authorization: `Bearer ${token}` }),
   };
-}
-export const checkError=(apiResponse) =>
-{
-  if (!apiResponse.items.success)
-  {
+};
+export const checkError = (apiResponse) => {
+  if (!apiResponse.items.status) {
     alert(apiResponse.items.error);
     return apiResponse.items.error.message;
-  }
-  else
-    return "";
-}
+  } else return "";
+};
