@@ -1,29 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import { Grid } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 
 import colors from "Constants/colors";
+import useToggle from "Client/hooks/useToggle";
 
-import FlightResults from "Components/Flights/Availability/FlightResults/index";
-import FlightSummary from "Components/Flights/Availability/FlightSummary/index";
-import SearchBar from "Components/Flights/SearchBar/index";
+import FlightResults from "Components/Flights/Availability/FlightResults";
+import FlightSummary from "Components/Flights/Availability/FlightSummary";
+import SearchBar from "Components/Flights/SearchBar";
 
-import Button from "Widgets/Button/index";
-import IconWithBackground from "Widgets/IconWithBackground/index";
-import Text from "Widgets/Text/index";
+import { Button, IconWithBackground, Text } from "Widgets";
 
 import "./style.scss";
 
 const Availability = () => {
-  const [showSearch, setShowSearch] = useState(true);
-  
-  const toggleModifySearch = () => {
-    setShowSearch(true);
-  };
-  
-  const handleCloseModifySearch = () => {
-    setShowSearch(false);
-  };
+  const [showSearch, setShowSearch] = useToggle(false);
 
   return (
     <div className="Availability">
@@ -31,12 +22,12 @@ const Availability = () => {
         {!showSearch ? 
           <div className="d-flex justify-content-between align-items-center">
             <FlightSummary />
-            <Button secondary text="Modify Search" onClick={toggleModifySearch} />
+            <Button secondary text="Modify Search" onClick={setShowSearch} />
           </div> :
           <div className="Availability-modifySearch__searchSection">
             <div className="d-flex justify-content-between">
               <Text className="modify-text font-primary-bold-20 text-uppercase" text="Modify your Search" />
-              <IconWithBackground showCursor bgColor={colors.red1} onClick={handleCloseModifySearch}>
+              <IconWithBackground showCursor bgColor={colors.red1} onClick={setShowSearch}>
                 <ClearIcon style={{ color: colors.red }} />
               </IconWithBackground>
             </div>

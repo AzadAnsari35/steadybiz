@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useHistory } from 'react-router-dom';
 import { Grid } from "@material-ui/core";
 import FlightIcon from "@material-ui/icons/Flight";
 
 import { displayImage } from "Helpers/utils";
 import colors from "Constants/colors";
+import useToggle from "Client/hooks/useToggle";
 
 import AutoSuggest from "Widgets/AutoSuggest/index";
 import Button from "Widgets/Button/index";
@@ -56,8 +56,7 @@ const directConnectOptions = [
 ];
 
 const SearchBar = () => {
-  const history = useHistory();
-  const [expandAdvanceSearch, setExpandAdvanceSearch] = useState(false);
+  const [expandAdvanceSearch, setExpandAdvanceSearch] = useToggle(false);
   const [
     isPassengerCountDropdownOpen,
     setIsPassengerCountDropdownOpen,
@@ -71,10 +70,6 @@ const SearchBar = () => {
 
   const handlePassengerCountDropdownClick = () => {
     setIsPassengerCountDropdownOpen(!isPassengerCountDropdownOpen);
-  };
-
-  const handleAdvanceSearchClick = () => {
-    setExpandAdvanceSearch(!expandAdvanceSearch);
   };
 
   return (
@@ -147,7 +142,7 @@ const SearchBar = () => {
                 <ExpandArrow
                   isHorizontal
                   expand={expandAdvanceSearch}
-                  onClick={handleAdvanceSearchClick}
+                  onClick={setExpandAdvanceSearch}
                 />
               </div>
               {expandAdvanceSearch && (

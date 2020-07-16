@@ -11,7 +11,7 @@ import {
 
 import { useForm } from 'react-hook-form';
 import { regex } from 'Helpers/validator';
-import useAsyncEndpoint from 'Client/hooks/useAsyncEndpoint';
+import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 // import useAPi from 'Hooks/useApi';
 // import endpoint from 'Config/endpoint';
 import './style.scss';

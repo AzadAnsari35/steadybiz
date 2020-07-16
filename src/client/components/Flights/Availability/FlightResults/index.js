@@ -1,6 +1,6 @@
 import React from "react";
 
-import FlightItineraryCard from "../FlightItineraryCard/index";
+import FlightItineraryCard from "Components/Flights/Availability/FlightItineraryCard";
 
 const FlightResults = () => {
   return (

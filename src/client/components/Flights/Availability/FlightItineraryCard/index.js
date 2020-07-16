@@ -5,14 +5,10 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import ShareIcon from '@material-ui/icons/Share';
 
 import colors from "Constants/colors";
+import useToggle from "Client/hooks/useToggle";
 
-import FlightDetails from "./../FlightDetails/index";
-import ArrowIcon from "Widgets/Icons/ArrowIcon";
-import Button from "Widgets/Button/index";
-import Dot from "Widgets/Dot/index";
-import Line from "Widgets/Line/index";
-import Tag from "Widgets/Tag/index";
-import Text from "Widgets/Text/index";
+import FlightDetails from "Components/Flights/Availability/FlightDetails";
+import { ArrowIcon, Button, Dot, Line, Tag, Text } from "Widgets";
 
 import "./style.scss";
 
@@ -32,13 +28,9 @@ const flightDetailsTabs = [
 ];
 
 const FlightItineraryCard = () => {
-  const [showTabSection, setShowTabSection] = useState(false);
   const [activeFlightTab, setActiveFlightTab] = useState("flightDetails");
+  const [showTabSection, setShowTabSection] = useToggle(false);
   const isRefundable = true;
-
-  const toggleFlightDetails = () => {
-    setShowTabSection(!showTabSection);
-  }
 
   const handleTabClick = id => {
     setActiveFlightTab(id);
@@ -151,7 +143,7 @@ const FlightItineraryCard = () => {
               <ShareIcon />
               <Text className="font-primary-medium-14" text="Quote" />
             </div>
-            <div className="d-flex align-items-center cursor-pointer" onClick={toggleFlightDetails}>
+            <div className="d-flex align-items-center cursor-pointer" onClick={setShowTabSection}>
               <Text className="font-primary-medium-14" text="Flight Details" />
               <ArrowIcon size={12} color={colors.gray} orientation={90} />
             </div>

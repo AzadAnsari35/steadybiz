@@ -15,6 +15,12 @@ import Text from "./Text";
 import MultiSelect from "./MultiSelect";
 import Panel from "./Panel";
 import PrimaryLoader from "./PrimaryLoader";
+import ArrowIcon from "./Icons/ArrowIcon";
+import Dot from "./Dot";
+import Line from "./Line";
+import Tag from "./Tag";
+import IconWithBackground from "./IconWithBackground";
+
 export {
   Avatar,
   TextInput,
@@ -33,4 +39,9 @@ export {
   Toast,
   Text,
   PrimaryLoader,
+  ArrowIcon,
+  Dot,
+  Line,
+  Tag,
+  IconWithBackground,
 };

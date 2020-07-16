@@ -12,7 +12,7 @@ import React from "react";
 // import { getCabinClassName } from "Helpers/flight.helpers";
 import { displayImage } from "Helpers/utils";
 
-import Text from "Widgets/Text/index";
+import { Text } from "Widgets";
 
 import "./style.scss";
 
