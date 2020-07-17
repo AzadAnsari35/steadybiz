@@ -124,7 +124,9 @@ const FlightItineraryCard = () => {
               <Text className="font-primary-semibold-13" text="2 seats left!" />
               <Tag text={!!isRefundable ? "Refundable" : "Non Refundable"} isSuccess={!!isRefundable} />
             </div>
-            <div className="FlightItineraryCard-top__rightSection-priceSelectFlight">
+            <div
+              className="FlightItineraryCard-top__rightSection-priceSelectFlight d-flex flex-direction-column justify-content-end"
+            >
               <div className="price d-flex">
                 <RefreshIcon />
                 <Text className="font-primary-bold-20" text="AED 10,380" />

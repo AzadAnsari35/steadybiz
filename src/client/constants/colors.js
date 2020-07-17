@@ -18,6 +18,7 @@ const colors = {
   codGray1: "#111",
   cornflowerBlue: "#4285F4",
   cornflowerBlueLight: "#4285f421",
+  $crete: "#4B7D2F",
   doveGray: "#707070",
   dustyGray: "#979797",
   gallery: "#EAEAEA",

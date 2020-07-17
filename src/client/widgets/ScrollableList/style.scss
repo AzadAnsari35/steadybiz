@@ -1,0 +1,49 @@
+@import "./../../styles/variables";
+$root: ".ScrollableList";
+
+#{$root} {
+  .MuiAppBar-root {
+    width: calc(100% - 28px);
+    position: relative;
+    .MuiTabs-root {
+      padding: 12px 44px;
+      .MuiTabScrollButton {
+        &-root {
+          position: absolute;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          background-color: $athensGray;
+          box-shadow: 0px 0px 6px $black1;
+          &.Mui-disabled {
+            opacity: 1;
+            .MuiSvgIcon-root {
+              opacity: 0.4;
+            }
+            &.MuiButtonBase-root {
+              cursor: not-allowed;
+            }
+          }
+          &:first-of-type {
+            left: -14px;
+            top: 20px;
+          }
+          &:last-of-type {
+            right: -14px;
+            top: 20px;
+          }
+        }
+      }
+    }
+  }
+  .airline-container {
+    padding: 0 50px;
+    &:first-child {
+      padding-left: 0;
+    }
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+}
+// athensGray

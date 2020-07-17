@@ -380,7 +380,7 @@ const AirlineText = (props) => {
     <Text
       className="airline-text font-primary-regular-16"
       style={{
-        borderRight: !!showBorder ? `1px solid ${colors.$codGray}` : "none",
+        borderRight: !!showBorder ? `1px solid ${colors.gray}` : "none",
         paddingLeft: !!leftPadding ? "8px" : "0",
         minHeight: minHeight,
       }}
@@ -460,7 +460,7 @@ const FlightSegmentGroup = (props) => {
             {segmentGroupArray && index !== 0 && (
               <Text
                 className="font-primary-regular-14 pl-8"
-                style={{ borderLeft: `1px solid ${colors.$codGray}` }}
+                style={{ borderLeft: `1px solid ${colors.gray}` }}
                 text={changeDateFormat(
                   segmentGroupArray[index].departureDetails.date
                 )}
@@ -470,10 +470,11 @@ const FlightSegmentGroup = (props) => {
         </div>
         <div className="FlightSegmentGroup-right__flightInformation">
           <div className="flight-info d-flex align-items-center">
-            <img
+            {/* <img
               src=""
               className="airline-icon"
-            />
+            /> */}
+            <FlightIcon className="airline-icon" style={{ transform: "rotate(90deg)" }} />
             <AirlineText
               showBorder
               text="United Airline"
@@ -587,7 +588,7 @@ const FlightSegmentGroup = (props) => {
             {segmentGroupArray && segmentGroupArray.length - 1 !== index && (
               <Text
                 className="font-primary-regular-14 pl-8"
-                style={{ borderLeft: `1px solid ${colors.$codGray}` }}
+                style={{ borderLeft: `1px solid ${colors.gray}` }}
                 text={changeDateFormat(
                   segmentGroupArray[index].arrivalDetails.date
                 )}
@@ -612,7 +613,7 @@ const FlightSegment = (props) => {
             className="font-primary-medium-16"
             text={itinerary[0].flightSegmentGroup[0].departureDetails.cityName}
           />
-          <FlightIcon style={{ transform: "rotate(180deg)" }} />
+          <FlightIcon style={{ transform: "rotate(90deg)" }} />
           <Text
             className="font-primary-medium-16"
             text={
@@ -620,19 +621,19 @@ const FlightSegment = (props) => {
             }
           />
         </Chip>
-        <div className="FlightSegment-content d-flex flex-direction-column">
+        <div
+          className="FlightSegment-content d-flex flex-direction-column"
+          style={{
+            borderRight: isInboundFound ? `1px solid ${colors.alto}` : "none",
+          }}
+        >
           <Text
             className="FlightSegment-content__date font-primary-bold-18"
             text={`Depart: ${changeDateFormat(
               itinerary[0].flightSegmentGroup[0].departureDetails.date
             )}`}
           />
-          <div
-            className="FlightSegment-content__segmentGroup"
-            style={{
-              borderRight: isInboundFound ? `1px solid ${colors.alto}` : "none",
-            }}
-          >
+          <div className="FlightSegment-content__segmentGroup">
             {itinerary[0].flightSegmentGroup.map((item, index, arr) => (
               <Fragment key={index}>
                 <FlightSegmentGroup

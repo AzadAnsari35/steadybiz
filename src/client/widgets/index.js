@@ -20,6 +20,14 @@ import Dot from "./Dot";
 import Line from "./Line";
 import Tag from "./Tag";
 import IconWithBackground from "./IconWithBackground";
+import LinearLoader from "./LinearLoader";
+import ScrollableList from "./ScrollableList";
+import AutoSuggest from "./AutoSuggest";
+import CustomCheckbox from "./CustomCheckbox";
+import Link from "./Link";
+import PrimaryAccordion from "./PrimaryAccordion";
+import RangeSlider from "./RangeSlider";
+import SwitchTab from "./SwitchTab";
 
 export {
   Avatar,
@@ -44,4 +52,12 @@ export {
   Line,
   Tag,
   IconWithBackground,
+  LinearLoader,
+  ScrollableList,
+  AutoSuggest,
+  CustomCheckbox,
+  Link,
+  PrimaryAccordion,
+  RangeSlider,
+  SwitchTab,
 };

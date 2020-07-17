@@ -1,0 +1,14 @@
+@import "./../../styles/variables";
+$root: ".SwitchTab";
+
+#{$root} {
+  height: 40px;
+  border: 1px solid $biscay;
+  &-tab {
+    width: 50%;
+    &.active {
+      background-color: $biscay;
+      color: $white;
+    }
+  }
+}

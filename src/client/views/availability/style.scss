@@ -17,9 +17,51 @@ $root: ".Availability";
     }
   }
   &-mainSection {
-    padding-top: 20px;
+    padding: 24px 140px 154px;
+    &__lowestFareFlightsSection {
+      .ScrollableList {
+        height: 70px;
+        margin-bottom: 20px;
+        .MuiAppBar {
+          &-root {
+            background-color: $white;
+            box-shadow: none;
+          }
+        }
+      }
+    }
     &__resultsContainer {
-      padding: 18px 140px;
+      .info-sort-section {
+        margin-bottom: 12px;
+        .sort {
+          &-reverse {
+            &.MuiSvgIcon-root {
+              color: $black;
+              margin-right: 20px;
+            }
+          }
+          .MultiSelect {
+            .react-select-container {
+              .react-select {
+                &__control {
+                  background-color: transparent;
+                }
+                &__single-value {
+                  color: $royalBlue;
+                }
+                &__indicators {
+                  .MuiSvgIcon-root {
+                    color: $royalBlue !important;
+                  }
+                }
+                &__menu {
+                  right: 0;
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
