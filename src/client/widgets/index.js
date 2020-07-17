@@ -16,6 +16,8 @@ import MultiSelect from './MultiSelect';
 import Panel from './Panel';
 import TextWithTextInput from './TextWithTextInput';
 import IconWithBackground from './IconWithBackground';
+import PrimaryLoader from './PrimaryLoader';
+
 export {
   Avatar,
   TextInput,
@@ -35,4 +37,5 @@ export {
   Text,
   TextWithTextInput,
   IconWithBackground,
+  PrimaryLoader,
 };
