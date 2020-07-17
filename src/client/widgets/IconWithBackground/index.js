@@ -3,15 +3,7 @@ import React from 'react';
 import './style.scss';
 
 const IconWithBackground = (props) => {
-  const {
-    bgColor,
-    children,
-    className,
-    iconAltText,
-    iconPath,
-    showCursor,
-    onClick,
-  } = props;
+  const { bgColor, children, className, showCursor, ...rest } = props;
 
   return (
     <div
@@ -19,7 +11,7 @@ const IconWithBackground = (props) => {
         !!showCursor ? 'cursor-pointer' : ''
       } ${!!className ? className : ''}`}
       style={{ backgroundColor: bgColor }}
-      onClick={onClick}
+      {...rest}
     >
       {children}
     </div>
