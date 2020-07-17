@@ -10,15 +10,21 @@ import {
 } from 'Widgets';
 
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import { regex } from 'Helpers/validator';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
+import useDropDown from 'Hooks/useDropDown';
 // import useAPi from 'Hooks/useApi';
 // import endpoint from 'Config/endpoint';
 import './style.scss';
 import endpoint from 'Config/endpoint';
-
-const todosApi = 'https://jsonplaceholder.typicode.com/todos';
-
+import commonAction from 'Actions/';
+const regEndpoint = () => {
+  return useAsyncEndpoint((data) => ({
+    _endpoint: endpoint.user.login,
+    data,
+  }));
+};
 const OfficeRegistrationForm = () => {
   const {
     register,
@@ -28,19 +34,16 @@ const OfficeRegistrationForm = () => {
     setValue,
     watch,
   } = useForm();
-
   const [regResponse, postRegResponse] = regEndpoint();
+
+  const countryDropDownList = useDropDown(
+    endpoint.master.countries,
+    'masterCountries'
+  );
 
   useEffect(() => {
     setValue('settlementOptions', 'advanceDeposit');
   }, []);
-
-  const regEndpoint = () => {
-    return useAsyncEndpoint((data) => ({
-      _endpoint: endpoint.user.login,
-      data,
-    }));
-  };
 
   const onSubmit = (data, e) => {
     console.log('data', data);
@@ -69,10 +72,7 @@ const OfficeRegistrationForm = () => {
             <SelectWithTextInput
               name="firstName"
               selectInputName="title"
-              data={[
-                { label: 'Mr', value: 'mr' },
-                { label: 'Mrs', value: 'mrs' },
-              ]}
+              data={countryDropDownList.dropDownItems}
               label="First Name"
               placeholder="First Name"
               selectPlaceholder="Title"
@@ -98,6 +98,7 @@ const OfficeRegistrationForm = () => {
               errors={errors}
               placeholder="Last Name"
               label="Last Name"
+              value="abc"
               // validation={{
               //   required: 'Please enter the last name.',
               //   minLength: {
