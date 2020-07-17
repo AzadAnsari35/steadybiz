@@ -46,6 +46,8 @@ export {
   SelectWithTextInput,
   Toast,
   Text,
+  TextWithTextInput,
+  IconWithBackground,
   PrimaryLoader,
   ArrowIcon,
   Dot,

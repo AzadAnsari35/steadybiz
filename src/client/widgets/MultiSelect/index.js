@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import Select, { components } from "react-select";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import CheckIcon from "@material-ui/icons/Check";
-import { Controller } from "react-hook-form";
+import React, { useState, useEffect } from 'react';
+import Select, { components } from 'react-select';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import CheckIcon from '@material-ui/icons/Check';
+import { Controller } from 'react-hook-form';
 
-import colors from "Constants/colors";
+import colors from 'Constants/colors';
 
 import Text from "Widgets/Text/index";
 
@@ -53,10 +53,10 @@ const MultiSelect = (props) => {
     labelKey = "label",
     isOptionUppercase = false,
     options,
-    placeholder = "Select",
+    placeholder = 'Select',
     showValue = false,
-    valueKey = "value",
-    width = "90",
+    valueKey = 'value',
+    width = '90',
     className,
     name,
     changeStyle,
@@ -64,6 +64,7 @@ const MultiSelect = (props) => {
     control,
     errors = {},
     validation,
+    disabled,
   } = props;
   // const [selectedOption, setSelectedOption] = useState(null);
 
@@ -79,11 +80,11 @@ const MultiSelect = (props) => {
       <Controller
         render={(props) => (
           <div
-            className={`MultiSelect ${className ? className : ""} ${
-              changeStyle ? `MultiSelect-customStyle` : ""
-            }  ${showBorder ? `MultiSelect-showBorder` : ""} ${
-              errors[name] ? `thin-red-border` : ""
-            } `}
+            className={`MultiSelect ${className ? className : ''} ${
+              changeStyle ? `MultiSelect-customStyle` : ''
+            }  ${showBorder ? `MultiSelect-showBorder` : ''} ${
+              errors[name] ? `thin-red-border` : ''
+            } ${disabled ? 'input-disabled border-none py-10' : ''}`}
             style={{ width: `${width}px` }}
           >
             <Select
@@ -106,6 +107,8 @@ const MultiSelect = (props) => {
               }
               getOptionValue={(option) => option[valueKey]}
               options={options}
+              isDisabled={disabled}
+              // menuIsOpen={true}
               {...props}
             />
           </div>
