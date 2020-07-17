@@ -1,0 +1,29 @@
+@import '../../../styles/variables';
+
+$root: '.PrimaryTableHeader';
+
+#{$root} {
+  &-officeName {
+    max-width: 180px;
+    height: 22px;
+    text-align: center;
+  }
+
+  &-officeDisplayId {
+    max-width: 100px;
+    height: 20px;
+    text-align: left;
+    color: $black4;
+    opacity: 1;
+    margin-left: 8px;
+  }
+
+  &-level {
+    max-width: 172px;
+    max-height: 22px;
+    text-align: right;
+    letter-spacing: 0px;
+    color: $gulfBlue;
+    opacity: 1;
+  }
+}

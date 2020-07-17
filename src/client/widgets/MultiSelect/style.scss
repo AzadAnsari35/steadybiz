@@ -1,12 +1,12 @@
-@import "./../../styles/variables";
-$root: ".MultiSelect";
+@import './../../styles/variables';
+$root: '.MultiSelect';
 
 #{$root} {
   min-width: 90px;
   position: relative;
   &-customStyle {
     .react-select-container {
-      font-family: "Montserrat SemiBold" !important;
+      font-family: 'Montserrat SemiBold' !important;
       font-size: 16px !important;
       line-height: 25px !important;
     }
@@ -15,7 +15,7 @@ $root: ".MultiSelect";
     }
     .react-select__menu {
       margin-top: 12px !important;
-      width: calc(100% + 40px) !important;
+      width: calc(100% + 42px) !important;
       margin-left: -20px !important;
     }
   }
@@ -28,7 +28,7 @@ $root: ".MultiSelect";
 
   .react-select {
     &-container {
-      font-family: "Montserrat Medium";
+      font-family: 'Montserrat Medium';
       font-size: 14px;
       line-height: 18px;
       &:focus {
@@ -44,6 +44,9 @@ $root: ".MultiSelect";
         border: none;
         box-shadow: none;
       }
+      &--is-disabled {
+        background: none;
+      }
     }
     &__value-container {
       padding: 0;
@@ -53,7 +56,7 @@ $root: ".MultiSelect";
       &--is-multi {
         span {
           &::after {
-            content: ",";
+            content: ',';
           }
           &:last-of-type {
             &::after {

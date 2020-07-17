@@ -1,0 +1,58 @@
+@import '../../styles/variables.scss';
+
+$root: '.TextWithTextInput';
+
+#{$root} {
+  &-label {
+    margin-bottom: 8px;
+  }
+
+  &-container {
+    position: relative;
+
+    &-input1 {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      padding: 0px 20px;
+      width: calc(30% - 40px);
+      input[type='text'] {
+        border: none;
+        width: 100%;
+        height: calc(40px - 2px);
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      &:after {
+        content: '';
+        background-color: #00000080;
+        height: 17px;
+        width: 1px;
+        position: absolute;
+        top: 12px;
+        right: 14px;
+        left: auto;
+        transform: none;
+        transition: none;
+        border-bottom: none;
+      }
+    }
+
+    &-input2 {
+      box-sizing: border-box;
+      margin: 0;
+      width: 100%;
+      border: 1px solid $black5;
+      border-radius: 4px;
+      height: 44px;
+      padding: 0 20px 0 200px;
+      padding-left: 30%;
+      &::placeholder {
+        color: #00000080;
+      }
+    }
+  }
+}
