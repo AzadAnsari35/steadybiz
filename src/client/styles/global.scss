@@ -1,9 +1,9 @@
-@import "./variables.scss";
-@import "./_fonts.scss";
+@import './variables.scss';
+@import './_fonts.scss';
 
 body {
   background-color: $athensGray;
-  font-family: "Montserrat Regular";
+  font-family: 'Montserrat Regular';
   margin: 0;
 }
 
@@ -22,6 +22,10 @@ p {
 
 .d-flex {
   display: flex;
+}
+
+.d-grid {
+  display: grid;
 }
 
 // Flex directions
@@ -79,19 +83,19 @@ p {
 
 // Font families
 .font-primary-regular {
-  font-family: "Montserrat Regular";
+  font-family: 'Montserrat Regular';
 }
 
 .font-primary-medium {
-  font-family: "Montserrat Medium";
+  font-family: 'Montserrat Medium';
 }
 
 .font-primary-semibold {
-  font-family: "Montserrat SemiBold";
+  font-family: 'Montserrat SemiBold';
 }
 
 .font-primary-bold {
-  font-family: "Montserrat Bold";
+  font-family: 'Montserrat Bold';
 }
 
 // Fonts with basic properties
@@ -323,6 +327,10 @@ p {
   border-left: 1px solid $mercury;
 }
 
+.border-none {
+  border: none;
+}
+
 // Cursors
 .cursor-pointer {
   cursor: pointer;
@@ -350,6 +358,10 @@ p {
 */
 
 /* Padding Vertical */
+.py-10 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 .py-12 {
   padding-top: 12px;
   padding-bottom: 12px;
@@ -371,6 +383,12 @@ p {
   padding-top: 20px;
 }
 
+.pt-24 {
+  padding-top: 24px;
+}
+.pt-32 {
+  padding-top: 32px;
+}
 .pt-36 {
   padding-top: 36px;
 }
@@ -386,6 +404,9 @@ p {
 
 .px-40 {
   padding: 0 40px;
+}
+.px-48 {
+  padding: 0 48px;
 }
 
 // Padding right
@@ -429,6 +450,10 @@ p {
 
 .pb-24 {
   padding-bottom: 24px;
+}
+
+.pb-28 {
+  padding-bottom: 28px;
 }
 
 .pb-30 {
@@ -484,9 +509,21 @@ p {
   margin: 8px 0px;
 }
 
+.my-24 {
+  margin: 24px 0px;
+}
+
 //Margin top
 .mt-6 {
   margin-top: 6px;
+}
+
+.mt-24 {
+  margin-top: 24px;
+}
+
+.mt-30 {
+  margin-top: 30px;
 }
 .mt-32 {
   margin-top: 32px;
@@ -508,6 +545,10 @@ p {
 
 .mr-14 {
   margin-right: 14px;
+}
+
+.mr-20 {
+  margin-right: 20px;
 }
 
 .mr-24 {
@@ -626,7 +667,8 @@ p {
 }
 
 .input-disabled {
-  background-color: $wildSand;
+  background-color: $mercury1;
+  color: $black5;
 }
 
 .error-message {

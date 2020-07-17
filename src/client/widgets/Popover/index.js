@@ -1,8 +1,20 @@
-import React from "react";
-import Popover from "@material-ui/core/Popover";
+import React from 'react';
+import Popover from '@material-ui/core/Popover';
 
 const SimplePopover = (props) => {
-  const { handleClose, anchorEl, children } = props;
+  const {
+    handleClose,
+    anchorEl,
+    anchorOrigin = {
+      vertical: 'bottom',
+      horizontal: 'center',
+    },
+    transformOrigin = {
+      vertical: 'top',
+      horizontal: 'center',
+    },
+    children,
+  } = props;
 
   const showPopover = Boolean(anchorEl);
 
@@ -11,14 +23,8 @@ const SimplePopover = (props) => {
       open={showPopover}
       anchorEl={anchorEl}
       onClose={handleClose}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "center",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "center",
-      }}
+      transformOrigin={transformOrigin}
+      anchorOrigin={anchorOrigin}
     >
       {children}
     </Popover>

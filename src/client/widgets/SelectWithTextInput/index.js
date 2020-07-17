@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { InputLabel } from "@material-ui/core";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import "../../styles/_variables.scss";
-import RootRef from "@material-ui/core/RootRef";
-import { Controller } from "react-hook-form";
-import MultiSelect from "Widgets/MultiSelect";
-import Select, { components } from "react-select";
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { InputLabel } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import '../../styles/_variables.scss';
+import RootRef from '@material-ui/core/RootRef';
+import { Controller } from 'react-hook-form';
+import MultiSelect from 'Widgets/MultiSelect';
+import Select, { components } from 'react-select';
 
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import Text from "Widgets/Text";
+import Text from 'Widgets/Text';
 
-import "./style.scss";
+import './style.scss';
 
 const SelectWithTextInput = (props) => {
   const {
@@ -22,11 +22,11 @@ const SelectWithTextInput = (props) => {
     className,
     data,
     icon,
-    type = "text",
+    type = 'text',
     label,
-    placeholder = "",
-    selectPlaceholder = "",
-    initialSelectedValue = "",
+    placeholder = '',
+    selectPlaceholder = '',
+    initialSelectedValue = '',
     value,
     disabled,
     onFocus,
@@ -38,20 +38,6 @@ const SelectWithTextInput = (props) => {
     control,
     showValue,
   } = props;
-  const [selectedOption, setSelectedOption] = useState(initialSelectedValue);
-  const [open, setOpen] = useState(false);
-
-  const handleFocus = (key) => {
-    onFocus(key);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
 
   return (
     <div className="SelectWithTextInput">
@@ -63,7 +49,9 @@ const SelectWithTextInput = (props) => {
       )}
       <div className="SelectWithTextInput-container">
         <MultiSelect
-          className="SelectWithTextInput-container-select"
+          className={`SelectWithTextInput-container-select  ${
+            disabled ? 'input-disabled' : ''
+          }`}
           name={selectInputName}
           options={data}
           placeholder={selectPlaceholder}
@@ -73,13 +61,14 @@ const SelectWithTextInput = (props) => {
           showBorder={false}
           initialValue={initialSelectedValue}
           showValue={showValue}
+          disabled={disabled}
         />
 
         <input
           name={name}
           className={`SelectWithTextInput-container-input font-primary-semibold-16 ${
-            errors[name] || errors[selectInputName] ? "thin-red-border" : ""
-          }  `}
+            errors[name] || errors[selectInputName] ? 'thin-red-border' : ''
+          }  ${disabled ? 'input-disabled border-none' : ''}  `}
           type={type}
           disabled={disabled}
           placeholder={placeholder}
@@ -94,7 +83,7 @@ const SelectWithTextInput = (props) => {
             {errors[selectInputName].message}
           </p>
         ) : (
-          ""
+          ''
         )}
       </div>
     </div>
