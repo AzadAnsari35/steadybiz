@@ -1,0 +1,141 @@
+@import "./../../../../styles/variables";
+
+$root: ".FlightDetails";
+
+#{$root} {
+  padding-top: 32px;
+  &-segment {
+    background: $mystic;
+    padding: 8px 24px;
+    align-items: center;
+    border-radius: 6px;
+    width: auto;
+    svg {
+      margin: 0 8px;
+    }
+  }
+  &-content {
+    width: 100%;
+    &__date {
+      margin: 24px 0px 24px 144px;
+    }
+    &__segmentGroup {
+      display: inline-block;
+      margin-left: 52px;
+    }
+  }
+  // Flight Segment
+  .FlightSegment {
+    &-segment {
+      align-items: center;
+      background: $mystic;
+      padding: 8px 24px;
+      border-radius: 6px;
+      width: auto;
+      margin-left: 144px;
+      svg {
+        margin: 0 8px;
+      }
+    }
+    &-content {
+      width: 100%;
+      &__date {
+        display: flex;
+        margin: 24px 0px 24px 144px;
+      }
+      &__segmentGroup {
+        display: inline-block;
+        margin-left: 52px;
+      }
+    }
+  }
+  // Flight Segment Group
+  .FlightSegmentGroup {
+    &-left {
+      > div {
+        width: 48px;
+      }
+    }
+    &-middle {
+      margin: 0 12px 20px 12px;
+      > svg {
+        margin-bottom: 2px;
+      }
+      &__dotContainer {
+        height: 20px;
+        width: 20px;
+      }
+    }
+    &-right {
+      &__flightInformation {
+        margin: 24px 0;
+        margin-bottom: 0;
+        .flight-info {
+          padding: 2px 0;
+          .airline-icon {
+            width: 18px;
+            margin-right: 8px;
+          }
+          .airline-text {
+            padding-right: 8px;
+            line-height: normal;
+          }
+        }
+      }
+    }
+  }
+  // Flight Layover
+  .FlightLayover {
+    > div {
+      margin: -20px 20px 0 69px;
+    }
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  #{$root} {
+    &-content {
+      width: 100%;
+      &__date {
+        display: flex;
+        margin: 24px auto;
+      }
+      &__segmentGroup {
+        margin-left: 8px;
+      }
+    }
+    // Flight Segment
+    .FlightSegment {
+      &-segment {
+        margin: 0 auto;
+      }
+      &-content {
+        &__date {
+          margin: 24px auto;
+        }
+        &__segmentGroup {
+          margin-left: 0;
+        }
+      }
+    }
+    // Flight Segment Group
+    .FlightSegmentGroup {
+      &-middle {
+        margin: 0 6px 20px 6px;
+      }
+      &-right {
+        &__flightInformation {
+          margin: 12px 0;
+          .flight-info {
+            .airline-icon {
+              margin-right: 4px;
+            }
+            .airline-text {
+              padding-right: 4px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

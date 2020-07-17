@@ -1,0 +1,8 @@
+@import "./../../styles/variables";
+$root: ".Line";
+
+#{$root} {
+  flex: 1;
+  background-color: $gray;
+  height: 2px;
+}

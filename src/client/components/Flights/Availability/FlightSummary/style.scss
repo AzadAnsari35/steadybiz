@@ -1,0 +1,39 @@
+$root: ".FlightSummary";
+
+#{$root} {
+  .segments {
+    .segment {
+      padding: 0 16px;
+    }
+    img {
+      // position: absolute;
+      // left: 33%;
+      margin: 0 16px;
+    }
+  }
+  .dates, .other-details {
+    padding: 0 16px;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  #{$root} {
+    width: 100%;
+    flex-direction: column;
+    .segments, .dates {
+      border: none;
+    }
+    .segments {
+      justify-content: space-between;
+      .segment {
+        padding: 0;
+      }
+      img {
+        position: initial;
+      }
+    }
+    .dates, .other-details {
+      padding: 0;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+@import "./../../styles/variables";
+$root: '.Tag';
+
+#{$root} {
+  position: absolute;
+  padding: 4px 10px;
+  &.green {
+    background-color: $tara;
+    color: $sushi;
+  }
+  &.red {
+    background-color: $pippin;
+    color: $red;
+  }
+}

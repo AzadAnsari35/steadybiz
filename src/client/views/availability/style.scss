@@ -1,0 +1,25 @@
+@import "./../../styles/variables";
+$root: ".Availability";
+
+#{$root} {
+  &-modifySearch {
+    box-shadow: 0px 2px 2px $black1;
+    padding: 18px 140px;
+    background-color: $white;
+    .FlightSummary {
+      .segments {
+        .segment {
+          &:first-child {
+            padding-left: 0;
+          }
+        }
+      }
+    }
+  }
+  &-mainSection {
+    padding-top: 20px;
+    &__resultsContainer {
+      padding: 18px 140px;
+    }
+  }
+}

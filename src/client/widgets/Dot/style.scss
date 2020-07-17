@@ -1,0 +1,9 @@
+@import "./../../styles/variables";
+$root: ".Dot";
+
+#{$root} {
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 2px solid;
+  border-color: $gray;
+}
