@@ -28,6 +28,7 @@ import Link from "./Link";
 import PrimaryAccordion from "./PrimaryAccordion";
 import RangeSlider from "./RangeSlider";
 import SwitchTab from "./SwitchTab";
+import TextWithTextInput from "./TextWithTextInput";
 
 export {
   Avatar,
@@ -53,7 +54,6 @@ export {
   Dot,
   Line,
   Tag,
-  IconWithBackground,
   LinearLoader,
   ScrollableList,
   AutoSuggest,
