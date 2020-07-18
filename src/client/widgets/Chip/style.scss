@@ -1,0 +1,13 @@
+@import "./../../styles/global.scss";
+
+$root: ".Chip";
+
+#{$root} {
+  border-radius: 6px;
+  padding: 8px 24px;
+
+  &.bordered {
+    border: 1px solid $doveGray;
+    padding: 6px 16px;
+  }
+}

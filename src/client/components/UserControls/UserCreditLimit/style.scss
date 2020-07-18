@@ -1,6 +1,6 @@
-@import "../../../styles/variables";
+@import '../../../styles/variables';
 
-$root: ".HeaderPopover";
+$root: '.HeaderPopover';
 
 #{$root} {
   &-head {
@@ -9,11 +9,6 @@ $root: ".HeaderPopover";
     padding-right: 70px;
     background-color: $mystic;
     align-items: center;
-
-    .HeaderPopover-head-avatar {
-      width: 60px;
-      height: 60px;
-    }
 
     &__detail {
       &-name {

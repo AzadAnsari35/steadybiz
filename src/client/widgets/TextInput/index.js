@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 
-import "./style.scss";
+import './style.scss';
 
 const TextInput = (props) => {
   const {
     name,
-    classes = { root: "", input: "" },
-    type = "text",
+    classes = { root: '', input: '' },
+    type = 'text',
     label,
-    placeholder = "",
+    placeholder = '',
     disabled,
     errors,
     register,
@@ -16,15 +16,15 @@ const TextInput = (props) => {
   } = props;
 
   return (
-    <div className={`TextInput ${classes.root ? classes.root : ""}`}>
+    <div className={`TextInput ${classes.root ? classes.root : ''} `}>
       {!!label && (
         <p className="TextInput-label font-primary-medium-16 mb-8">{label}</p>
       )}
       <input
         name={name}
         className={`TextInput-input font-primary-semibold-16 ${
-          errors[name] ? "thin-red-border" : ""
-        }  `}
+          errors[name] ? 'thin-red-border' : ''
+        } ${disabled ? 'input-disabled border-none py-10' : ''}  `}
         type={type}
         disabled={disabled}
         placeholder={placeholder}

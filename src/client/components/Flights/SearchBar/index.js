@@ -4,6 +4,7 @@ import FlightIcon from "@material-ui/icons/Flight";
 
 import { displayImage } from "Helpers/utils";
 import colors from "Constants/colors";
+import useToggle from "Client/hooks/useToggle";
 
 import AutoSuggest from "Widgets/AutoSuggest/index";
 import Button from "Widgets/Button/index";
@@ -55,7 +56,7 @@ const directConnectOptions = [
 ];
 
 const SearchBar = () => {
-  const [expandAdvanceSearch, setExpandAdvanceSearch] = useState(false);
+  const [expandAdvanceSearch, setExpandAdvanceSearch] = useToggle(false);
   const [
     isPassengerCountDropdownOpen,
     setIsPassengerCountDropdownOpen,
@@ -71,133 +72,127 @@ const SearchBar = () => {
     setIsPassengerCountDropdownOpen(!isPassengerCountDropdownOpen);
   };
 
-  const handleAdvanceSearchClick = () => {
-    setExpandAdvanceSearch(!expandAdvanceSearch);
-  };
-
   return (
     <div className="SearchBar">
-      <div className="SearchBar-panel">
-        <div className="SearchBar-panel__basicSearch d-flex">
-          <MultiSelect
-            labelKey="segmentLabel"
-            options={segmentTypes}
-            valueKey="segmentValue"
-            control={control}
-            name="segmentTypes"
+      <div className="SearchBar-basicSearch d-flex">
+        <MultiSelect
+          labelKey="segmentLabel"
+          options={segmentTypes}
+          valueKey="segmentValue"
+          control={control}
+          name="segmentTypes"
+        />
+        <MultiSelect
+          options={tripTypes}
+          width={164}
+          control={control}
+          name="tripTypes"
+        />
+        <DropdownBox
+          onClick={handlePassengerCountDropdownClick}
+          isContentVisible={isPassengerCountDropdownOpen}
+        >
+          <PassengersSelectCount
+            onOutsideClick={handlePassengerCountDropdownClick}
           />
-          <MultiSelect
-            options={tripTypes}
-            width={164}
-            control={control}
-            name="tripTypes"
-          />
-          <DropdownBox
-            onClick={handlePassengerCountDropdownClick}
-            isContentVisible={isPassengerCountDropdownOpen}
-          >
-            <PassengersSelectCount
-              onOutsideClick={handlePassengerCountDropdownClick}
+        </DropdownBox>
+      </div>
+      <div className="SearchBar-inputs">
+        <Grid container spacing={1}>
+          <Grid item xs={12} md={4}>
+            <AutoSuggest
+              label="Departure City / Airport"
+              icon={
+                <img
+                  alt="departure"
+                  src={displayImage("departure.svg")}
+                  className="SearchBar-inputs__autoSuggestIcon"
+                />
+              }
             />
-          </DropdownBox>
-        </div>
-        <div className="SearchBar-panel__inputs">
-          <Grid container spacing={1}>
-            <Grid item xs={12} md={4}>
-              <AutoSuggest
-                label="Departure City / Airport"
-                icon={
-                  <img
-                    alt="departure"
-                    src={displayImage("departure.svg")}
-                    className="SearchBar-panel__inputs-autoSuggestIcon"
-                  />
-                }
-              />
-            </Grid>
-            {!isPassengerCountDropdownOpen && <RoundedButton />}
-            <Grid item xs={12} md={4}>
-              <AutoSuggest
-                label="Arrival City / Airport"
-                icon={
-                  <img
-                    alt="arrival"
-                    src={displayImage("arrival.svg")}
-                    className="SearchBar-panel__inputs-autoSuggestIcon"
-                  />
-                }
-              />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <DatesRangePicker />
-            </Grid>
           </Grid>
-        </div>
-        <div className="SearchBar-panel__advanceSearch d-flex">
-          <Grid container spacing={1}>
-            <Grid item xs={12} md={10} className="d-flex align-items-center">
-              <div className="d-flex">
-                <div className="d-flex align-items-center mr-24">
-                  <Text
-                    className="font-primary-medium-16 mr-16"
-                    text="Advance Search"
-                    style={{ color: colors.royalBlue }}
+          {!isPassengerCountDropdownOpen && <RoundedButton />}
+          <Grid item xs={12} md={4}>
+            <AutoSuggest
+              label="Arrival City / Airport"
+              icon={
+                <img
+                  alt="arrival"
+                  src={displayImage("arrival.svg")}
+                  className="SearchBar-inputs__autoSuggestIcon"
+                />
+              }
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <DatesRangePicker />
+          </Grid>
+        </Grid>
+      </div>
+      <div className="SearchBar-advanceSearch d-flex">
+        <Grid container spacing={1}>
+          <Grid item xs={12} md={10} className="d-flex align-items-center">
+            <div className="d-flex">
+              <div className="d-flex align-items-center mr-24">
+                <Text
+                  className="font-primary-medium-16 mr-16"
+                  text="Advance Search"
+                  style={{ color: colors.royalBlue }}
+                />
+                <ExpandArrow
+                  isHorizontal
+                  expand={expandAdvanceSearch}
+                  onClick={setExpandAdvanceSearch}
+                />
+              </div>
+              {expandAdvanceSearch && (
+                <div className="d-flex align-items-center">
+                  <MultiSelect
+                    closeMenuOnSelect={false}
+                    isMulti
+                    labelKey="airlineLabel"
+                    options={airlinesOptions}
+                    placeholder="Airline Preference"
+                    showValue
+                    valueKey="airlineValue"
+                    width="156"
+                    control={control}
+                    name="airlinesOptions"
                   />
-                  <ExpandArrow
-                    isHorizontal
-                    expand={expandAdvanceSearch}
-                    onClick={handleAdvanceSearchClick}
+                  <MultiSelect
+                    closeMenuOnSelect={false}
+                    isMulti
+                    placeholder="GDS & Aggregator"
+                    options={gdsAggregatorOptions}
+                    showValue
+                    width="158"
+                    control={control}
+                    name="gdsAggregatorOptions"
+                  />
+                  <MultiSelect
+                    options={directConnectOptions}
+                    placeholder="Direct Connect"
+                    width="136"
+                    control={control}
+                    name="directConnectOptions"
                   />
                 </div>
-                {expandAdvanceSearch && (
-                  <div className="d-flex align-items-center">
-                    <MultiSelect
-                      closeMenuOnSelect={false}
-                      isMulti
-                      labelKey="airlineLabel"
-                      options={airlinesOptions}
-                      placeholder="Airline Preference"
-                      showValue
-                      valueKey="airlineValue"
-                      width="156"
-                      control={control}
-                      name="airlinesOptions"
-                    />
-                    <MultiSelect
-                      closeMenuOnSelect={false}
-                      isMulti
-                      placeholder="GDS & Aggregator"
-                      options={gdsAggregatorOptions}
-                      showValue
-                      width="158"
-                      control={control}
-                      name="gdsAggregatorOptions"
-                    />
-                    <MultiSelect
-                      options={directConnectOptions}
-                      placeholder="Direct Connect"
-                      width="136"
-                      control={control}
-                      name="directConnectOptions"
-                    />
-                  </div>
-                )}
-              </div>
-            </Grid>
-            <Grid item xs={12} md={2}>
-              <Button
-                className="SearchBar-panel__advanceSearch-searchFlight"
-                icon={
-                  <FlightIcon
-                    style={{ color: colors.white, transform: "rotate(90deg)" }}
-                  />
-                }
-                text="search flight"
-                type="submit"
-              />
-            </Grid>
+              )}
+            </div>
           </Grid>
-        </div>
+          <Grid item xs={12} md={2}>
+            <Button
+              className="SearchBar-advanceSearch__searchFlight"
+              icon={
+                <FlightIcon
+                  style={{ color: colors.white, transform: "rotate(90deg)" }}
+                />
+              }
+              text="search flight"
+              type="submit"
+            />
+          </Grid>
+        </Grid>
       </div>
     </div>
   );

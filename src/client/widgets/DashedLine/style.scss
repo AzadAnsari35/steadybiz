@@ -1,0 +1,8 @@
+@import "./../../styles/global.scss";
+
+$root: ".DashedLine";
+
+#{$root} {
+  flex: 1;
+  border-left: 2px dashed $gray;
+}
