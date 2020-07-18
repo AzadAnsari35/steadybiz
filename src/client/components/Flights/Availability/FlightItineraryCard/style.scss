@@ -15,7 +15,7 @@ $root: ".FlightItineraryCard";
       width: 950px;
       .segmentType {
         height: 28px;
-        width: 124px;
+        width: 100px;
         border-radius: 0 4px 4px 0;
         background-color: $mystic;
         padding: 0 14px;
@@ -27,6 +27,15 @@ $root: ".FlightItineraryCard";
             height: 18px;
             width: 18px;
             margin-right: 8px;
+          }
+        }
+      }
+      &:last-child {
+        .segmentType {
+          .icon {
+            &.MuiSvgIcon-root {
+              transform: rotate(-90deg);
+            }
           }
         }
       }
@@ -71,10 +80,10 @@ $root: ".FlightItineraryCard";
             & > div {
               position: relative;
               &:first-child {
-                right: 39px;
+                right: 36px;
               }
               &:last-child {
-                left: 23px;
+                left: 26px;
               }
             }
           }
@@ -94,11 +103,12 @@ $root: ".FlightItineraryCard";
         }
       }
       &-priceSelectFlight {
-        padding: 72px 0 44px 0;
+        padding: 40px 0 12px 0;
         .price {
           margin-bottom: 10px;
           .MuiSvgIcon-root {
             color: $royalBlue;
+            margin-right: 12px;
           }
         }
       }

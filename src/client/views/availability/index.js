@@ -4,6 +4,8 @@ import { Grid } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import SwapVertIcon from '@material-ui/icons/SwapVert';
 
+import availabilityResults from "./availabilityResults";
+
 import colors from "Constants/colors";
 import useToggle from "Client/hooks/useToggle";
 
@@ -85,7 +87,7 @@ const Availability = () => {
                   />
                 </div>
               </div>
-              <FlightResults />
+              <FlightResults results={availabilityResults} />
             </div>
           </Grid>
         </Grid>
