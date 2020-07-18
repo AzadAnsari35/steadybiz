@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { regex } from 'Helpers/validator';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 import useDropDown from 'Hooks/useDropDown';
-import useDropDownApi from 'Hooks/useDropDownApi';
 // import useAPi from 'Hooks/useApi';
 // import endpoint from 'Config/endpoint';
 import './style.scss';
@@ -36,7 +35,7 @@ const OfficeRegistrationForm = () => {
     watch,
   } = useForm();
   const [regResponse, postRegResponse] = regEndpoint();
-  const countryDropDownApiList = useDropDownApi(endpoint.master.countries);
+
   const countryDropDownList = useDropDown(
     endpoint.master.countries,
     'masterCountries'
@@ -117,7 +116,10 @@ const OfficeRegistrationForm = () => {
             <SelectWithTextInput
               name="mobile"
               selectInputName="mobileDialCode"
-              data={countryDropDownApiList.dropDownItems}
+              data={[
+                { label: 'India', value: 'IN (+91)' },
+                { label: 'Canada', value: 'CA (+1)' },
+              ]}
               label="Mobile Number"
               placeholder="Mobile Number"
               selectPlaceholder="Dial Code"
