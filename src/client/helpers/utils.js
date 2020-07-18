@@ -25,11 +25,7 @@ export const appendHeader = (endpoint) => {
   };
 };
 export const checkError = (apiResponse) => {
-<<<<<<< HEAD
-  if (!apiResponse.items.success) {
-=======
   if (!apiResponse.items.status) {
->>>>>>> 8996f4d80f0d1896ffafaa9bdef358172f4edc5a
     alert(apiResponse.items.error);
     return apiResponse.items.error.message;
   } else return '';
