@@ -1,0 +1,29 @@
+@import "./../../styles/variables";
+$root: ".CustomCheckbox";
+
+#{$root} {
+  margin-bottom: 10px;
+  .MuiCheckbox {
+    &-root {
+      padding: 0;
+      margin-right: 8px;
+    }
+  }
+  &-icon {
+    width: 20px;
+    height: 20px;
+    border: 1px solid $royalBlue;
+    border-radius: 2px;
+    &.checked {
+      background-color: $royalBlue;
+      .MuiSvgIcon-root {
+        color: $white;
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+  &-label {
+    width: 100%;
+  }
+}

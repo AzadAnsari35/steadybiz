@@ -69,6 +69,7 @@ $root: ".DatesRangePicker";
     }
 
     &_picker {
+      z-index: 1200;
       .DayPicker {
         width: 955px !important;
         & > div > div {

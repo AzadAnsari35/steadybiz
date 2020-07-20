@@ -1,10 +1,15 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { Home, OfficeRegistration, SearchUser, UserProfile } from 'Views/';
-import Search from 'Views/search/index';
+import {
+  Home,
+  OfficeRegistration,
+  SearchUser,
+  UserProfile,
+  Search,
+  Availability,
+} from 'Views/';
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
-import Availability from 'Views/availability';
 import routes from 'Constants/routes';
 
 const Routes = () => (

@@ -1,21 +1,26 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import FlightIcon from "@material-ui/icons/Flight";
+
 
 import { displayImage } from "Helpers/utils";
 import colors from "Constants/colors";
 import useToggle from "Client/hooks/useToggle";
+import routes from "Constants/routes";
 
-import AutoSuggest from "Widgets/AutoSuggest/index";
-import Button from "Widgets/Button/index";
-import DatesRangePicker from "Widgets/DatesRangePicker/index";
-import DropdownBox from "Widgets/DropdownBox/index";
-import ExpandArrow from "Widgets/ExpandArrow/index";
-import MultiSelect from "Widgets/MultiSelect/index";
+import {
+  AutoSuggest,
+  Button,
+  DatesRangePicker,
+  DropdownBox,
+  ExpandArrow,
+  MultiSelect,
+  RoundedButton,
+  Text,
+} from "Widgets";
 import PassengersSelectCount from "./PassengersSelectCount/index";
-import RoundedButton from "Widgets/RoundedButton/index";
-import Text from "Widgets/Text/index";
-import { useForm } from "react-hook-form";
 
 import "./style.scss";
 
@@ -56,6 +61,7 @@ const directConnectOptions = [
 ];
 
 const SearchBar = () => {
+  const history = useHistory();
   const [expandAdvanceSearch, setExpandAdvanceSearch] = useToggle(false);
   const [
     isPassengerCountDropdownOpen,
@@ -63,8 +69,8 @@ const SearchBar = () => {
   ] = useState(false);
   const { register, handleSubmit, errors, control, setValue, watch } = useForm({
     defaultValues: {
-      title: { label: "Mr", value: "mr" },
-      firstName: "Azad",
+      segmentTypes: segmentTypes[0],
+      tripTypes: tripTypes[3],
     },
   });
 
@@ -190,6 +196,7 @@ const SearchBar = () => {
               }
               text="search flight"
               type="submit"
+              onClick={() => history.push(routes.flight.availability)}
             />
           </Grid>
         </Grid>

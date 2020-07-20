@@ -218,6 +218,18 @@ p {
   line-height: 16px;
 }
 
+.font-primary-semibold-10 {
+  @extend .font-primary-semibold;
+  font-size: 10px;
+  line-height: 14px;
+}
+
+.font-primary-semibold-12 {
+  @extend .font-primary-semibold;
+  font-size: 12px;
+  line-height: 15px;
+}
+
 .font-primary-semibold-14 {
   @extend .font-primary-semibold;
   font-size: 14px;
@@ -381,6 +393,10 @@ p {
 
 .p-12 {
   padding: 12px;
+}
+
+.pt-0 {
+  padding-top: 0;
 }
 
 .pt-20 {
@@ -722,4 +738,9 @@ p {
 
 .height-100 {
   height: 100%;
+}
+
+.link-text {
+  color: $royalBlue;
+  cursor: pointer;
 }

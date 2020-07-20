@@ -27,3 +27,7 @@ export const convertIntoTime = (timeInString) => {
 export const extractTime = (timeGMT) => {
   return timeGMT.substring(0, 5);
 };
+
+export const applyCommaToPrice = (price) => {
+  return price.toLocaleString("en-IN");
+};
