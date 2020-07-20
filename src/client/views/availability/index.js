@@ -7,7 +7,7 @@ import SwapVertIcon from '@material-ui/icons/SwapVert';
 import availabilityResults from "./availabilityResults";
 
 import colors from "Constants/colors";
-import useToggle from "Client/hooks/useToggle";
+import useToggle from "Hooks/useToggle";
 
 import Filters from "Components/Flights/Availability/Filters";
 import FlightResults from "Components/Flights/Availability/FlightResults";
