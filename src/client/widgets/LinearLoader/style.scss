@@ -1,0 +1,21 @@
+@import "./../../styles/variables";
+$root: ".LinearLoader";
+
+#{$root} {
+  margin-bottom: 32px;
+  .MuiLinearProgress {
+    &-root {
+      height: 8px;
+      border-radius: 19px;
+    }
+    &-colorPrimary {
+      background-color: $gallery;
+    }
+    &-barColorPrimary {
+      background-color: $crete;
+    }
+  }
+  &-label {
+    margin-bottom: 10px;
+  }
+}

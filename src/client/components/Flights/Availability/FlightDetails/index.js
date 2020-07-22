@@ -17,344 +17,6 @@ import Text from "Widgets/Text/index";
 
 import "./style.scss";
 
-const itineraryObj = {
-  "flightItineraryId": 10002,
-  "itinerarySourceCode": "1S",
-  "itinerarySourceName": "Sabre",
-  "itineraryPCC": "7MQJ",
-  "flightSegments": [
-    {
-      "flightSegments": 1,
-      "stopCount": 0,
-      "flightSegmentDirection": "Outbound",
-      "departureAirport": "DEL",
-      "arrivalAirport": "EWR",
-      "dateTime": "2020-09-01T23:35:00+05:30",
-      "flightSegmentGroup": [
-        {
-          "bookingClass": "L",
-          "cabinClass": "Y",
-          "seatsAvailable": 9,
-          "baggageInformation": {
-            "checkInBaggage": {
-              "noOfPieces": 1,
-              "weight": 0,
-              "unit": null,
-              "description": null
-            },
-            "cabinBaggage": {
-              "noOfPieces": 1,
-              "weight": 7,
-              "unit": "kg",
-              "description": null
-            }
-          },
-          "marriageGroup": "O",
-          "status": null,
-          "noOfPassenger": null,
-          "marriageGroupInd": null,
-          "marriageGroupSequence": null,
-          "departureDetails": {
-            "airportCode": "DEL",
-            "terminal": "3",
-            "airportName": "Indira Gandhi International",
-            "cityCode": "DEL",
-            "cityName": "New Delhi",
-            "countryCode": "IN",
-            "countryName": "India",
-            "date": "2020-09-01",
-            "time": "23:35:00+05:30"
-          },
-          "arrivalDetails": {
-            "airportCode": "EWR",
-            "airportName": "Newark Liberty International",
-            "cityCode": "NYC",
-            "cityName": "New York",
-            "countryCode": "US",
-            "countryName": "United States",
-            "time": "04:55:00-04:00",
-            "date": "2020-09-02",
-            "day": 1,
-            "terminal": "C",
-            "nightFlight": null,
-            "flightDuration": "14:50",
-            "layOverTime": null
-          },
-          "airlineDetails": {
-            "marketingAirline": "UA",
-            "marketingFlightNumber": 83,
-            "operatingAirline": "UA",
-            "operatingFlightNumber": 83,
-            "equipmentTypeDescription": "777"
-          },
-          "eticket": null
-        }
-      ]
-    },
-    {
-      "flightSegments": 2,
-      "stopCount": 1,
-      "flightSegmentDirection": "Inbound",
-      "departureAirport": "EWR",
-      "arrivalAirport": "DEL",
-      "dateTime": "2020-09-08T20:45:00-04:00",
-      "flightSegmentGroup": [
-        {
-          "bookingClass": "L",
-          "cabinClass": "Y",
-          "seatsAvailable": 9,
-          "baggageInformation": {
-            "checkInBaggage": {
-              "noOfPieces": 1,
-              "weight": 0,
-              "unit": null,
-              "description": null
-            },
-            "cabinBaggage": {
-              "noOfPieces": 1,
-              "weight": 7,
-              "unit": "kg",
-              "description": null
-            }
-          },
-          "marriageGroup": "O",
-          "status": null,
-          "noOfPassenger": null,
-          "marriageGroupInd": null,
-          "marriageGroupSequence": null,
-          "departureDetails": {
-            "airportCode": "EWR",
-            "terminal": "B",
-            "airportName": "Newark Liberty International",
-            "cityCode": "NYC",
-            "cityName": "New York",
-            "countryCode": "US",
-            "countryName": "United States",
-            "date": "2020-09-08",
-            "time": "20:45:00-04:00"
-          },
-          "arrivalDetails": {
-            "airportCode": "MUC",
-            "airportName": "Franz Josef Strauss",
-            "cityCode": "MUC",
-            "cityName": "Munich",
-            "countryCode": "DE",
-            "countryName": "Germany",
-            "time": "10:25:00+02:00",
-            "date": "2020-09-09",
-            "day": 1,
-            "terminal": "2",
-            "nightFlight": null,
-            "flightDuration": "7:40",
-            "layOverTime": "1:45"
-          },
-          "airlineDetails": {
-            "marketingAirline": "LH",
-            "marketingFlightNumber": 413,
-            "operatingAirline": "LH",
-            "operatingFlightNumber": 413,
-            "equipmentTypeDescription": "359"
-          },
-          "eticket": null
-        },
-        {
-          "bookingClass": "L",
-          "cabinClass": "Y",
-          "seatsAvailable": 9,
-          "baggageInformation": {
-            "checkInBaggage": {
-              "noOfPieces": 1,
-              "weight": 0,
-              "unit": null,
-              "description": null
-            },
-            "cabinBaggage": {
-              "noOfPieces": 1,
-              "weight": 7,
-              "unit": "kg",
-              "description": null
-            }
-          },
-          "marriageGroup": "I",
-          "status": null,
-          "noOfPassenger": null,
-          "marriageGroupInd": null,
-          "marriageGroupSequence": null,
-          "departureDetails": {
-            "airportCode": "MUC",
-            "terminal": "2",
-            "airportName": "Franz Josef Strauss",
-            "cityCode": "MUC",
-            "cityName": "Munich",
-            "countryCode": "DE",
-            "countryName": "Germany",
-            "date": "2020-09-09",
-            "time": "12:10:00+02:00"
-          },
-          "arrivalDetails": {
-            "airportCode": "DEL",
-            "airportName": "Indira Gandhi International",
-            "cityCode": "DEL",
-            "cityName": "New Delhi",
-            "countryCode": "IN",
-            "countryName": "India",
-            "time": "23:15:00+05:30",
-            "date": "2020-09-09",
-            "day": 0,
-            "terminal": "3",
-            "nightFlight": null,
-            "flightDuration": "7:35",
-            "layOverTime": null
-          },
-          "airlineDetails": {
-            "marketingAirline": "LH",
-            "marketingFlightNumber": 762,
-            "operatingAirline": "LH",
-            "operatingFlightNumber": 762,
-            "equipmentTypeDescription": "359"
-          },
-          "eticket": null
-        }
-      ]
-    }
-  ],
-  "totalfareDetails": {
-    "fareDetails": [
-      {
-        "ptc": "ADT",
-        "count": 1,
-        "baseFare": 1740,
-        "currenyCode": "AED",
-        "penalties": [
-          {
-            "type": "Exchange",
-            "applicability": "Before",
-            "changeable": true,
-            "refundable": null,
-            "amount": 789,
-            "currency": "AED",
-            "cat16Info": null,
-            "conditionsApply": true
-          },
-          {
-            "type": "Exchange",
-            "applicability": "After",
-            "changeable": true,
-            "refundable": null,
-            "amount": 623,
-            "currency": "AED",
-            "cat16Info": null,
-            "conditionsApply": true
-          },
-          {
-            "type": "Refund",
-            "applicability": "Before",
-            "changeable": null,
-            "refundable": true,
-            "amount": 1580,
-            "currency": "AED",
-            "cat16Info": true,
-            "conditionsApply": null
-          },
-          {
-            "type": "Refund",
-            "applicability": "After",
-            "changeable": null,
-            "refundable": true,
-            "amount": 1580,
-            "currency": "AED",
-            "cat16Info": true,
-            "conditionsApply": null
-          }
-        ],
-        "fareBasisCode": [
-          "LRCAAW",
-          "LRCAAW"
-        ],
-        "taxDetails": [
-          {
-            "taxcode": "K38",
-            "taxdescription": "GOODS AND SERVICE TAX INTERIM DOMESTIC AND INTERNATIONAL",
-            "taxAmount": 80,
-            "taxCurrency": "AED"
-          },
-          {
-            "taxcode": "YQF",
-            "taxdescription": "SERVICE FEE - CARRIER-IMPOSED FUEL",
-            "taxAmount": 890,
-            "taxCurrency": "AED"
-          },
-          {
-            "taxcode": "YRF",
-            "taxdescription": "SERVICE FEE - CARRIER-IMPOSED FUEL",
-            "taxAmount": 310,
-            "taxCurrency": "AED"
-          },
-          {
-            "taxcode": "YC",
-            "taxdescription": "CUSTOMS USER FEE",
-            "taxAmount": 30,
-            "taxCurrency": "AED"
-          },
-          {
-            "taxcode": "CH",
-            "taxdescription": "AIRPORT PASSENGER SECURITY AND NOISE CHARGE",
-            "taxAmount": 70,
-            "taxCurrency": "AED"
-          },
-          {
-            "taxcode": "YRF",
-            "taxdescription": "SERVICE FEE - CARRIER-IMPOSED FUEL",
-            "taxAmount": 280,
-            "taxCurrency": "AED"
-          },
-          {
-            "taxcode": "YQI",
-            "taxdescription": "SERVICE FEE - CARRIER-IMPOSED MISC",
-            "taxAmount": 70,
-            "taxCurrency": "AED"
-          },
-          {
-            "taxcode": "YQI",
-            "taxdescription": "SERVICE FEE - CARRIER-IMPOSED MISC",
-            "taxAmount": 20,
-            "taxCurrency": "AED"
-          },
-          {
-            "taxcode": "YQI",
-            "taxdescription": "SERVICE FEE - CARRIER-IMPOSED MISC",
-            "taxAmount": 20,
-            "taxCurrency": "AED"
-          },
-          {
-            "taxcode": "TR",
-            "taxdescription": "AIRPORT SERVICE CHARGE INTERNATIONAL",
-            "taxAmount": 30,
-            "taxCurrency": "AED"
-          }
-        ]
-      }
-    ],
-    "baseFareTotal": 1740,
-    "taxTotal": 2340,
-    "localTaxPercentage": 0,
-    "localTaxAmount": 0,
-    "totalAmount": 4080,
-    "totalAmountCurrency": "AED",
-    "fareBasisCode": "LRCAAW",
-    "fareRule": null,
-    "fareCategory": null,
-    "fareRefundable": true,
-    "fareRules": null,
-    "cabinClassCode": null,
-    "cabinClassName": null,
-    "seatsAvailable": null,
-    "dealCode": null,
-    "commissionPercentage": 0,
-    "commissionAmount": 0
-  }
-};
-
 const FlightLayover = (layoverDuration) => {  
   return (
     <div className="FlightLayover d-flex">
@@ -380,7 +42,7 @@ const AirlineText = (props) => {
     <Text
       className="airline-text font-primary-regular-16"
       style={{
-        borderRight: !!showBorder ? `1px solid ${colors.$codGray}` : "none",
+        borderRight: !!showBorder ? `1px solid ${colors.gray}` : "none",
         paddingLeft: !!leftPadding ? "8px" : "0",
         minHeight: minHeight,
       }}
@@ -460,7 +122,7 @@ const FlightSegmentGroup = (props) => {
             {segmentGroupArray && index !== 0 && (
               <Text
                 className="font-primary-regular-14 pl-8"
-                style={{ borderLeft: `1px solid ${colors.$codGray}` }}
+                style={{ borderLeft: `1px solid ${colors.gray}` }}
                 text={changeDateFormat(
                   segmentGroupArray[index].departureDetails.date
                 )}
@@ -470,10 +132,11 @@ const FlightSegmentGroup = (props) => {
         </div>
         <div className="FlightSegmentGroup-right__flightInformation">
           <div className="flight-info d-flex align-items-center">
-            <img
+            {/* <img
               src=""
               className="airline-icon"
-            />
+            /> */}
+            <FlightIcon className="airline-icon" style={{ transform: "rotate(90deg)" }} />
             <AirlineText
               showBorder
               text="United Airline"
@@ -587,7 +250,7 @@ const FlightSegmentGroup = (props) => {
             {segmentGroupArray && segmentGroupArray.length - 1 !== index && (
               <Text
                 className="font-primary-regular-14 pl-8"
-                style={{ borderLeft: `1px solid ${colors.$codGray}` }}
+                style={{ borderLeft: `1px solid ${colors.gray}` }}
                 text={changeDateFormat(
                   segmentGroupArray[index].arrivalDetails.date
                 )}
@@ -612,7 +275,7 @@ const FlightSegment = (props) => {
             className="font-primary-medium-16"
             text={itinerary[0].flightSegmentGroup[0].departureDetails.cityName}
           />
-          <FlightIcon style={{ transform: "rotate(180deg)" }} />
+          <FlightIcon style={{ transform: "rotate(90deg)" }} />
           <Text
             className="font-primary-medium-16"
             text={
@@ -620,19 +283,19 @@ const FlightSegment = (props) => {
             }
           />
         </Chip>
-        <div className="FlightSegment-content d-flex flex-direction-column">
+        <div
+          className="FlightSegment-content d-flex flex-direction-column"
+          style={{
+            borderRight: isInboundFound ? `1px solid ${colors.alto}` : "none",
+          }}
+        >
           <Text
             className="FlightSegment-content__date font-primary-bold-18"
             text={`Depart: ${changeDateFormat(
               itinerary[0].flightSegmentGroup[0].departureDetails.date
             )}`}
           />
-          <div
-            className="FlightSegment-content__segmentGroup"
-            style={{
-              borderRight: isInboundFound ? `1px solid ${colors.alto}` : "none",
-            }}
-          >
+          <div className="FlightSegment-content__segmentGroup">
             {itinerary[0].flightSegmentGroup.map((item, index, arr) => (
               <Fragment key={index}>
                 <FlightSegmentGroup
@@ -662,8 +325,8 @@ const FlightSegment = (props) => {
   );
 };
 
-const FlightDetails = () => {
-  // const { itineraryObj } = props;
+const FlightDetails = props => {
+  const { itinerary } = props;
   const checkInboundItinerary = () => {
     if(isInboundFound) {
       return <FlightSegment fareBasisCode={fareBasisCode} itinerary={returnItinerary("Inbound")} />;
@@ -671,12 +334,12 @@ const FlightDetails = () => {
   };
       
   const returnItinerary= type => {
-    const data = itineraryObj.flightSegments.filter(element => element.flightSegmentDirection === type);
+    const data = itinerary.flightSegments.filter(element => element.flightSegmentDirection === type);
     return data;
   };
   const outbound=returnItinerary("Outbound");
-  const isInboundFound = itineraryObj.flightSegments.some(element => element.flightSegmentDirection === "Inbound");
-  const fareBasisCode = itineraryObj.totalfareDetails.fareBasisCode;
+  const isInboundFound = itinerary.flightSegments.some(element => element.flightSegmentDirection === "Inbound");
+  const fareBasisCode = itinerary.totalfareDetails.fareBasisCode;
 
   return (
     <div className="FlightDetails">

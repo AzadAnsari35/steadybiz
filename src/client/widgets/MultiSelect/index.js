@@ -6,9 +6,11 @@ import { Controller } from 'react-hook-form';
 
 import colors from 'Constants/colors';
 
-import './style.scss';
+import Text from "Widgets/Text/index";
 
-const Option = (props, label) => (
+import "./style.scss";
+
+const Option = (props, label, isUppercase) => (
   <components.Option {...props}>
     {props.isSelected && (
       <CheckIcon
@@ -16,7 +18,7 @@ const Option = (props, label) => (
         style={{ color: colors.royalBlue }}
       />
     )}
-    {props.data[label]}
+    <Text className={`font-primary-medium-14 ${!!isUppercase ? "text-uppercase" : ""}`} text={props.data[label]} />
   </components.Option>
 );
 
@@ -48,7 +50,8 @@ const MultiSelect = (props) => {
     label,
     closeMenuOnSelect = true,
     isMulti = false,
-    labelKey = 'label',
+    labelKey = "label",
+    isOptionUppercase = false,
     options,
     placeholder = 'Select',
     showValue = false,
@@ -91,7 +94,7 @@ const MultiSelect = (props) => {
               closeMenuOnSelect={closeMenuOnSelect}
               components={{
                 DropdownIndicator,
-                Option: (props) => Option(props, labelKey),
+                Option: (props) => Option(props, labelKey, isOptionUppercase),
                 MultiValue: (props) => MultiValue(props, valueKey),
               }}
               hideSelectedOptions={false}

@@ -7,7 +7,7 @@ $root: ".FlightItineraryCard";
   width: 100%;
   position: relative;
   &-content {
-    padding: 12px 20px 12px 0;
+    padding: 12px 20px;
   }
   &-top {
     margin-bottom: 2px;
@@ -15,10 +15,11 @@ $root: ".FlightItineraryCard";
       width: 950px;
       .segmentType {
         height: 28px;
-        width: 124px;
+        width: 100px;
         border-radius: 0 4px 4px 0;
         background-color: $mystic;
         padding: 0 14px;
+        margin-left: -20px;
         .icon {
           &.MuiSvgIcon-root {
             color: $black;
@@ -29,9 +30,18 @@ $root: ".FlightItineraryCard";
           }
         }
       }
+      &:last-child {
+        .segmentType {
+          .icon {
+            &.MuiSvgIcon-root {
+              transform: rotate(-90deg);
+            }
+          }
+        }
+      }
       .segmentDetail {
         .airline {
-          padding: 14px 20px;
+          padding: 14px 20px 14px 0;
           margin-right: 68px;
           &-icon {
             border-radius: 4px;
@@ -70,10 +80,10 @@ $root: ".FlightItineraryCard";
             & > div {
               position: relative;
               &:first-child {
-                right: 39px;
+                right: 36px;
               }
               &:last-child {
-                left: 23px;
+                left: 26px;
               }
             }
           }
@@ -93,18 +103,18 @@ $root: ".FlightItineraryCard";
         }
       }
       &-priceSelectFlight {
-        padding: 72px 0 44px 0;
+        padding: 40px 0 12px 0;
         .price {
           margin-bottom: 10px;
           .MuiSvgIcon-root {
             color: $royalBlue;
+            margin-right: 12px;
           }
         }
       }
     }
   }
   &-bottom {
-    padding-left: 20px;
     &__leftAction, &__rightAction {
       .MuiSvgIcon-root {
         color: $gray;
@@ -136,6 +146,7 @@ $root: ".FlightItineraryCard";
       .tab {
         margin: 0 38px;
         padding-bottom: 6px;
+        color: $royalBlue;
         &:first-child {
           margin-left: 0;
         }
