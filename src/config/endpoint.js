@@ -2,6 +2,10 @@ import config from './index';
 import { actionTypeConstant, commonConstant } from 'Constants/';
 export default {
   flights: {
+    flightSearchResult:{
+      actionType: actionTypeConstant.override.searchResult,
+      actualActionType:'flights.flightSearchResult'
+    },
     flightRevalidate: {
       url: config.api.url + '/flights/flightRevalidate',
       isAuth: true,
