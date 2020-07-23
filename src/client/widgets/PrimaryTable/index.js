@@ -24,6 +24,7 @@ const PrimaryTable = (props) => {
     columnAlignments,
     statusIndex = -1,
     imageIndex = -2,
+    hideKeys = '',
   } = props;
 
   const [lowOffset, setLowOffset] = React.useState(1);
@@ -56,6 +57,11 @@ const PrimaryTable = (props) => {
     return columnAlignments[index];
   };
 
+  const showEntries = (key) => {
+    const index = hideKeys.indexOf(key);
+    return index < 0;
+  };
+
   return (
     <Fragment>
       <TableContainer>
@@ -68,7 +74,6 @@ const PrimaryTable = (props) => {
                   {headerData.map((header, index) => (
                     <TableCell
                       key={`head-${index}`}
-                      align={setAlignment(index)}
                       className="PrimaryTable-head-cell "
                       style={index === imageIndex ? { paddingLeft: 72 } : {}}
                     >
@@ -81,31 +86,38 @@ const PrimaryTable = (props) => {
                 {bodyData.data.length > 0 &&
                   bodyData.data.map((body, ind) => (
                     <TableRow key={ind}>
-                      {Object.keys(body).map((key, index) => (
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          key={`body-${index}`}
-                          align={setAlignment(index)}
-                          style={
-                            index === imageIndex ? { paddingLeft: 72 } : {}
-                          }
-                          className={`PrimaryTable-body-cell position-relative ${
-                            index === statusIndex ? statusColor(body[key]) : ''
-                          }`}
-                        >
-                          {index === imageIndex && (
-                            <Avatar
-                              className="font-primary-medium-16 PrimaryTable-body-imageCell"
-                              size="18px"
-                            ></Avatar>
-                          )}
-                          {body[key]}
-                        </TableCell>
-                      ))}
+                      {Object.keys(body).map(
+                        (key, index) =>
+                          showEntries(key) && (
+                            <TableCell
+                              component="th"
+                              scope="row"
+                              key={`body-${index}`}
+                              align={setAlignment(index)}
+                              style={
+                                index === imageIndex ? { paddingLeft: 72 } : {}
+                              }
+                              className={`PrimaryTable-body-cell position-relative ${
+                                index === statusIndex
+                                  ? statusColor(body[key])
+                                  : ''
+                              }`}
+                            >
+                              {index === imageIndex && (
+                                <Avatar
+                                  className="font-primary-medium-16 PrimaryTable-body-imageCell"
+                                  size="18px"
+                                ></Avatar>
+                              )}
+                              {body[key]}
+                            </TableCell>
+                          )
+                      )}
                       {AddElement.last && (
                         <TableCell component="th" scope="row" align="center">
-                          {AddElement.last}
+                          {React.cloneElement(AddElement.last, {
+                            rowNumber: ind + 1,
+                          })}
                         </TableCell>
                       )}
                     </TableRow>
@@ -113,29 +125,29 @@ const PrimaryTable = (props) => {
                 {children}
               </TableBody>
             </Table>
-          </div>
-          <div className="PrimaryTable-footer">
-            {highOffset - lowOffset >= count && page === 0 ? null : (
-              <div className="PrimaryTable-footer-records">
-                Showing{' '}
-                <span>
-                  {lowOffset} - {highOffset}{' '}
-                </span>
-                of {count} Records
-              </div>
-            )}
+            <div className="PrimaryTable-footer">
+              {highOffset - lowOffset >= count && page === 0 ? null : (
+                <div className="PrimaryTable-footer-records">
+                  Showing{' '}
+                  <span>
+                    {lowOffset} - {highOffset}{' '}
+                  </span>
+                  of {count} Records
+                </div>
+              )}
 
-            <div>
-              {count > size ? (
-                <Pagination
-                  count={Math.ceil(count / size)}
-                  page={page}
-                  total={count}
-                  onChange={handleChangePage}
-                  variant="outlined"
-                  shape="rounded"
-                />
-              ) : null}
+              <div>
+                {count > size ? (
+                  <Pagination
+                    count={Math.ceil(count / size)}
+                    page={page}
+                    total={count}
+                    onChange={handleChangePage}
+                    variant="outlined"
+                    shape="rounded"
+                  />
+                ) : null}
+              </div>
             </div>
           </div>
         </div>

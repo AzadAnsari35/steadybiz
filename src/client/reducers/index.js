@@ -13,6 +13,10 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.override.searchResult
   ),
+  overrideSelectedOption: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.override.selectedOption
+  ),
   usersSignIn: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.users.signIn
@@ -20,6 +24,10 @@ const rootReducer = combineReducers({
   masterCountries: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.master.countries
+  ),
+  masterObjectStatuses: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.master.objectStatuses
   ),
 });
 export default rootReducer;

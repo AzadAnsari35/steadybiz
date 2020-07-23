@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
-
 import { apiReqeust, utils, Response } from 'Helpers/';
+
 const useAsyncEndpoint = (fn) => {
   const [res, setRes] = useState({
     data: null,
@@ -19,7 +19,8 @@ const useAsyncEndpoint = (fn) => {
     const doAxios = async () => {
       //   setLoading(true);
       try {
-        // console.log(req.data.request);
+        console.log('endpoint', endpoint);
+
         const res = await apiReqeust.httpRequest(
           req._endpoint.httpVerb,
           req.data,

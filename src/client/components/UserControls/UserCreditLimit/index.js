@@ -1,6 +1,7 @@
 import React from 'react';
 import Avatar from 'Widgets/Avatar';
 import { Link } from 'react-router-dom';
+import routes from 'Constants/routes';
 
 import './style.scss';
 
@@ -33,10 +34,10 @@ const UserCreditLimit = () => {
       <div className="horizontal-grey-divider"></div>
 
       <div className="HeaderPopover-foot font-primary-medium-18 d-flex flex-direction-column cursor-pointer my-6">
-        <Link className="pb-12" to="#">
+        <Link className="pb-12" to={routes.office.manageUserProfile}>
           Manage Profile
         </Link>
-        <Link to="#">Change Password</Link>
+        <Link to={routes.office.changePassword}>Change Password</Link>
         <Link to="#">Signout</Link>
       </div>
     </div>

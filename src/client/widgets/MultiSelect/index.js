@@ -6,9 +6,9 @@ import { Controller } from 'react-hook-form';
 
 import colors from 'Constants/colors';
 
-import Text from "Widgets/Text/index";
+import Text from 'Widgets/Text/index';
 
-import "./style.scss";
+import './style.scss';
 
 const Option = (props, label, isUppercase) => (
   <components.Option {...props}>
@@ -18,7 +18,12 @@ const Option = (props, label, isUppercase) => (
         style={{ color: colors.royalBlue }}
       />
     )}
-    <Text className={`font-primary-medium-14 ${!!isUppercase ? "text-uppercase" : ""}`} text={props.data[label]} />
+    <Text
+      className={`font-primary-medium-14 ${
+        !!isUppercase ? 'text-uppercase' : ''
+      }`}
+      text={props.data[label]}
+    />
   </components.Option>
 );
 
@@ -50,7 +55,7 @@ const MultiSelect = (props) => {
     label,
     closeMenuOnSelect = true,
     isMulti = false,
-    labelKey = "label",
+    labelKey = 'label',
     isOptionUppercase = false,
     options,
     placeholder = 'Select',
