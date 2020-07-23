@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import commonAction from 'Actions/';
+import {commonAction} from 'Actions/';
 
 const useDropDown = (_endpoint, stateName, _data = null) => {
   const [dropDownItems, setad] = useState([]);

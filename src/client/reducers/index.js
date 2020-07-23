@@ -9,6 +9,10 @@ import { reducerState, createFilteredReducer } from './commonReducer';
 // });
 
 const rootReducer = combineReducers({
+  overrideSearchResult: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.override.searchResult
+  ),
   usersSignIn: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.users.signIn
