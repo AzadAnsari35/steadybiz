@@ -1,5 +1,5 @@
 import React from 'react';
-import UserProfileForm from 'Components/Offices/User/UserProfile';
+import CreateUserForm from 'Components/Offices/User/CreateUser';
 import { Panel, IconWithBackground } from 'Widgets';
 import PersonIcon from '@material-ui/icons/Person';
 import colors from 'Constants/colors';
@@ -9,23 +9,14 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import './style.scss';
 
-const UserProfile = () => {
-  const location = useLocation();
+const CreateUser = () => {
   let history = useHistory();
-
-  const mode = location.pathname;
 
   return (
     <div className="ViewProfile">
       <Panel
         id="userProfilePanel"
-        title={`${
-          mode === routes.office.viewOfficeUser
-            ? 'View User'
-            : mode === routes.office.manageUserProfile
-            ? 'Manage Profile'
-            : 'Modify User'
-        }`}
+        title="Create User"
         panelHeaderIcon={
           <PersonIcon style={{ fontSize: 30, color: colors.white }} />
         }
@@ -48,9 +39,9 @@ const UserProfile = () => {
         }
         hidePanelAction={true}
       >
-        <UserProfileForm mode={mode} />
+        <CreateUserForm />
       </Panel>
     </div>
   );
 };
-export default UserProfile;
+export default CreateUser;

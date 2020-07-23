@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
-
 import { apiReqeust, utils, Response } from 'Helpers/';
+
 const useAsyncEndpoint = (fn) => {
   const [res, setRes] = useState({
     data: null,

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput, Button, Toast, PrimaryLoader } from 'Widgets';
 import { regex } from 'Helpers/validator';
-import { showError} from 'Helpers/utils';
+import { showError } from 'Helpers/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import commonAction from 'Actions/';
 import endpoint from 'Config/endpoint';
@@ -10,7 +10,7 @@ import { utils } from 'Helpers/index';
 import { useHistory } from 'react-router-dom';
 
 const SignInForm = () => {
-  const history=useHistory();
+  const history = useHistory();
   const { register, handleSubmit, watch, errors } = useForm();
   const [error, setError] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
@@ -23,22 +23,17 @@ const SignInForm = () => {
 
   const postLogin = () => {
     if (apiResponse.items != null) {
-      const errMsg = utils.checkError(apiResponse);
-      if(errMsg!=='')
-      setErrorMsg(errMsg);
-      else
-      {
-        const responseJson=apiResponse.items.data;
-        utils.setItemToStorage('userToken',responseJson.token);
-        utils.setItemToStorage('userId',responseJson.userDto.userId);
-        utils.setItemToStorage('officeId',responseJson.userDto.officeId);
-        history.push('/Office/Registration');        
-
+      const errMsg = utils.checkError(apiResponse.items);
+      if (errMsg !== '') setErrorMsg(errMsg);
+      else {
+        const responseJson = apiResponse.items.data;
+        utils.setItemToStorage('userToken', responseJson.token);
+        utils.setItemToStorage('userId', responseJson.userDto.userId);
+        utils.setItemToStorage('officeId', responseJson.userDto.officeId);
+        history.push('/Office/Registration');
       }
-      
-      
     }
-    
+
     //alert(apiResponse.items.success);
   };
 

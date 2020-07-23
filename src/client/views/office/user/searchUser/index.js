@@ -17,6 +17,7 @@ import PrimaryTableHeader from 'Widgets/TableHeaders/PrimaryTableHeader';
 import routes from 'Constants/routes';
 import './style.scss';
 import { useHistory } from 'react-router-dom';
+import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 
 const headerData = [
   'FIRST NAME',
@@ -141,6 +142,7 @@ const PopoverAction = () => {
 
 const SearchUser = () => {
   let history = useHistory();
+  const [regResponse, postRegResponse] = useAsyncEndpoint();
 
   const { register, handleSubmit, errors, control, getValues } = useForm({
     defaultValues: {

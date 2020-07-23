@@ -25,7 +25,31 @@ export default {
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.countries,
-      dropDownParam: { label: 'countryname', value: 'countryCode' },
+    },
+
+    objectStatuses: {
+      url: config.api.url + '/api/v1/master/objectstatuses',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.GET,
+      actionType: actionTypeConstant.master.objectStatuses,
+    },
+  },
+
+  office: {
+    searchUser: {
+      url: config.api.url + '/api/v1/offices/user/searchUser',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.GET,
+    },
+    createUser: {
+      url: config.api.url + '/api/v1/offices/user/createUser',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+    },
+    updateUser: {
+      url: config.api.url + '/api/v1/offices/user/updateUser',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
     },
   },
 };

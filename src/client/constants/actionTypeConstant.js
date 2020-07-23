@@ -4,5 +4,6 @@ export const actionTypeConstant = {
   },
   master: {
     countries: 'master.countries',
+    objectStatuses: 'master.objectStatuses',
   },
 };

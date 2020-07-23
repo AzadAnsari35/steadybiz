@@ -1,0 +1,16 @@
+@import '../../../../styles/variables';
+
+$root: '.ChangePasswordForm';
+
+#{$root} {
+  padding: 32px 70px 40px;
+
+  &-left {
+    padding-right: 70px;
+    border-right: 1px solid $mercury1;
+  }
+
+  &-right {
+    padding-left: 70px;
+  }
+}

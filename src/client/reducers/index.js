@@ -17,5 +17,9 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.master.countries
   ),
+  masterObjectStatuses: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.master.objectStatuses
+  ),
 });
 export default rootReducer;
