@@ -1,5 +1,5 @@
 export const reducerState=(state = null, action) => {
-    return { ...state, items: action.payload };
+    return { ...state, items: action.payload,actualActionType:action.actualActionType };
   }
 
  export const createFilteredReducer = (reducerFunction, reducerPredicate) => {

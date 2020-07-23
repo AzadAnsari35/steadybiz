@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import {
   SelectWithTextInput,
@@ -18,6 +18,7 @@ import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam, titles } from 'Constants/commonConstant';
 import { countriesDialCodeFormatter } from 'Helpers/global';
+import { useDispatch, useSelector } from 'react-redux';
 
 import endpoint from 'Config/endpoint';
 import { utils } from 'Helpers';
@@ -53,6 +54,13 @@ const UserProfileForm = (props) => {
   const isManageProfile = mode === routes.office.manageUserProfile;
   const isUpdateUser = mode === routes.office.updateOfficeUser;
 
+  const { register, handleSubmit, errors, control, watch, reset } = useForm({
+    defaultValues,
+  });
+
+  const searchResult = useSelector((state) => state.overrideSearchResult);
+  const rowNumber = useSelector((state) => state.selectedOption);
+
   const [toast, setToast] = useState({
     message: '',
     status: false,
@@ -71,12 +79,9 @@ const UserProfileForm = (props) => {
     countriesDialCodeFormatter
   );
 
-  const { register, handleSubmit, errors, control, watch, reset } = useForm({
-    defaultValues,
-  });
-
   const [createRes, postCreateRequest] = createEndpoint();
   const [updateRes, postUpdateRequest] = updateEndpoint();
+  const [viewRes, postViewData] = viewEndpoint();
 
   const onSubmit = (data, e) => {
     console.log('data', data);
@@ -94,6 +99,8 @@ const UserProfileForm = (props) => {
     //     reset(defaultValues);
     //   }
     // }
+    if (isViewUser) {
+    }
 
     if (isUpdateUser) {
       postUpdateRequest(data);

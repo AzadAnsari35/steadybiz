@@ -19,7 +19,8 @@ const useAsyncEndpoint = (fn) => {
     const doAxios = async () => {
       //   setLoading(true);
       try {
-        // console.log(req.data.request);
+        console.log('endpoint', endpoint);
+
         const res = await apiReqeust.httpRequest(
           req._endpoint.httpVerb,
           req.data,
