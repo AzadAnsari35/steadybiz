@@ -81,24 +81,10 @@ const UserProfileForm = (props) => {
 
   const [createRes, postCreateRequest] = createEndpoint();
   const [updateRes, postUpdateRequest] = updateEndpoint();
-  const [viewRes, postViewData] = viewEndpoint();
 
   const onSubmit = (data, e) => {
     console.log('data', data);
 
-    // if (isCreateUser) {
-    //   postCreateRequest({
-    //     ...data,
-    //     officeId: utils.getItemFromStorage('officeId'),
-    //   });
-
-    //   const errMsg = utils.checkError(createRes);
-    //   if (!errMsg) setToast({ status: false, message: errMsg });
-    //   else {
-    //     setToast({ status: true, message: 'Office user created successfully' });
-    //     reset(defaultValues);
-    //   }
-    // }
     if (isViewUser) {
     }
 

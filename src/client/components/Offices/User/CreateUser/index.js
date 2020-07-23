@@ -31,17 +31,7 @@ const createEndpoint = () => {
   }));
 };
 
-const defaultValues = {
-  officeId: 'SB00235',
-  officeName: 'Axis Tours and Travels',
-  title: '',
-  mobileDialCode: '',
-  securityGroup: '',
-  status: '',
-};
 const CreateUserForm = (props) => {
-  const { mode } = props;
-
   const [toast, setToast] = useState({
     message: '',
     status: false,
@@ -59,6 +49,20 @@ const CreateUserForm = (props) => {
     'masterCountries',
     countriesDialCodeFormatter
   );
+
+  console.log(
+    'objectStatusesList.dropDownItems',
+    objectStatusesList.dropDownItems
+  );
+
+  const defaultValues = {
+    officeId: 'SB00235',
+    officeName: 'Axis Tours and Travels',
+    title: '',
+    mobileDialCode: '',
+    securityGroup: '',
+    status: objectStatusesList.dropDownItems[0],
+  };
 
   const { register, handleSubmit, errors, control, watch, reset } = useForm({
     defaultValues,
@@ -216,6 +220,7 @@ const CreateUserForm = (props) => {
                     errors={errors}
                     validation={{ required: 'Please enter the status' }}
                     width="auto"
+                    disabled
                   />
                 </Grid>
               </Grid>
