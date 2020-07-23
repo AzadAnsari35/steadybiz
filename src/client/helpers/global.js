@@ -1,4 +1,5 @@
 import moment from "moment";
+import { passengers, priceFractionDigit } from "Constants/flight.constant";
 
 String.prototype.replaceArray = function(find, replace) {
   var replaceString = this;
@@ -8,7 +9,7 @@ String.prototype.replaceArray = function(find, replace) {
   return replaceString;
 };
 
-export const changeDateFormat = (date) => {
+export const weekdayDateFormat = (date) => {
   return moment(date, "YYYY-MM-DD").format("dddd, MMM DD");
 };
 
@@ -30,4 +31,16 @@ export const extractTime = (timeGMT) => {
 
 export const applyCommaToPrice = (price) => {
   return price.toLocaleString("en-IN");
+};
+
+export const getFormattedPrice = (price) => {
+	return price.toFixed(priceFractionDigit);
+};
+
+export const getPassengerTypeName = (ptc, isUppercase = false) => {
+	const passengerTypeName = passengers.find((passenger) => passenger.PTC === ptc).NAME;
+	if (isUppercase) {
+		return passengerTypeName.toUpperCase();
+	}
+	return passengerTypeName;
 };

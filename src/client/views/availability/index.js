@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Grid } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import SwapVertIcon from '@material-ui/icons/SwapVert';
 
-import availabilityResults from "./availabilityResults";
-
 import colors from "Constants/colors";
 import useToggle from "Hooks/useToggle";
+import { commonAction } from "Actions";
+import endpoint from 'Config/endpoint';
 
 import Filters from "Components/Flights/Availability/Filters";
 import FlightResults from "Components/Flights/Availability/FlightResults";
@@ -27,6 +28,7 @@ const sortingOptions = [
 ];
 
 const Availability = () => {
+  const dispatch = useDispatch();
   const [showSearch, setShowSearch] = useToggle(false);
   const { control } = useForm({
     defaultValues: {
@@ -34,12 +36,27 @@ const Availability = () => {
     }
   });
 
+  const flightSearchInput = useSelector((state) => state.flightSearchInput);
+  useEffect(() => {
+    if (!!flightSearchInput.items && !!flightSearchInput.items.data) {
+      try {
+        dispatch(commonAction(endpoint.flights.flightSearch, flightSearchInput.items.data));
+      } catch (err) {
+        showError(err, setError);
+      }
+    }
+  }, []);
+
+  const flightSearchResponse = useSelector((state) => state.flightSearch);
+
   return (
     <div className="Availability">
       <div className="Availability-modifySearch">
         {!showSearch ? 
           <div className="d-flex justify-content-between align-items-center">
-            <FlightSummary />
+            {!!flightSearchInput.items && !!flightSearchInput.items.data &&
+              <FlightSummary isSearch requestBody={flightSearchInput.items.data} />
+            }
             <Button secondary text="Modify Search" onClick={setShowSearch} />
           </div> :
           <div className="Availability-modifySearch__searchSection">
@@ -54,9 +71,11 @@ const Availability = () => {
         }
       </div>
       <div className="Availability-mainSection">
-        <Grid item xs={12}>
-          <LinearLoader label="Getting the best fare from more than 600 airlines..." />
-        </Grid>
+        {!flightSearchResponse.items &&
+          <Grid item xs={12}>
+            <LinearLoader label="Getting the best fare from more than 600 airlines..." />
+          </Grid>
+        }
         <Grid container spacing={4}>
           <Grid item xs={12} md={3}>
             <div className="Availability-mainSection__filtersContainer">
@@ -87,7 +106,12 @@ const Availability = () => {
                   />
                 </div>
               </div>
-              <FlightResults results={availabilityResults} />
+              {!!flightSearchResponse.items &&
+                flightSearchResponse.items.data &&
+                <FlightResults
+                  results={flightSearchResponse.items.data}
+                />
+              }
             </div>
           </Grid>
         </Grid>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import colors from "Constants/colors";
 
@@ -10,11 +10,14 @@ const DropdownBox = props => {
   const { children, isContentVisible = false, placeholder = "Select", onClick } = props;
   const [isOpen, setIsOpen] = useState(isContentVisible);
 
+  useEffect(() => {
+    setIsOpen(isContentVisible);
+  }, [isContentVisible]);
+
   const handleDropdownClick = () => {
     setIsOpen(!isOpen);
     onClick(!isOpen);
   };
-
 
   return (
     <div className="DropdownBox d-flex align-items-center">

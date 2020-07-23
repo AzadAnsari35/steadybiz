@@ -14,6 +14,12 @@ export default {
       url: config.api.url + '/flights/flightSelect',
       isAuth: true,
     },
+    flightSearch: {
+      url: config.api.url + '/api/v1/flights/flightSearch',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.flights.flightSearch,
+    },
   },
   user: {
     login: {

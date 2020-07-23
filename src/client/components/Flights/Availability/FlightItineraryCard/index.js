@@ -6,7 +6,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import ShareIcon from '@material-ui/icons/Share';
 
 import colors from "Constants/colors";
-import useToggle from "Client/hooks/useToggle";
+import useToggle from "Hooks/useToggle";
 import {
   checkIsFareRefundable,
   getTotalItineraryFareAndCurrency,
@@ -16,8 +16,11 @@ import {
   getArrivalSegmentDetails,
 } from "Helpers/flight.helpers";
 import { applyCommaToPrice, extractTime } from "Helpers/global";
+import { displayImage } from "Helpers/utils";
 
 import FlightDetails from "Components/Flights/Availability/FlightDetails";
+import BaggageAllowance from "Components/Flights/Availability/BaggageAllowance";
+import FareSummaryAndPolicy from "Components/Flights/Availability/FareSummaryAndPolicy";
 import { ArrowIcon, Button, Dot, Line, Tag, Text } from "Widgets";
 
 import "./style.scss";
@@ -32,7 +35,7 @@ const flightDetailsTabs = [
     name: "Baggage Allowance",
   },
   {
-    id: "fareSummary",
+    id: "fareSummaryAndPolicy",
     name: "Fare Summary & Policy",
   },
 ];
@@ -68,11 +71,25 @@ const FlightItineraryCard = props => {
             {itinerary && itinerary.flightSegments && itinerary.flightSegments.map((segment, index) =>
               <div key={index} className="FlightItineraryCard-top__leftSection">
                 <div className="segmentType font-primary-medium-14 d-flex align-items-center">
-                  <FlightIcon className="icon" />{segment.flightSegmentDirection}
+                  <FlightIcon className="icon" />{index === 0 ? "Outbound" : "Return"}
                 </div>
                 <div className="segmentDetail d-flex align-items-center">
                   <div className="airline d-flex align-items-center">
-                    <div className="airline-icon"></div>
+                    <div className="airline-icon">
+                      <img
+                        alt={
+                          index === 0
+                          ? outboundAirlineDetails.marketingAirline
+                          : inboundAirlineDetails.marketingAirline
+                        }
+                        src={displayImage(`${
+                            index === 0
+                            ? outboundAirlineDetails.marketingAirline
+                            : inboundAirlineDetails.marketingAirline
+                          }.png`, "images/airlines/bigicons")
+                        }
+                      />
+                    </div>
                     <Text
                       className="airline-name font-primary-medium-14"
                       text={
@@ -136,10 +153,6 @@ const FlightItineraryCard = props => {
                         }
                         <Dot big solid />
                       </div>
-                      {/* <div className="stop-names d-flex justify-content-center width-100">
-                        <Text className="font-primary-regular-12" text="HYD" />
-                        <Text className="font-primary-regular-12" text="HEL" />
-                      </div> */}
                       <div className="stop-names d-flex justify-content-center width-100">
                         {index === 0 ?
                           outboundFlightSegment.stopCount > 0 &&
@@ -254,8 +267,16 @@ const FlightItineraryCard = props => {
             )}
           </div>
           <div className="FlightItineraryCard-flightDetails__content">
-            <FlightDetails itinerary={itinerary} />
-        </div>
+            {activeFlightTab === "flightDetails" &&
+              <FlightDetails itinerary={itinerary} />
+            }
+            {activeFlightTab === "baggageAllowance" &&
+              <BaggageAllowance itinerary={itinerary} />
+            }
+            {activeFlightTab === "fareSummaryAndPolicy" &&
+              <FareSummaryAndPolicy itinerary={itinerary} />
+            }
+          </div>
         </div>
       }
     </div>

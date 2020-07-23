@@ -13,6 +13,14 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.override.searchResult
   ),
+  flightSearchInput: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.flights.flightSearchInput
+  ),
+  flightSearch: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.flights.flightSearch
+  ),
   usersSignIn: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.users.signIn

@@ -29,6 +29,9 @@ import PrimaryAccordion from "./PrimaryAccordion";
 import RangeSlider from "./RangeSlider";
 import SwitchTab from "./SwitchTab";
 import TextWithTextInput from "./TextWithTextInput";
+import ArrivalDateIcon from "./Icons/ArrivalDateIcon";
+import DepartureDateIcon from "./Icons/DepartureDateIcon";
+import Chip from "./Chip";
 
 export {
   Avatar,
@@ -62,4 +65,7 @@ export {
   PrimaryAccordion,
   RangeSlider,
   SwitchTab,
+  ArrivalDateIcon,
+  DepartureDateIcon,
+  Chip,
 };

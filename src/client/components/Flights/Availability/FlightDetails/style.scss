@@ -28,15 +28,7 @@ $root: ".FlightDetails";
   .FlightSegment {
     height: 100%;
     &-segment {
-      align-items: center;
-      background: $mystic;
-      padding: 8px 24px;
-      border-radius: 6px;
-      width: auto;
       margin-left: 144px;
-      svg {
-        margin: 0 8px;
-      }
     }
     &-content {
       width: 100%;
