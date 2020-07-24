@@ -2,8 +2,10 @@ import Home from './home';
 import OfficeRegistration from './office/officeRegistration';
 import SearchUser from './office/user/searchUser';
 import UserProfile from './office/user/userProfile';
-import Search from "./search";
-import Availability from "./availability";
+import CreateUser from './office/user/createUser';
+import ChangePassword from './office/user/changePassword';
+import Search from './search';
+import Availability from './availability';
 
 export {
   Home,
@@ -12,4 +14,6 @@ export {
   UserProfile,
   Search,
   Availability,
+  CreateUser,
+  ChangePassword,
 };

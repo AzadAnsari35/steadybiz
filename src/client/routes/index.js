@@ -7,6 +7,8 @@ import {
   UserProfile,
   Search,
   Availability,
+  CreateUser,
+  ChangePassword,
 } from 'Views/';
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
@@ -21,6 +23,13 @@ const Routes = () => (
       path={routes.office.searchOfficeUser}
       component={SearchUser}
     />
+
+    <PrivateRoute
+      exact
+      path={routes.office.createOfficeUser}
+      component={CreateUser}
+    />
+
     <PrivateRoute
       exact
       path={routes.office.viewOfficeUser}
@@ -29,14 +38,20 @@ const Routes = () => (
 
     <PrivateRoute
       exact
-      path={routes.office.createOfficeUser}
+      path={routes.office.updateOfficeUser}
       component={UserProfile}
     />
 
     <PrivateRoute
       exact
-      path={routes.office.updateOfficeUser}
+      path={routes.office.manageUserProfile}
       component={UserProfile}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.changePassword}
+      component={ChangePassword}
     />
 
     <PrivateRoute

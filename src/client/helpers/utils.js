@@ -13,24 +13,19 @@ export const isDevelopment = () => {
 export const showError = (exception, errorMessage) => {
   errorMessage(exception.message);
 };
-export const setItemToStorage=(key,value,storageType=1) =>{
-  if(storageType===1)
-  sessionStorage.setItem(key,value);
-  else
-  localStorage.setItem(key,value);
-}
-export const getItemFromStorage = (key,storageType=1) => {
-  let item='';
-  if(storageType===1)
-  {
-    item=sessionStorage.getItem(key);    
+export const setItemToStorage = (key, value, storageType = 1) => {
+  if (storageType === 1) sessionStorage.setItem(key, value);
+  else localStorage.setItem(key, value);
+};
+export const getItemFromStorage = (key, storageType = 1) => {
+  let item = '';
+  if (storageType === 1) {
+    item = sessionStorage.getItem(key);
+  } else {
+    item = sessionStorage.getItem(key);
   }
-  else
-  {
-    item=sessionStorage.getItem(key);  
-  }
-     
-      return item;
+
+  return item;
 };
 export const appendHeader = (endpoint) => {
   //const token =getItemFromLocalStorage('userToken');
@@ -42,8 +37,7 @@ export const appendHeader = (endpoint) => {
   };
 };
 export const checkError = (apiResponse) => {
-  if (!apiResponse.items.status) {
-    alert(apiResponse.items.error);
-    return apiResponse.items.error.message;
+  if (!apiResponse.status) {
+    return apiResponse.error.message;
   } else return '';
 };

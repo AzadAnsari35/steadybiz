@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import UserProfileForm from 'Components/Offices/User/UserProfile';
+import React from 'react';
+import ChangePasswordForm from 'Components/Offices/User/ChangePassword';
 import { Panel, IconWithBackground } from 'Widgets';
 import PersonIcon from '@material-ui/icons/Person';
 import colors from 'Constants/colors';
@@ -9,30 +9,21 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import './style.scss';
 
-const UserProfile = () => {
-  const location = useLocation();
+const ChangePassword = () => {
   let history = useHistory();
-
-  const mode = location.pathname;
 
   return (
     <div className="ViewProfile">
       <Panel
         id="userProfilePanel"
-        title={`${
-          mode === routes.office.viewOfficeUser
-            ? 'View User'
-            : mode === routes.office.manageUserProfile
-            ? 'Manage Profile'
-            : 'Modify User'
-        }`}
+        title="Change Password"
         panelHeaderIcon={
           <PersonIcon style={{ fontSize: 30, color: colors.white }} />
         }
         panelIconMarginLeft={'14'}
         showHeaderContent
         headerContent={
-          <div className="font-primary-medium-22">User Profile</div>
+          <div className="font-primary-medium-22">Change Password</div>
         }
         noPadding
         addExtraMargin
@@ -40,7 +31,7 @@ const UserProfile = () => {
         headerActionContent={
           <IconWithBackground
             bgColor={colors.lightRed}
-            onClick={() => history.push('/office/user/search-user')}
+            onClick={() => history.goBack()}
             showCursor
           >
             <CloseIcon style={{ color: colors.red }} />
@@ -48,9 +39,9 @@ const UserProfile = () => {
         }
         hidePanelAction={true}
       >
-        <UserProfileForm mode={mode} />
+        <ChangePasswordForm />
       </Panel>
     </div>
   );
 };
-export default UserProfile;
+export default ChangePassword;

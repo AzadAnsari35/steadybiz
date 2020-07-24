@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import {
   SelectWithTextInput,
@@ -18,7 +18,6 @@ import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam, titles } from 'Constants/commonConstant';
 import { countriesDialCodeFormatter } from 'Helpers/global';
-import { useDispatch, useSelector } from 'react-redux';
 
 import endpoint from 'Config/endpoint';
 import { utils } from 'Helpers';
@@ -32,35 +31,7 @@ const createEndpoint = () => {
   }));
 };
 
-const updateEndpoint = () => {
-  return useAsyncEndpoint((data) => ({
-    _endpoint: endpoint.office.updateUser,
-    data,
-  }));
-};
-
-const defaultValues = {
-  officeId: 'SB00235',
-  officeName: 'Axis Tours and Travels',
-  title: '',
-  mobileDialCode: '',
-  securityGroup: '',
-  status: '',
-};
-const UserProfileForm = (props) => {
-  const { mode } = props;
-
-  const isViewUser = mode === routes.office.viewOfficeUser;
-  const isManageProfile = mode === routes.office.manageUserProfile;
-  const isUpdateUser = mode === routes.office.updateOfficeUser;
-
-  const { register, handleSubmit, errors, control, watch, reset } = useForm({
-    defaultValues,
-  });
-
-  const searchResult = useSelector((state) => state.overrideSearchResult);
-  const rowNumber = useSelector((state) => state.selectedOption);
-
+const CreateUserForm = (props) => {
   const [toast, setToast] = useState({
     message: '',
     status: false,
@@ -79,51 +50,62 @@ const UserProfileForm = (props) => {
     countriesDialCodeFormatter
   );
 
+  console.log(
+    'objectStatusesList.dropDownItems',
+    objectStatusesList.dropDownItems
+  );
+
+  const defaultValues = {
+    officeId: 'SB00235',
+    officeName: 'Axis Tours and Travels',
+    title: '',
+    mobileDialCode: '',
+    securityGroup: '',
+    status: objectStatusesList.dropDownItems[0],
+  };
+
+  const { register, handleSubmit, errors, control, watch, reset } = useForm({
+    defaultValues,
+  });
+
   const [createRes, postCreateRequest] = createEndpoint();
-  const [updateRes, postUpdateRequest] = updateEndpoint();
 
   const onSubmit = (data, e) => {
     console.log('data', data);
 
-    if (isViewUser) {
-    }
+    postCreateRequest({
+      ...data,
+      officeId: utils.getItemFromStorage('officeId'),
+    });
 
-    if (isUpdateUser) {
-      postUpdateRequest(data);
-      const errMsg = utils.checkError(createRes);
-
-      if (errMsg) setToast({ status: false, message: errMsg });
-      else {
-        setToast({ status: true, message: 'Office user updated successfully' });
-        reset(defaultValues);
-      }
+    const errMsg = utils.checkError(createRes);
+    if (!errMsg) setToast({ status: false, message: errMsg });
+    else {
+      setToast({ status: true, message: 'Office user created successfully' });
+      reset(defaultValues);
     }
   };
 
   return (
     <>
-      <div className="UserProfileForm">
-        <div className="UserProfileForm-imageContainer d-flex align-items-center">
-          <div className="UserProfileForm-imageContainer__image d-flex justify-content-center align-items-center mr-20">
+      <div className="CreateUserForm">
+        <div className="CreateUserForm-imageContainer d-flex align-items-center">
+          <div className="CreateUserForm-imageContainer__image d-flex justify-content-center align-items-center mr-20">
             <PersonIcon style={{ fontSize: 75, color: colors.gray }} />
           </div>
-          {!isViewUser && (
-            <div>
-              <div className="d-flex">
-                <Button text="Upoad New Photo" className="mb-16 mr-10" />
-                <Button text="Remove" secondary className="mb-16" />
-              </div>
-
-              <div className="UserProfileForm-imageContainer__text font-primary-semibold-14">
-                Image should be at least 300 X 300 px in .jpg/.png or .gif
-                format
-              </div>
+          <div>
+            <div className="d-flex">
+              <Button text="Upoad New Photo" className="mb-16 mr-10" />
             </div>
-          )}
+
+            <div className="CreateUserForm-imageContainer__text font-primary-semibold-14">
+              Image should be at least 300 X 300 px in .jpg/.png or .gif format
+            </div>
+          </div>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container>
-            <Grid item xs={6} className="UserProfileForm-left">
+            <Grid item xs={6} className="CreateUserForm-left">
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <Text
@@ -154,7 +136,6 @@ const UserProfileForm = (props) => {
                       required: 'Please enter the title.',
                     }}
                     control={control}
-                    disabled={!isUpdateUser}
                   />
                 </Grid>
 
@@ -176,7 +157,6 @@ const UserProfileForm = (props) => {
                         message: 'Please enter the alphabets only.',
                       },
                     }}
-                    disabled={!isUpdateUser}
                   />
                 </Grid>
 
@@ -196,30 +176,6 @@ const UserProfileForm = (props) => {
                     }}
                     control={control}
                     showValue
-                    disabled={isViewUser}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-
-            <Grid item xs={6} className="UserProfileForm-right">
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Text
-                    showLeftBorder
-                    text="Login Details"
-                    className="font-primary-semibold-18"
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <TextInput
-                    name="emailId"
-                    register={register}
-                    errors={errors}
-                    label="Login ID | Email ID:"
-                    placeholder="Type Email ID"
-                    disabled
                   />
                 </Grid>
 
@@ -249,7 +205,6 @@ const UserProfileForm = (props) => {
                     validation={{ required: 'Please enter the security group' }}
                     showValue
                     width="auto"
-                    disabled={!isUpdateUser}
                   />
                 </Grid>
 
@@ -265,21 +220,76 @@ const UserProfileForm = (props) => {
                     errors={errors}
                     validation={{ required: 'Please enter the status' }}
                     width="auto"
-                    disabled={!isUpdateUser}
+                    disabled
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={6} className="CreateUserForm-right">
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Text
+                    showLeftBorder
+                    text="Login Details"
+                    className="font-primary-semibold-18"
                   />
                 </Grid>
 
-                {!isViewUser && (
-                  <Grid item xs={12} className="d-flex justify-content-end">
-                    <Button
-                      text={`${
-                        isManageProfile ? 'Update Profile' : 'Modify User'
-                      }`}
-                      type="submit"
-                      className="mb-30"
-                    />
-                  </Grid>
-                )}
+                <Grid item xs={12}>
+                  <TextInput
+                    name="emailId"
+                    register={register}
+                    errors={errors}
+                    label="Login ID | Email ID:"
+                    placeholder="Type Email ID"
+                    validation={{
+                      required: 'Please enter the email.',
+                      pattern: {
+                        value: regex.email,
+                        message: 'Please enter valid email id.',
+                      },
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextInput
+                    name="password"
+                    type="password"
+                    register={register}
+                    errors={errors}
+                    label="Password:"
+                    validation={{
+                      required: 'Please enter the password.',
+                      minLength: {
+                        value: 8,
+                        message: 'Please enter minimum eight characters',
+                      },
+                      maxLength: {
+                        value: 16,
+                        message: 'Please enter maximum sixteen characters',
+                      },
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextInput
+                    name="confirmPassword"
+                    type="password"
+                    register={register}
+                    errors={errors}
+                    label="Confirm Password:"
+                    validation={{
+                      validate: (value) =>
+                        value === watch('password') || "Passwords don't match.",
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={12} className="d-flex justify-content-end">
+                  <Button text="Create User" type="submit" className="mb-30" />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
@@ -292,4 +302,4 @@ const UserProfileForm = (props) => {
   );
 };
 
-export default UserProfileForm;
+export default CreateUserForm;

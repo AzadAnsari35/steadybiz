@@ -1,11 +1,11 @@
 import moment from "moment";
 import { passengers, priceFractionDigit } from "Constants/flight.constant";
 
-String.prototype.replaceArray = function(find, replace) {
+String.prototype.replaceArray = function (find, replace) {
   var replaceString = this;
-  for (var i = 0; i < find.length; i++) {   
+  for (var i = 0; i < find.length; i++) {
     replaceString = replaceString.replace(find[i], replace[i]);
-  }  
+  }
   return replaceString;
 };
 
@@ -15,14 +15,14 @@ export const weekdayDateFormat = (date) => {
 
 export const convertIntoTime = (timeInString) => {
   let timeArr, hours, min, sec;
-  timeArr = timeInString.split(":");
-  hours = timeArr[0] + "h";
-  timeArr[1] && (min = timeArr[1] + "m");
-  timeArr[2] && (sec = timeArr[2] + "s");
+  timeArr = timeInString.split(':');
+  hours = timeArr[0] + 'h';
+  timeArr[1] && (min = timeArr[1] + 'm');
+  timeArr[2] && (sec = timeArr[2] + 's');
 
-  if (!sec && min) return hours + " " + min;
+  if (!sec && min) return hours + ' ' + min;
   if (!min) return hours;
-  return hours + " " + min + " " + sec;
+  return hours + ' ' + min + ' ' + sec;
 };
 
 export const extractTime = (timeGMT) => {
@@ -30,7 +30,19 @@ export const extractTime = (timeGMT) => {
 };
 
 export const applyCommaToPrice = (price) => {
-  return price.toLocaleString("en-IN");
+  return price.toLocaleString('en-IN');
+};
+
+export const countriesDialCodeFormatter = (data) => {
+  let dropDownItems = [];
+  data.map((curData) => {
+    dropDownItems.push({
+      label: curData.countryname,
+      value: `${curData.countryCode} (${curData.countryIsdCode})`,
+    });
+  });
+
+  return dropDownItems;
 };
 
 export const getFormattedPrice = (price) => {

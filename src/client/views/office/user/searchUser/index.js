@@ -3,20 +3,25 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { regex } from 'Helpers/validator';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
 import {
   Button,
   MultiSelect,
   SelectWithTextInput,
   Text,
   TextInput,
+  SimplePopover,
+  PrimaryTable,
+  PrimaryTableHeader,
 } from 'Widgets';
-import SimplePopover from 'Widgets/Popover';
-import PrimaryTable from 'Widgets/PrimaryTable';
-import PrimaryTableHeader from 'Widgets/TableHeaders/PrimaryTableHeader';
 import routes from 'Constants/routes';
-import './style.scss';
 import { useHistory } from 'react-router-dom';
+import endpoint from 'Config/endpoint.js';
+import { commonAction, commonActionWithoutApi } from 'Actions/';
+import { useDispatch, useSelector } from 'react-redux';
+import useDropDown from 'Hooks/useDropDown';
+import { dropDownParam } from 'Constants/commonConstant';
+
+import './style.scss';
 
 const headerData = [
   'FIRST NAME',
@@ -28,71 +33,14 @@ const headerData = [
   'ACTION',
 ];
 
-const response = {
-  status: true,
-  data: {
-    status: 'OK',
-    count: 4,
-    data: [
-      {
-        // ofId: '30f4c169-56b1-4db2-9ab4-7645801ee5b9',
-        firstName: 'Azad',
-        lastName: 'Ansari',
-        officeEmail: 'pawan@gmail.com',
-        mobile: '+91-9985860110',
-        securityGroup: 'Admin',
-        Status: 'Active',
-      },
-      {
-        // ofId: '30f4c169-56b1-4db2-9ab4-7645801ee5b9',
-        firstName: 'Azad',
-        lastName: 'ANsari',
-        officeEmail: 'pawan@gmail.com',
-        mobile: '+91-9985860110',
-        securityGroup: 'MIS Finance',
-        Status: 'Inactive',
-      },
-      {
-        // ofId: '30f4c169-56b1-4db2-9ab4-7645801ee5b9',
-        firstName: 'Azad',
-        lastName: 'Ansari',
-        officeEmail: 'pawan@gmail.com',
-        mobile: '+91-9985860110',
-        securityGroup: 'Account',
-        Status: 'Freeze',
-      },
-    ],
-  },
-};
-
-export const objectStatusData = [
-  { label: 'All', value: 'All' },
-
-  {
-    // objectStatusId: 'eb2c823c-790a-44c7-a1fb-777cb9b7caa8',
-    label: 'ACTIVE',
-  },
-  {
-    // objectStatusId: 'c5fbcd98-5ace-493a-89d2-f4bcdaa6ad8a',
-    label: 'INACTIVE',
-  },
-  {
-    // objectStatusId: 'c1142fd8-6933-4c5c-8667-3fb55a872e2b',
-    label: 'REGISTER',
-  },
-  {
-    // objectStatusId: 'e67cdecd-0c20-46be-aa0d-6f880dd503e7',
-    label: 'REJECT',
-  },
-  {
-    // objectStatusId: 'ef7c4785-d249-49d3-ab38-cc3197c26cd1',
-    label: 'FREEZE',
-  },
-];
-
-const PopoverAction = () => {
+const PopoverAction = (props) => {
   const [showPopover, setShowPopover] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const { rowNumber } = props;
 
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -102,6 +50,16 @@ const PopoverAction = () => {
   const handlePopoverClose = () => {
     setAnchorEl(null);
     setShowPopover(false);
+  };
+
+  const handleViewUser = () => {
+    history.push(routes.office.viewOfficeUser);
+    dispatch(commonActionWithoutApi(endpoint.office.viewUser, rowNumber));
+  };
+
+  const handleModifyUser = () => {
+    history.push(routes.office.updateOfficeUser);
+    dispatch(commonActionWithoutApi(endpoint.office.updateUser, rowNumber));
   };
 
   return (
@@ -121,18 +79,18 @@ const PopoverAction = () => {
         }}
       >
         <div className="SearchUser-tableAction d-flex flex-direction-column">
-          <Link
-            to={routes.office.viewOfficeUser}
-            className="font-primary-regular-14"
+          <div
+            className="font-primary-regular-14 cursor-pointer"
+            onClick={() => handleViewUser()}
           >
             View User
-          </Link>
-          <Link
-            to={routes.office.updateOfficeUser}
-            className="font-primary-regular-14"
+          </div>
+          <div
+            className="font-primary-regular-14 cursor-pointer"
+            onClick={() => handleModifyUser()}
           >
             Modify User
-          </Link>
+          </div>
         </div>
       </SimplePopover>
     </>
@@ -141,16 +99,28 @@ const PopoverAction = () => {
 
 const SearchUser = () => {
   let history = useHistory();
+  let dispatch = useDispatch();
+
+  const objectStatusesList = useDropDown(
+    endpoint.master.objectStatuses,
+    dropDownParam.objectStatuses,
+    'masterObjectStatuses'
+  );
+
+  const searchResult = useSelector((state) => state.overrideSearchResult);
+  const response = searchResult ? searchResult.items : [];
+  console.log('response', response);
 
   const { register, handleSubmit, errors, control, getValues } = useForm({
     defaultValues: {
       status: { label: 'Active', value: 'Active' },
-      officeType: { label: 'Own', value: 'Own' },
     },
   });
 
   const onSubmit = (data, e) => {
     console.log('data', data);
+
+    dispatch(commonAction(endpoint.office.searchUser, null));
   };
 
   return (
@@ -278,7 +248,7 @@ const SearchUser = () => {
               <MultiSelect
                 label="Status:"
                 name="status"
-                options={objectStatusData}
+                options={objectStatusesList.dropDownItems}
                 valueKey="label"
                 showBorder={true}
                 changeStyle={true}
@@ -305,27 +275,30 @@ const SearchUser = () => {
 
         <div></div>
       </div>
-      <PrimaryTable
-        header={<PrimaryTableHeader />}
-        headerData={headerData}
-        bodyData={response.data}
-        AddElement={{
-          last: <PopoverAction />,
-        }}
-        count={20}
-        size={5}
-        columnAlignments={[
-          'left',
-          'left',
-          'left',
-          'center',
-          'left',
-          'left',
-          'center',
-        ]}
-        statusIndex={5}
-        imageIndex={0}
-      />
+      {response && (
+        <PrimaryTable
+          header={<PrimaryTableHeader />}
+          headerData={headerData}
+          bodyData={response}
+          AddElement={{
+            last: <PopoverAction />,
+          }}
+          count={20}
+          size={5}
+          columnAlignments={[
+            'left',
+            'left',
+            'left',
+            'center',
+            'left',
+            'left',
+            'center',
+          ]}
+          statusIndex={6}
+          imageIndex={1}
+          hideKeys={['userId', 'officeId']}
+        />
+      )}
     </div>
   );
 };

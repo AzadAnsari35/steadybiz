@@ -32,6 +32,9 @@ import TextWithTextInput from "./TextWithTextInput";
 import ArrivalDateIcon from "./Icons/ArrivalDateIcon";
 import DepartureDateIcon from "./Icons/DepartureDateIcon";
 import Chip from "./Chip";
+import PrimaryTable from './PrimaryTable';
+import SimplePopover from './Popover';
+import PrimaryTableHeader from './TableHeaders/PrimaryTableHeader';
 
 export {
   Avatar,
@@ -68,4 +71,7 @@ export {
   ArrivalDateIcon,
   DepartureDateIcon,
   Chip,
+  PrimaryTable,
+  SimplePopover,
+  PrimaryTableHeader,
 };

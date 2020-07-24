@@ -19,12 +19,16 @@ import useDropDown from 'Hooks/useDropDown';
 import './style.scss';
 import endpoint from 'Config/endpoint';
 import commonAction from 'Actions/';
+import { dropDownParam, titles } from 'Constants/commonConstant';
+import { countriesDialCodeFormatter } from 'Helpers/global';
+
 const regEndpoint = () => {
   return useAsyncEndpoint((data) => ({
     _endpoint: endpoint.user.login,
     data,
   }));
 };
+
 const OfficeRegistrationForm = () => {
   const {
     register,
@@ -36,9 +40,17 @@ const OfficeRegistrationForm = () => {
   } = useForm();
   const [regResponse, postRegResponse] = regEndpoint();
 
-  const countryDropDownList = useDropDown(
+  const countriesList = useDropDown(
     endpoint.master.countries,
+    dropDownParam.countries,
     'masterCountries'
+  );
+
+  const countriesDialCodeList = useDropDown(
+    endpoint.master.countries,
+    dropDownParam.countriesDialCode,
+    'masterCountries',
+    countriesDialCodeFormatter
   );
 
   useEffect(() => {
@@ -72,7 +84,7 @@ const OfficeRegistrationForm = () => {
             <SelectWithTextInput
               name="firstName"
               selectInputName="title"
-              data={countryDropDownList.dropDownItems}
+              data={titles}
               label="First Name"
               placeholder="First Name"
               selectPlaceholder="Title"
@@ -116,10 +128,7 @@ const OfficeRegistrationForm = () => {
             <SelectWithTextInput
               name="mobile"
               selectInputName="mobileDialCode"
-              data={[
-                { label: 'India', value: 'IN (+91)' },
-                { label: 'Canada', value: 'CA (+1)' },
-              ]}
+              data={countriesDialCodeList.dropDownItems}
               label="Mobile Number"
               placeholder="Mobile Number"
               selectPlaceholder="Dial Code"
@@ -233,10 +242,7 @@ const OfficeRegistrationForm = () => {
             <MultiSelect
               label="Country"
               name="countryCode"
-              options={[
-                { label: 'India', value: 'IN' },
-                { label: 'Canada', value: 'CN' },
-              ]}
+              options={countriesList.dropDownItems}
               placeholder="Country"
               showBorder={true}
               changeStyle={true}
@@ -301,10 +307,7 @@ const OfficeRegistrationForm = () => {
             <SelectWithTextInput
               name="phone"
               selectInputName="phoneDialCode"
-              data={[
-                { label: 'India', value: 'IN (+91)' },
-                { label: 'Canada', value: 'CA (+1)' },
-              ]}
+              data={countriesDialCodeList.dropDownItems}
               label="Phone Number"
               placeholder="Phone Number"
               selectPlaceholder="Country Code"
