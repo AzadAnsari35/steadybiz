@@ -14,6 +14,7 @@ import {
   getAirlineDetails,
   getDepartureSegmentDetails,
   getArrivalSegmentDetails,
+  getTotalFlightDuration,
 } from "Helpers/flight.helpers";
 import { applyCommaToPrice, extractTime } from "Helpers/global";
 import { displayImage } from "Helpers/utils";
@@ -60,6 +61,12 @@ const FlightItineraryCard = props => {
   const inboundDepartureDetails = getDepartureSegmentDetails(inboundFlightSegment);
   const inboundArrivalDetails = getArrivalSegmentDetails(inboundFlightSegment);
 
+  const seatsLeft = Math.min.apply(Math, itinerary.flightSegments.map(segment =>
+      Math.max.apply(Math, segment.flightSegmentGroup.map(obj => obj.seatsAvailable))
+    ));
+
+  const totalFlightDuration = getTotalFlightDuration(outboundFlightSegment);
+
   const handleTabClick = id => setActiveFlightTab(id);
 
   return (
@@ -101,7 +108,7 @@ const FlightItineraryCard = props => {
                   </div>
                   <div className="departureTime d-flex flex-direction-column">
                     <Text
-                      className="time font-primary-bold-20"
+                      className="time font-primary-semibold-20"
                       text={`${
                         index === 0
                           ? extractTime(outboundDepartureDetails.time)
@@ -123,7 +130,7 @@ const FlightItineraryCard = props => {
                     <div className="d-flex flex-direction-column align-items-center width-100 height-100">
                       <Text
                         className="font-primary-medium-12"
-                        text={`26h 15m ${
+                        text={`${totalFlightDuration} ${
                           index === 0
                           ? outboundFlightSegment.stopCount > 0
                             ? `(${outboundFlightSegment.stopCount} stop${outboundFlightSegment.stopCount > 1 ? "s" : ""})`
@@ -201,7 +208,7 @@ const FlightItineraryCard = props => {
                       }`}
                     />
                     <Text
-                      className="time font-primary-bold-20"
+                      className="time font-primary-semibold-20"
                       text={`${
                         index === 0
                           ? extractTime(outboundArrivalDetails.time)
@@ -224,7 +231,7 @@ const FlightItineraryCard = props => {
           </div>
           <div className="d-flex align-items-center">
             <div className="FlightItineraryCard-top__rightSection-seatsFareInfo d-flex align-items-center">
-              <Text className="font-primary-semibold-13" text="2 seats left!" />
+              <Text className="font-primary-semibold-13" text={`${seatsLeft} seats left!`} />
               <Tag text={!!isFareRefundable ? "Refundable" : "Non Refundable"} isSuccess={!!isFareRefundable} />
             </div>
             <div className="FlightItineraryCard-top__rightSection-priceSelectFlight d-flex flex-direction-column justify-content-end">

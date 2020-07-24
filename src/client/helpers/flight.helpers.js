@@ -1,5 +1,5 @@
 import { cabinClasses } from "Constants/flight.constant";
-import { getPassengerTypeName } from "Helpers/global";
+import { getPassengerTypeName, calculateTotalDuration } from "Helpers/global";
 
 export const getCabinClassName = (code) => {
   return cabinClasses.map(
@@ -52,6 +52,19 @@ export const getArrivalSegmentDetails = flightSegment => {
   if (flightSegment && flightSegment.flightSegmentGroup && flightSegment.flightSegmentGroup.length > 0) {
     return flightSegment.flightSegmentGroup[flightSegment.flightSegmentGroup.length - 1].arrivalDetails;
   }
+}
+
+export const getTotalFlightDuration = flightSegment => {
+  const durationsArr = [];
+  flightSegment.flightSegmentGroup.map((segmentGroup, index) => {
+    if (index < flightSegment.flightSegmentGroup.length - 1) {
+      durationsArr.push(segmentGroup.arrivalDetails.flightDuration, segmentGroup.arrivalDetails.layOverTime);
+    } else {
+      durationsArr.push(segmentGroup.arrivalDetails.flightDuration);
+    }
+  });
+
+  return calculateTotalDuration(durationsArr);
 }
 
 export const getTotalPassengersCount = outboundItinerary => {

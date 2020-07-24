@@ -44,3 +44,19 @@ export const getPassengerTypeName = (ptc, isUppercase = false) => {
 	}
 	return passengerTypeName;
 };
+
+// Method to calculate flight duration e.g. (Input => ["3:30", "1:15", "7:25"], Output => "12h 10m")
+export const calculateTotalDuration = durationsArr => {
+  let hours = 0, minutes = 0;
+  durationsArr.map(duration => {
+    const hour = Number(duration.split(":")[0]);
+    const min = Number(duration.split(":")[1]);
+    hours += hour;
+    minutes += min;
+  });
+  hours += Math.floor(minutes/60);
+  minutes %= 60;
+  const totalDuration = `${String(hours).length > 1 ? hours : `0${hours}`}h ${minutes}m`;
+  
+  return totalDuration;
+};
