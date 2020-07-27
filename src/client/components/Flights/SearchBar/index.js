@@ -94,7 +94,7 @@ const SearchBar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   let defaultSegmentType = segmentTypes[0], defaultCabinClass = cabinClasses[3],
-    initialDepartureCode = "", initialArrivalCode = "";
+    initialDepartureAirport = null, initialArrivalAirport = null;
   if (!!flightSearchInput.items && !!flightSearchInput.items.data) {
     const { flightSearchRQ } = flightSearchInput.items.data;
     defaultSegmentType = flightSearchRQ.originDestination.length === 1 &&
@@ -106,8 +106,8 @@ const SearchBar = () => {
     });
     flightInitialDates.startDate = moment(flightSearchRQ.originDestination[0].originDate);
     flightInitialDates.endDate = moment(flightSearchRQ.originDestination[0].destinationDate);
-    initialDepartureCode = flightSearchRQ.originDestination[0].originAirportCode;
-    initialArrivalCode = flightSearchRQ.originDestination[0].destinationAirportCode;
+    initialDepartureAirport = flightSearchRQ.originDestination[0].originAirport;
+    initialArrivalAirport = flightSearchRQ.originDestination[0].destinationAirport;
   }
   const [expandAdvanceSearch, setExpandAdvanceSearch] = useToggle(false);
   const [isPassengerCountDropdownOpen, setIsPassengerCountDropdownOpen] = useToggle(false);
@@ -122,8 +122,8 @@ const SearchBar = () => {
   const [passengers, setPassengers] = useState(passengerTypes);
 
   const [formData, setFormData] = useState({
-    departureAirportCode: "",
-    arrivalAirportCode: "",
+    departureAirport: null,
+    arrivalAirport: null,
   });
 
   const calculateTotalPassengers = passengers => {
@@ -138,7 +138,7 @@ const SearchBar = () => {
   const handleSelectSuggestion = (id, value) => {
     setFormData({
       ...formData,
-      [id]: value.code,
+      [id]: value,
     });
   }
 
@@ -164,9 +164,11 @@ const SearchBar = () => {
         },
         originDestination: [
           {
-            originAirportCode: formData.departureAirportCode,
+            originAirportCode: formData.departureAirport.code,
+            originAirport: formData.departureAirport,
             originDate: moment(flightDates.startDate).format("YYYY-MM-DD"),
-            destinationAirportCode: formData.arrivalAirportCode,
+            destinationAirportCode: formData.arrivalAirport.code,
+            destinationAirport: formData.arrivalAirport,
             destinationDate: moment(flightDates.endDate).format("YYYY-MM-DD"),
           }
         ],
@@ -220,9 +222,9 @@ const SearchBar = () => {
                     className="SearchBar-inputs__autoSuggestIcon"
                   />
                 }
-                id="departureAirportCode"
+                id="departureAirport"
                 label="Departure City / Airport"
-                initialValue={initialDepartureCode}
+                initialValue={initialDepartureAirport}
                 onSelectSuggestion={handleSelectSuggestion}
               />
             </Grid>
@@ -236,9 +238,9 @@ const SearchBar = () => {
                     className="SearchBar-inputs__autoSuggestIcon"
                   />
                 }
-                id="arrivalAirportCode"
+                id="arrivalAirport"
                 label="Arrival City / Airport"
-                initialValue={initialArrivalCode}
+                initialValue={initialArrivalAirport}
                 onSelectSuggestion={handleSelectSuggestion}
               />
             </Grid>

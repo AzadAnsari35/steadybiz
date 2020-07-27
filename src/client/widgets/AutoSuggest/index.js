@@ -14,37 +14,37 @@ import "./style.scss";
 const airportsData = [
   {
     code: "LON",
-    subTitle: "United Kingdom",
+    subTitle: "London, United Kingdom",
     title: "London (All Airports)",
     level: 0,
   },
   {
     code: "LON",
-    subTitle: "United Kingdom",
+    subTitle: "London, United Kingdom",
     title: "London (London City Airport)",
     level: 1,
   },
   {
     code: "ZLS",
-    subTitle: "United Kingdom",
+    subTitle: "London, United Kingdom",
     title: "London (Liverpool St Rail Station)",
     level: 1,
   },
   {
     code: "LGW",
-    subTitle: "United Kingdom",
+    subTitle: "London, United Kingdom",
     title: "London (Getwick)",
     level: 1,
   },
   {
     code: "DEL",
-    subTitle: "India",
+    subTitle: "New Delhi, India",
     title: "New Delhi (DEL)",
     level: 0,
   },
   {
     code: "DEL",
-    subTitle: "India",
+    subTitle: "New Delhi, India",
     title: "Indira Gandhi International",
     level: 1,
   },
@@ -60,7 +60,7 @@ const AutoSuggest = props => {
 
   useEffect(() => {
     if (!!initialValue) {
-      setValue(airportsData.find(airport => airport.code === initialValue));
+      setValue(initialValue);
     }
   }, [initialValue]);
   

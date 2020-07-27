@@ -108,8 +108,8 @@ const FlightItineraryCard = props => {
                       className="airline-name font-primary-medium-14"
                       text={
                         index === 0
-                        ? airlines.find(airline => airline.airlineCode === outboundAirlineDetails.marketingAirline).airlineName
-                        : airlines.find(airline => airline.airlineCode === inboundAirlineDetails.marketingAirline).airlineName
+                        ? !!airlines && airlines.find(airline => airline.airlineCode === outboundAirlineDetails.marketingAirline).airlineName
+                        : !!airlines && airlines.find(airline => airline.airlineCode === inboundAirlineDetails.marketingAirline).airlineName
                       }
                     />
                   </div>

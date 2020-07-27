@@ -77,12 +77,7 @@ const Availability = () => {
         {!showSearch ? 
           <div className="d-flex justify-content-between align-items-center">
             {!!flightSearchInput.items && !!flightSearchInput.items.data &&
-              <FlightSummary
-                isSearch
-                requestBody={flightSearchInput.items.data}
-                departureCity={flightSegmentGroup && flightSegmentGroup[0].departureDetails.cityName}
-                arrivalCity={flightSegmentGroup && flightSegmentGroup[flightSegmentGroup.length - 1].arrivalDetails.cityName}
-              />
+              <FlightSummary isSearch requestBody={flightSearchInput.items.data} />
             }
             <Button className="ml-auto" secondary text="Modify Search" onClick={setShowSearch} />
           </div> :
