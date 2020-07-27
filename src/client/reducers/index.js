@@ -9,6 +9,10 @@ import { reducerState, createFilteredReducer } from './commonReducer';
 // });
 
 const rootReducer = combineReducers({
+  loaderStatus: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.loader.loaderStatus
+  ),
   overrideSearchResult: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.override.searchResult
@@ -36,6 +40,10 @@ const rootReducer = combineReducers({
   masterObjectStatuses: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.master.objectStatuses
+  ),
+  masterAirlines: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.master.airlines
   ),
 });
 export default rootReducer;

@@ -35,6 +35,7 @@ import Chip from "./Chip";
 import PrimaryTable from './PrimaryTable';
 import SimplePopover from './Popover';
 import PrimaryTableHeader from './TableHeaders/PrimaryTableHeader';
+import Image from './Image';
 
 export {
   Avatar,
@@ -74,4 +75,5 @@ export {
   PrimaryTable,
   SimplePopover,
   PrimaryTableHeader,
+  Image,
 };

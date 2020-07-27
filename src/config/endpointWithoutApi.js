@@ -6,4 +6,9 @@ export default {
       actionType: actionTypeConstant.flights.flightSearchInput,
     },
   },
+  loader: {
+    loaderStatus: {
+      actionType: actionTypeConstant.loader.loaderStatus,
+    }
+  }
 };

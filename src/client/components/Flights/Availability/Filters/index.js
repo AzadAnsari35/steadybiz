@@ -51,7 +51,8 @@ const AirlineCheckbox = props => {
   )
 };
 
-const Filters = () => {
+const Filters = props => {
+  const { results } = props;
   const [showAllAirlines, toggleShowAllAirlines] = useToggle(false);
   const { register, control } = useForm();
 
@@ -59,8 +60,15 @@ const Filters = () => {
     <div className="Filters">
       <Text className="Filters-title font-primary-bold-20 text-uppercase" text="filter results" />
       <div className="Filters-section d-flex justify-content-between pt-0">
-        <Text className="font-primary-medium-14" text="169 flights found." />
-        <Link text="Reset All" />
+        {!!results &&
+          <Text
+            className="font-primary-medium-14"
+            text={
+              `${results.commonRS.flightItinerary[0].outboundItinerary.length} flights found.`
+            }
+          />
+        }
+        <Link className="ml-auto" text="Reset All" />
       </div>
       <div className="Filters-section d-flex justify-content-between">
         <PrimaryAccordion text="Price" defaultOpen>

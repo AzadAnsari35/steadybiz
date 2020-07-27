@@ -51,13 +51,19 @@ const airportsData = [
 ];
 
 const AutoSuggest = props => {
-  const { icon, id, label, onSelectSuggestion } = props;
+  const { icon, id, label, initialValue, onSelectSuggestion } = props;
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const loading = open && inputValue.length >= 3 && options.length === 0;
 
+  useEffect(() => {
+    if (!!initialValue) {
+      setValue(airportsData.find(airport => airport.code === initialValue));
+    }
+  }, [initialValue]);
+  
   useEffect(() => {
     if (!open) {
       setOptions([]);

@@ -19,3 +19,8 @@ export const titles = [
   { label: 'Mr', value: 'Mr' },
   { label: 'Mrs', value: 'Mrs' },
 ];
+
+export const loaderTypes = {
+  primary: 'primary',
+  linearProgress: 'linearProgress',
+};

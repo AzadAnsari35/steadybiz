@@ -1,4 +1,5 @@
 import React, { useState, Fragment } from "react";
+import { useSelector } from "react-redux";
 import moment from "moment";
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import FlightIcon from '@material-ui/icons/Flight';
@@ -22,7 +23,7 @@ import { displayImage } from "Helpers/utils";
 import FlightDetails from "Components/Flights/Availability/FlightDetails";
 import BaggageAllowance from "Components/Flights/Availability/BaggageAllowance";
 import FareSummaryAndPolicy from "Components/Flights/Availability/FareSummaryAndPolicy";
-import { ArrowIcon, Button, Dot, Line, Tag, Text } from "Widgets";
+import { ArrowIcon, Button, Dot, Image, Line, Tag, Text } from "Widgets";
 
 import "./style.scss";
 
@@ -45,6 +46,8 @@ const FlightItineraryCard = props => {
   const { itinerary } = props;
   const [activeFlightTab, setActiveFlightTab] = useState("flightDetails");
   const [showTabSection, setShowTabSection] = useToggle(false);
+
+  const masterAirlinesResponse = useSelector(state => state.masterAirlines);
   
   const isFareRefundable = checkIsFareRefundable(itinerary);
   const { currency, totalAmount } = getTotalItineraryFareAndCurrency(itinerary);
@@ -69,6 +72,9 @@ const FlightItineraryCard = props => {
 
   const handleTabClick = id => setActiveFlightTab(id);
 
+  const airlines = !!masterAirlinesResponse.items && !!masterAirlinesResponse.items.data &&
+    masterAirlinesResponse.items.data.data;
+
   return (
     <div className="FlightItineraryCard">
       <div className="FlightItineraryCard-content">
@@ -83,26 +89,27 @@ const FlightItineraryCard = props => {
                 <div className="segmentDetail d-flex align-items-center">
                   <div className="airline d-flex align-items-center">
                     <div className="airline-icon">
-                      <img
-                        alt={
+                      <Image
+                        altText={
                           index === 0
                           ? outboundAirlineDetails.marketingAirline
                           : inboundAirlineDetails.marketingAirline
                         }
-                        src={displayImage(`${
-                            index === 0
-                            ? outboundAirlineDetails.marketingAirline
-                            : inboundAirlineDetails.marketingAirline
-                          }.png`, "images/airlines/bigicons")
-                        }
+                        imgName={`${
+                          index === 0
+                          ? outboundAirlineDetails.marketingAirline
+                          : inboundAirlineDetails.marketingAirline
+                        }.png`}
+                        imgPath="images/airlines/bigicons"
+                        fallbackImgName="airline default.png"
                       />
                     </div>
                     <Text
                       className="airline-name font-primary-medium-14"
                       text={
                         index === 0
-                        ? outboundAirlineDetails.marketingAirline
-                        : inboundAirlineDetails.marketingAirline
+                        ? airlines.find(airline => airline.airlineCode === outboundAirlineDetails.marketingAirline).airlineName
+                        : airlines.find(airline => airline.airlineCode === inboundAirlineDetails.marketingAirline).airlineName
                       }
                     />
                   </div>

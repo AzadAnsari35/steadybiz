@@ -19,9 +19,10 @@ import { Text } from "Widgets";
 import "./style.scss";
 
 const FlightSummary = (props) => {
-  const { isSearch = false, outboundItinerary, requestBody } = props;
+  const { isSearch = false, outboundItinerary, requestBody, departureCity, arrivalCity } = props;
 
-  let departureAirportCode, arrivalAirportCode, departureDate, arrivalDate, cabinClass, passengerCountAndType = [];
+  let departureAirportCode, arrivalAirportCode, departureDate, arrivalDate, cabinClass,
+  passengerCountAndType = [], departureCityName = departureCity, arrivalCityName = arrivalCity;
 
   if (isSearch && requestBody.flightSearchRQ) {
     const { flightSearchRQ } = requestBody;
@@ -70,8 +71,7 @@ const FlightSummary = (props) => {
           />
           <Text
             className="city-name text-capitalize font-primary-regular-18"
-            // text={departureCityName}
-            text={departureAirportCode}
+            text={departureCityName}
           />
         </div>
         <img
@@ -85,8 +85,7 @@ const FlightSummary = (props) => {
           />
           <Text
             className="city-name text-capitalize font-primary-regular-18"
-            // text={arrivalCityName}
-            text={arrivalAirportCode}
+            text={arrivalCityName}
           />
         </div>
       </div>

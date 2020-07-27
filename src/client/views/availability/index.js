@@ -6,9 +6,11 @@ import ClearIcon from "@material-ui/icons/Clear";
 import SwapVertIcon from '@material-ui/icons/SwapVert';
 
 import colors from "Constants/colors";
+import { loaderTypes } from "Constants/commonConstant";
 import useToggle from "Hooks/useToggle";
 import { commonAction } from "Actions";
 import endpoint from 'Config/endpoint';
+import { showError } from "Helpers/utils";
 
 import Filters from "Components/Flights/Availability/Filters";
 import FlightResults from "Components/Flights/Availability/FlightResults";
@@ -36,28 +38,53 @@ const Availability = () => {
     }
   });
 
-  const flightSearchInput = useSelector((state) => state.flightSearchInput);
+  const flightSearchInput = useSelector(state => state.flightSearchInput);
+  const flightSearchResponse = useSelector(state => state.flightSearch);
+  const loaderStatus = useSelector(state => state.loaderStatus);
+
+  const { flightSegmentGroup } = !!flightSearchResponse.items && !!flightSearchResponse.items.data &&
+    flightSearchResponse.items.data.commonRS.flightItinerary[0].outboundItinerary[0].flightSegments[0];
+
+  const { totalfareDetails } = !!flightSearchResponse.items && !!flightSearchResponse.items.data &&
+    flightSearchResponse.items.data.commonRS.flightItinerary[0].outboundItinerary[0];
+
   useEffect(() => {
+    try {
+      dispatch(commonAction(endpoint.master.airlines));
+    } catch (err) {
+      showError(err, setError);
+    }
     if (!!flightSearchInput.items && !!flightSearchInput.items.data) {
       try {
-        dispatch(commonAction(endpoint.flights.flightSearch, flightSearchInput.items.data));
+        dispatch(commonAction(
+          endpoint.flights.flightSearch,
+          flightSearchInput.items.data,
+          {
+            loaderType: loaderTypes.linearProgress,
+            loaderText: "Getting the best fare from more than 600 airlines...",
+            top: "170px",
+          }
+        ));
       } catch (err) {
         showError(err, setError);
       }
     }
   }, []);
 
-  const flightSearchResponse = useSelector((state) => state.flightSearch);
-
   return (
     <div className="Availability">
-      <div className="Availability-modifySearch">
+      <div className="Availability-modifySearch layout-wrapper">
         {!showSearch ? 
           <div className="d-flex justify-content-between align-items-center">
             {!!flightSearchInput.items && !!flightSearchInput.items.data &&
-              <FlightSummary isSearch requestBody={flightSearchInput.items.data} />
+              <FlightSummary
+                isSearch
+                requestBody={flightSearchInput.items.data}
+                departureCity={flightSegmentGroup && flightSegmentGroup[0].departureDetails.cityName}
+                arrivalCity={flightSegmentGroup && flightSegmentGroup[flightSegmentGroup.length - 1].arrivalDetails.cityName}
+              />
             }
-            <Button secondary text="Modify Search" onClick={setShowSearch} />
+            <Button className="ml-auto" secondary text="Modify Search" onClick={setShowSearch} />
           </div> :
           <div className="Availability-modifySearch__searchSection">
             <div className="d-flex justify-content-between">
@@ -70,16 +97,19 @@ const Availability = () => {
           </div>
         }
       </div>
-      <div className="Availability-mainSection">
-        {!flightSearchResponse.items &&
-          <Grid item xs={12}>
-            <LinearLoader label="Getting the best fare from more than 600 airlines..." />
-          </Grid>
-        }
+      <div className={`Availability-mainSection layout-wrapper ${
+          loaderStatus.items && !loaderStatus.items.data.isLoaderVisible ? "adjust-padding" : ""
+        }`}
+      >
         <Grid container spacing={4}>
           <Grid item xs={12} md={3}>
             <div className="Availability-mainSection__filtersContainer">
-              <Filters />
+              <Filters
+                results={
+                  !!flightSearchResponse.items &&
+                  flightSearchResponse.items.data
+                }
+              />
             </div>
           </Grid>
           <Grid item xs={12} md={9}>
@@ -88,11 +118,13 @@ const Availability = () => {
             </div>
             <div className="Availability-mainSection__resultsContainer">
               <div className="info-sort-section d-flex justify-content-between align-items-center">
-                <div className="d-flex">
-                  <Text className="font-primary-medium-14 mr-4" text="All Amounts in " />
-                  <Text className="font-primary-bold-14" text="AED" />
-                </div>
-                <div className="sort d-flex align-items-center">
+                {!!totalfareDetails &&
+                  <div className="d-flex">
+                    <Text className="font-primary-medium-14 mr-4" text="All Amounts in " />
+                    <Text className="font-primary-bold-14" text={totalfareDetails.totalAmountCurrency} />
+                  </div>
+                }
+                <div className="sort d-flex align-items-center ml-auto">
                   <SwapVertIcon className="sort-reverse" />
                   <Text className="font-primary-medium-14 mr-10" text="Sort by: " />
                   <MultiSelect

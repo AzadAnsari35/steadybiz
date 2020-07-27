@@ -36,12 +36,17 @@ export default {
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.countries,
     },
-
     objectStatuses: {
       url: config.api.url + '/api/v1/master/objectstatuses',
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.objectStatuses,
+    },
+    airlines: {
+      url: config.api.url + '/api/v1/master/airlines',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.GET,
+      actionType: actionTypeConstant.master.airlines,
     },
   },
 

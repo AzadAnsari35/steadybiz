@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { Grid } from "@material-ui/core";
 import FlightIcon from "@material-ui/icons/Flight";
@@ -28,8 +28,8 @@ import PassengersSelectCount from "./PassengersSelectCount";
 import "./style.scss";
 
 const segmentTypes = [
-  { segmentValue: "RT", segmentLabel: "Return" },
-  { segmentValue: "OW", segmentLabel: "One-way" },
+  { value: "RT", label: "Return" },
+  { value: "OW", label: "One-way" },
 ];
 
 const cabinClasses = [
@@ -90,16 +90,32 @@ const flightInitialDates = {
 };
 
 const SearchBar = () => {
+  const flightSearchInput = useSelector(state => state.flightSearchInput);
   const history = useHistory();
   const dispatch = useDispatch();
+  let defaultSegmentType = segmentTypes[0], defaultCabinClass = cabinClasses[3],
+    initialDepartureCode = "", initialArrivalCode = "";
+  if (!!flightSearchInput.items && !!flightSearchInput.items.data) {
+    const { flightSearchRQ } = flightSearchInput.items.data;
+    defaultSegmentType = flightSearchRQ.originDestination.length === 1 &&
+    !!flightSearchRQ.originDestination[0].destinationDate ? segmentTypes[0] : segmentTypes[1];
+    defaultCabinClass = cabinClasses.find(cabinClass => cabinClass.value === flightSearchRQ.cabinCode);
+    flightSearchRQ.passengerList.passenger.forEach(item => {
+      const passengerType = passengerTypes.find(passenger => passenger.id === item.PTC);
+      passengerType.count = item.count;
+    });
+    flightInitialDates.startDate = moment(flightSearchRQ.originDestination[0].originDate);
+    flightInitialDates.endDate = moment(flightSearchRQ.originDestination[0].destinationDate);
+    initialDepartureCode = flightSearchRQ.originDestination[0].originAirportCode;
+    initialArrivalCode = flightSearchRQ.originDestination[0].destinationAirportCode;
+  }
   const [expandAdvanceSearch, setExpandAdvanceSearch] = useToggle(false);
   const [isPassengerCountDropdownOpen, setIsPassengerCountDropdownOpen] = useToggle(false);
   const [flightDates, setFlightDates] = useState(flightInitialDates);
-  const { register, handleSubmit, errors, control, setValue, watch } = useForm({
+  const { handleSubmit,control } = useForm({
     defaultValues: {
-      segmentTypes: segmentTypes[0],
-      cabinClasses: cabinClasses[3],
-      // flightDates: flightInitialDates,
+      segmentTypes: defaultSegmentType,
+      cabinClasses: defaultCabinClass,
     },
   });
 
@@ -171,10 +187,8 @@ const SearchBar = () => {
         <div className="SearchBar-basicSearch d-flex">
           <MultiSelect
             control={control}
-            labelKey="segmentLabel"
             name="segmentTypes"
             options={segmentTypes}
-            valueKey="segmentValue"
           />
           <MultiSelect
             control={control}
@@ -191,7 +205,6 @@ const SearchBar = () => {
               passengerTypes={passengers}
               calculateTotalPassengers={calculateTotalPassengers}
               onApplyClick={setIsPassengerCountDropdownOpen}
-              // onOutsideClick={setIsPassengerCountDropdownOpen}
               onResetClick={handleResetPassengersCount}
             />
           </DropdownBox>
@@ -209,6 +222,7 @@ const SearchBar = () => {
                 }
                 id="departureAirportCode"
                 label="Departure City / Airport"
+                initialValue={initialDepartureCode}
                 onSelectSuggestion={handleSelectSuggestion}
               />
             </Grid>
@@ -224,6 +238,7 @@ const SearchBar = () => {
                 }
                 id="arrivalAirportCode"
                 label="Arrival City / Airport"
+                initialValue={initialArrivalCode}
                 onSelectSuggestion={handleSelectSuggestion}
               />
             </Grid>
@@ -299,7 +314,6 @@ const SearchBar = () => {
                 }
                 text="search flight"
                 type="submit"
-                // onClick={() => history.push(routes.flight.availability)}
               />
             </Grid>
           </Grid>
