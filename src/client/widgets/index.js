@@ -32,6 +32,11 @@ import TextWithTextInput from './TextWithTextInput';
 import PrimaryTable from './PrimaryTable';
 import SimplePopover from './Popover';
 import PrimaryTableHeader from './TableHeaders/PrimaryTableHeader';
+import CheckboxGroup from './CheckboxGroup';
+import SecondaryAccordion from './SecondaryAccordion';
+import DateRangeTableHeader from './TableHeaders/DateRangeTableHeader';
+import SearchTableHeader from './TableHeaders/SearchTableHeader';
+import DatePicker from './DatePicker';
 
 export {
   Avatar,
@@ -68,4 +73,9 @@ export {
   PrimaryTable,
   SimplePopover,
   PrimaryTableHeader,
+  CheckboxGroup,
+  SecondaryAccordion,
+  DateRangeTableHeader,
+  SearchTableHeader,
+  DatePicker,
 };

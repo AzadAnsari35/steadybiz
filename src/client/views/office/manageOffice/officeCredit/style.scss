@@ -1,0 +1,44 @@
+@import '../../../../styles/variables';
+$root: '.ManageCreditLimit';
+
+#{$root} {
+  &-head {
+    padding: 32px 100px;
+    background-color: white;
+  }
+
+  &-container {
+    > div {
+      display: flex;
+    }
+  }
+
+  &-accordian {
+    box-shadow: none;
+    border: none;
+    border-radius: none;
+
+    .SecondaryAccordion-header {
+      font-size: 16px;
+      font-family: 'Montserrat Medium';
+      color: $royalBlue;
+      padding: 20px 0px;
+      border-bottom: none;
+      justify-content: left;
+    }
+    .SecondaryAccordion-header__icon {
+      width: 20px;
+      height: 20px;
+      border: 1px solid $royalBlue;
+      margin-left: 6px;
+      > svg {
+        width: 8px;
+        height: 8px;
+      }
+    }
+  }
+
+  &-detail {
+    padding: 24px 0px;
+  }
+}

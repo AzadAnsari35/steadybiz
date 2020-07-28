@@ -12,6 +12,8 @@ const routes = {
   office: {
     registration: '/Office/Registration',
     searchOffice: '/Office/Search-Office',
+    viewOffice: '/Office/View-Office',
+    createOffice: '/Office/Create-Office',
     updateOffice: '/Office/Update-Office',
     searchUserGroup: '/Office/User/Search-Group',
     updateUserGroup: '/Office/User/Update-Group',
@@ -24,6 +26,7 @@ const routes = {
     forgotPassword: '/Office/User/Forgot-Password',
     searchCreditLimit: '/Office/Search-Credit-Limit',
     creditLimitBalance: '/Office/Credit-Limit-Balance',
+    manageCreditLimit: '/Office/Manage-Credit-Limit',
     updateCreditLimit: '/Office/Update-Credit-Limit',
     creditLimitHistory: '/Office/Credit-Limit-History',
     creditLimitBreakup: '/Office/Credit-Limit-Breakup',

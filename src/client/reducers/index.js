@@ -21,6 +21,11 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.users.signIn
   ),
+  getInstantCreditLimit: createFilteredReducer(
+    reducerState,
+    (action) =>
+      action.type === actionTypeConstant.creditLimit.getInstantCreditlimit
+  ),
   masterCountries: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.master.countries

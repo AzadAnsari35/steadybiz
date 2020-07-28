@@ -18,4 +18,7 @@ export const actionTypeConstant = {
     updateUser: 'office.updateUser',
     viewUser: 'office.viewUser',
   },
+  creditLimit: {
+    getInstantCreditlimit: 'creditLimit.getInstantCreditlimit',
+  },
 };

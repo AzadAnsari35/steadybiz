@@ -67,4 +67,13 @@ export default {
       actualActionType: actionTypeConstant.office.viewUser,
     },
   },
+
+  creditLimit: {
+    getInstantCreditlimit: {
+      url: config.api.url + '/api/v1/creditLimit/getInstantCreditlimit',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.creditLimit.getInstantCreditlimit,
+    },
+  },
 };

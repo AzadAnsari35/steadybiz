@@ -23,6 +23,10 @@ $root: '.PrimaryTable';
     }
   }
 
+  &-nestedHead-cell {
+    padding: 8px 16px !important;
+  }
+
   &-body {
     > :nth-child(2n) {
       background: $mercury;

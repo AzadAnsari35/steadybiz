@@ -7,6 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableContainer from '@material-ui/core/TableContainer';
 import Pagination from '@material-ui/lab/Pagination';
 import Avatar from 'Widgets/Avatar';
+import { isObject } from 'Helpers/utils';
 
 // import { SimplePopover } from "../popover";
 import { Link, withRouter } from 'react-router-dom';
@@ -71,15 +72,31 @@ const PrimaryTable = (props) => {
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  {headerData.map((header, index) => (
-                    <TableCell
-                      key={`head-${index}`}
-                      className="PrimaryTable-head-cell "
-                      style={index === imageIndex ? { paddingLeft: 72 } : {}}
-                    >
-                      {header}
-                    </TableCell>
-                  ))}
+                  {headerData.map((header, index) =>
+                    Array.isArray(header) ? (
+                      <TableCell
+                        className=" PrimaryTable-head-cell text-align-center"
+                        colSpan={3}
+                        padding="none"
+                      >
+                        {header[0]}
+                        <div className="d-flex justify-content-between">
+                          {header.slice(1).map((cur) => (
+                            <div className=" PrimaryTable-head-cell">{cur}</div>
+                          ))}
+                        </div>
+                      </TableCell>
+                    ) : (
+                      <TableCell
+                        key={`head-${index}`}
+                        className="PrimaryTable-head-cell "
+                        style={index === imageIndex ? { paddingLeft: 72 } : {}}
+                        align={setAlignment(index)}
+                      >
+                        {header}
+                      </TableCell>
+                    )
+                  )}
                 </TableRow>
               </TableHead>
               <TableBody className="PrimaryTable-body">
@@ -113,7 +130,7 @@ const PrimaryTable = (props) => {
                             </TableCell>
                           )
                       )}
-                      {AddElement.last && (
+                      {AddElement?.last && (
                         <TableCell component="th" scope="row" align="center">
                           {React.cloneElement(AddElement.last, {
                             rowNumber: ind + 1,

@@ -5,7 +5,7 @@ export const displayImage = (name, path = 'images') => {
 };
 
 export const isLogin = () => {
-  return true;
+  return getItemFromStorage('userToken');
 };
 export const isDevelopment = () => {
   return config.mode.environment !== 'production';
@@ -40,4 +40,30 @@ export const checkError = (apiResponse) => {
   if (!apiResponse.status) {
     return apiResponse.error.message;
   } else return '';
+};
+
+export const stringComparison = (str1, str2) => {
+  return str1.toUpperCase() === str2.toUpperCase();
+};
+
+export const isObject = (variable) => {
+  return Object.prototype.toString.call(variable) === '[object Object]';
+};
+
+export const checkStatus = (object) => {
+  return !!object?.status;
+};
+
+export const getShortName = (name) => {
+  if (name?.length) {
+    let word = name.split(' ');
+    let shortName = '';
+    word.map((w, index) => {
+      if (index < 3) {
+        Boolean(w) && (shortName += w[0].toUpperCase());
+      }
+    });
+    return shortName;
+  }
+  return '';
 };
