@@ -41,3 +41,7 @@ export const checkError = (apiResponse) => {
     return apiResponse.error.message;
   } else return '';
 };
+export const selectedItem=(searchResult,rowNumber)=>
+{
+  return searchResult.items!=null? searchResult.items.data.data[rowNumber-1]:null;
+}
