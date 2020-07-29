@@ -55,7 +55,9 @@ const CreateUserForm = (props) => {
   //   objectStatusesList.dropDownItems
   // );
 const setDefaultValue=()=>{
-return {officeId: 'SB00235',
+return {
+  action:'I|U',
+  officeId: 'SB00235',
 officeName: 'Axis Tours and Travels',
 title: 'MR',
 mobileDialCode: '91',
