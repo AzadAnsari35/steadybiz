@@ -13,12 +13,12 @@ import { useForm } from 'react-hook-form';
 import { regex } from 'Helpers/validator';
 import PersonIcon from '@material-ui/icons/Person';
 import colors from 'Constants/colors';
-import routes from 'Constants/routes';
+//import routes from 'Constants/routes';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam, titles } from 'Constants/commonConstant';
 import { countriesDialCodeFormatter } from 'Helpers/global';
-
+import {  useSelector } from 'react-redux';
 import endpoint from 'Config/endpoint';
 import { utils } from 'Helpers';
 
@@ -50,24 +50,35 @@ const CreateUserForm = (props) => {
     countriesDialCodeFormatter
   );
 
-  // console.log(
-  //   'objectStatusesList.dropDownItems',
-  //   objectStatusesList.dropDownItems
-  // );
 const setDefaultValue=()=>{
-return {
-  action:'I|U',
-  officeId: 'SB00235',
-officeName: 'Axis Tours and Travels',
-title: 'MR',
-mobileDialCode: '91',
-mobile:'34324',
-confirmPassword:'hsk@yopmail.com',
-firstName:'dsfdsf',
-lastName:'dsfdsfdf',
-securityGroup: 'Admin',
-status: objectStatusesList.dropDownItems[0],
-}
+  
+  let defaultValue= {
+    action:'I',
+    officeId: 'SB00235',
+  officeName: 'Axis Tours and Travels',
+  title: 'MR',
+  mobileDialCode: '91',
+  mobile:'34324',
+  confirmPassword:'hsk@yopmail.com',
+  firstName:'dsfdsf',
+  lastName:'dsfdsfdf',
+  securityGroup: 'Admin',
+  status: objectStatusesList.dropDownItems[0],
+  }
+ 
+  const rowNumber=utils.getItemFromStorage(endpoint.office.searchUser.actionType);
+  if(rowNumber!==null)
+  {
+    const searchResult = useSelector((state) => state['overrideSearchResult']);
+    const selectedItem=utils.selectedItem(searchResult,rowNumber);
+    if(selectedItem!=null)
+    {
+      defaultValue.action='U',
+      defaultValue.firstName=selectedItem.firstName;
+    }
+//    console.log(defaultValue);
+  }
+return defaultValue;
 }
   const defaultValues = setDefaultValue();
 
@@ -88,7 +99,7 @@ if(createRes!=null)
 }
 },[createRes])
   const onSubmit = (data, e) => {
-//    console.log('data', data);
+    console.log('data', data);
 
     postCreateRequest({
       ...data,
@@ -121,6 +132,7 @@ if(createRes!=null)
           </div>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
+        <input type='hidden' name='action'  ref={register} ></input>
           <Grid container>
             <Grid item xs={6} className="CreateUserForm-left">
               <Grid container spacing={3}>

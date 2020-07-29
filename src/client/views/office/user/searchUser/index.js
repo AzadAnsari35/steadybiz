@@ -56,12 +56,14 @@ const PopoverAction = (props) => {
 
   const handleViewUser = () => {
     history.push(routes.office.viewOfficeUser);
-    dispatch(commonActionWithoutApi(endpoint.office.viewUser, rowNumber));
+    utils.setItemToStorage(endpoint.office.searchUser.actionType,rowNumber);
+    //dispatch(commonActionWithoutApi(endpoint.office.viewUser, rowNumber));
   };
 
   const handleModifyUser = () => {
-    history.push(routes.office.updateOfficeUser);
-    dispatch(commonActionWithoutApi(endpoint.office.updateUser, rowNumber));
+    utils.setItemToStorage(endpoint.office.searchUser.actionType,rowNumber);
+    history.push(routes.office.createOfficeUser);
+   
   };
 
   return (
