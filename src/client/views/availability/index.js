@@ -11,7 +11,7 @@ import useToggle from "Hooks/useToggle";
 import { commonAction } from "Actions";
 import endpoint from 'Config/endpoint';
 import { showError } from "Helpers/utils";
-import { checkDataStatus, getDataFromRedux } from "Helpers/global";
+import { getDataFromRedux } from "Helpers/global";
 
 import Filters from "Components/Flights/Availability/Filters";
 import FlightResults from "Components/Flights/Availability/FlightResults";
@@ -43,8 +43,8 @@ const Availability = () => {
   const flightSearchResponse = useSelector(state => state.flightSearch);
   const loaderStatus = useSelector(state => state.loaderStatus);
 
-  const flightSearchResponseData = checkDataStatus(flightSearchResponse) && getDataFromRedux(flightSearchResponse);
-  const flightSearchInputData = checkDataStatus(flightSearchInput) && getDataFromRedux(flightSearchInput);
+  const flightSearchResponseData = getDataFromRedux(flightSearchResponse);
+  const flightSearchInputData = getDataFromRedux(flightSearchInput);
 
   const outboundItinerary = !!flightSearchResponseData &&
     flightSearchResponseData.commonRS.flightItinerary[0].outboundItinerary[0];

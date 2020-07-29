@@ -73,10 +73,6 @@ export const calculateTotalDuration = durationsArr => {
   return totalDuration;
 };
 
-export const checkDataStatus = key => {
-  return !!key && !!key.items && key.items.status;
-};
-
 export const getDataFromRedux = key => {
-  return !!key.items && !!key.items.data && key.items.data;
+  return !!key.items && key.items.status && !!key.items.data && key.items.data;
 };

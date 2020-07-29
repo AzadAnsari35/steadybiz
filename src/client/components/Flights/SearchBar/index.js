@@ -6,12 +6,13 @@ import moment from "moment";
 import { Grid } from "@material-ui/core";
 import FlightIcon from "@material-ui/icons/Flight";
 
-import { displayImage, showError } from "Helpers/utils";
-import colors from "Constants/colors";
-import useToggle from "Client/hooks/useToggle";
-import routes from "Constants/routes";
 import { commonActionWithoutApi } from "Actions";
+import useToggle from "Client/hooks/useToggle";
 import endpointWithoutApi from 'Config/endpointWithoutApi';
+import colors from "Constants/colors";
+import routes from "Constants/routes";
+import { getDataFromRedux } from "Helpers/global";
+import { displayImage, showError } from "Helpers/utils";
 
 import {
   AutoSuggest,
@@ -92,10 +93,10 @@ const flightInitialDates = {
 const SearchBar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const flightSearchInput = useSelector(state => state.flightSearchInput);
+  const flightSearchInput = useSelector(state => state[endpointWithoutApi.flights.flightSearchInput.reducerName]);
   let defaultSegmentType = segmentTypes[0], defaultCabinClass = cabinClasses[3],
     initialDepartureAirport = null, initialArrivalAirport = null;
-  if (!!flightSearchInput.items && !!flightSearchInput.items.data) {
+  if (!!getDataFromRedux(flightSearchInput)) {
     const { flightSearchRQ } = flightSearchInput.items.data;
     defaultSegmentType = flightSearchRQ.originDestination.length === 1 &&
     !!flightSearchRQ.originDestination[0].destinationDate ? segmentTypes[0] : segmentTypes[1];

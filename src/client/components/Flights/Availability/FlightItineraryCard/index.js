@@ -18,8 +18,7 @@ import {
   getTotalFlightDuration,
   getAirlineName,
 } from "Helpers/flight.helpers";
-import { applyCommaToPrice, extractTime, checkDataStatus, getDataFromRedux } from "Helpers/global";
-import { displayImage } from "Helpers/utils";
+import { applyCommaToPrice, extractTime, getDataFromRedux } from "Helpers/global";
 
 import FlightDetails from "Components/Flights/Availability/FlightDetails";
 import BaggageAllowance from "Components/Flights/Availability/BaggageAllowance";
@@ -73,7 +72,7 @@ const FlightItineraryCard = props => {
 
   const handleTabClick = id => setActiveFlightTab(id);
 
-  const airlines = checkDataStatus(masterAirlinesResponse) && getDataFromRedux(masterAirlinesResponse).data;
+  const airlines = getDataFromRedux(masterAirlinesResponse).data;
 
   return (
     <div className="FlightItineraryCard">

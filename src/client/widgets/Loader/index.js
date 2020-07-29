@@ -2,11 +2,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Grid } from "@material-ui/core";
 
+import endpointWithoutApi from "Config/endpointWithoutApi";
+
 import { PrimaryLoader, LinearLoader } from "Widgets";
 
 
 const Loader = () => {
-  const loaderStatus = useSelector(state => state.loaderStatus);
+  const loaderStatus = useSelector(state => state[endpointWithoutApi.loader.loaderStatus.reducerName]);
 
   return (
     <>
