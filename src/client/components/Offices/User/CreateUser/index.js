@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import {
   SelectWithTextInput,
@@ -25,9 +25,9 @@ import { utils } from 'Helpers';
 import './style.scss';
 
 const createEndpoint = () => {
-  return useAsyncEndpoint((data) => ({
-    _endpoint: endpoint.office.createUser,
-    data,
+  return useAsyncEndpoint((data,endpoint) => ({
+    _endpoint:endpoint ,
+    data
   }));
 };
 
@@ -50,40 +50,55 @@ const CreateUserForm = (props) => {
     countriesDialCodeFormatter
   );
 
-  console.log(
-    'objectStatusesList.dropDownItems',
-    objectStatusesList.dropDownItems
-  );
-
-  const defaultValues = {
-    officeId: 'SB00235',
-    officeName: 'Axis Tours and Travels',
-    title: '',
-    mobileDialCode: '',
-    securityGroup: '',
-    status: objectStatusesList.dropDownItems[0],
-  };
+  // console.log(
+  //   'objectStatusesList.dropDownItems',
+  //   objectStatusesList.dropDownItems
+  // );
+const setDefaultValue=()=>{
+return {officeId: 'SB00235',
+officeName: 'Axis Tours and Travels',
+title: 'MR',
+mobileDialCode: '91',
+mobile:'34324',
+confirmPassword:'hsk@yopmail.com',
+firstName:'dsfdsf',
+lastName:'dsfdsfdf',
+securityGroup: 'Admin',
+status: objectStatusesList.dropDownItems[0],
+}
+}
+  const defaultValues = setDefaultValue();
 
   const { register, handleSubmit, errors, control, watch, reset } = useForm({
     defaultValues,
   });
 
   const [createRes, postCreateRequest] = createEndpoint();
-
-  const onSubmit = (data, e) => {
-    console.log('data', data);
-
-    postCreateRequest({
-      ...data,
-      officeId: utils.getItemFromStorage('officeId'),
-    });
-
+useEffect(()=>{
+if(createRes!=null)
+{
     const errMsg = utils.checkError(createRes);
     if (!errMsg) setToast({ status: false, message: errMsg });
     else {
       setToast({ status: true, message: 'Office user created successfully' });
-      reset(defaultValues);
+  //    reset(defaultValues);
     }
+}
+},[createRes])
+  const onSubmit = (data, e) => {
+//    console.log('data', data);
+
+    postCreateRequest({
+      ...data,
+      officeId: utils.getItemFromStorage('officeId'),
+    },endpoint.office.createUser);
+
+  //   const errMsg = utils.checkError(createRes);
+  //   if (!errMsg) setToast({ status: false, message: errMsg });
+  //   else {
+  //     setToast({ status: true, message: 'Office user created successfully' });
+  // //    reset(defaultValues);
+  //   }
   };
 
   return (
@@ -218,9 +233,9 @@ const CreateUserForm = (props) => {
                     changeStyle={true}
                     control={control}
                     errors={errors}
-                    validation={{ required: 'Please enter the status' }}
+                    // validation={{ required: 'Please enter the status' }}
                     width="auto"
-                    disabled
+                    
                   />
                 </Grid>
               </Grid>
