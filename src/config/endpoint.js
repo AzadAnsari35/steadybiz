@@ -54,7 +54,7 @@ export default {
     searchUser: {
       url: config.api.url + '/api/v1/offices/user/searchUser',
       isAuth: true,
-      httpVerb: commonConstant.HttpVerbsConstant.GET,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
       actionType: actionTypeConstant.override.searchResult,
       actualActionType: actionTypeConstant.office.searchUser,
     },

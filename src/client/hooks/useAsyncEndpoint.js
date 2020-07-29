@@ -1,35 +1,31 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
-import { apiReqeust, utils, Response } from 'Helpers/';
 
+import { apiReqeust, utils, Response } from 'Helpers/';
 const useAsyncEndpoint = (fn) => {
-  const [res, setRes] = useState({
-    data: null,
-    complete: false,
-    pending: false,
-    error: false,
-  });
+  
+  const [res, setRes] = useState(null);
   const [req, setReq] = useState();
 
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
-    if (!req) return;
-    // console.log('hi', req);
+    if (!req ) return;
+     //console.log('hi', req);
     const doAxios = async () => {
       //   setLoading(true);
       try {
-        console.log('endpoint', endpoint);
-
-        const res = await apiReqeust.httpRequest(
+         console.log('req.data.request');
+        const result = await apiReqeust.httpRequest(
           req._endpoint.httpVerb,
           req.data,
           utils.appendHeader(req._endpoint),
           req._endpoint.url
         );
         if (!signal.aborted) {
-          console.log(res);
-          setRes(res);
+         // console.log(res);
+          setRes( result);
+          //console.log(res);
         }
       } catch (exception) {
         if (!signal.aborted) {
