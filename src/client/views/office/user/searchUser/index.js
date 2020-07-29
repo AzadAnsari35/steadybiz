@@ -1,8 +1,10 @@
 import Grid from '@material-ui/core/Grid';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { regex } from 'Helpers/validator';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { showError } from 'Helpers/utils';
+import { utils } from 'Helpers/index';
 import {
   Button,
   MultiSelect,
@@ -35,8 +37,8 @@ const headerData = [
 
 const PopoverAction = (props) => {
   const [showPopover, setShowPopover] = useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const [anchorEl, setAnchorEl] = React.useState(null);  
+  
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -98,6 +100,10 @@ const PopoverAction = (props) => {
 };
 
 const SearchUser = () => {
+  const [errorMsg, setErrorMsg] = useState('');
+  const [recordFound,setRecordFound]=useState(false);
+  let page=1;
+  const [requestJson,setReqeustJson]=useState(null);
   let history = useHistory();
   let dispatch = useDispatch();
 
@@ -108,19 +114,60 @@ const SearchUser = () => {
   );
 
   const searchResult = useSelector((state) => state.overrideSearchResult);
-  const response = searchResult ? searchResult.items : [];
-  console.log('response', response);
-
+  
+  const ofId='dsfsdfds';
+  
+  
+  //console.log(response);
   const { register, handleSubmit, errors, control, getValues } = useForm({
     defaultValues: {
       status: { label: 'Active', value: 'Active' },
     },
   });
+  const callback=(newValue)=>{
+    page=newValue;
+    setReqeustJson(prevState => {
+      return { ...prevState, page: newValue }
+    });
+    //requestJson.page=newValue
+   
+  };
 
-  const onSubmit = (data, e) => {
-    console.log('data', data);
+  useEffect(()=>{
+    if(requestJson!==null)
+    callSearch();
+  },[requestJson])
+ useEffect(()=>{
+  if (searchResult.items != null && searchResult.actualActionType===endpoint.office.searchUser.actualActionType ) {
+   
+    const errMsg = utils.checkError(searchResult.items);
+    
+    if (errMsg !== '')
+     setErrorMsg(errMsg);
+      else {
+        setRecordFound(true);
+        
+      }
+  }
 
-    dispatch(commonAction(endpoint.office.searchUser, null));
+ },[searchResult]);
+
+ const callSearch=()=>
+ {
+  try {
+    setErrorMsg('');
+    setRecordFound(false);    
+    dispatch(commonAction(endpoint.office.searchUser, requestJson));
+  }
+    catch (err) {
+      showError(err, errorMsg);
+    }
+ }
+  const onSubmit =  (data, e) => {
+    page=1;
+    setReqeustJson(data);
+
+    //callSearch();
   };
 
   return (
@@ -129,6 +176,8 @@ const SearchUser = () => {
         <div className="font-primary-semibold-24 pb-4">MANAGE USERS</div>
         <div className="horizontal-grey-divider"></div>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <input type='hidden' name='ofid' value={ofId} ref={register} ></input>
+          <input type='hidden' name='page' value={page} ref={register} ></input>
           <Text
             showLeftBorder={true}
             text="SEARCH USER"
@@ -273,18 +322,20 @@ const SearchUser = () => {
           </Grid>
         </form>
 
-        <div></div>
+          <div></div>
       </div>
-      {response && (
+      {(recordFound) && (
         <PrimaryTable
           header={<PrimaryTableHeader />}
           headerData={headerData}
-          bodyData={response}
+          bodyData={searchResult.items.data}
           AddElement={{
             last: <PopoverAction />,
           }}
-          count={20}
+          count={searchResult.items.data.count}
           size={5}
+          page={page}
+          parentCallback={callback}
           columnAlignments={[
             'left',
             'left',

@@ -26,11 +26,13 @@ const PrimaryTable = (props) => {
     statusIndex = -1,
     imageIndex = -2,
     hideKeys = '',
+    page=1,
+    
   } = props;
 
   const [lowOffset, setLowOffset] = React.useState(1);
   const [highOffset, setHighOffset] = React.useState(3);
-  const [page, setPage] = React.useState(1);
+  //const [page, setPage] = React.useState(1);
 
   const statusColor = (status) => {
     switch (status) {
@@ -52,7 +54,11 @@ const PrimaryTable = (props) => {
     }
   };
 
-  const handleChangePage = (event) => {};
+  const handleChangePage = (event,newPage) => {
+
+   props.parentCallback(newPage);
+    
+  };
 
   const setAlignment = (index) => {
     return columnAlignments[index];
