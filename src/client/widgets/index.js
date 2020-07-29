@@ -36,6 +36,7 @@ import PrimaryTable from './PrimaryTable';
 import SimplePopover from './Popover';
 import PrimaryTableHeader from './TableHeaders/PrimaryTableHeader';
 import Image from './Image';
+import Loader from './Loader';
 
 export {
   Avatar,
@@ -76,4 +77,5 @@ export {
   SimplePopover,
   PrimaryTableHeader,
   Image,
+  Loader,
 };

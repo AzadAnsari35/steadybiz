@@ -7,13 +7,14 @@ import "./style.scss";
 
 const FarePolicy = (props) => {
   const { outboundItinerary } = props;
-  const exchangeBefore = outboundItinerary.totalfareDetails.fareDetails[0].penalties.find(penalty => 
+  const { penalties } = outboundItinerary.totalfareDetails.fareDetails[0];
+  const exchangeBefore = penalties.find(penalty => 
     penalty.type === "Exchange" && penalty.applicability === "Before");
-  const exchangeAfter = outboundItinerary.totalfareDetails.fareDetails[0].penalties.find(penalty => 
+  const exchangeAfter = penalties.find(penalty => 
     penalty.type === "Exchange" && penalty.applicability === "After");
-  const refundBefore = outboundItinerary.totalfareDetails.fareDetails[0].penalties.find(penalty => 
+  const refundBefore = penalties.find(penalty => 
     penalty.type === "Refund" && penalty.applicability === "Before");
-  const refundAfter = outboundItinerary.totalfareDetails.fareDetails[0].penalties.find(penalty => 
+  const refundAfter = penalties.find(penalty => 
     penalty.type === "Refund" && penalty.applicability === "After");
 
 	return (

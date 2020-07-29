@@ -16,8 +16,9 @@ import {
   getDepartureSegmentDetails,
   getArrivalSegmentDetails,
   getTotalFlightDuration,
+  getAirlineName,
 } from "Helpers/flight.helpers";
-import { applyCommaToPrice, extractTime } from "Helpers/global";
+import { applyCommaToPrice, extractTime, checkDataStatus, getDataFromRedux } from "Helpers/global";
 import { displayImage } from "Helpers/utils";
 
 import FlightDetails from "Components/Flights/Availability/FlightDetails";
@@ -72,8 +73,7 @@ const FlightItineraryCard = props => {
 
   const handleTabClick = id => setActiveFlightTab(id);
 
-  const airlines = !!masterAirlinesResponse.items && !!masterAirlinesResponse.items.data &&
-    masterAirlinesResponse.items.data.data;
+  const airlines = checkDataStatus(masterAirlinesResponse) && getDataFromRedux(masterAirlinesResponse).data;
 
   return (
     <div className="FlightItineraryCard">
@@ -108,8 +108,8 @@ const FlightItineraryCard = props => {
                       className="airline-name font-primary-medium-14"
                       text={
                         index === 0
-                        ? !!airlines && airlines.find(airline => airline.airlineCode === outboundAirlineDetails.marketingAirline).airlineName
-                        : !!airlines && airlines.find(airline => airline.airlineCode === inboundAirlineDetails.marketingAirline).airlineName
+                        ? !!airlines && getAirlineName(airlines, outboundAirlineDetails.marketingAirline)
+                        : !!airlines && getAirlineName(airlines, inboundAirlineDetails.marketingAirline)
                       }
                     />
                   </div>

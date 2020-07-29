@@ -12,7 +12,7 @@ import React from "react";
 // import { getCabinClassName } from "Helpers/flight.helpers";
 import { displayImage } from "Helpers/utils";
 import { getCabinClassName } from "Helpers/flight.helpers";
-import { getPassengerTypeName, weekdayDateFormat } from "Helpers/global";
+import { getPassengerTypeName, changeDateFormat } from "Helpers/global";
 
 import { Text } from "Widgets";
 
@@ -28,10 +28,10 @@ const FlightSummary = (props) => {
     const { flightSearchRQ } = requestBody;
     departureAirportCode = flightSearchRQ.originDestination[0].originAirportCode;
     departureCityName = flightSearchRQ.originDestination[0].originAirport.subTitle.split(",")[0],
-    departureDate = weekdayDateFormat(flightSearchRQ.originDestination[0].originDate);
+    departureDate = changeDateFormat(flightSearchRQ.originDestination[0].originDate);
     arrivalAirportCode = flightSearchRQ.originDestination[0].destinationAirportCode;
     arrivalCityName = flightSearchRQ.originDestination[0].destinationAirport.subTitle.split(",")[0],
-    arrivalDate = weekdayDateFormat(flightSearchRQ.originDestination[0].destinationDate);
+    arrivalDate = changeDateFormat(flightSearchRQ.originDestination[0].destinationDate);
     cabinClass = getCabinClassName(flightSearchRQ.cabinCode);
     flightSearchRQ.passengerList.passenger.map(item => {
       passengerCountAndType.push(`${item.count} ${getPassengerTypeName(item.PTC)}`)

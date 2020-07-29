@@ -112,14 +112,14 @@ export const getTaxesAndFeesDetails = outboundItinerary => {
   let taxTotal = 0;
   let airlineFuelSurcharge = 0;
   let airlineMiscellaneousFee = 0;
-  if (outboundItinerary && outboundItinerary.totalfareDetails &&
-    outboundItinerary.totalfareDetails.fareDetails && outboundItinerary.totalfareDetails.fareDetails.length > 0) {
+  const fareDetails = outboundItinerary && outboundItinerary.totalfareDetails &&
+    outboundItinerary.totalfareDetails.fareDetails;
+  if (fareDetails && fareDetails.length > 0) {
     taxTotal = outboundItinerary.totalfareDetails.taxTotal && outboundItinerary.totalfareDetails.taxTotal;
-    outboundItinerary.totalfareDetails.fareDetails.map((passengerFareDetail, index) => {
-      airlineFuelSurcharge +=
-        passengerFareDetail.taxDetails && calculateAirlineFuelSurcharge(passengerFareDetail.taxDetails, index);
-      airlineMiscellaneousFee +=
-        passengerFareDetail.taxDetails && calculateAirlineMiscellaneousFee(passengerFareDetail.taxDetails);
+    fareDetails.map((passengerFareDetail, index) => {
+      const taxDetails = passengerFareDetail.taxDetails;
+      airlineFuelSurcharge += taxDetails && calculateAirlineFuelSurcharge(taxDetails, index);
+      airlineMiscellaneousFee += taxDetails && calculateAirlineMiscellaneousFee(taxDetails);
     });
   }
   return {
@@ -131,8 +131,9 @@ export const getTaxesAndFeesDetails = outboundItinerary => {
 
 export const getTotalFare = outboundItinerary => {
   let totalFare = 0;
-  if (outboundItinerary && outboundItinerary.totalfareDetails) {
-    totalFare = outboundItinerary.totalfareDetails.totalAmount;
+  const totalfareDetails = outboundItinerary && outboundItinerary.totalfareDetails;
+  if (totalfareDetails) {
+    totalFare = totalfareDetails.totalAmount;
   }
   return totalFare;
 }
@@ -149,8 +150,13 @@ export const getTotalAmount = outboundItinerary => {
 
 export const getTotalAmountCurrency = outboundItinerary => {
   let currency = "";
-  if (outboundItinerary && outboundItinerary.totalfareDetails) {
-    currency = outboundItinerary.totalfareDetails.totalAmountCurrency;
+  const totalfareDetails = outboundItinerary && outboundItinerary.totalfareDetails;
+  if (totalfareDetails) {
+    currency = totalfareDetails.totalAmountCurrency;
   }
   return currency;
-}
+};
+
+export const getAirlineName = (airlines, airlineCode) => {
+  return airlines.find(airline => airline.airlineCode === airlineCode).airlineName || airlineCode;
+};

@@ -6,7 +6,7 @@ import moment from "moment";
 import { Grid } from "@material-ui/core";
 import FlightIcon from "@material-ui/icons/Flight";
 
-import { displayImage } from "Helpers/utils";
+import { displayImage, showError } from "Helpers/utils";
 import colors from "Constants/colors";
 import useToggle from "Client/hooks/useToggle";
 import routes from "Constants/routes";
@@ -90,9 +90,9 @@ const flightInitialDates = {
 };
 
 const SearchBar = () => {
-  const flightSearchInput = useSelector(state => state.flightSearchInput);
   const history = useHistory();
   const dispatch = useDispatch();
+  const flightSearchInput = useSelector(state => state.flightSearchInput);
   let defaultSegmentType = segmentTypes[0], defaultCabinClass = cabinClasses[3],
     initialDepartureAirport = null, initialArrivalAirport = null;
   if (!!flightSearchInput.items && !!flightSearchInput.items.data) {
@@ -125,6 +125,8 @@ const SearchBar = () => {
     departureAirport: null,
     arrivalAirport: null,
   });
+
+  const [error, setError] = useState(null);
 
   const calculateTotalPassengers = passengers => {
     setPassengers(passengers);
@@ -185,6 +187,7 @@ const SearchBar = () => {
 
   return (
     <div className="SearchBar">
+      <p>{error}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="SearchBar-basicSearch d-flex">
           <MultiSelect

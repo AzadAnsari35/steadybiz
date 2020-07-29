@@ -9,8 +9,8 @@ String.prototype.replaceArray = function (find, replace) {
   return replaceString;
 };
 
-export const weekdayDateFormat = (date) => {
-  return moment(date, "YYYY-MM-DD").format("dddd, MMM DD");
+export const changeDateFormat = (date, dateFormat = "dddd, MMM DD") => {
+  return moment(date, "YYYY-MM-DD").format(dateFormat);
 };
 
 export const convertIntoTime = (timeInString) => {
@@ -71,4 +71,12 @@ export const calculateTotalDuration = durationsArr => {
   const totalDuration = `${String(hours).length > 1 ? hours : `0${hours}`}h ${minutes}m`;
   
   return totalDuration;
+};
+
+export const checkDataStatus = key => {
+  return !!key && !!key.items && key.items.status;
+};
+
+export const getDataFromRedux = key => {
+  return !!key.items && !!key.items.data && key.items.data;
 };

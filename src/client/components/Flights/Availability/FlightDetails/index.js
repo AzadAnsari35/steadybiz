@@ -6,7 +6,7 @@ import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 
 import colors from "Constants/colors";
 import { displayImage } from "Helpers/utils";
-import { weekdayDateFormat, convertIntoTime, extractTime } from "Helpers/global";
+import { changeDateFormat, convertIntoTime, extractTime } from "Helpers/global";
 import { getCabinClassName } from "Helpers/flight.helpers";
 
 import Chip from "Widgets/Chip/index";
@@ -123,7 +123,7 @@ const FlightSegmentGroup = (props) => {
               <Text
                 className="font-primary-regular-14 pl-8"
                 style={{ borderLeft: `1px solid ${colors.gray}` }}
-                text={weekdayDateFormat(
+                text={changeDateFormat(
                   segmentGroupArray[index].departureDetails.date
                 )}
               />
@@ -251,7 +251,7 @@ const FlightSegmentGroup = (props) => {
               <Text
                 className="font-primary-regular-14 pl-8"
                 style={{ borderLeft: `1px solid ${colors.gray}` }}
-                text={weekdayDateFormat(
+                text={changeDateFormat(
                   segmentGroupArray[index].arrivalDetails.date
                 )}
               />
@@ -291,7 +291,7 @@ const FlightSegment = (props) => {
         >
           <Text
             className="FlightSegment-content__date font-primary-bold-18"
-            text={`Depart: ${weekdayDateFormat(
+            text={`Depart: ${changeDateFormat(
               itinerary[0].flightSegmentGroup[0].departureDetails.date
             )}`}
           />
@@ -314,7 +314,7 @@ const FlightSegment = (props) => {
           </div>
           <Text
             className="FlightSegment-content__date font-primary-bold-18"
-            text={`Arrive: ${weekdayDateFormat(
+            text={`Arrive: ${changeDateFormat(
               itinerary[0].flightSegmentGroup[totalSegmentGroup - 1]
                 .arrivalDetails.date
             )}`}

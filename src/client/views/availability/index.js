@@ -11,6 +11,7 @@ import useToggle from "Hooks/useToggle";
 import { commonAction } from "Actions";
 import endpoint from 'Config/endpoint';
 import { showError } from "Helpers/utils";
+import { checkDataStatus, getDataFromRedux } from "Helpers/global";
 
 import Filters from "Components/Flights/Availability/Filters";
 import FlightResults from "Components/Flights/Availability/FlightResults";
@@ -42,11 +43,13 @@ const Availability = () => {
   const flightSearchResponse = useSelector(state => state.flightSearch);
   const loaderStatus = useSelector(state => state.loaderStatus);
 
-  const { flightSegmentGroup } = !!flightSearchResponse.items && !!flightSearchResponse.items.data &&
-    flightSearchResponse.items.data.commonRS.flightItinerary[0].outboundItinerary[0].flightSegments[0];
+  const flightSearchResponseData = checkDataStatus(flightSearchResponse) && getDataFromRedux(flightSearchResponse);
+  const flightSearchInputData = checkDataStatus(flightSearchInput) && getDataFromRedux(flightSearchInput);
 
-  const { totalfareDetails } = !!flightSearchResponse.items && !!flightSearchResponse.items.data &&
-    flightSearchResponse.items.data.commonRS.flightItinerary[0].outboundItinerary[0];
+  const outboundItinerary = !!flightSearchResponseData &&
+    flightSearchResponseData.commonRS.flightItinerary[0].outboundItinerary[0];
+
+  const { totalfareDetails } = outboundItinerary;
 
   useEffect(() => {
     try {
@@ -54,11 +57,11 @@ const Availability = () => {
     } catch (err) {
       showError(err, setError);
     }
-    if (!!flightSearchInput.items && !!flightSearchInput.items.data) {
+    if (!!flightSearchInputData) {
       try {
         dispatch(commonAction(
           endpoint.flights.flightSearch,
-          flightSearchInput.items.data,
+          flightSearchInputData,
           {
             loaderType: loaderTypes.linearProgress,
             loaderText: "Getting the best fare from more than 600 airlines...",
@@ -76,8 +79,8 @@ const Availability = () => {
       <div className="Availability-modifySearch layout-wrapper">
         {!showSearch ? 
           <div className="d-flex justify-content-between align-items-center">
-            {!!flightSearchInput.items && !!flightSearchInput.items.data &&
-              <FlightSummary isSearch requestBody={flightSearchInput.items.data} />
+            {!!flightSearchInputData &&
+              <FlightSummary isSearch requestBody={flightSearchInputData} />
             }
             <Button className="ml-auto" secondary text="Modify Search" onClick={setShowSearch} />
           </div> :
@@ -100,10 +103,7 @@ const Availability = () => {
           <Grid item xs={12} md={3}>
             <div className="Availability-mainSection__filtersContainer">
               <Filters
-                results={
-                  !!flightSearchResponse.items &&
-                  flightSearchResponse.items.data
-                }
+                results={!!flightSearchResponseData && flightSearchResponseData}
               />
             </div>
           </Grid>
@@ -133,10 +133,9 @@ const Availability = () => {
                   />
                 </div>
               </div>
-              {!!flightSearchResponse.items &&
-                flightSearchResponse.items.data &&
+              {!!flightSearchResponseData &&
                 <FlightResults
-                  results={flightSearchResponse.items.data}
+                  results={flightSearchResponseData}
                 />
               }
             </div>
