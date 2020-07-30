@@ -34,5 +34,10 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.master.objectStatuses
   ),
+
+  searchOffice: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.office.searchOffice
+  ),
 });
 export default rootReducer;

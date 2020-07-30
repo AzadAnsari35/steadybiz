@@ -82,7 +82,6 @@ const Header = () => {
               {getShortName(`${userDto.firstName} ${userDto.lastName}`)}
             </Avatar>
             <div className="font-primary-semibold-20 pl-16">
-              {' '}
               {userDto.firstName} {userDto.lastName}
             </div>
             <KeyboardArrowDownIcon />

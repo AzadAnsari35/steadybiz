@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import ClearIcon from '@material-ui/icons/Clear';
 import SaveIcon from '@material-ui/icons/Save';
@@ -14,11 +13,13 @@ import {
   PrimaryTable,
   DateRangeTableHeader,
   SearchTableHeader,
+  SimplePopover,
 } from 'Widgets';
 import './style.scss';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import ParentGroupIcon from 'Widgets/Icons/ParentGroupIcon';
+import { displayImage } from 'Helpers/utils';
 
 const headerData = [
   'PARENT',
@@ -39,7 +40,51 @@ const response = {
   data: [
     {
       // ofId: '37d3be08-60c6-4ffa-8538-66075f19acbd',
-      parent: '',
+      time: '23:15 Hrs',
+      officeName: 'Jacobi, Stark and McClure',
+      level: '1',
+      userName: 'RylanWilliamson',
+      depositType: 'Manual',
+      nativeCurrency: 'AED',
+      nativeDepositAmt: '64042.78',
+      nativeTxnAmt: '7620',
+      currency: 'AED',
+      depositAmt: '64042.78',
+      txnAmt: '7620',
+      balanceAmt: '135484.80',
+    },
+    {
+      // ofId: '37d3be08-60c6-4ffa-8538-66075f19acbd',
+      time: '23:15 Hrs',
+      officeName: 'Jacobi, Stark and McClure',
+      level: '1',
+      userName: 'RylanWilliamson',
+      depositType: 'Manual',
+      nativeCurrency: 'AED',
+      nativeDepositAmt: '64042.78',
+      nativeTxnAmt: '7620',
+      currency: 'AED',
+      depositAmt: '64042.78',
+      txnAmt: '7620',
+      balanceAmt: '135484.80',
+    },
+    {
+      // ofId: '37d3be08-60c6-4ffa-8538-66075f19acbd',
+      time: '23:15 Hrs',
+      officeName: 'Jacobi, Stark and McClure',
+      level: '1',
+      userName: 'RylanWilliamson',
+      depositType: 'Manual',
+      nativeCurrency: 'AED',
+      nativeDepositAmt: '64042.78',
+      nativeTxnAmt: '7620',
+      currency: 'AED',
+      depositAmt: '64042.78',
+      txnAmt: '7620',
+      balanceAmt: '135484.80',
+    },
+    {
+      // ofId: '37d3be08-60c6-4ffa-8538-66075f19acbd',
       time: '23:15 Hrs',
       officeName: 'Jacobi, Stark and McClure',
       level: '1',
@@ -54,6 +99,46 @@ const response = {
       balanceAmt: '135484.80',
     },
   ],
+};
+
+const PopoverAction = (props) => {
+  const [showPopover, setShowPopover] = useState(true);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+    setShowPopover(true);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+    setShowPopover(false);
+  };
+
+  return (
+    <>
+      <img
+        src={displayImage('ParentGroupIcon.svg')}
+        className="cursor-pointer"
+        onClick={handlePopoverOpen}
+      />
+      <SimplePopover
+        open={showPopover}
+        handleClose={handlePopoverClose}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
+        <div>Popover</div>
+      </SimplePopover>
+    </>
+  );
 };
 
 const CreditLimitBreakup = () => {
@@ -145,12 +230,26 @@ const CreditLimitBreakup = () => {
             'right',
             'left',
             'right',
-            'right',
-            'right',
             'center',
+            'center',
+            'center',
+            'center',
+            'center',
+            'center',
+            'right',
           ]}
           statusIndex={6}
-          AddElement={{ fisrt: <ParentGroupIcon /> }}
+          AddElement={{ first: <PopoverAction /> }}
+          tableStyling={[
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            { borderRight: `1px solid ${colors.mercury}` },
+          ]}
         />
       </div>
     </>

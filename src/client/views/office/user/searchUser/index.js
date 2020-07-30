@@ -37,8 +37,8 @@ const headerData = [
 
 const PopoverAction = (props) => {
   const [showPopover, setShowPopover] = useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);  
-  
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -101,9 +101,9 @@ const PopoverAction = (props) => {
 
 const SearchUser = () => {
   const [errorMsg, setErrorMsg] = useState('');
-  const [recordFound,setRecordFound]=useState(false);
-  let page=1;
-  const [requestJson,setReqeustJson]=useState(null);
+  const [recordFound, setRecordFound] = useState(false);
+  let page = 1;
+  const [requestJson, setReqeustJson] = useState(null);
   let history = useHistory();
   let dispatch = useDispatch();
 
@@ -114,57 +114,50 @@ const SearchUser = () => {
   );
 
   const searchResult = useSelector((state) => state.overrideSearchResult);
-  
-  const ofId='dsfsdfds';
-  
-  
-  //console.log(response);
+
+  const ofId = 'dsfsdfds';
+
   const { register, handleSubmit, errors, control, getValues } = useForm({
     defaultValues: {
       status: { label: 'Active', value: 'Active' },
     },
   });
-  const callback=(newValue)=>{
-    page=newValue;
-    setReqeustJson(prevState => {
-      return { ...prevState, page: newValue }
-    });
+  const handlePage = (newValue) => {
+    page = newValue;
+    setReqeustJson((prevState) => ({ ...prevState, page: newValue }));
     //requestJson.page=newValue
-   
   };
 
-  useEffect(()=>{
-    if(requestJson!==null)
-    callSearch();
-  },[requestJson])
- useEffect(()=>{
-  if (searchResult.items != null && searchResult.actualActionType===endpoint.office.searchUser.actualActionType ) {
-   
-    const errMsg = utils.checkError(searchResult.items);
-    
-    if (errMsg !== '')
-     setErrorMsg(errMsg);
+  useEffect(() => {
+    if (requestJson !== null) callSearch();
+  }, [requestJson]);
+
+  useEffect(() => {
+    if (
+      searchResult.items != null &&
+      searchResult.actualActionType ===
+        endpoint.office.searchUser.actualActionType
+    ) {
+      const errMsg = utils.checkError(searchResult.items);
+
+      if (errMsg !== '') setErrorMsg(errMsg);
       else {
         setRecordFound(true);
-        
       }
-  }
+    }
+  }, [searchResult]);
 
- },[searchResult]);
-
- const callSearch=()=>
- {
-  try {
-    setErrorMsg('');
-    setRecordFound(false);    
-    dispatch(commonAction(endpoint.office.searchUser, requestJson));
-  }
-    catch (err) {
+  const callSearch = () => {
+    try {
+      setErrorMsg('');
+      setRecordFound(false);
+      dispatch(commonAction(endpoint.office.searchUser, requestJson));
+    } catch (err) {
       showError(err, errorMsg);
     }
- }
-  const onSubmit =  (data, e) => {
-    page=1;
+  };
+  const onSubmit = (data, e) => {
+    page = 1;
     setReqeustJson(data);
 
     //callSearch();
@@ -176,8 +169,9 @@ const SearchUser = () => {
         <div className="font-primary-semibold-24 pb-4">MANAGE USERS</div>
         <div className="horizontal-grey-divider"></div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <input type='hidden' name='ofid' value={ofId} ref={register} ></input>
-          <input type='hidden' name='page' value={page} ref={register} ></input>
+          <input type="hidden" name="ofid" value={ofId} ref={register}></input>
+          <input type="hidden" name="page" value={page} ref={register}></input>
+
           <Text
             showLeftBorder={true}
             text="SEARCH USER"
@@ -322,9 +316,9 @@ const SearchUser = () => {
           </Grid>
         </form>
 
-          <div></div>
+        <div></div>
       </div>
-      {(recordFound) && (
+      {recordFound && (
         <PrimaryTable
           header={<PrimaryTableHeader />}
           headerData={headerData}
@@ -333,9 +327,9 @@ const SearchUser = () => {
             last: <PopoverAction />,
           }}
           count={searchResult.items.data.count}
-          size={5}
+          size={6}
           page={page}
-          parentCallback={callback}
+          handlePage={handlePage}
           columnAlignments={[
             'left',
             'left',
@@ -345,7 +339,7 @@ const SearchUser = () => {
             'left',
             'center',
           ]}
-          statusIndex={6}
+          statusIndex={7}
           imageIndex={1}
           hideKeys={['userId', 'officeId']}
         />

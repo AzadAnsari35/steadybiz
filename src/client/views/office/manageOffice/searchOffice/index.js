@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { regex } from 'Helpers/validator';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Button,
@@ -20,6 +20,7 @@ import { commonAction, commonActionWithoutApi } from 'Actions/';
 import { useDispatch, useSelector } from 'react-redux';
 import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam } from 'Constants/commonConstant';
+import { utils } from 'Helpers';
 
 import './style.scss';
 
@@ -158,6 +159,12 @@ const PopoverAction = (props) => {
 };
 
 const SearchOffice = () => {
+  const [requestJson, setReqeustJson] = useState(null);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(5);
+  const [recordFound, setRecordFound] = useState(false);
+
   let history = useHistory();
   let dispatch = useDispatch();
 
@@ -175,17 +182,48 @@ const SearchOffice = () => {
 
   const { register, handleSubmit, errors, control, getValues } = useForm({
     defaultValues: {
-      status: { label: 'Active', value: 'Active' },
-      cityCode: { label: 'All', value: 'All' },
-      countryCode: { label: 'All', value: 'All' },
-      officeType: { label: 'All', value: 'All' },
+      status: '',
+      cityCode: '',
+      countryCode: '',
     },
   });
 
+  const ofId = utils.getItemFromStorage('officeId');
+
+  const searchOffice = useSelector((state) => state.searchOffice?.items);
+
+  useEffect(() => {
+    if (requestJson !== null) callSearch();
+  }, [requestJson]);
+
+  useEffect(() => {
+    if (searchOffice != null) {
+      const errMsg = utils.checkError(searchOffice);
+
+      if (errMsg !== '') setErrorMsg(errMsg);
+      else {
+        setRecordFound(true);
+      }
+    }
+  }, [searchOffice]);
+
+  const handlePage = (newPage) => {
+    setPage(newPage);
+  };
+
+  const callSearch = () => {
+    try {
+      setErrorMsg('');
+      setRecordFound(false);
+      dispatch(commonAction(endpoint.office.searchOffice, requestJson));
+    } catch (err) {
+      showError(err, errorMsg);
+    }
+  };
+
   const onSubmit = (data, e) => {
     console.log('data', data);
-
-    dispatch(commonAction(endpoint.office.searchUser, null));
+    setReqeustJson(data);
   };
 
   return (
@@ -194,6 +232,10 @@ const SearchOffice = () => {
         <div className="font-primary-semibold-24 pb-4">MANAGE OFFICE</div>
         <div className="horizontal-grey-divider"></div>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <input type="hidden" name="ofid" value={ofId} ref={register}></input>
+          <input type="hidden" name="page" value={page} ref={register}></input>
+          <input type="hidden" name="size" value={size} ref={register}></input>
+
           <Text
             showLeftBorder={true}
             text="SEARCH OFFICE"
@@ -296,15 +338,15 @@ const SearchOffice = () => {
 
         <div></div>
       </div>
-      {response && (
+      {searchOffice && (
         <PrimaryTable
           header={<PrimaryTableHeader />}
           headerData={headerData}
-          bodyData={response}
+          bodyData={searchOffice}
           AddElement={{
             last: <PopoverAction />,
           }}
-          count={20}
+          count={searchOffice.count}
           size={5}
           columnAlignments={[
             'left',
@@ -316,8 +358,11 @@ const SearchOffice = () => {
             'center',
             'right',
             'left',
+            'center',
           ]}
-          statusIndex={6}
+          statusIndex={9}
+          handlePage={handlePage}
+          hideKeys={['ofId']}
         />
       )}
     </div>

@@ -26,12 +26,13 @@ const PrimaryTable = (props) => {
     statusIndex = -1,
     imageIndex = -2,
     hideKeys = '',
-    page=1,
-    
+    page = 1,
+    handlePage,
+    tableStyling,
   } = props;
 
   const [lowOffset, setLowOffset] = React.useState(1);
-  const [highOffset, setHighOffset] = React.useState(3);
+  const [highOffset, setHighOffset] = React.useState(size);
   //const [page, setPage] = React.useState(1);
 
   const statusColor = (status) => {
@@ -54,14 +55,16 @@ const PrimaryTable = (props) => {
     }
   };
 
-  const handleChangePage = (event,newPage) => {
-
-   props.parentCallback(newPage);
-    
+  const handleChangePage = (event, newPage) => {
+    handlePage(newPage);
   };
 
   const setAlignment = (index) => {
     return columnAlignments[index];
+  };
+
+  const applyStyle = (index) => {
+    return tableStyling?.length && tableStyling[index];
   };
 
   const showEntries = (key) => {
@@ -78,15 +81,22 @@ const PrimaryTable = (props) => {
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  {headerData.map((header, index) =>
+                  {headerData.map((header, index, arr) =>
                     Array.isArray(header) ? (
                       <TableCell
-                        className=" PrimaryTable-head-cell text-align-center"
+                        className="PrimaryTable-head-cell PrimaryTable-nestedHead-cell"
                         colSpan={3}
                         padding="none"
+                        align="center"
                       >
                         {header[0]}
-                        <div className="d-flex justify-content-between">
+                        <div
+                          className={`d-flex justify-content-between PrimaryTable-nestedHead-cell__subHead ${
+                            Array.isArray(arr[index + 1])
+                              ? 'border-right-gray-thin'
+                              : ''
+                          } `}
+                        >
                           {header.slice(1).map((cur) => (
                             <div className=" PrimaryTable-head-cell">{cur}</div>
                           ))}
@@ -98,6 +108,7 @@ const PrimaryTable = (props) => {
                         className="PrimaryTable-head-cell "
                         style={index === imageIndex ? { paddingLeft: 72 } : {}}
                         align={setAlignment(index)}
+                        style={applyStyle(index)}
                       >
                         {header}
                       </TableCell>
@@ -109,6 +120,14 @@ const PrimaryTable = (props) => {
                 {bodyData.data.length > 0 &&
                   bodyData.data.map((body, ind) => (
                     <TableRow key={ind}>
+                      {AddElement?.first && (
+                        <TableCell component="th" scope="row" align="center">
+                          {React.cloneElement(AddElement.first, {
+                            rowNumber: ind + 1,
+                          })}
+                        </TableCell>
+                      )}
+
                       {Object.keys(body).map(
                         (key, index) =>
                           showEntries(key) && (
@@ -116,10 +135,11 @@ const PrimaryTable = (props) => {
                               component="th"
                               scope="row"
                               key={`body-${index}`}
-                              align={setAlignment(index)}
+                              align={setAlignment(index - hideKeys.length)}
                               style={
                                 index === imageIndex ? { paddingLeft: 72 } : {}
                               }
+                              style={applyStyle(index)}
                               className={`PrimaryTable-body-cell position-relative ${
                                 index === statusIndex
                                   ? statusColor(body[key])

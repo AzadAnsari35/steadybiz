@@ -66,6 +66,12 @@ export default {
       actionType: actionTypeConstant.override.selectedOption,
       actualActionType: actionTypeConstant.office.viewUser,
     },
+    searchOffice: {
+      url: config.api.url + '/api/v1/offices/searchOffice',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.office.searchOffice,
+    },
   },
 
   creditLimit: {

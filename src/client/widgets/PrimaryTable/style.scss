@@ -24,7 +24,13 @@ $root: '.PrimaryTable';
   }
 
   &-nestedHead-cell {
-    padding: 8px 16px !important;
+    padding-top: 4px !important;
+
+    &__subHead {
+      padding: 0px 16px !important;
+      padding-top: 4px !important;
+      border-top: 1px solid $mercury;
+    }
   }
 
   &-body {
