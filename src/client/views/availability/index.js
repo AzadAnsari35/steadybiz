@@ -18,7 +18,7 @@ import FlightResults from "Components/Flights/Availability/FlightResults";
 import FlightSummary from "Components/Flights/Availability/FlightSummary";
 import SearchBar from "Components/Flights/SearchBar";
 
-import { Button, IconWithBackground, MultiSelect, Text, LinearLoader, ScrollableList } from "Widgets";
+import { Button, IconWithBackground, MultiSelect, Text, ScrollableList } from "Widgets";
 
 import "./style.scss";
 
@@ -46,11 +46,14 @@ const Availability = () => {
   const flightSearchResponseData = getDataFromRedux(flightSearchResponse);
   const flightSearchInputData = getDataFromRedux(flightSearchInput);
 
-  const outboundItinerary = !!flightSearchResponseData &&
-    flightSearchResponseData.commonRS.flightItinerary[0].outboundItinerary[0];
-
-  const { totalfareDetails } = outboundItinerary;
-
+  const {
+    flightItinerary,
+    departureAirportsNearBY,
+    arrivalAirportsNearBY,
+  } = !!flightSearchResponseData && flightSearchResponseData.commonRS;
+  const { outboundItinerary, flightSegmentType } = !!flightItinerary && flightItinerary[0];
+  const { totalfareDetails } = !!outboundItinerary && outboundItinerary[0];
+  
   useEffect(() => {
     try {
       dispatch(commonAction(endpoint.master.airlines));
@@ -103,7 +106,10 @@ const Availability = () => {
           <Grid item xs={12} md={3}>
             <div className="Availability-mainSection__filtersContainer">
               <Filters
-                results={!!flightSearchResponseData && flightSearchResponseData}
+                flightSegmentType={!!flightSegmentType && flightSegmentType}
+                outboundItinerary={!!outboundItinerary && outboundItinerary}
+                departureAirportsNearBY={departureAirportsNearBY}
+                arrivalAirportsNearBY={arrivalAirportsNearBY}
               />
             </div>
           </Grid>

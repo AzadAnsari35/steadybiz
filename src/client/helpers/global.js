@@ -76,3 +76,40 @@ export const calculateTotalDuration = durationsArr => {
 export const getDataFromRedux = key => {
   return !!key.items && key.items.status && !!key.items.data && key.items.data;
 };
+
+export const addDurations = durations => {
+  let totalHours = 0, totalMin = 0;
+  durations.forEach(duration => {
+    totalHours += parseInt(duration.split(":")[0]);
+    totalMin += parseInt(duration.split(":")[1]);
+  });
+  totalHours += Math.floor(totalMin / 60);
+  totalMin %= 60;
+  return `${totalHours}:${totalMin}`;
+};
+
+export const calculateDurationInMinutes = duration => {
+  const splittedDuration = duration.split(":");
+  const hours = Number(splittedDuration[0]), minutes = Number(splittedDuration[1]);
+  return ((hours * 60) + minutes);
+};
+
+/** Converts minutes to hours and minutes format
+ * Input => 200
+ * Output => 03:20hrs
+ */
+export const convertMinutesIntoHoursAndMinutes = (minutes) => {
+  const hours = Math.floor(minutes / 60), min = minutes % 60;
+
+  return `${`${String(hours).length > 1 ? "" : "0"}${hours}:`}${`${String(min).length > 1 
+    ? "" : "0"}${min}`}hrs`;
+};
+
+export const getRange = (value, min, max) => {
+  if (min > value) {
+    min = value;
+  } else if (max < value) {
+    max = value;
+  }
+  return [min, max];
+};
