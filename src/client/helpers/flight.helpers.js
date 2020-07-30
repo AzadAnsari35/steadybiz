@@ -220,7 +220,7 @@ export const getFiltersData = outboundItinerary => {
       twoStopFlighstMinPrice: positiveInfinity,
     }
   };
-  const airlines = {};
+  const airlinesData = {};
   const timeSlotsInitialObj = {
     first: positiveInfinity,
     second: positiveInfinity,
@@ -290,15 +290,15 @@ export const getFiltersData = outboundItinerary => {
       nonRefundableMinPrice = getMinimumValue(totalAmount, nonRefundableMinPrice);
     }
     // AIRLINES
-    if (outboundDepartureFlightSegmentGroupAirline in airlines &&
-      airlines[outboundDepartureFlightSegmentGroupAirline] < totalAmount
+    if (outboundDepartureFlightSegmentGroupAirline in airlinesData &&
+      airlinesData[outboundDepartureFlightSegmentGroupAirline] < totalAmount
     ) {
-      airlines[outboundDepartureFlightSegmentGroupAirline] = getMinimumValue(
-        totalAmount, airlines[outboundDepartureFlightSegmentGroupAirline]
+      airlinesData[outboundDepartureFlightSegmentGroupAirline] = getMinimumValue(
+        totalAmount, airlinesData[outboundDepartureFlightSegmentGroupAirline]
       );
     } else {
-      airlines[outboundDepartureFlightSegmentGroupAirline] = getMinimumValue(
-        totalAmount, airlines[outboundDepartureFlightSegmentGroupAirline]
+      airlinesData[outboundDepartureFlightSegmentGroupAirline] = getMinimumValue(
+        totalAmount, airlinesData[outboundDepartureFlightSegmentGroupAirline]
       );
     }
     // FLIGHT TIME
@@ -576,7 +576,7 @@ export const getFiltersData = outboundItinerary => {
     refundableMinPrice,
     nonRefundableMinPrice,
     stopsData,
-    airlines,
+    airlinesData,
     flightSlots,
     layoverDurations,
     tripDurations,
