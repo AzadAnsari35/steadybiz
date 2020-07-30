@@ -8,13 +8,17 @@ $root: ".DropdownBox";
   &-title {
     width: 100%;
     cursor: pointer;
+    & > div {
+      margin-right: 12px;
+    }
   }
   &-content {
     min-width: 100%;
     position: absolute;
     background-color: $white;
     box-shadow: 0px 0px 6px $black1;
-    top: 29px;
+    margin: 4px 0;
+    top: 100%;
     padding: 16px;
     z-index: 1;
   }

@@ -1,0 +1,25 @@
+@import "./../../../../styles/variables";
+$root: ".FareSummaryAndPolicy";
+
+#{$root} {
+  &-fareSummary, &-farePolicy {
+    .title {
+      margin-bottom: 30px;
+    }
+  }
+  &-fareSummary {
+    .FareSummary {
+      border-right: 1px solid $color2;
+      padding-right: 30px;
+      height: 100%;
+    }
+  }
+  &-farePolicy {
+    .title {
+      margin-left: 30px;
+    }
+    .FarePolicy {
+      padding-left: 30px;
+    }
+  }
+}

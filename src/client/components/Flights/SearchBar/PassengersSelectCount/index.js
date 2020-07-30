@@ -1,49 +1,30 @@
 import React, { useState } from "react";
-import Button from "Widgets/Button/index";
-import Text from "Widgets/Text/index";
+
+import { Button, Text } from "Widgets";
 
 import "./style.scss";
 
-const passengerTypes = [
-  {
-    id: "adult",
-    type: "Adult",
-    ageLimitText: "(Above 12 Yrs)",
-    count: 1,
-  },
-  {
-    id: "children",
-    type: "Children",
-    ageLimitText: "(2 - 12 Yrs)",
-    count: 0,
-  },
-  {
-    id: "infant",
-    type: "Infants",
-    ageLimitText: "(Below 2 Yrs)",
-    count: 0,
-  },
-];
-
-const PassengersSelectCount = () => {
+const PassengersSelectCount = props => {
+  const { passengerTypes, calculateTotalPassengers, onResetClick, onApplyClick } = props;
   const [passengers, setPassengers] = useState(passengerTypes);
 
-  const handleCounter = (id, type = "plus") => {
+  const handleCounter = (id, type = "add") => {
     const elementsIndex = passengers.findIndex(element => element.id == id);
     let newArray = [...passengers];
     newArray[elementsIndex] = {
       ...newArray[elementsIndex],
       count:
-        type === "plus"
+        type === "add"
         ? newArray[elementsIndex].count + 1
         : newArray[elementsIndex].count - 1,
     };
     setPassengers(newArray);
-  }
+    calculateTotalPassengers(newArray);
+  };
 
   return (
     <div className="PassengersSelectCount">
-      {passengers.map((passenger, index) => 
+      {passengers.map(passenger => 
         <div key={passenger.id} className="PassengersSelectCount-row d-flex align-items-center justify-content-between">
           <div className="PassengersSelectCount-left">
             <Text className="PassengersSelectCount-left__type font-primary-medium-14" text={passenger.type} />
@@ -55,13 +36,13 @@ const PassengersSelectCount = () => {
               <Button
                 className="font-primary-medium-16"
                 disabled={
-                  passenger.id === "adult"
+                  passenger.id === "ADT"
                     ? passenger.count === 1
                     : passenger.count === 0
                   }
                 text="-"
                 secondary
-                onClick={() => handleCounter(passenger.id, "minus")}
+                onClick={() => handleCounter(passenger.id, "subtract")}
               />
               <Button
                 className="font-primary-medium-16"
@@ -75,8 +56,8 @@ const PassengersSelectCount = () => {
       )}
       <div className="PassengersSelectCount-action d-flex justify-content-end">
         <div className="d-flex">
-          <Button className="text-uppercase mr-24" isLinkType secondary text="Reset" />
-          <Button className="text-uppercase" isLinkType text="Apply" />
+          <Button className="text-uppercase mr-24" isLinkType secondary text="Reset" onClick={onResetClick} />
+          <Button className="text-uppercase" isLinkType text="Apply" onClick={onApplyClick} />
         </div>
       </div>
     </div>

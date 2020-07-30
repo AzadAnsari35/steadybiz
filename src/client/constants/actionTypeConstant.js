@@ -3,8 +3,9 @@ export const actionTypeConstant = {
     searchResult: 'override.searchResult',
     selectedOption: 'override.selectedOption',
   },
-  flights: {
+  flights:{
     flightSearchInput: 'flights.flightSearchInput',
+    flightSearch: "flightSearch",
   },
   users: {
     signIn: 'usersSignIn',
@@ -12,10 +13,14 @@ export const actionTypeConstant = {
   master: {
     countries: 'master.countries',
     objectStatuses: 'master.objectStatuses',
+    airlines: 'master.airlines',
   },
   office: {
     searchUser: 'office.searchUser',
     updateUser: 'office.updateUser',
     viewUser: 'office.viewUser',
+  },
+  loader: {
+    loaderStatus: 'loader.loaderStatus',
   },
 };

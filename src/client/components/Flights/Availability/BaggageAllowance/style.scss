@@ -1,0 +1,60 @@
+@import "./../../../../styles/variables";
+$root: ".BaggageAllowance";
+
+#{$root} {
+  > div {
+    &:nth-child(odd) {
+      > div {
+        #{$root} {
+          &-content {
+            padding-right: 20px;
+            border-right: 1px solid $color2;
+          }
+        }
+      }
+    }
+    &:nth-child(even) {
+      > div {
+        #{$root} {
+          &-content {
+            padding-left: 20px;
+          }
+        }
+      }
+    }
+  }
+  &-sector {
+    margin: 0 auto 42px;
+  }
+  &-content {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  &-airline {
+    margin-bottom: 20px;
+    &__icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      background-color: $gray;
+      margin-right: 12px;
+    }
+  }
+  &-segment {
+    &__header {
+      padding: 6px 24px 6px 0;
+      background-color: $color3;
+      .segment {
+        padding: 6px 24px;
+        background-color: $color2;
+      }
+    }
+    &__body {
+      padding: 10px 24px 10px 0;
+      margin-bottom: 10px;
+      .data-row {
+        padding-left: 10px;
+      }
+    }
+  }
+}

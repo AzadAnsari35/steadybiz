@@ -1,0 +1,19 @@
+$root: ".FareSummary";
+
+#{$root} {
+	.container {
+		.price-category {
+			&-container {
+				margin-bottom: 14px;
+			}
+			&__title {
+				margin-bottom: 14px;
+			}
+			&__description {
+				&-price {
+					margin-bottom: 10px;
+				}
+			}
+		}
+	}
+}

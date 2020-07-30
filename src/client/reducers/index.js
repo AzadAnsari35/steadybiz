@@ -9,9 +9,21 @@ import { reducerState, createFilteredReducer } from './commonReducer';
 // });
 
 const rootReducer = combineReducers({
+  loaderStatus: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.loader.loaderStatus
+  ),
   overrideSearchResult: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.override.searchResult
+  ),
+  flightSearchInput: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.flights.flightSearchInput
+  ),
+  flightSearch: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.flights.flightSearch
   ),
   overrideSelectedOption: createFilteredReducer(
     reducerState,
@@ -28,6 +40,10 @@ const rootReducer = combineReducers({
   masterObjectStatuses: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.master.objectStatuses
+  ),
+  masterAirlines: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.master.airlines
   ),
 });
 export default rootReducer;
