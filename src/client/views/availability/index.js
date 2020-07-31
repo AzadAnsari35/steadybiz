@@ -46,11 +46,7 @@ const Availability = () => {
   const flightSearchResponseData = getDataFromRedux(flightSearchResponse);
   const flightSearchInputData = getDataFromRedux(flightSearchInput);
 
-  const {
-    flightItinerary,
-    departureAirportsNearBY,
-    arrivalAirportsNearBY,
-  } = !!flightSearchResponseData && flightSearchResponseData.commonRS;
+  const { flightItinerary } = !!flightSearchResponseData && flightSearchResponseData.commonRS;
   const { outboundItinerary, flightSegmentType } = !!flightItinerary && flightItinerary[0];
   const { totalfareDetails } = !!outboundItinerary && outboundItinerary[0];
   
@@ -108,8 +104,6 @@ const Availability = () => {
               <Filters
                 flightSegmentType={!!flightSegmentType && flightSegmentType}
                 outboundItinerary={!!outboundItinerary && outboundItinerary}
-                departureAirportsNearBY={departureAirportsNearBY}
-                arrivalAirportsNearBY={arrivalAirportsNearBY}
               />
             </div>
           </Grid>

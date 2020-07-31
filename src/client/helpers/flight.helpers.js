@@ -208,6 +208,16 @@ export const getFiltersData = outboundItinerary => {
   let priceRange = [positiveInfinity, negativeInfinity],
     refundableMinPrice = positiveInfinity,
     nonRefundableMinPrice = positiveInfinity;
+  const nearbyAirportsData = {
+    outbound: {
+      departure: {},
+      arrival: {},
+    },
+    return: {
+      departure: {},
+      arrival: {},
+    },
+  };
   const stopsData = {
     outbound: {
       directFlightsMinPrice: positiveInfinity,
@@ -245,6 +255,16 @@ export const getFiltersData = outboundItinerary => {
     outbound: [positiveInfinity, negativeInfinity],
     return: [positiveInfinity, negativeInfinity],
   };
+  const itineraryCityNames = [
+    {
+      id: "departure",
+      value: "",
+    },
+    {
+      id: "arrival",
+      value: "",
+    },
+  ];
 
   outboundItinerary.forEach((itinerary, index) => {
     const { flightSegments, totalfareDetails } = itinerary;
@@ -256,8 +276,61 @@ export const getFiltersData = outboundItinerary => {
     const returnDepartureFlightSegmentGroup = returnFlightSegmentGroup[0];
     const returnArrivalFlightSegmentGroup = returnFlightSegmentGroup[returnFlightSegmentGroup.length - 1];
     const outboundDepartureFlightSegmentGroupAirline = outboundDepartureFlightSegmentGroup.airlineDetails.marketingAirline;
+    const outboundDepartureDetails = outboundDepartureFlightSegmentGroup.departureDetails;
+    const outboundArrivalDetails = outboundArrivalFlightSegmentGroup.arrivalDetails;
+    const returnDepartureDetails = returnDepartureFlightSegmentGroup.departureDetails;
+    const returnArrivalDetails = returnArrivalFlightSegmentGroup.arrivalDetails;
     // PRICE RANGE
     priceRange = getRange(totalAmount, priceRange[0], priceRange[1]);
+    // NEARBY AIRPORTS
+    if (outboundDepartureDetails.airportCode in nearbyAirportsData.outbound.departure &&
+      nearbyAirportsData.outbound.departure[outboundDepartureDetails.airportCode].price < totalAmount
+    ) {
+      nearbyAirportsData.outbound.departure[outboundDepartureDetails.airportCode].price = getMinimumValue(
+        totalAmount, nearbyAirportsData.outbound.departure[outboundDepartureDetails]
+      );
+    } else {
+      nearbyAirportsData.outbound.departure[outboundDepartureDetails.airportCode] = {
+        name: outboundDepartureDetails.airportName,
+        price: totalAmount,
+      };
+    }
+    if (outboundArrivalDetails.airportCode in nearbyAirportsData.outbound.arrival &&
+      nearbyAirportsData.outbound.arrival[outboundArrivalDetails.airportCode].price < totalAmount
+    ) {
+      nearbyAirportsData.outbound.arrival[outboundArrivalDetails.airportCode].price = getMinimumValue(
+        totalAmount, nearbyAirportsData.outbound.arrival[outboundArrivalDetails]
+      );
+    } else {
+      nearbyAirportsData.outbound.arrival[outboundArrivalDetails.airportCode] = {
+        name: outboundArrivalDetails.airportName,
+        price: totalAmount,
+      };
+    }
+    if (returnDepartureDetails.airportCode in nearbyAirportsData.return.departure &&
+      nearbyAirportsData.return.departure[returnDepartureDetails.airportCode].price < totalAmount
+    ) {
+      nearbyAirportsData.return.departure[returnDepartureDetails.airportCode].price = getMinimumValue(
+        totalAmount, nearbyAirportsData.return.departure[returnDepartureDetails]
+      );
+    } else {
+      nearbyAirportsData.return.departure[returnDepartureDetails.airportCode] = {
+        name: returnDepartureDetails.airportName,
+        price: totalAmount,
+      };
+    }
+    if (returnArrivalDetails.airportCode in nearbyAirportsData.return.arrival &&
+      nearbyAirportsData.return.arrival[returnArrivalDetails.airportCode].price < totalAmount
+    ) {
+      nearbyAirportsData.return.arrival[returnArrivalDetails.airportCode].price = getMinimumValue(
+        totalAmount, nearbyAirportsData.return.arrival[returnArrivalDetails]
+      );
+    } else {
+      nearbyAirportsData.return.arrival[returnArrivalDetails.airportCode] = {
+        name: returnArrivalDetails.airportName,
+        price: totalAmount,
+      };
+    }
     // STOPS
     // flightSegments.forEach((segment, index) => {
     //   const segmentName = index === 0 ? "outbound" : "return";
@@ -570,9 +643,12 @@ export const getFiltersData = outboundItinerary => {
       tripDurations.return[0],
       tripDurations.return[1],
     );
+    itineraryCityNames[0].value = outboundDepartureFlightSegmentGroup.departureDetails.cityName;
+    itineraryCityNames[1].value = outboundArrivalFlightSegmentGroup.arrivalDetails.cityName;
   });
   return {
     priceRange,
+    nearbyAirportsData,
     refundableMinPrice,
     nonRefundableMinPrice,
     stopsData,
@@ -580,5 +656,6 @@ export const getFiltersData = outboundItinerary => {
     flightSlots,
     layoverDurations,
     tripDurations,
+    itineraryCityNames,
   };
 };
