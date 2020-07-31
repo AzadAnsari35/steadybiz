@@ -5,11 +5,12 @@ import Text from "Widgets/Text/index";
 import "./style.scss";
 
 const SwitchTab = props => {
-  const { defaultActiveTab, tabs } = props;
+  const { defaultActiveTab, id, tabs, callback } = props;
   const [activeTab, setActiveTab] = useState(defaultActiveTab);
 
-  const handleTabClick = id => {
-    setActiveTab(id);
+  const handleTabClick = activeTabId => {
+    setActiveTab(activeTabId);
+    !!callback && callback(id, activeTabId);
   };
 
   return (

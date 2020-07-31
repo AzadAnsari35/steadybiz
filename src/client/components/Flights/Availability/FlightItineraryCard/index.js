@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, lazy, Suspense } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
@@ -20,10 +20,11 @@ import {
 } from "Helpers/flight.helpers";
 import { applyCommaToPrice, extractTime, getDataFromRedux } from "Helpers/global";
 
-import FlightDetails from "Components/Flights/Availability/FlightDetails";
-import BaggageAllowance from "Components/Flights/Availability/BaggageAllowance";
-import FareSummaryAndPolicy from "Components/Flights/Availability/FareSummaryAndPolicy";
 import { ArrowIcon, Button, Dot, Image, Line, Tag, Text } from "Widgets";
+
+const FlightDetails = lazy(() => import('Components/Flights/Availability/FlightDetails'));
+const BaggageAllowance = lazy(() => import('Components/Flights/Availability/BaggageAllowance'));
+const FareSummaryAndPolicy = lazy(() => import('Components/Flights/Availability/FareSummaryAndPolicy'));
 
 import "./style.scss";
 
@@ -281,13 +282,19 @@ const FlightItineraryCard = props => {
           </div>
           <div className="FlightItineraryCard-flightDetails__content">
             {activeFlightTab === "flightDetails" &&
-              <FlightDetails itinerary={itinerary} />
+              <Suspense fallback={<div>Loading...</div>}>
+                <FlightDetails itinerary={itinerary} />
+              </Suspense>
             }
             {activeFlightTab === "baggageAllowance" &&
-              <BaggageAllowance itinerary={itinerary} />
+              <Suspense fallback={<div>Loading...</div>}>
+                <BaggageAllowance itinerary={itinerary} />
+              </Suspense>
             }
             {activeFlightTab === "fareSummaryAndPolicy" &&
-              <FareSummaryAndPolicy itinerary={itinerary} />
+              <Suspense fallback={<div>Loading...</div>}>
+                <FareSummaryAndPolicy itinerary={itinerary} />
+              </Suspense>
             }
           </div>
         </div>
