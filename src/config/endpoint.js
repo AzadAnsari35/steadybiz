@@ -47,6 +47,7 @@ export default {
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.airlines,
+      reducerName: "masterAirlines",
     },
   },
 

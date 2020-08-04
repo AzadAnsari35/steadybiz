@@ -21,9 +21,8 @@ const Button = (props) => {
         ? "primary" : "secondary"}` : `btn-${!secondary ? "primary" : "secondary"}`} ${
         !!className ? className : ""
       } ${!!disabled ? "btn-disabled" : ""} d-flex justify-content-center align-items-center`}
-      onClick={onClick}
       disabled={disabled}
-      type={type}
+      onClick={onClick}
     >
       <span className={`btn-text ${!!icon ? "add-margin" : ""}`}>{text}</span>
       {!!icon && icon}

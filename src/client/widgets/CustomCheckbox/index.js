@@ -7,18 +7,6 @@ import Text from 'Widgets/Text/index';
 
 import './style.scss';
 
-const renderCheckboxIcon = (checked) => (
-  <div
-    className={`CustomCheckbox-icon ${
-      !!checked
-        ? 'checked d-flex justify-content-center align-items-center'
-        : ''
-    }`}
-  >
-    {checked && <CheckIcon className="CustomCheckbox-icon__checked" />}
-  </div>
-);
-
 const CustomCheckbox = (props) => {
   const {
     control,
@@ -31,14 +19,14 @@ const CustomCheckbox = (props) => {
     register,
     validation = '',
     disabled = false,
+    useReactHookForm = true,
+    onChange,
   } = props;
   // const [checked, setChecked] = useState(false);
 
   // const handleChange = (event) => {
   //   setChecked(event.target.checked);
   // };
-
-  console.log('name', name);
 
   return (
     <div className="CustomCheckbox d-flex align-items-center">
@@ -63,6 +51,7 @@ const CustomCheckbox = (props) => {
             }}
           />
         }
+        onChange={!useReactHookForm ? () => onChange(value) : null}
       />
       {!children ? (
         <div className="CustomCheckbox-label d-flex justify-content-between">
