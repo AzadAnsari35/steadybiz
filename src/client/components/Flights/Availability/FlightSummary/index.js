@@ -11,13 +11,32 @@ import React from "react";
 // } from "./../../utils/helpers/passengerInformation";
 // import { getCabinClassName } from "Helpers/flight.helpers";
 import { displayImage } from "Helpers/utils";
+import { getCabinClassName } from "Helpers/flight.helpers";
+import { getPassengerTypeName, changeDateFormat } from "Helpers/global";
 
 import { Text } from "Widgets";
 
 import "./style.scss";
 
 const FlightSummary = (props) => {
-  // const { outboundItinerary } = props;
+  const { isSearch = false, outboundItinerary, requestBody } = props;
+
+  let departureAirportCode, arrivalAirportCode, departureDate, arrivalDate, cabinClass,
+  passengerCountAndType = [], departureCityName, arrivalCityName;
+
+  if (isSearch && requestBody.flightSearchRQ) {
+    const { flightSearchRQ } = requestBody;
+    departureAirportCode = flightSearchRQ.originDestination[0].originAirportCode;
+    departureCityName = flightSearchRQ.originDestination[0].originAirport.subTitle.split(",")[0],
+    departureDate = changeDateFormat(flightSearchRQ.originDestination[0].originDate);
+    arrivalAirportCode = flightSearchRQ.originDestination[0].destinationAirportCode;
+    arrivalCityName = flightSearchRQ.originDestination[0].destinationAirport.subTitle.split(",")[0],
+    arrivalDate = changeDateFormat(flightSearchRQ.originDestination[0].destinationDate);
+    cabinClass = getCabinClassName(flightSearchRQ.cabinCode);
+    flightSearchRQ.passengerList.passenger.map(item => {
+      passengerCountAndType.push(`${item.count} ${getPassengerTypeName(item.PTC)}`)
+    });
+  }
 
   // const outboundFlightSegmentGroup = getOutboundFlightSegmentGroup(
   //   outboundItinerary
@@ -28,7 +47,7 @@ const FlightSummary = (props) => {
   // const departDate =
   //   isValidList(outboundFlightSegmentGroup) &&
   //   getDepartureDate(outboundFlightSegmentGroup);
-  // const returnDate =
+  // const arrivalDate =
   //   isValidList(returnFlightSegmentGroup) &&
   //   getArrivalDate(returnFlightSegmentGroup);
   // const passengerCountAndType = getPassengerTypeAndCount(outboundItinerary);
@@ -50,30 +69,25 @@ const FlightSummary = (props) => {
         <div className="segment">
           <Text
             className="airport-code text-uppercase font-primary-semibold-20"
-            // text={departureAirportCode}
-            text="TRV"
+            text={departureAirportCode}
           />
           <Text
             className="city-name text-capitalize font-primary-regular-18"
-            // text={departureCityName}
-            text="Thriuvanthpuram"
+            text={departureCityName}
           />
         </div>
         <img
           alt="segment connection"
-          // src={segmentConnectionIcon}
           src={displayImage("segment-connection-arrows.svg")}
         />
         <div className="segment">
           <Text
             className="airport-code text-uppercase font-primary-semibold-20"
-            // text={arrivalAirportCode}
-            text="JFK"
+            text={arrivalAirportCode}
           />
           <Text
             className="city-name text-capitalize font-primary-regular-18"
-            // text={arrivalCityName}
-            text="New York"
+            text={arrivalCityName}
           />
         </div>
       </div>
@@ -85,11 +99,10 @@ const FlightSummary = (props) => {
           />
           <Text
             className="label font-primary-semibold-16"
-            // text={departDate}
-            text="Monday, Jun 15"
+            text={departureDate}
           />
         </div>
-        {/* {!!returnDate && ( */}
+        {!!arrivalDate && (
           <div className="d-flex">
             <Text
               className="label font-primary-regular-16 mr-6"
@@ -97,11 +110,10 @@ const FlightSummary = (props) => {
             />
             <Text
               className="label font-primary-semibold-16"
-              // text={returnDate}
-              text="Friday, Jun 26"
+              text={arrivalDate}
             />
           </div>
-        {/* )} */}
+        )}
       </div>
       <div className="other-details">
         <div className="d-flex">
@@ -111,8 +123,7 @@ const FlightSummary = (props) => {
           />
           <Text
             className="label font-primary-semibold-16"
-            // text={cabinClass}
-            text="Economy"
+            text={cabinClass}
           />
         </div>
         <div className="d-flex">
@@ -122,8 +133,7 @@ const FlightSummary = (props) => {
           />
           <Text
             className="label font-primary-semibold-16"
-            // text={passengerCountAndType.join(", ")}
-            text="2 Adult, 1 Child, 1 Infant"
+            text={passengerCountAndType.join(", ")}
           />
         </div>
       </div>

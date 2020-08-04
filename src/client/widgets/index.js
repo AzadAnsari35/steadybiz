@@ -29,6 +29,9 @@ import PrimaryAccordion from './PrimaryAccordion';
 import RangeSlider from './RangeSlider';
 import SwitchTab from './SwitchTab';
 import TextWithTextInput from './TextWithTextInput';
+import ArrivalDateIcon from './Icons/ArrivalDateIcon';
+import DepartureDateIcon from './Icons/DepartureDateIcon';
+import Chip from './Chip';
 import PrimaryTable from './PrimaryTable';
 import SimplePopover from './Popover';
 import PrimaryTableHeader from './TableHeaders/PrimaryTableHeader';
@@ -37,6 +40,8 @@ import SecondaryAccordion from './SecondaryAccordion';
 import DateRangeTableHeader from './TableHeaders/DateRangeTableHeader';
 import SearchTableHeader from './TableHeaders/SearchTableHeader';
 import DatePicker from './DatePicker';
+import Image from './Image';
+import Loader from './Loader';
 
 export {
   Avatar,
@@ -70,6 +75,9 @@ export {
   PrimaryAccordion,
   RangeSlider,
   SwitchTab,
+  ArrivalDateIcon,
+  DepartureDateIcon,
+  Chip,
   PrimaryTable,
   SimplePopover,
   PrimaryTableHeader,
@@ -78,4 +86,6 @@ export {
   DateRangeTableHeader,
   SearchTableHeader,
   DatePicker,
+  Image,
+  Loader,
 };

@@ -1,4 +1,5 @@
 import React, { useState, Fragment } from "react";
+import { useSelector } from "react-redux";
 import moment from "moment";
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import FlightIcon from '@material-ui/icons/Flight';
@@ -6,7 +7,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import ShareIcon from '@material-ui/icons/Share';
 
 import colors from "Constants/colors";
-import useToggle from "Client/hooks/useToggle";
+import useToggle from "Hooks/useToggle";
 import {
   checkIsFareRefundable,
   getTotalItineraryFareAndCurrency,
@@ -14,11 +15,15 @@ import {
   getAirlineDetails,
   getDepartureSegmentDetails,
   getArrivalSegmentDetails,
+  getTotalFlightDuration,
+  getAirlineName,
 } from "Helpers/flight.helpers";
-import { applyCommaToPrice, extractTime } from "Helpers/global";
+import { applyCommaToPrice, extractTime, getDataFromRedux } from "Helpers/global";
 
 import FlightDetails from "Components/Flights/Availability/FlightDetails";
-import { ArrowIcon, Button, Dot, Line, Tag, Text } from "Widgets";
+import BaggageAllowance from "Components/Flights/Availability/BaggageAllowance";
+import FareSummaryAndPolicy from "Components/Flights/Availability/FareSummaryAndPolicy";
+import { ArrowIcon, Button, Dot, Image, Line, Tag, Text } from "Widgets";
 
 import "./style.scss";
 
@@ -32,7 +37,7 @@ const flightDetailsTabs = [
     name: "Baggage Allowance",
   },
   {
-    id: "fareSummary",
+    id: "fareSummaryAndPolicy",
     name: "Fare Summary & Policy",
   },
 ];
@@ -41,6 +46,8 @@ const FlightItineraryCard = props => {
   const { itinerary } = props;
   const [activeFlightTab, setActiveFlightTab] = useState("flightDetails");
   const [showTabSection, setShowTabSection] = useToggle(false);
+
+  const masterAirlinesResponse = useSelector(state => state.masterAirlines);
   
   const isFareRefundable = checkIsFareRefundable(itinerary);
   const { currency, totalAmount } = getTotalItineraryFareAndCurrency(itinerary);
@@ -57,7 +64,15 @@ const FlightItineraryCard = props => {
   const inboundDepartureDetails = getDepartureSegmentDetails(inboundFlightSegment);
   const inboundArrivalDetails = getArrivalSegmentDetails(inboundFlightSegment);
 
+  const seatsLeft = Math.min.apply(Math, itinerary.flightSegments.map(segment =>
+      Math.max.apply(Math, segment.flightSegmentGroup.map(obj => obj.seatsAvailable))
+    ));
+
+  const totalFlightDuration = getTotalFlightDuration(outboundFlightSegment);
+
   const handleTabClick = id => setActiveFlightTab(id);
+
+  const airlines = getDataFromRedux(masterAirlinesResponse).data;
 
   return (
     <div className="FlightItineraryCard">
@@ -68,23 +83,38 @@ const FlightItineraryCard = props => {
             {itinerary && itinerary.flightSegments && itinerary.flightSegments.map((segment, index) =>
               <div key={index} className="FlightItineraryCard-top__leftSection">
                 <div className="segmentType font-primary-medium-14 d-flex align-items-center">
-                  <FlightIcon className="icon" />{segment.flightSegmentDirection}
+                  <FlightIcon className="icon" />{index === 0 ? "Outbound" : "Return"}
                 </div>
                 <div className="segmentDetail d-flex align-items-center">
                   <div className="airline d-flex align-items-center">
-                    <div className="airline-icon"></div>
+                    <div className="airline-icon">
+                      <Image
+                        altText={
+                          index === 0
+                          ? outboundAirlineDetails.marketingAirline
+                          : inboundAirlineDetails.marketingAirline
+                        }
+                        imgName={`${
+                          index === 0
+                          ? outboundAirlineDetails.marketingAirline
+                          : inboundAirlineDetails.marketingAirline
+                        }.png`}
+                        imgPath="images/airlines/bigicons"
+                        fallbackImgName="airline default.png"
+                      />
+                    </div>
                     <Text
                       className="airline-name font-primary-medium-14"
                       text={
                         index === 0
-                        ? outboundAirlineDetails.marketingAirline
-                        : inboundAirlineDetails.marketingAirline
+                        ? !!airlines && getAirlineName(airlines, outboundAirlineDetails.marketingAirline)
+                        : !!airlines && getAirlineName(airlines, inboundAirlineDetails.marketingAirline)
                       }
                     />
                   </div>
                   <div className="departureTime d-flex flex-direction-column">
                     <Text
-                      className="time font-primary-bold-20"
+                      className="time font-primary-semibold-20"
                       text={`${
                         index === 0
                           ? extractTime(outboundDepartureDetails.time)
@@ -106,7 +136,7 @@ const FlightItineraryCard = props => {
                     <div className="d-flex flex-direction-column align-items-center width-100 height-100">
                       <Text
                         className="font-primary-medium-12"
-                        text={`26h 15m ${
+                        text={`${totalFlightDuration} ${
                           index === 0
                           ? outboundFlightSegment.stopCount > 0
                             ? `(${outboundFlightSegment.stopCount} stop${outboundFlightSegment.stopCount > 1 ? "s" : ""})`
@@ -136,10 +166,6 @@ const FlightItineraryCard = props => {
                         }
                         <Dot big solid />
                       </div>
-                      {/* <div className="stop-names d-flex justify-content-center width-100">
-                        <Text className="font-primary-regular-12" text="HYD" />
-                        <Text className="font-primary-regular-12" text="HEL" />
-                      </div> */}
                       <div className="stop-names d-flex justify-content-center width-100">
                         {index === 0 ?
                           outboundFlightSegment.stopCount > 0 &&
@@ -188,7 +214,7 @@ const FlightItineraryCard = props => {
                       }`}
                     />
                     <Text
-                      className="time font-primary-bold-20"
+                      className="time font-primary-semibold-20"
                       text={`${
                         index === 0
                           ? extractTime(outboundArrivalDetails.time)
@@ -211,7 +237,7 @@ const FlightItineraryCard = props => {
           </div>
           <div className="d-flex align-items-center">
             <div className="FlightItineraryCard-top__rightSection-seatsFareInfo d-flex align-items-center">
-              <Text className="font-primary-semibold-13" text="2 seats left!" />
+              <Text className="font-primary-semibold-13" text={`${seatsLeft} seats left!`} />
               <Tag text={!!isFareRefundable ? "Refundable" : "Non Refundable"} isSuccess={!!isFareRefundable} />
             </div>
             <div className="FlightItineraryCard-top__rightSection-priceSelectFlight d-flex flex-direction-column justify-content-end">
@@ -254,8 +280,16 @@ const FlightItineraryCard = props => {
             )}
           </div>
           <div className="FlightItineraryCard-flightDetails__content">
-            <FlightDetails itinerary={itinerary} />
-        </div>
+            {activeFlightTab === "flightDetails" &&
+              <FlightDetails itinerary={itinerary} />
+            }
+            {activeFlightTab === "baggageAllowance" &&
+              <BaggageAllowance itinerary={itinerary} />
+            }
+            {activeFlightTab === "fareSummaryAndPolicy" &&
+              <FareSummaryAndPolicy itinerary={itinerary} />
+            }
+          </div>
         </div>
       }
     </div>

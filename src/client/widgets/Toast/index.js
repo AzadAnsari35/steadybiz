@@ -1,12 +1,14 @@
-import React, { Fragment, useState, useEffect } from "react";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import React, { Fragment, useState, useEffect } from 'react';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import { useDispatch, useSelector } from 'react-redux';
+import endpointWithoutApi from 'Config/endpointWithoutApi';
+import colors from 'Constants/colors';
+import { commonActionWithoutApi } from 'Actions';
 
-import colors from "Constants/colors";
+import Text from 'Widgets/Text';
 
-import Text from "Widgets/Text";
-
-import "./style.scss";
+import './style.scss';
 
 const Toast = (props) => {
   const {
@@ -15,7 +17,15 @@ const Toast = (props) => {
     textClassName,
     removeAfterNumberOfSeconds,
   } = props;
-  const [showToast, setShowToast] = useState(true);
+
+  const dispatch = useDispatch();
+
+  const toastData = useSelector(
+    (state) => state[endpointWithoutApi.toast.toastStatus.reducerName]
+  );
+
+  const { isToastVisible = false, toastMessage = '', toastStatus } =
+    toastData?.items?.data || {};
 
   useEffect(() => {
     if (removeAfterNumberOfSeconds) {
@@ -26,26 +36,29 @@ const Toast = (props) => {
   }, []);
 
   const handleCloseToastClick = () => {
-    setShowToast(false);
+    dispatch(
+      commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
+        isToastVisible: false,
+      })
+    );
   };
 
   return (
     <Fragment>
-      {showToast && (
+      {isToastVisible && (
         <div
           className={`Toast ${
-            !!isSuccess ? "success" : "error"
+            toastStatus ? 'success' : 'error'
           } d-flex justify-content-between align-items-center box-shadow-secondary`}
         >
           <div className="Toast-container d-flex">
             <div className="d-flex align-items-center">
-              {!!isSuccess && (
+              {toastStatus ? (
                 <CheckCircleOutlineIcon
                   className="Toast-icon"
                   style={{ color: colors.sushi }}
                 />
-              )}
-              {!isSuccess && (
+              ) : (
                 <HighlightOffIcon
                   className="Toast-icon"
                   style={{ color: colors.red }}
@@ -53,9 +66,9 @@ const Toast = (props) => {
               )}
               <Text
                 className={`message font-primary-semibold-14 ${
-                  !!textClassName ? textClassName : ""
+                  !!textClassName ? textClassName : ''
                 }`}
-                text={message}
+                text={toastMessage}
               />
             </div>
             <HighlightOffIcon

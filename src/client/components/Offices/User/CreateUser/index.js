@@ -13,21 +13,21 @@ import { useForm } from 'react-hook-form';
 import { regex } from 'Helpers/validator';
 import PersonIcon from '@material-ui/icons/Person';
 import colors from 'Constants/colors';
-import routes from 'Constants/routes';
+//import routes from 'Constants/routes';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam, titles } from 'Constants/commonConstant';
 import { countriesDialCodeFormatter } from 'Helpers/global';
-
+import { useSelector } from 'react-redux';
 import endpoint from 'Config/endpoint';
 import { utils } from 'Helpers';
 
 import './style.scss';
 
 const createEndpoint = () => {
-  return useAsyncEndpoint((data,endpoint) => ({
-    _endpoint:endpoint ,
-    data
+  return useAsyncEndpoint((data, endpoint) => ({
+    _endpoint: endpoint,
+    data,
   }));
 };
 
@@ -50,57 +50,70 @@ const CreateUserForm = (props) => {
     countriesDialCodeFormatter
   );
 
-  // console.log(
-  //   'objectStatusesList.dropDownItems',
-  //   objectStatusesList.dropDownItems
-  // );
-const setDefaultValue=()=>{
-return {
-  action:'I|U',
-  officeId: 'SB00235',
-officeName: 'Axis Tours and Travels',
-title: 'MR',
-mobileDialCode: '91',
-mobile:'34324',
-confirmPassword:'hsk@yopmail.com',
-firstName:'dsfdsf',
-lastName:'dsfdsfdf',
-securityGroup: 'Admin',
-status: objectStatusesList.dropDownItems[0],
-}
-}
+  const setDefaultValue = () => {
+    let defaultValue = {
+      action: 'I',
+      officeId: 'SB00235',
+      officeName: 'Axis Tours and Travels',
+      title: 'MR',
+      mobileDialCode: '91',
+      mobile: '34324',
+      confirmPassword: 'hsk@yopmail.com',
+      firstName: 'dsfdsf',
+      lastName: 'dsfdsfdf',
+      securityGroup: 'Admin',
+      status: objectStatusesList.dropDownItems[0],
+    };
+
+    const rowNumber = utils.getItemFromStorage(
+      endpoint.office.searchUser.actionType
+    );
+    if (rowNumber !== null) {
+      const searchResult = useSelector(
+        (state) => state['overrideSearchResult']
+      );
+      const selectedItem = utils.selectedItem(searchResult, rowNumber);
+      if (selectedItem != null) {
+        (defaultValue.action = 'U'),
+          (defaultValue.firstName = selectedItem.firstName);
+      }
+      //    console.log(defaultValue);
+    }
+    return defaultValue;
+  };
   const defaultValues = setDefaultValue();
 
-  const { register, handleSubmit, errors, control, watch, reset } = useForm({
-    defaultValues,
-  });
+  const { register, handleSubmit, errors, control, watch, reset } = useForm();
 
   const [createRes, postCreateRequest] = createEndpoint();
-useEffect(()=>{
-if(createRes!=null)
-{
-    const errMsg = utils.checkError(createRes);
-    if (!errMsg) setToast({ status: false, message: errMsg });
-    else {
-      setToast({ status: true, message: 'Office user created successfully' });
-  //    reset(defaultValues);
+  useEffect(() => {
+    if (createRes != null) {
+      const errMsg = utils.checkError(createRes);
+      if (!errMsg) setToast({ status: false, message: errMsg });
+      else {
+        setToast({ status: true, message: 'Office user created successfully' });
+        //    reset(defaultValues);
+      }
     }
-}
-},[createRes])
+  }, [createRes]);
+
   const onSubmit = (data, e) => {
-//    console.log('data', data);
+    console.log('data', data);
 
-    postCreateRequest({
-      ...data,
-      officeId: utils.getItemFromStorage('officeId'),
-    },endpoint.office.createUser);
+    postCreateRequest(
+      {
+        ...data,
+        officeId: utils.getItemFromStorage('officeId'),
+      },
+      endpoint.office.createUser
+    );
 
-  //   const errMsg = utils.checkError(createRes);
-  //   if (!errMsg) setToast({ status: false, message: errMsg });
-  //   else {
-  //     setToast({ status: true, message: 'Office user created successfully' });
-  // //    reset(defaultValues);
-  //   }
+    //   const errMsg = utils.checkError(createRes);
+    //   if (!errMsg) setToast({ status: false, message: errMsg });
+    //   else {
+    //     setToast({ status: true, message: 'Office user created successfully' });
+    // //    reset(defaultValues);
+    //   }
   };
 
   return (
@@ -121,6 +134,7 @@ if(createRes!=null)
           </div>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <input type="hidden" name="action" ref={register}></input>
           <Grid container>
             <Grid item xs={6} className="CreateUserForm-left">
               <Grid container spacing={3}>
@@ -237,7 +251,6 @@ if(createRes!=null)
                     errors={errors}
                     // validation={{ required: 'Please enter the status' }}
                     width="auto"
-                    
                   />
                 </Grid>
               </Grid>

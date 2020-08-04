@@ -16,6 +16,7 @@ import {
 import routes from 'Constants/routes';
 import { useHistory } from 'react-router-dom';
 import endpoint from 'Config/endpoint.js';
+import endpointWithoutApi from 'Config/endpointWithoutApi';
 import { commonAction, commonActionWithoutApi } from 'Actions/';
 import { useDispatch, useSelector } from 'react-redux';
 import useDropDown from 'Hooks/useDropDown';
@@ -80,12 +81,13 @@ const PopoverAction = (props) => {
     switch (selectedOption) {
       case 'view': {
         history.push(routes.office.viewOffice);
-        dispatch(commonActionWithoutApi(endpoint.office.viewUser, rowNumber));
+        utils.setItemToStorage('selectedOffice', rowNumber);
         break;
       }
       case 'modify': {
         history.push(routes.office.updateOffice);
         dispatch(commonActionWithoutApi(endpoint.office.updateUser, rowNumber));
+        utils.setItemToStorage('selectedOffice', rowNumber);
         break;
       }
 
@@ -161,9 +163,8 @@ const PopoverAction = (props) => {
 const SearchOffice = () => {
   const [requestJson, setReqeustJson] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [size, setSize] = useState(5);
-  const [recordFound, setRecordFound] = useState(false);
 
   let history = useHistory();
   let dispatch = useDispatch();
@@ -185,45 +186,71 @@ const SearchOffice = () => {
       status: '',
       cityCode: '',
       countryCode: '',
+      officeType: 'Branch',
     },
   });
 
   const ofId = utils.getItemFromStorage('officeId');
+  const userData = JSON.parse(utils.getItemFromStorage('userData'));
+  const {
+    userDto: {
+      officeDto: { officeId, officeName, officeLevel },
+    },
+  } = userData;
 
   const searchOffice = useSelector((state) => state.searchOffice?.items);
 
   useEffect(() => {
-    if (requestJson !== null) callSearch();
+    if (requestJson !== null) {
+      callSearch(page);
+    }
   }, [requestJson]);
 
   useEffect(() => {
     if (searchOffice != null) {
       const errMsg = utils.checkError(searchOffice);
-
-      if (errMsg !== '') setErrorMsg(errMsg);
-      else {
-        setRecordFound(true);
+      if (errMsg !== '') {
+        dispatch(
+          commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
+            toastStatus: false,
+            toastMessage: errMsg,
+            isToastVisible: true,
+          })
+        );
       }
     }
   }, [searchOffice]);
+
+  useEffect(() => {
+    page > 1 && callSearch(page - 1);
+  }, [page]);
 
   const handlePage = (newPage) => {
     setPage(newPage);
   };
 
-  const callSearch = () => {
+  const callSearch = (page) => {
     try {
       setErrorMsg('');
-      setRecordFound(false);
-      dispatch(commonAction(endpoint.office.searchOffice, requestJson));
+      dispatch(
+        commonAction(endpoint.office.searchOffice, {
+          ...requestJson,
+          page: page - 1,
+        })
+      );
     } catch (err) {
-      showError(err, errorMsg);
+      console.log('err', err);
     }
   };
 
   const onSubmit = (data, e) => {
     console.log('data', data);
     setReqeustJson(data);
+  };
+
+  const handleClick = () => {
+    history.push(routes.office.createOffice);
+    utils.setItemToStorage('selectedOffice', null);
   };
 
   return (
@@ -233,7 +260,7 @@ const SearchOffice = () => {
         <div className="horizontal-grey-divider"></div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input type="hidden" name="ofid" value={ofId} ref={register}></input>
-          <input type="hidden" name="page" value={page} ref={register}></input>
+
           <input type="hidden" name="size" value={size} ref={register}></input>
 
           <Text
@@ -255,6 +282,7 @@ const SearchOffice = () => {
                 changeStyle={true}
                 control={control}
                 errors={errors}
+                getValues={getValues}
                 showValue
                 width="auto"
               />
@@ -327,7 +355,7 @@ const SearchOffice = () => {
                   text="Create"
                   secondary
                   className=" px-48 mr-10"
-                  onClick={() => history.push(routes.office.createOffice)}
+                  onClick={() => handleClick()}
                 />
 
                 <Button type="submit" text="Search" className=" px-48" />
@@ -338,16 +366,23 @@ const SearchOffice = () => {
 
         <div></div>
       </div>
-      {searchOffice && (
+      {searchOffice?.status && (
         <PrimaryTable
-          header={<PrimaryTableHeader />}
+          header={
+            <PrimaryTableHeader
+              officeName={officeName}
+              officeId={officeId}
+              officeLevel={officeLevel}
+            />
+          }
           headerData={headerData}
           bodyData={searchOffice}
+          page={page}
           AddElement={{
             last: <PopoverAction />,
           }}
-          count={searchOffice.count}
-          size={5}
+          count={searchOffice.count || 15}
+          size={size}
           columnAlignments={[
             'left',
             'center',
@@ -360,9 +395,17 @@ const SearchOffice = () => {
             'left',
             'center',
           ]}
-          statusIndex={9}
+          statusIndex={8}
           handlePage={handlePage}
-          hideKeys={['ofId']}
+          hideKeys={[
+            'ofId',
+            'address1',
+            'address2',
+            'cityCode',
+            'officeEmail',
+            'noOfUserRequested',
+            'paymentOptions',
+          ]}
         />
       )}
     </div>

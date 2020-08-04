@@ -6,7 +6,7 @@ import { Text } from "Widgets";
 import "./style.scss";
 
 const LinearLoader = props => {
-  const { label } = props;
+  const { label, style } = props;
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const LinearLoader = props => {
   }, []);
 
   return (
-    <div className="LinearLoader">
+    <div className="LinearLoader layout-wrapper" style={style}>
       {!!label && <Text className="LinearLoader-label text-primary-semibold-14" text={label} />}
       <LinearProgress variant="determinate" value={progress} />
     </div>

@@ -14,6 +14,12 @@ export default {
       url: config.api.url + '/flights/flightSelect',
       isAuth: true,
     },
+    flightSearch: {
+      url: config.api.url + '/api/v1/flights/flightSearch',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.flights.flightSearch,
+    },
   },
   user: {
     login: {
@@ -30,12 +36,17 @@ export default {
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.countries,
     },
-
     objectStatuses: {
       url: config.api.url + '/api/v1/master/objectstatuses',
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.objectStatuses,
+    },
+    airlines: {
+      url: config.api.url + '/api/v1/master/airlines',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.GET,
+      actionType: actionTypeConstant.master.airlines,
     },
   },
 
@@ -71,6 +82,21 @@ export default {
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.POST,
       actionType: actionTypeConstant.office.searchOffice,
+    },
+    viewOffice: {
+      url: config.api.url + '/api/v1/offices/viewOffice',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+    },
+    createOffice: {
+      url: config.api.url + '/api/v1/offices',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+    },
+    updateOffice: {
+      url: config.api.url + '/api/v1/offices',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.PUT,
     },
   },
 

@@ -15,41 +15,40 @@ import { useForm } from 'react-hook-form';
 import { regex } from 'Helpers/validator';
 import PersonIcon from '@material-ui/icons/Person';
 import colors from 'Constants/colors';
-import routes from 'Constants/routes';
+import { routes, commonConstant } from 'Constants';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam, titles } from 'Constants/commonConstant';
 import { countriesDialCodeFormatter } from 'Helpers/global';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { commonActionWithoutApi } from 'Actions';
 import endpoint from 'Config/endpoint';
+
+import endpointWithoutApi from 'Config/endpointWithoutApi';
 import { utils } from 'Helpers';
 
 import './style.scss';
 
 const createEndpoint = () => {
   return useAsyncEndpoint((data) => ({
-    _endpoint: endpoint.office.createUser,
-    data,
-  }));
-};
-
-const updateEndpoint = () => {
-  return useAsyncEndpoint((data) => ({
-    _endpoint: endpoint.office.updateUser,
+    _endpoint: endpoint.office.createOffice,
     data,
   }));
 };
 
 const defaultValues = {
-  officeId: 'SB00235',
-  officeName: 'Axis Tours and Travels',
+  officeName: '',
   title: '',
   mobileDialCode: '',
   securityGroup: '',
-  status: '',
-  officeType: { label: 'Branch', value: 'Branch' },
+  address1: '',
+  emailId: '',
+  countryCode: '',
+  cityCode: '',
+  noOfUserRequested: '',
+  paymentOptions: [],
 };
+
 const OfficeProfileForm = (props) => {
   const { mode } = props;
 
@@ -60,17 +59,20 @@ const OfficeProfileForm = (props) => {
   const isUpdateOffice =
     mode.toUpperCase() === routes.office.updateOffice.toUpperCase();
 
+  const dispatch = useDispatch();
+
   const { register, handleSubmit, errors, control, watch, reset } = useForm({
     defaultValues,
   });
 
-  const searchResult = useSelector((state) => state.overrideSearchResult);
-  const rowNumber = useSelector((state) => state.selectedOption);
+  let rowNumber = utils.getItemFromStorage('selectedOffice');
+  const searchResult =
+    useSelector((state) => state.searchOffice?.items?.data) || [];
+  let selectedItem = searchResult[rowNumber] || {};
 
-  const [toast, setToast] = useState({
-    message: '',
-    status: false,
-  });
+  let officeId = utils.getItemFromStorage('officeId');
+
+  const [createRes, postCreateRequest] = createEndpoint();
 
   const countriesList = useDropDown(
     endpoint.master.countries,
@@ -91,24 +93,107 @@ const OfficeProfileForm = (props) => {
     countriesDialCodeFormatter
   );
 
-  const [createRes, postCreateRequest] = createEndpoint();
-  const [updateRes, postUpdateRequest] = updateEndpoint();
+  const setDefaultValue = () => {
+    if (isViewOffice) {
+      const {
+        address1,
+        address2,
+        cityCode,
+        officeEmail,
+        noOfUserRequested,
+        paymentOptions,
+        officeName,
+        officeId,
+        mobile,
+        officeType,
+      } = selectedItem;
+      console.log('selectedItem', selectedItem);
+      reset({
+        address1,
+        address2,
+        cityCode,
+        emailId: officeEmail,
+        noOfUserRequested,
+        paymentOptions,
+        officeId,
+        officeName,
+        phone: mobile,
+        officeType,
+      });
+    }
+
+    if (isUpdateOffice) {
+      const { officeEmail, officeType, officeName, officeId } = selectedItem;
+      console.log('selectedItem', selectedItem);
+      reset({
+        emailId: officeEmail,
+        officeId,
+        officeName,
+        officeType,
+      });
+    }
+  };
+
+  const setCreateOfficeDefaultValue = () => {
+    if (isCreateOffice) {
+      reset({
+        status: objectStatusesList.dropDownItems[3],
+        officeType: { label: 'Branch', value: 'Branch' },
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (createRes !== null) {
+      const errMsg = utils.checkError(createRes);
+
+      if (errMsg)
+        dispatch(
+          commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
+            toastStatus: false,
+            toastMessage: errMsg,
+            isToastVisible: true,
+          })
+        );
+      else {
+        dispatch(
+          commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
+            toastStatus: true,
+            toastMessage: `Office user ${
+              isUpdateOffice ? 'updated' : 'created'
+            } successfully`,
+            isToastVisible: true,
+          })
+        );
+        isCreateOffice && reset(defaultValues);
+      }
+    }
+  }, [createRes]);
+
+  useEffect(() => setDefaultValue(), []);
+
+  useEffect(() => setCreateOfficeDefaultValue(), [
+    objectStatusesList.dropDownItems,
+  ]);
 
   const onSubmit = (data, e) => {
     console.log('data', data);
 
-    if (isViewOffice) {
+    if (isUpdateOffice) {
+      // let updateRequestBody = {
+      //   address1: data.address1,
+      //   address2: data.address2,
+      //   cityCode: data.cityCode,
+      //   countryCode: data.countryCode,
+      //   phoneNumber: `${data.mobileDialCode}-${data.phone}`,
+      //   noOfUserRequested: data.noOfUserRequested,
+      // };
+      // postUpdateRequest(updateRequestBody);
+      postCreateRequest({ ...data, action: 'U' });
     }
 
-    if (isUpdateOffice) {
-      postUpdateRequest(data);
-      const errMsg = utils.checkError(createRes);
-
-      if (errMsg) setToast({ status: false, message: errMsg });
-      else {
-        setToast({ status: true, message: 'Office user updated successfully' });
-        reset(defaultValues);
-      }
+    if (isCreateOffice) {
+      postCreateRequest({ ...data, action: 'I' });
     }
   };
 
@@ -155,7 +240,7 @@ const OfficeProfileForm = (props) => {
                     changeStyle={true}
                     control={control}
                     errors={errors}
-                    // validation={{ required: 'Please enter the status' }}
+                    validation={{ required: 'Please enter the status' }}
                     width="auto"
                     disabled={!isUpdateOffice}
                   />
@@ -168,13 +253,13 @@ const OfficeProfileForm = (props) => {
                       errors={errors}
                       label="Office Name"
                       placeholder="Office Name"
-                      // validation={{
-                      //   required: 'Please enter the office name.',
-                      //   pattern: {
-                      //     value: regex.alphanumeric,
-                      //     message: 'Please enter valid office name.',
-                      //   },
-                      // }}
+                      validation={{
+                        required: 'Please enter the office name.',
+                        pattern: {
+                          value: regex.alphanumeric,
+                          message: 'Please enter valid office name.',
+                        },
+                      }}
                       disabled={!isCreateOffice}
                     />
                   ) : (
@@ -195,9 +280,9 @@ const OfficeProfileForm = (props) => {
                     errors={errors}
                     placeholder="Address Line 1"
                     label="Address Line 1"
-                    // validation={{
-                    //   required: 'Please enter the address line 1.',
-                    // }}
+                    validation={{
+                      required: 'Please enter the address line 1.',
+                    }}
                     disabled={isViewOffice}
                   />
                 </Grid>
@@ -208,9 +293,9 @@ const OfficeProfileForm = (props) => {
                     errors={errors}
                     placeholder="Address Line 2"
                     label="Address Line 2"
-                    // validation={{
-                    //   required: 'Please enter the address line 2.',
-                    // }}
+                    validation={{
+                      required: 'Please enter the address line 2.',
+                    }}
                     disabled={isViewOffice}
                   />
                 </Grid>
@@ -225,7 +310,7 @@ const OfficeProfileForm = (props) => {
                     changeStyle={true}
                     control={control}
                     errors={errors}
-                    // validation={{ required: 'Please enter the country' }}
+                    validation={{ required: 'Please enter the country' }}
                     showValue
                     width="auto"
                     disabled={isViewOffice}
@@ -245,7 +330,7 @@ const OfficeProfileForm = (props) => {
                     changeStyle={true}
                     control={control}
                     errors={errors}
-                    // validation={{ required: 'Please enter the city' }}
+                    validation={{ required: 'Please enter the city' }}
                     width="auto"
                     disabled={isViewOffice}
                   />
@@ -273,10 +358,10 @@ const OfficeProfileForm = (props) => {
                     selectPlaceholder="Code"
                     errors={errors}
                     register={register}
-                    // validation={{ required: 'Please enter the phone number.' }}
-                    // selectValidation={{
-                    //   required: 'Please enter the country code.',
-                    // }}
+                    validation={{ required: 'Please enter the phone number.' }}
+                    selectValidation={{
+                      required: 'Please enter the country code.',
+                    }}
                     control={control}
                     showValue
                     disabled={isViewOffice}
@@ -289,13 +374,13 @@ const OfficeProfileForm = (props) => {
                     errors={errors}
                     label="Email"
                     placeholder="Email Address"
-                    // validation={{
-                    //   required: 'Please enter the email address.',
-                    //   pattern: {
-                    //     value: regex.email,
-                    //     message: 'Please enter valid email address.',
-                    //   },
-                    // }}
+                    validation={{
+                      required: 'Please enter the email address.',
+                      pattern: {
+                        value: regex.email,
+                        message: 'Please enter valid email address.',
+                      },
+                    }}
                     disabled={!isCreateOffice}
                   />
                 </Grid>
@@ -312,16 +397,13 @@ const OfficeProfileForm = (props) => {
                   <MultiSelect
                     label="Number of Users"
                     name="noOfUserRequested"
-                    options={[
-                      { label: '1', value: '1' },
-                      { label: '2', value: '2' },
-                    ]}
+                    options={commonConstant.numberOfUsers}
                     placeholder="Select"
                     showBorder={true}
                     changeStyle={true}
                     control={control}
                     errors={errors}
-                    // validation={{ required: 'Please enter the no of users' }}
+                    validation={{ required: 'Please enter the no of users' }}
                     width="auto"
                     disabled={isViewOffice}
                   />
@@ -337,7 +419,7 @@ const OfficeProfileForm = (props) => {
                 <Grid item xs={12}>
                   <CheckboxGroup
                     label="Payment Option:"
-                    name="paymentDetails[0]"
+                    name="paymentOptions[0]"
                     register={register}
                     disabled={isViewOffice}
                     checkboxes={[
@@ -373,9 +455,6 @@ const OfficeProfileForm = (props) => {
           </Grid>
         </form>
       </div>
-      {toast.message && (
-        <Toast isSuccess={toast.status} message={toast.message} />
-      )}
     </>
   );
 };

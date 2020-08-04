@@ -38,6 +38,8 @@ const CustomCheckbox = (props) => {
   //   setChecked(event.target.checked);
   // };
 
+  console.log('name', name);
+
   return (
     <div className="CustomCheckbox d-flex align-items-center">
       <Checkbox

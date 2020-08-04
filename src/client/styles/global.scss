@@ -24,6 +24,14 @@ p {
   display: flex;
 }
 
+.d-inline-flex {
+  display: inline-flex;
+}
+
+.d-inline {
+  display: inline;
+}
+
 .d-grid {
   display: grid;
 }
@@ -72,6 +80,10 @@ p {
   text-align: left;
 }
 
+.text-align-center {
+  text-align: center;
+}
+
 .text-align-right {
   text-align: right;
 }
@@ -118,6 +130,18 @@ p {
   line-height: 15px;
 }
 
+.font-primary-regular-13 {
+  @extend .font-primary-regular;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.font-primary-regular-12 {
+  @extend .font-primary-regular;
+  font-size: 12px;
+  line-height: 15px;
+}
+
 .font-primary-regular-14 {
   @extend .font-primary-regular;
   font-size: 14px;
@@ -152,6 +176,12 @@ p {
   @extend .font-primary-medium;
   font-size: 12px;
   line-height: 14px;
+}
+
+.font-primary-medium-13 {
+  @extend .font-primary-medium;
+  font-size: 13px;
+  line-height: 16px;
 }
 
 .font-primary-medium-14 {
@@ -763,4 +793,49 @@ p {
 .link-text {
   color: $royalBlue;
   cursor: pointer;
+}
+
+.layout-wrapper {
+  padding-left: 140px;
+  padding-right: 140px;
+}
+
+// Loader Styles
+.loader-bg {
+  background-color: rgba($color: #000000, $alpha: 0.5);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  .Active {
+    &:before {
+      background-color: $malachite;
+    }
+  }
+
+  .Inactive {
+    &:before {
+      background-color: $webOrange;
+    }
+  }
+
+  .Freeze {
+    &:before {
+      background-color: $red;
+    }
+  }
+
+  .Register {
+    &:before {
+      background-color: $turbo;
+    }
+  }
+
+  .Reject {
+    &:before {
+      background-color: $red;
+    }
+  }
 }

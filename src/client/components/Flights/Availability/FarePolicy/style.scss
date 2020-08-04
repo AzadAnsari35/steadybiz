@@ -1,0 +1,29 @@
+@import "./../../../../styles/variables";
+$root: ".FarePolicy";
+
+#{$root} {
+	&-segment {
+		background-color: $color2;
+		padding: 6px 10px;
+	}
+	&-segment {
+		margin-bottom: 12px;
+	}
+
+	&-table {
+		&__title {
+			margin-bottom: 12px;
+		}
+		&__header {
+			background-color: $color3;
+			box-sizing: border-box;
+			padding: 6px 10px;
+		}
+		&__body {
+			padding: 10px;
+			.data-row {
+				margin-bottom: 4px;
+			}
+		}
+	}
+}

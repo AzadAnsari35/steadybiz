@@ -3,14 +3,14 @@ export default class Response {
   static success(data) {
     
     const res={
-      success: true,
+      status: true,
       data: data
     };
     return res;
   }
   static error(error) {
     const res={
-      success: false,
+      status: false,
       error: {
         message: error.message,
         code: error.code,

@@ -92,35 +92,5 @@ $root: '.PrimaryTable';
       left: 0px;
       border-radius: 50%;
     }
-
-    &-active {
-      &:before {
-        background-color: $malachite;
-      }
-    }
-
-    &-inactive {
-      &:before {
-        background-color: $webOrange;
-      }
-    }
-
-    &-freeze {
-      &:before {
-        background-color: $red;
-      }
-    }
-
-    &-register {
-      &:before {
-        background-color: $turbo;
-      }
-    }
-
-    &-reject {
-      &:before {
-        background-color: $red;
-      }
-    }
   }
 }

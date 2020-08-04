@@ -1,4 +1,4 @@
-import React, { Fragment, useState, Children } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -7,10 +7,6 @@ import TableRow from '@material-ui/core/TableRow';
 import TableContainer from '@material-ui/core/TableContainer';
 import Pagination from '@material-ui/lab/Pagination';
 import Avatar from 'Widgets/Avatar';
-import { isObject } from 'Helpers/utils';
-
-// import { SimplePopover } from "../popover";
-import { Link, withRouter } from 'react-router-dom';
 import './style.scss';
 
 const PrimaryTable = (props) => {
@@ -33,30 +29,16 @@ const PrimaryTable = (props) => {
 
   const [lowOffset, setLowOffset] = React.useState(1);
   const [highOffset, setHighOffset] = React.useState(size);
-  //const [page, setPage] = React.useState(1);
 
   const statusColor = (status) => {
-    switch (status) {
-      case 'Active': {
-        return ' PrimaryTable-status PrimaryTable-status-active';
-      }
-      case 'Inactive': {
-        return ' PrimaryTable-status PrimaryTable-status-inactive';
-      }
-      case 'Freeze': {
-        return ' PrimaryTable-status PrimaryTable-status-freeze';
-      }
-      case 'Register': {
-        return 'PrimaryTable-status PrimaryTable-status-register';
-      }
-      case 'Reject': {
-        return 'PrimaryTable-status PrimaryTable-status-reject';
-      }
-    }
+    return `PrimaryTable-status ${status} `;
   };
 
   const handleChangePage = (event, newPage) => {
     handlePage(newPage);
+    setLowOffset(highOffset + 1);
+    let updatedHightOffset = highOffset + size + 1;
+    setHighOffset(count > updatedHightOffset ? updatedHightOffset : count);
   };
 
   const setAlignment = (index) => {
@@ -141,7 +123,7 @@ const PrimaryTable = (props) => {
                               }
                               style={applyStyle(index)}
                               className={`PrimaryTable-body-cell position-relative ${
-                                index === statusIndex
+                                index === statusIndex + hideKeys.length
                                   ? statusColor(body[key])
                                   : ''
                               }`}
@@ -159,7 +141,7 @@ const PrimaryTable = (props) => {
                       {AddElement?.last && (
                         <TableCell component="th" scope="row" align="center">
                           {React.cloneElement(AddElement.last, {
-                            rowNumber: ind + 1,
+                            rowNumber: ind,
                           })}
                         </TableCell>
                       )}
@@ -169,7 +151,7 @@ const PrimaryTable = (props) => {
               </TableBody>
             </Table>
             <div className="PrimaryTable-footer">
-              {highOffset - lowOffset >= count && page === 0 ? null : (
+              {
                 <div className="PrimaryTable-footer-records">
                   Showing{' '}
                   <span>
@@ -177,7 +159,7 @@ const PrimaryTable = (props) => {
                   </span>
                   of {count} Records
                 </div>
-              )}
+              }
 
               <div>
                 {count > size ? (

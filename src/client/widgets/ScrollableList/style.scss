@@ -5,6 +5,7 @@ $root: ".ScrollableList";
   .MuiAppBar-root {
     width: calc(100% - 28px);
     position: relative;
+    z-index: auto;
     .MuiTabs-root {
       padding: 12px 44px;
       .MuiTabScrollButton {

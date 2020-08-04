@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import onClickOutside from "react-onclickoutside";
 
 import colors from "Constants/colors";
 
@@ -10,11 +11,16 @@ const DropdownBox = props => {
   const { children, isContentVisible = false, placeholder = "Select", onClick } = props;
   const [isOpen, setIsOpen] = useState(isContentVisible);
 
+  useEffect(() => {
+    setIsOpen(isContentVisible);
+  }, [isContentVisible]);
+
   const handleDropdownClick = () => {
     setIsOpen(!isOpen);
     onClick(!isOpen);
   };
 
+  DropdownBox.handleClickOutside = () => setIsOpen(false);
 
   return (
     <div className="DropdownBox d-flex align-items-center">
@@ -32,4 +38,11 @@ const DropdownBox = props => {
     </div>
   )
 };
-export default DropdownBox;
+
+const clickOutsideConfig = {
+  handleClickOutside: () => DropdownBox.handleClickOutside,
+};
+
+DropdownBox.prototype = {};
+
+export default onClickOutside(DropdownBox, clickOutsideConfig);

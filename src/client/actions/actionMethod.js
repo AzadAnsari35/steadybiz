@@ -1,4 +1,6 @@
 import { apiReqeust, utils, Response } from 'Helpers/';
+import endpointWithoutApi from 'Config/endpointWithoutApi';
+import { loaderTypes } from 'Constants/commonConstant';
 
 export const commonActionWithoutApi = (_endpoint, _data) => {
   return (dispatch) => {
@@ -10,15 +12,27 @@ export const commonActionWithoutApi = (_endpoint, _data) => {
     });
   };
 };
-export const commonAction = (_endpoint, _data) => {
+
+export const commonAction = (_endpoint, _data, _loaderData = {}) => {
+  const { loaderType, ...rest } = _loaderData;
   return async (dispatch) => {
     try {
+      dispatch(
+        commonActionWithoutApi(endpointWithoutApi.loader.loaderStatus, {
+          loaderType: !!_loaderData.loaderType
+            ? loaderType
+            : loaderTypes.primary,
+          isLoaderVisible: true,
+          ...rest,
+        })
+      );
       const res = await apiReqeust.httpRequest(
         _endpoint.httpVerb,
         _data,
         utils.appendHeader(_endpoint),
         _endpoint.url
       );
+
       //if (!!res && res.status === 200) {
       dispatch({
         type: _endpoint.actionType,
@@ -39,6 +53,13 @@ export const commonAction = (_endpoint, _data) => {
         payload: res,
         actualActionType: _endpoint.actualActionType,
       });
+    } finally {
+      dispatch(
+        commonActionWithoutApi(endpointWithoutApi.loader.loaderStatus, {
+          loaderType: loaderTypes.primary,
+          isLoaderVisible: false,
+        })
+      );
     }
   };
 };

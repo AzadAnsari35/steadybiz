@@ -28,9 +28,9 @@ export const getItemFromStorage = (key, storageType = 1) => {
   return item;
 };
 export const appendHeader = (endpoint) => {
-  //const token =getItemFromLocalStorage('userToken');
   const token = getItemFromStorage('userToken');
-  //'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ7XCJ1c2VySWRcIjpcIjc5NGQ2ZDAzLTM2N2EtNDk1OS04NDBlLTY0Mzk0NzcxMjM1OFwiLFwib2ZJZFwiOlwiOWNhZTU0YzYtYmI1Zi00NWEzLWEzNTQtZDAxOGVjN2E0NDk4XCIsXCJyb290T2ZJZFwiOlwiOWNhZTU0YzYtYmI1Zi00NWEzLWEzNTQtZDAxOGVjN2E0NDk4XCIsXCJwYXJlbnRPZklkXCI6XCI5Y2FlNTRjNi1iYjVmLTQ1YTMtYTM1NC1kMDE4ZWM3YTQ0OThcIixcImlzTWFzdGVyXCI6dHJ1ZSxcImZ1bmN0aW9uR3JvdXBzXCI6W119IiwiZXhwIjoxNTk0OTcxNjQwLCJpYXQiOjE1OTQ4ODUyNDB9.jLxH_aX-2Q3bZn_qXnNaJfWymtluYlm48Wu7_wk1VTlqCZr8Gs78lRzLFHRDyiCTdx19ewR-hmXW7BnEcQy6FQ';
+  // const token =
+  //   'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ7XCJ1c2VySWRcIjpcIjc5NGQ2ZDAzLTM2N2EtNDk1OS04NDBlLTY0Mzk0NzcxMjM1OFwiLFwib2ZJZFwiOlwiOWNhZTU0YzYtYmI1Zi00NWEzLWEzNTQtZDAxOGVjN2E0NDk4XCIsXCJyb290T2ZJZFwiOlwiOWNhZTU0YzYtYmI1Zi00NWEzLWEzNTQtZDAxOGVjN2E0NDk4XCIsXCJwYXJlbnRPZklkXCI6XCI5Y2FlNTRjNi1iYjVmLTQ1YTMtYTM1NC1kMDE4ZWM3YTQ0OThcIixcImlzTWFzdGVyXCI6dHJ1ZSxcImZ1bmN0aW9uR3JvdXBzXCI6W119IiwiZXhwIjoxNTk2MTMxNTIyLCJpYXQiOjE1OTYwNDUxMjJ9.HjF0xpLNHWwDLHlGaTpgrDSH6RH22NrZ7dbH5kssqBRl8ZgTb49W-TtsrsJBaVOmTcFknt_Cgc6zROaHapIwZg';
   return {
     'Content-Type': 'application/json',
     ...(endpoint.isAuth && { Authorization: `Bearer ${token}` }),
@@ -41,7 +41,6 @@ export const checkError = (apiResponse) => {
     return apiResponse.error.message;
   } else return '';
 };
-
 export const stringComparison = (str1, str2) => {
   return str1.toUpperCase() === str2.toUpperCase();
 };
@@ -66,4 +65,9 @@ export const getShortName = (name) => {
     return shortName;
   }
   return '';
+};
+export const selectedItem = (searchResult, rowNumber) => {
+  return searchResult.items != null
+    ? searchResult.items.data.data[rowNumber - 1]
+    : null;
 };
