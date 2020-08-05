@@ -55,6 +55,10 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.office.searchOffice
   ),
+  searchUser: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.office.searchUser
+  ),
   masterAirlines: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.master.airlines

@@ -405,6 +405,7 @@ const SearchOffice = () => {
             'officeEmail',
             'noOfUserRequested',
             'paymentOptions',
+            'zipCode',
           ]}
         />
       )}

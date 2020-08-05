@@ -47,7 +47,7 @@ export default {
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.airlines,
-      reducerName: "masterAirlines",
+      reducerName: 'masterAirlines',
     },
   },
 
@@ -56,7 +56,7 @@ export default {
       url: config.api.url + '/api/v1/offices/user/searchUser',
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.POST,
-      actionType: actionTypeConstant.override.searchResult,
+      actionType: actionTypeConstant.office.searchUser,
       actualActionType: actionTypeConstant.office.searchUser,
     },
     createUser: {

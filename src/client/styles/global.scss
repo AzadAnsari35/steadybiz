@@ -813,33 +813,34 @@ p {
   top: 0;
   left: 0;
   z-index: 10000;
-  .Active {
-    &:before {
-      background-color: $malachite;
-    }
-  }
+}
 
-  .Inactive {
-    &:before {
-      background-color: $webOrange;
-    }
+.Active {
+  &:before {
+    background-color: $malachite;
   }
+}
 
-  .Freeze {
-    &:before {
-      background-color: $red;
-    }
+.Inactive {
+  &:before {
+    background-color: $webOrange;
   }
+}
 
-  .Register {
-    &:before {
-      background-color: $turbo;
-    }
+.Freeze {
+  &:before {
+    background-color: $red;
   }
+}
 
-  .Reject {
-    &:before {
-      background-color: $red;
-    }
+.Register {
+  &:before {
+    background-color: $turbo;
+  }
+}
+
+.Reject {
+  &:before {
+    background-color: $red;
   }
 }

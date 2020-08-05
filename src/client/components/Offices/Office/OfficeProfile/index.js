@@ -39,12 +39,13 @@ const createEndpoint = () => {
 const defaultValues = {
   officeName: '',
   title: '',
-  mobileDialCode: '',
+  phoneDialCode: '',
   securityGroup: '',
   address1: '',
   emailId: '',
   countryCode: '',
   cityCode: '',
+  zipCode: '',
   noOfUserRequested: '',
   paymentOptions: [],
 };
@@ -71,6 +72,7 @@ const OfficeProfileForm = (props) => {
   let selectedItem = searchResult[rowNumber] || {};
 
   let officeId = utils.getItemFromStorage('officeId');
+  let userId = utils.getItemFromStorage('userId');
 
   const [createRes, postCreateRequest] = createEndpoint();
 
@@ -94,51 +96,40 @@ const OfficeProfileForm = (props) => {
   );
 
   const setDefaultValue = () => {
-    if (isViewOffice) {
-      const {
-        address1,
-        address2,
-        cityCode,
-        officeEmail,
-        noOfUserRequested,
-        paymentOptions,
-        officeName,
-        officeId,
-        mobile,
-        officeType,
-      } = selectedItem;
-      console.log('selectedItem', selectedItem);
-      reset({
-        address1,
-        address2,
-        cityCode,
-        emailId: officeEmail,
-        noOfUserRequested,
-        paymentOptions,
-        officeId,
-        officeName,
-        phone: mobile,
-        officeType,
-      });
-    }
-
-    if (isUpdateOffice) {
-      const { officeEmail, officeType, officeName, officeId } = selectedItem;
-      console.log('selectedItem', selectedItem);
-      reset({
-        emailId: officeEmail,
-        officeId,
-        officeName,
-        officeType,
-      });
-    }
+    const {
+      address1,
+      address2,
+      cityCode,
+      officeEmail,
+      noOfUserRequested,
+      paymentOptions,
+      officeName,
+      officeId,
+      mobile,
+      officeType,
+      zipCode,
+    } = selectedItem;
+    console.log('selectedItem', selectedItem);
+    reset({
+      address1,
+      address2,
+      cityCode,
+      emailId: officeEmail,
+      noOfUserRequested,
+      paymentOptions,
+      officeId,
+      officeName,
+      phone: mobile,
+      officeType,
+      zipCode,
+    });
   };
 
   const setCreateOfficeDefaultValue = () => {
     if (isCreateOffice) {
       reset({
         status: objectStatusesList.dropDownItems[3],
-        officeType: { label: 'Branch', value: 'Branch' },
+        officeType: commonConstant.officeType[0],
       });
     }
   };
@@ -189,11 +180,22 @@ const OfficeProfileForm = (props) => {
       //   noOfUserRequested: data.noOfUserRequested,
       // };
       // postUpdateRequest(updateRequestBody);
-      postCreateRequest({ ...data, action: 'U' });
+      postCreateRequest({
+        ...data,
+        action: 'U',
+        userId,
+        officeId,
+        ofId: selectedItem.ofId,
+      });
     }
 
     if (isCreateOffice) {
-      postCreateRequest({ ...data, action: 'I' });
+      postCreateRequest({
+        ...data,
+        action: 'I',
+        userId,
+        officeId,
+      });
     }
   };
 
@@ -216,16 +218,12 @@ const OfficeProfileForm = (props) => {
                   <MultiSelect
                     label="Office Type:"
                     name="officeType"
-                    options={[
-                      { label: 'All', value: 'All' },
-                      { label: 'Branch', value: 'Branch' },
-                      { label: 'Own', value: 'Own' },
-                    ]}
+                    options={commonConstant.officeType}
                     showBorder={true}
                     changeStyle={true}
                     control={control}
                     errors={errors}
-                    showValue
+                    showLabel
                     width="auto"
                     disabled
                   />
@@ -293,9 +291,6 @@ const OfficeProfileForm = (props) => {
                     errors={errors}
                     placeholder="Address Line 2"
                     label="Address Line 2"
-                    validation={{
-                      required: 'Please enter the address line 2.',
-                    }}
                     disabled={isViewOffice}
                   />
                 </Grid>
@@ -311,7 +306,7 @@ const OfficeProfileForm = (props) => {
                     control={control}
                     errors={errors}
                     validation={{ required: 'Please enter the country' }}
-                    showValue
+                    showLabel
                     width="auto"
                     disabled={isViewOffice}
                   />
@@ -335,6 +330,19 @@ const OfficeProfileForm = (props) => {
                     disabled={isViewOffice}
                   />
                 </Grid>
+                <Grid item xs={6}>
+                  <TextInput
+                    name="zipCode"
+                    register={register}
+                    errors={errors}
+                    placeholder="Zip Code"
+                    label="Zip Code"
+                    validation={{
+                      required: 'Please enter the zip code.',
+                    }}
+                    disabled={isViewOffice}
+                  />
+                </Grid>
               </Grid>
             </Grid>
 
@@ -351,7 +359,7 @@ const OfficeProfileForm = (props) => {
                 <Grid item xs={12}>
                   <SelectWithTextInput
                     name="phone"
-                    selectInputName="mobileDialCode"
+                    selectInputName="phoneDialCode"
                     data={countriesDialCodeList.dropDownItems}
                     label="Contact Number: "
                     placeholder="Phone Number"

@@ -18,6 +18,7 @@ import {
 import routes from 'Constants/routes';
 import { useHistory } from 'react-router-dom';
 import endpoint from 'Config/endpoint.js';
+import endpointWithoutApi from 'Config/endpointWithoutApi';
 import { commonAction, commonActionWithoutApi } from 'Actions/';
 import { useDispatch, useSelector } from 'react-redux';
 import useDropDown from 'Hooks/useDropDown';
@@ -56,14 +57,12 @@ const PopoverAction = (props) => {
 
   const handleViewUser = () => {
     history.push(routes.office.viewOfficeUser);
-    utils.setItemToStorage(endpoint.office.searchUser.actionType,rowNumber);
-    //dispatch(commonActionWithoutApi(endpoint.office.viewUser, rowNumber));
+    utils.setItemToStorage(endpoint.office.searchUser.actionType, rowNumber);
   };
 
   const handleModifyUser = () => {
-    utils.setItemToStorage(endpoint.office.searchUser.actionType,rowNumber);
+    utils.setItemToStorage(endpoint.office.searchUser.actionType, rowNumber);
     history.push(routes.office.createOfficeUser);
-   
   };
 
   return (
@@ -103,9 +102,14 @@ const PopoverAction = (props) => {
 
 const SearchUser = () => {
   const [errorMsg, setErrorMsg] = useState('');
-  const [recordFound, setRecordFound] = useState(false);
-  let page = 1;
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(5);
   const [requestJson, setReqeustJson] = useState(null);
+  const [officeId, setOfficeId] = useState('');
+  const [officeName, setOfficeName] = useState('');
+  const [officeLevel, setOfficeLevel] = useState('');
+  const [ofId, setOfId] = useState('');
+
   let history = useHistory();
   let dispatch = useDispatch();
 
@@ -115,54 +119,80 @@ const SearchUser = () => {
     'masterObjectStatuses'
   );
 
-  const searchResult = useSelector((state) => state.overrideSearchResult);
+  const searchUser = useSelector((state) => state.searchUser?.items);
+  const searchResult =
+    useSelector((state) => state.searchOffice?.items?.data) || [];
 
-  const ofId = 'dsfsdfds';
+  const getOfficeDetail = () => {
+    const selectedOffice = utils.getItemFromStorage('selectedOffice');
+
+    if (selectedOffice) {
+      let selectedItem = searchResult[selectedOffice] || {};
+      setOfficeId(selectedItem.officeId);
+      setOfficeName(selectedItem.officeName);
+      setOfficeLevel(0);
+      setOfId(selectedItem.ofId);
+    }
+  };
 
   const { register, handleSubmit, errors, control, getValues } = useForm({
     defaultValues: {
       status: { label: 'Active', value: 'Active' },
     },
   });
-  const handlePage = (newValue) => {
-    page = newValue;
-    setReqeustJson((prevState) => ({ ...prevState, page: newValue }));
-    //requestJson.page=newValue
-  };
+
+  useEffect(() => {
+    getOfficeDetail();
+  }, []);
+
+  useEffect(() => {
+    page > 1 && callSearch(page - 1);
+  }, [page]);
+
+  useEffect(() => {
+    if (searchUser != null) {
+      const errMsg = utils.checkError(searchUser);
+      if (errMsg !== '') {
+        dispatch(
+          commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
+            toastStatus: false,
+            toastMessage: errMsg,
+            isToastVisible: true,
+          })
+        );
+      }
+    }
+  }, [searchUser]);
 
   useEffect(() => {
     if (requestJson !== null) callSearch();
   }, [requestJson]);
 
-  useEffect(() => {
-    if (
-      searchResult.items != null &&
-      searchResult.actualActionType ===
-        endpoint.office.searchUser.actualActionType
-    ) {
-      const errMsg = utils.checkError(searchResult.items);
-
-      if (errMsg !== '') setErrorMsg(errMsg);
-      else {
-        setRecordFound(true);
-      }
-    }
-  }, [searchResult]);
-
-  const callSearch = () => {
+  const callSearch = (page) => {
     try {
       setErrorMsg('');
-      setRecordFound(false);
-      dispatch(commonAction(endpoint.office.searchUser, requestJson));
+      dispatch(
+        commonAction(endpoint.office.searchUser, {
+          ...requestJson,
+          page: page - 1,
+        })
+      );
     } catch (err) {
-      showError(err, errorMsg);
+      console.log('err', err);
     }
   };
-  const onSubmit = (data, e) => {
-    page = 1;
-    setReqeustJson(data);
 
-    //callSearch();
+  const handlePage = (newPage) => {
+    setPage(newPage);
+  };
+
+  const handleClick = () => {
+    history.push(routes.office.createOfficeUser);
+    utils.setItemToStorage('selectedUser', null);
+  };
+
+  const onSubmit = (data, e) => {
+    setReqeustJson(data);
   };
 
   return (
@@ -172,7 +202,7 @@ const SearchUser = () => {
         <div className="horizontal-grey-divider"></div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input type="hidden" name="ofid" value={ofId} ref={register}></input>
-          <input type="hidden" name="page" value={page} ref={register}></input>
+          <input type="hidden" name="size" value={size} ref={register}></input>
 
           <Text
             showLeftBorder={true}
@@ -309,7 +339,7 @@ const SearchUser = () => {
                   text="Create"
                   secondary
                   className=" px-48 mr-10"
-                  onClick={() => history.push(routes.office.createOfficeUser)}
+                  onClick={handleClick}
                 />
 
                 <Button type="submit" text="Search" className=" px-48" />
@@ -320,15 +350,21 @@ const SearchUser = () => {
 
         <div></div>
       </div>
-      {recordFound && (
+      {searchUser?.status && (
         <PrimaryTable
-          header={<PrimaryTableHeader />}
+          header={
+            <PrimaryTableHeader
+              officeName={officeName}
+              officeId={officeId}
+              officeLevel={officeLevel}
+            />
+          }
           headerData={headerData}
-          bodyData={searchResult.items.data}
+          bodyData={searchUser.data}
           AddElement={{
             last: <PopoverAction />,
           }}
-          count={searchResult.items.data.count}
+          count={searchUser.data.count}
           size={6}
           page={page}
           handlePage={handlePage}
