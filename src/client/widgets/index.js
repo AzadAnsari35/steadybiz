@@ -42,6 +42,7 @@ import SearchTableHeader from './TableHeaders/SearchTableHeader';
 import DatePicker from './DatePicker';
 import Image from './Image';
 import Loader from './Loader';
+import ConstructIcon from './Icons/ConstructIcon';
 
 export {
   Avatar,
@@ -88,4 +89,5 @@ export {
   DatePicker,
   Image,
   Loader,
+  ConstructIcon,
 };

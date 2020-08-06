@@ -68,7 +68,7 @@ const OfficeProfileForm = (props) => {
 
   let rowNumber = utils.getItemFromStorage('selectedOffice');
   const searchResult =
-    useSelector((state) => state.searchOffice?.items?.data) || [];
+    useSelector((state) => state.searchOffice?.items?.data?.data) || [];
   let selectedItem = searchResult[rowNumber] || {};
 
   let officeId = utils.getItemFromStorage('officeId');
@@ -93,6 +93,12 @@ const OfficeProfileForm = (props) => {
     dropDownParam.countriesDialCode,
     'masterCountries',
     countriesDialCodeFormatter
+  );
+
+  const citiesList = useDropDown(
+    endpoint.master.cities,
+    dropDownParam.cities,
+    'masterCities'
   );
 
   const setDefaultValue = () => {
@@ -171,15 +177,6 @@ const OfficeProfileForm = (props) => {
     console.log('data', data);
 
     if (isUpdateOffice) {
-      // let updateRequestBody = {
-      //   address1: data.address1,
-      //   address2: data.address2,
-      //   cityCode: data.cityCode,
-      //   countryCode: data.countryCode,
-      //   phoneNumber: `${data.mobileDialCode}-${data.phone}`,
-      //   noOfUserRequested: data.noOfUserRequested,
-      // };
-      // postUpdateRequest(updateRequestBody);
       postCreateRequest({
         ...data,
         action: 'U',

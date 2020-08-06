@@ -36,8 +36,12 @@ const PrimaryTable = (props) => {
 
   const handleChangePage = (event, newPage) => {
     handlePage(newPage);
-    setLowOffset(highOffset + 1);
-    let updatedHightOffset = highOffset + size + 1;
+    handleOffset(newPage);
+  };
+
+  const handleOffset = (newPage) => {
+    setLowOffset(size * (newPage - 1) + 1);
+    let updatedHightOffset = newPage * size;
     setHighOffset(count > updatedHightOffset ? updatedHightOffset : count);
   };
 

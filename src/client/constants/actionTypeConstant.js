@@ -12,6 +12,7 @@ export const actionTypeConstant = {
   },
   master: {
     countries: 'master.countries',
+    cities: 'master.cities',
     objectStatuses: 'master.objectStatuses',
     airlines: 'master.airlines',
   },

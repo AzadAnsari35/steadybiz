@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { regex } from 'Helpers/validator';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Button,
@@ -94,6 +94,8 @@ const PopoverAction = (props) => {
       case 'search': {
         history.push(routes.office.searchOfficeUser);
         dispatch(commonActionWithoutApi(endpoint.office.updateUser, rowNumber));
+        utils.setItemToStorage('selectedOffice', rowNumber);
+
         break;
       }
 
@@ -165,6 +167,7 @@ const SearchOffice = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(5);
+  const firstPageUpdate = useRef(true);
 
   let history = useHistory();
   let dispatch = useDispatch();
@@ -179,6 +182,12 @@ const SearchOffice = () => {
     endpoint.master.countries,
     dropDownParam.countries,
     'masterCountries'
+  );
+
+  const citiesList = useDropDown(
+    endpoint.master.cities,
+    dropDownParam.cities,
+    'masterCities'
   );
 
   const { register, handleSubmit, errors, control, getValues } = useForm({
@@ -222,7 +231,11 @@ const SearchOffice = () => {
   }, [searchOffice]);
 
   useEffect(() => {
-    page > 1 && callSearch(page - 1);
+    if (firstPageUpdate.current) {
+      firstPageUpdate.current = false;
+      return;
+    }
+    callSearch(page);
   }, [page]);
 
   const handlePage = (newPage) => {
@@ -236,6 +249,8 @@ const SearchOffice = () => {
         commonAction(endpoint.office.searchOffice, {
           ...requestJson,
           page: page - 1,
+          size,
+          ofid: ofId,
         })
       );
     } catch (err) {
@@ -250,7 +265,7 @@ const SearchOffice = () => {
 
   const handleClick = () => {
     history.push(routes.office.createOffice);
-    utils.setItemToStorage('selectedOffice', null);
+    utils.setItemToStorage('selectedOffice', '');
   };
 
   return (
@@ -260,7 +275,6 @@ const SearchOffice = () => {
         <div className="horizontal-grey-divider"></div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input type="hidden" name="ofid" value={ofId} ref={register}></input>
-
           <input type="hidden" name="size" value={size} ref={register}></input>
 
           <Text
@@ -337,10 +351,7 @@ const SearchOffice = () => {
               <MultiSelect
                 label="City"
                 name="cityCode"
-                options={[
-                  { label: 'New Delhi', value: 'DEL' },
-                  { label: 'Mumbai', value: 'BOM' },
-                ]}
+                options={citiesList.dropDownItems}
                 placeholder="City"
                 showBorder={true}
                 changeStyle={true}
@@ -376,12 +387,12 @@ const SearchOffice = () => {
             />
           }
           headerData={headerData}
-          bodyData={searchOffice}
+          bodyData={searchOffice.data}
           page={page}
           AddElement={{
             last: <PopoverAction />,
           }}
-          count={searchOffice.count || 15}
+          count={searchOffice.data.count}
           size={size}
           columnAlignments={[
             'left',

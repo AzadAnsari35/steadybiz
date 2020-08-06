@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { regex } from 'Helpers/validator';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { showError } from 'Helpers/utils';
 import { utils } from 'Helpers/index';
@@ -58,11 +58,13 @@ const PopoverAction = (props) => {
   const handleViewUser = () => {
     history.push(routes.office.viewOfficeUser);
     utils.setItemToStorage(endpoint.office.searchUser.actionType, rowNumber);
+    utils.setItemToStorage('selectedUser', rowNumber);
   };
 
   const handleModifyUser = () => {
     utils.setItemToStorage(endpoint.office.searchUser.actionType, rowNumber);
-    history.push(routes.office.createOfficeUser);
+    history.push(routes.office.updateOfficeUser);
+    utils.setItemToStorage('selectedUser', rowNumber);
   };
 
   return (
@@ -109,6 +111,7 @@ const SearchUser = () => {
   const [officeName, setOfficeName] = useState('');
   const [officeLevel, setOfficeLevel] = useState('');
   const [ofId, setOfId] = useState('');
+  const firstPageUpdate = useRef(true);
 
   let history = useHistory();
   let dispatch = useDispatch();
@@ -124,14 +127,30 @@ const SearchUser = () => {
     useSelector((state) => state.searchOffice?.items?.data) || [];
 
   const getOfficeDetail = () => {
-    const selectedOffice = utils.getItemFromStorage('selectedOffice');
+    const selectedOffice = utils.getItemFromStorage('selectedOffice') || '';
+    // console.log('selectedOffice', selectedOffice);
 
     if (selectedOffice) {
-      let selectedItem = searchResult[selectedOffice] || {};
+      let selectedItem = searchResult.data[selectedOffice] || {};
+      // console.log('searchResult', searchResult);
+
+      console.log('selectedItem', selectedItem);
+
       setOfficeId(selectedItem.officeId);
       setOfficeName(selectedItem.officeName);
-      setOfficeLevel(0);
+      setOfficeLevel(1);
       setOfId(selectedItem.ofId);
+    } else {
+      const {
+        userDto: {
+          officeDto: { officeName, officeLevel, ofId, officeId },
+        },
+      } = JSON.parse(utils.getItemFromStorage('userData'));
+
+      setOfficeId(officeId);
+      setOfficeName(officeName);
+      setOfficeLevel(officeLevel);
+      setOfId(ofId);
     }
   };
 
@@ -146,7 +165,11 @@ const SearchUser = () => {
   }, []);
 
   useEffect(() => {
-    page > 1 && callSearch(page - 1);
+    if (firstPageUpdate.current) {
+      firstPageUpdate.current = false;
+      return;
+    }
+    callSearch(page);
   }, [page]);
 
   useEffect(() => {
@@ -165,7 +188,7 @@ const SearchUser = () => {
   }, [searchUser]);
 
   useEffect(() => {
-    if (requestJson !== null) callSearch();
+    if (requestJson !== null) callSearch(page);
   }, [requestJson]);
 
   const callSearch = (page) => {
@@ -175,6 +198,8 @@ const SearchUser = () => {
         commonAction(endpoint.office.searchUser, {
           ...requestJson,
           page: page - 1,
+          size,
+          ofid: ofId,
         })
       );
     } catch (err) {
@@ -188,7 +213,7 @@ const SearchUser = () => {
 
   const handleClick = () => {
     history.push(routes.office.createOfficeUser);
-    utils.setItemToStorage('selectedUser', null);
+    utils.setItemToStorage('selectedUser', '');
   };
 
   const onSubmit = (data, e) => {
@@ -201,9 +226,6 @@ const SearchUser = () => {
         <div className="font-primary-semibold-24 pb-4">MANAGE USERS</div>
         <div className="horizontal-grey-divider"></div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <input type="hidden" name="ofid" value={ofId} ref={register}></input>
-          <input type="hidden" name="size" value={size} ref={register}></input>
-
           <Text
             showLeftBorder={true}
             text="SEARCH USER"
@@ -365,7 +387,7 @@ const SearchUser = () => {
             last: <PopoverAction />,
           }}
           count={searchUser.data.count}
-          size={6}
+          size={size}
           page={page}
           handlePage={handlePage}
           columnAlignments={[
@@ -377,9 +399,9 @@ const SearchUser = () => {
             'left',
             'center',
           ]}
-          statusIndex={7}
+          statusIndex={5}
           imageIndex={1}
-          hideKeys={['userId', 'officeId']}
+          hideKeys={['userId', 'officeId', 'title']}
         />
       )}
     </div>

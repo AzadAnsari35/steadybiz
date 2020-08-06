@@ -27,6 +27,8 @@ const Toast = (props) => {
   const { isToastVisible = false, toastMessage = '', toastStatus } =
     toastData?.items?.data || {};
 
+  // const [showToast, setShowToast] = useState(isToastVisible);
+
   useEffect(() => {
     if (removeAfterNumberOfSeconds) {
       setTimeout(() => {

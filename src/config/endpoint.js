@@ -36,6 +36,13 @@ export default {
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.countries,
     },
+    cities: {
+      url: config.api.url + '/api/v1/master/cities',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.GET,
+      actionType: actionTypeConstant.master.cities,
+    },
+
     objectStatuses: {
       url: config.api.url + '/api/v1/master/objectstatuses',
       isAuth: true,

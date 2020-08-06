@@ -7,6 +7,7 @@ export const HttpVerbsConstant = {
 
 export const dropDownParam = {
   countries: { label: 'countryname', value: 'countryCode' },
+  cities: { label: 'cityName', value: 'cityCode' },
   countriesDialCode: {
     label: 'countryname',
     value: 'countryIsdCode',
