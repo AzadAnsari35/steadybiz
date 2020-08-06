@@ -86,22 +86,20 @@ const PopoverAction = (props) => {
       }
       case 'modify': {
         history.push(routes.office.updateOffice);
-        dispatch(commonActionWithoutApi(endpoint.office.updateUser, rowNumber));
         utils.setItemToStorage('selectedOffice', rowNumber);
         break;
       }
 
       case 'search': {
         history.push(routes.office.searchOfficeUser);
-        dispatch(commonActionWithoutApi(endpoint.office.updateUser, rowNumber));
         utils.setItemToStorage('selectedOffice', rowNumber);
 
         break;
       }
 
       case 'deposit': {
-        history.push(routes.office.searchOfficeUser);
-        dispatch(commonActionWithoutApi(endpoint.office.updateUser, rowNumber));
+        history.push(routes.office.manageCreditLimit);
+        utils.setItemToStorage('selectedOffice', rowNumber);
         break;
       }
 

@@ -17,6 +17,9 @@ import {
 import './style.scss';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { utils } from 'Helpers';
+import { useDispatch, useSelector } from 'react-redux';
+import { routes } from 'Constants';
 
 const initialState = {
   ofId: '',
@@ -73,6 +76,22 @@ const LinkAction = (props) => {
 const OfficeCredit = () => {
   const { register, handleSubmit, errors, control, getValues } = useForm({});
 
+  let rowNumber = utils.getItemFromStorage('selectedOffice');
+  const searchResult =
+    useSelector((state) => state.searchOffice?.items?.data?.data) || [];
+  let selectedItem = searchResult[rowNumber] || {};
+  console.log('selectedItem', selectedItem);
+
+  const {
+    officeName,
+    officeId,
+    cityName,
+    countryCode,
+    currCode,
+    creditLimitBal,
+    paymentOptions,
+  } = selectedItem;
+
   return (
     <>
       <div className="ManageCreditLimit">
@@ -88,11 +107,12 @@ const OfficeCredit = () => {
               >
                 <SaveIcon style={{ color: colors.sushi }} />
               </IconWithBackground>
-              <IconWithBackground showCursor bgColor={colors.red1}>
-                <ClearIcon
-                  style={{ color: colors.red }}
-                  onClick={() => history.goBack()}
-                />
+              <IconWithBackground
+                showCursor
+                bgColor={colors.red1}
+                onClick={() => history.push(routes.office.searchOffice)}
+              >
+                <ClearIcon style={{ color: colors.red }} />
               </IconWithBackground>
             </div>
           </div>
@@ -108,21 +128,19 @@ const OfficeCredit = () => {
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">Office Name: &nbsp;</div>
-              <div className="font-primary-bold-16">Axis Tours & Travels </div>
+              <div className="font-primary-bold-16">{officeName} </div>
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">Office ID:&nbsp; </div>
-              <div className="font-primary-bold-16 ">
-                Office ID: OKT000000055 | Level - 0
-              </div>
+              <div className="font-primary-bold-16 ">{officeId}</div>
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">City:&nbsp; </div>
-              <div className="font-primary-bold-16 ">Westchester </div>
+              <div className="font-primary-bold-16 ">{cityName} </div>
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">Country:&nbsp; </div>
-              <div className="font-primary-bold-16 ">United Kingdom </div>
+              <div className="font-primary-bold-16 ">{countryCode} </div>
             </Grid>
 
             <Grid item xs={12}>
@@ -140,17 +158,17 @@ const OfficeCredit = () => {
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">Currency:&nbsp;</div>
-              <div className="font-primary-bold-16 ">AED</div>
+              <div className="font-primary-bold-16 ">{currCode}</div>
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">Credit Limit:&nbsp;</div>
-              <div className="font-primary-bold-16 ">Axis Tours & Travels</div>
+              <div className="font-primary-bold-16 ">{creditLimitBal}</div>
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">
                 Settlement Plan:&nbsp;
               </div>
-              <div className="font-primary-bold-16 ">Axis Tours & Travels</div>
+              <div className="font-primary-bold-16 ">{paymentOptions[0]}</div>
             </Grid>
           </Grid>
 

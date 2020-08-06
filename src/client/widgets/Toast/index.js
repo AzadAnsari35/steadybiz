@@ -15,7 +15,7 @@ const Toast = (props) => {
     isSuccess,
     message,
     textClassName,
-    removeAfterNumberOfSeconds,
+    removeAfterNumberOfSeconds = 5,
   } = props;
 
   const dispatch = useDispatch();
@@ -27,7 +27,9 @@ const Toast = (props) => {
   const { isToastVisible = false, toastMessage = '', toastStatus } =
     toastData?.items?.data || {};
 
-  // const [showToast, setShowToast] = useState(isToastVisible);
+  const [showToast, setShowToast] = useState(isToastVisible);
+
+  useEffect(() => setShowToast(isToastVisible), [isToastVisible]);
 
   useEffect(() => {
     if (removeAfterNumberOfSeconds) {
@@ -47,7 +49,7 @@ const Toast = (props) => {
 
   return (
     <Fragment>
-      {isToastVisible && (
+      {showToast && (
         <div
           className={`Toast ${
             toastStatus ? 'success' : 'error'
