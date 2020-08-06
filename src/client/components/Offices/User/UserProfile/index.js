@@ -52,8 +52,6 @@ const UserProfileForm = (props) => {
     defaultValues,
   });
 
-  const [userId, setUserId] = useState('');
-
   const objectStatusesList = useDropDown(
     endpoint.master.objectStatuses,
     dropDownParam.objectStatuses,
@@ -80,6 +78,8 @@ const UserProfileForm = (props) => {
   let selectedItem = searchResult.data[rowNumber] || {};
   console.log('selectedItem', selectedItem);
 
+  let userId = selectedItem.userId;
+
   const [updateRes, postUpdateRequest] = updateEndpoint();
 
   const setDefaultValue = () => {
@@ -87,11 +87,10 @@ const UserProfileForm = (props) => {
     let officeId = '';
     let officeName = '';
 
-    if (selectedOffice) {
+    if (Number.isInteger(parseInt(selectedOffice))) {
       let selectedItem = searchOffice.data[selectedOffice] || {};
       console.log('selected', selectedItem);
 
-      setUserId(selectedItem.userId);
       officeId = selectedItem.officeId;
       officeName = selectedItem.officeName;
     } else {
@@ -99,7 +98,6 @@ const UserProfileForm = (props) => {
         userDto: { officeDto },
       } = JSON.parse(utils.getItemFromStorage('userData'));
 
-      setUserId(utils.getItemFromStorage('userId'));
       console.log('userId', userId);
       officeId = officeDto.officeId;
       officeName = officeDto.officeName;
@@ -145,11 +143,10 @@ const UserProfileForm = (props) => {
         dispatch(
           commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
             toastStatus: true,
-            toastMessage: `Office user created successfully`,
+            toastMessage: `Office user updated successfully`,
             isToastVisible: true,
           })
         );
-        reset(defaultValues);
       }
     }
   }, [updateRes]);
@@ -160,6 +157,7 @@ const UserProfileForm = (props) => {
     console.log('data', data);
 
     if (isUpdateUser) {
+      console.log('userId', userId);
       postUpdateRequest(
         {
           ...data,

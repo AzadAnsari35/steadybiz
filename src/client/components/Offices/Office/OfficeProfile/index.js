@@ -162,7 +162,7 @@ const OfficeProfileForm = (props) => {
             isToastVisible: true,
           })
         );
-        // isCreateOffice && reset(defaultValues);
+        isCreateOffice && reset(defaultValues);
       }
     }
   }, [createRes]);
