@@ -122,7 +122,7 @@ const SearchUser = () => {
     'masterObjectStatuses'
   );
 
-  const searchUser = useSelector((state) => state.searchUser?.items);
+  const searchUser = useSelector((state) => state.searchUser);
   const searchResult =
     useSelector((state) => state.searchOffice?.items?.data) || [];
 
