@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import Routes from 'Client/Routes';
+import Routes from 'Client/routes';
 import Header from 'Components/UserControls/Header';
 import Footer from 'Components/UserControls/Footer';
 
