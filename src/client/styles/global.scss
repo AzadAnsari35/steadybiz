@@ -88,6 +88,10 @@ p {
   text-align: right;
 }
 
+.text-align-center {
+  text-align: center;
+}
+
 // Text Transformation
 .text-uppercase {
   text-transform: uppercase;
@@ -95,6 +99,10 @@ p {
 
 .text-capitalize {
   text-transform: capitalize;
+}
+
+.text-decoration-none {
+  text-decoration: none;
 }
 
 // Font families
@@ -429,6 +437,10 @@ p {
   padding-top: 0;
 }
 
+.pt-4 {
+  padding-top: 4px;
+}
+
 .pt-20 {
   padding-top: 20px;
 }
@@ -444,6 +456,10 @@ p {
 }
 
 // Padding Horizontal
+.px-6 {
+  padding-left: 6px;
+  padding-right: 6px;
+}
 .px-16 {
   padding: 0 16px;
 }
@@ -496,6 +512,10 @@ p {
 
 .pb-12 {
   padding-bottom: 12px;
+}
+
+.pb-20 {
+  padding-bottom: 20px;
 }
 
 .pb-24 {
@@ -753,8 +773,8 @@ p {
 .horizontal-grey-divider {
   border: none;
   height: 1px;
-  margin: 0;
   flex-shrink: 0;
+  margin: 0;
   background-color: rgba(0, 0, 0, 0.12);
 }
 
@@ -793,4 +813,34 @@ p {
   top: 0;
   left: 0;
   z-index: 10000;
+}
+
+.Active {
+  &:before {
+    background-color: $malachite;
+  }
+}
+
+.Inactive {
+  &:before {
+    background-color: $webOrange;
+  }
+}
+
+.Freeze {
+  &:before {
+    background-color: $red;
+  }
+}
+
+.Register {
+  &:before {
+    background-color: $turbo;
+  }
+}
+
+.Reject {
+  &:before {
+    background-color: $red;
+  }
 }

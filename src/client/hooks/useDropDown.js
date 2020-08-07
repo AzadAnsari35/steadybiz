@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {commonAction} from 'Actions/';
+import { commonAction } from 'Actions/';
+import { bindDropDown } from 'Helpers/global';
 
 const useDropDown = (
   _endpoint,
@@ -26,12 +27,13 @@ const useDropDown = (
       if (customDropdownFunction) {
         setDropDownItems(customDropdownFunction(stateList.items.data.data));
       } else {
-        stateList.items.data.data.forEach((name) => {
-          dropDownItems.push({
-            label: name[dropDownParam.label],
-            value: name[dropDownParam.value],
-          });
-        });
+        setDropDownItems(
+          bindDropDown(
+            stateList.items.data.data,
+            dropDownParam.label,
+            dropDownParam.value
+          )
+        );
       }
     }
     //console.log('abc', dropDownItems);

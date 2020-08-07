@@ -23,6 +23,16 @@ $root: '.PrimaryTable';
     }
   }
 
+  &-nestedHead-cell {
+    padding-top: 4px !important;
+
+    &__subHead {
+      padding: 0px 16px !important;
+      padding-top: 4px !important;
+      border-top: 1px solid $mercury;
+    }
+  }
+
   &-body {
     > :nth-child(2n) {
       background: $mercury;
@@ -81,36 +91,6 @@ $root: '.PrimaryTable';
       transform: translate(0px, -50%);
       left: 0px;
       border-radius: 50%;
-    }
-
-    &-active {
-      &:before {
-        background-color: $malachite;
-      }
-    }
-
-    &-inactive {
-      &:before {
-        background-color: $webOrange;
-      }
-    }
-
-    &-freeze {
-      &:before {
-        background-color: $red;
-      }
-    }
-
-    &-register {
-      &:before {
-        background-color: $turbo;
-      }
-    }
-
-    &-reject {
-      &:before {
-        background-color: $red;
-      }
     }
   }
 }

@@ -3,15 +3,16 @@ export const actionTypeConstant = {
     searchResult: 'override.searchResult',
     selectedOption: 'override.selectedOption',
   },
-  flights:{
+  flights: {
     flightSearchInput: 'flights.flightSearchInput',
-    flightSearch: "flightSearch",
+    flightSearch: 'flightSearch',
   },
   users: {
     signIn: 'usersSignIn',
   },
   master: {
     countries: 'master.countries',
+    cities: 'master.cities',
     objectStatuses: 'master.objectStatuses',
     airlines: 'master.airlines',
   },
@@ -19,8 +20,15 @@ export const actionTypeConstant = {
     searchUser: 'office.searchUser',
     updateUser: 'office.updateUser',
     viewUser: 'office.viewUser',
+    searchOffice: 'office.searchOffice',
+  },
+  creditLimit: {
+    getInstantCreditlimit: 'creditLimit.getInstantCreditlimit',
   },
   loader: {
     loaderStatus: 'loader.loaderStatus',
+  },
+  toast: {
+    toastStatus: 'toast.toastStatus',
   },
 };

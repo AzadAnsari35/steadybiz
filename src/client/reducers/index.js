@@ -13,6 +13,10 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.loader.loaderStatus
   ),
+  toastStatus: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.toast.toastStatus
+  ),
   overrideSearchResult: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.override.searchResult
@@ -33,13 +37,31 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.users.signIn
   ),
+  getInstantCreditLimit: createFilteredReducer(
+    reducerState,
+    (action) =>
+      action.type === actionTypeConstant.creditLimit.getInstantCreditlimit
+  ),
   masterCountries: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.master.countries
   ),
+  masterCities: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.master.cities
+  ),
   masterObjectStatuses: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.master.objectStatuses
+  ),
+
+  searchOffice: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.office.searchOffice
+  ),
+  searchUser: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.office.searchUser
   ),
   masterAirlines: createFilteredReducer(
     reducerState,

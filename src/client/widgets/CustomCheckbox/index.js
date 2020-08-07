@@ -7,18 +7,6 @@ import Text from 'Widgets/Text/index';
 
 import './style.scss';
 
-const renderCheckboxIcon = (checked) => (
-  <div
-    className={`CustomCheckbox-icon ${
-      !!checked
-        ? 'checked d-flex justify-content-center align-items-center'
-        : ''
-    }`}
-  >
-    {checked && <CheckIcon className="CustomCheckbox-icon__checked" />}
-  </div>
-);
-
 const CustomCheckbox = (props) => {
   const {
     control,

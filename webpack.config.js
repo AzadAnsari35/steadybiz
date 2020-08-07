@@ -43,6 +43,7 @@ module.exports = (env, argv) => {
         children: false,
         maxModules: 0,
       },
+      
       port: env.PORT,
       historyApiFallback: true,
     },

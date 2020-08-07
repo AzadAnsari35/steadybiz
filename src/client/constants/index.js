@@ -1,3 +1,4 @@
-import {actionTypeConstant} from './actionTypeConstant';
+import { actionTypeConstant } from './actionTypeConstant';
 import * as commonConstant from './commonConstant';
-export {actionTypeConstant,commonConstant}
+import routes from './routes';
+export { actionTypeConstant, commonConstant, routes };
