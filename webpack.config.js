@@ -43,7 +43,7 @@ module.exports = (env, argv) => {
         children: false,
         maxModules: 0,
       },
-      host: 'http://ec2-52-15-126-14.us-east-2.compute.amazonaws.com',
+      public: 'http://ec2-52-15-126-14.us-east-2.compute.amazonaws.com',
       port: env.PORT,
       historyApiFallback: true,
     },
