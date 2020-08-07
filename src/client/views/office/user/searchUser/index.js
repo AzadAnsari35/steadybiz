@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { regex } from 'Helpers/validator';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { showError } from 'Helpers/utils';
 import { utils } from 'Helpers/index';
@@ -18,6 +18,7 @@ import {
 import routes from 'Constants/routes';
 import { useHistory } from 'react-router-dom';
 import endpoint from 'Config/endpoint.js';
+import endpointWithoutApi from 'Config/endpointWithoutApi';
 import { commonAction, commonActionWithoutApi } from 'Actions/';
 import { useDispatch, useSelector } from 'react-redux';
 import useDropDown from 'Hooks/useDropDown';
@@ -37,8 +38,8 @@ const headerData = [
 
 const PopoverAction = (props) => {
   const [showPopover, setShowPopover] = useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);  
-  
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -56,14 +57,14 @@ const PopoverAction = (props) => {
 
   const handleViewUser = () => {
     history.push(routes.office.viewOfficeUser);
-    utils.setItemToStorage(endpoint.office.searchUser.actionType,rowNumber);
-    //dispatch(commonActionWithoutApi(endpoint.office.viewUser, rowNumber));
+    utils.setItemToStorage(endpoint.office.searchUser.actionType, rowNumber);
+    utils.setItemToStorage('selectedUser', rowNumber);
   };
 
   const handleModifyUser = () => {
-    utils.setItemToStorage(endpoint.office.searchUser.actionType,rowNumber);
-    history.push(routes.office.createOfficeUser);
-   
+    utils.setItemToStorage(endpoint.office.searchUser.actionType, rowNumber);
+    history.push(routes.office.updateOfficeUser);
+    utils.setItemToStorage('selectedUser', rowNumber);
   };
 
   return (
@@ -103,9 +104,15 @@ const PopoverAction = (props) => {
 
 const SearchUser = () => {
   const [errorMsg, setErrorMsg] = useState('');
-  const [recordFound,setRecordFound]=useState(false);
-  let page=1;
-  const [requestJson,setReqeustJson]=useState(null);
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(5);
+  const [requestJson, setReqeustJson] = useState(null);
+  const [officeId, setOfficeId] = useState('');
+  const [officeName, setOfficeName] = useState('');
+  const [officeLevel, setOfficeLevel] = useState('');
+  const [ofId, setOfId] = useState('');
+  const firstPageUpdate = useRef(true);
+
   let history = useHistory();
   let dispatch = useDispatch();
 
@@ -115,61 +122,102 @@ const SearchUser = () => {
     'masterObjectStatuses'
   );
 
-  const searchResult = useSelector((state) => state.overrideSearchResult);
-  
-  const ofId='dsfsdfds';
-  
-  
-  //console.log(response);
+  const searchUser = useSelector((state) => state.searchUser?.items);
+  const searchResult =
+    useSelector((state) => state.searchOffice?.items?.data) || [];
+
+  const getOfficeDetail = () => {
+    const selectedOffice = utils.getItemFromStorage('selectedOffice') || '';
+    // console.log('selectedOffice', selectedOffice);
+
+    if (selectedOffice) {
+      let selectedItem = searchResult.data[selectedOffice] || {};
+      // console.log('searchResult', searchResult);
+
+      console.log('selectedItem', selectedItem);
+
+      setOfficeId(selectedItem.officeId);
+      setOfficeName(selectedItem.officeName);
+      setOfficeLevel(1);
+      setOfId(selectedItem.ofId);
+    } else {
+      const {
+        userDto: {
+          officeDto: { officeName, officeLevel, ofId, officeId },
+        },
+      } = JSON.parse(utils.getItemFromStorage('userData'));
+
+      setOfficeId(officeId);
+      setOfficeName(officeName);
+      setOfficeLevel(officeLevel);
+      setOfId(ofId);
+    }
+  };
+
   const { register, handleSubmit, errors, control, getValues } = useForm({
     defaultValues: {
       status: { label: 'Active', value: 'Active' },
     },
   });
-  const callback=(newValue)=>{
-    page=newValue;
-    setReqeustJson(prevState => {
-      return { ...prevState, page: newValue }
-    });
-    //requestJson.page=newValue
-   
+
+  useEffect(() => {
+    getOfficeDetail();
+  }, []);
+
+  useEffect(() => {
+    if (firstPageUpdate.current) {
+      firstPageUpdate.current = false;
+      return;
+    }
+    callSearch(page);
+  }, [page]);
+
+  useEffect(() => {
+    if (searchUser != null) {
+      const errMsg = utils.checkError(searchUser);
+      if (errMsg !== '') {
+        dispatch(
+          commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
+            toastStatus: false,
+            toastMessage: errMsg,
+            isToastVisible: true,
+          })
+        );
+      }
+    }
+  }, [searchUser]);
+
+  useEffect(() => {
+    if (requestJson !== null) callSearch(page);
+  }, [requestJson]);
+
+  const callSearch = (page) => {
+    try {
+      setErrorMsg('');
+      dispatch(
+        commonAction(endpoint.office.searchUser, {
+          ...requestJson,
+          page: page - 1,
+          size,
+          ofid: ofId,
+        })
+      );
+    } catch (err) {
+      console.log('err', err);
+    }
   };
 
-  useEffect(()=>{
-    if(requestJson!==null)
-    callSearch();
-  },[requestJson])
- useEffect(()=>{
-  if (searchResult.items != null && searchResult.actualActionType===endpoint.office.searchUser.actualActionType ) {
-   
-    const errMsg = utils.checkError(searchResult.items);
-    
-    if (errMsg !== '')
-     setErrorMsg(errMsg);
-      else {
-        setRecordFound(true);
-        
-      }
-  }
+  const handlePage = (newPage) => {
+    setPage(newPage);
+  };
 
- },[searchResult]);
+  const handleClick = () => {
+    history.push(routes.office.createOfficeUser);
+    utils.setItemToStorage('selectedUser', '');
+  };
 
- const callSearch=()=>
- {
-  try {
-    setErrorMsg('');
-    setRecordFound(false);    
-    dispatch(commonAction(endpoint.office.searchUser, requestJson));
-  }
-    catch (err) {
-      showError(err, errorMsg);
-    }
- }
-  const onSubmit =  (data, e) => {
-    page=1;
+  const onSubmit = (data, e) => {
     setReqeustJson(data);
-
-    //callSearch();
   };
 
   return (
@@ -178,8 +226,6 @@ const SearchUser = () => {
         <div className="font-primary-semibold-24 pb-4">MANAGE USERS</div>
         <div className="horizontal-grey-divider"></div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <input type='hidden' name='ofid' value={ofId} ref={register} ></input>
-          <input type='hidden' name='page' value={page} ref={register} ></input>
           <Text
             showLeftBorder={true}
             text="SEARCH USER"
@@ -315,7 +361,7 @@ const SearchUser = () => {
                   text="Create"
                   secondary
                   className=" px-48 mr-10"
-                  onClick={() => history.push(routes.office.createOfficeUser)}
+                  onClick={handleClick}
                 />
 
                 <Button type="submit" text="Search" className=" px-48" />
@@ -324,20 +370,26 @@ const SearchUser = () => {
           </Grid>
         </form>
 
-          <div></div>
+        <div></div>
       </div>
-      {(recordFound) && (
+      {searchUser?.status && (
         <PrimaryTable
-          header={<PrimaryTableHeader />}
+          header={
+            <PrimaryTableHeader
+              officeName={officeName}
+              officeId={officeId}
+              officeLevel={officeLevel}
+            />
+          }
           headerData={headerData}
-          bodyData={searchResult.items.data}
+          bodyData={searchUser.data}
           AddElement={{
             last: <PopoverAction />,
           }}
-          count={searchResult.items.data.count}
-          size={5}
+          count={searchUser.data.count}
+          size={size}
           page={page}
-          parentCallback={callback}
+          handlePage={handlePage}
           columnAlignments={[
             'left',
             'left',
@@ -347,9 +399,9 @@ const SearchUser = () => {
             'left',
             'center',
           ]}
-          statusIndex={6}
+          statusIndex={5}
           imageIndex={1}
-          hideKeys={['userId', 'officeId']}
+          hideKeys={['userId', 'officeId', 'title']}
         />
       )}
     </div>

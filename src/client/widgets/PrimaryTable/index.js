@@ -1,4 +1,4 @@
-import React, { Fragment, useState, Children } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -7,9 +7,6 @@ import TableRow from '@material-ui/core/TableRow';
 import TableContainer from '@material-ui/core/TableContainer';
 import Pagination from '@material-ui/lab/Pagination';
 import Avatar from 'Widgets/Avatar';
-
-// import { SimplePopover } from "../popover";
-import { Link, withRouter } from 'react-router-dom';
 import './style.scss';
 
 const PrimaryTable = (props) => {
@@ -25,42 +22,35 @@ const PrimaryTable = (props) => {
     statusIndex = -1,
     imageIndex = -2,
     hideKeys = '',
-    page=1,
-    
+    page = 1,
+    handlePage,
+    tableStyling,
   } = props;
 
   const [lowOffset, setLowOffset] = React.useState(1);
-  const [highOffset, setHighOffset] = React.useState(3);
-  //const [page, setPage] = React.useState(1);
+  const [highOffset, setHighOffset] = React.useState(size);
 
   const statusColor = (status) => {
-    switch (status) {
-      case 'Active': {
-        return ' PrimaryTable-status PrimaryTable-status-active';
-      }
-      case 'Inactive': {
-        return ' PrimaryTable-status PrimaryTable-status-inactive';
-      }
-      case 'Freeze': {
-        return ' PrimaryTable-status PrimaryTable-status-freeze';
-      }
-      case 'Register': {
-        return 'PrimaryTable-status PrimaryTable-status-register';
-      }
-      case 'Reject': {
-        return 'PrimaryTable-status PrimaryTable-status-reject';
-      }
-    }
+    return `PrimaryTable-status ${status} `;
   };
 
-  const handleChangePage = (event,newPage) => {
+  const handleChangePage = (event, newPage) => {
+    handlePage(newPage);
+    handleOffset(newPage);
+  };
 
-   props.parentCallback(newPage);
-    
+  const handleOffset = (newPage) => {
+    setLowOffset(size * (newPage - 1) + 1);
+    let updatedHightOffset = newPage * size;
+    setHighOffset(count > updatedHightOffset ? updatedHightOffset : count);
   };
 
   const setAlignment = (index) => {
     return columnAlignments[index];
+  };
+
+  const applyStyle = (index) => {
+    return tableStyling?.length && tableStyling[index];
   };
 
   const showEntries = (key) => {
@@ -77,21 +67,53 @@ const PrimaryTable = (props) => {
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  {headerData.map((header, index) => (
-                    <TableCell
-                      key={`head-${index}`}
-                      className="PrimaryTable-head-cell "
-                      style={index === imageIndex ? { paddingLeft: 72 } : {}}
-                    >
-                      {header}
-                    </TableCell>
-                  ))}
+                  {headerData.map((header, index, arr) =>
+                    Array.isArray(header) ? (
+                      <TableCell
+                        className="PrimaryTable-head-cell PrimaryTable-nestedHead-cell"
+                        colSpan={3}
+                        padding="none"
+                        align="center"
+                      >
+                        {header[0]}
+                        <div
+                          className={`d-flex justify-content-between PrimaryTable-nestedHead-cell__subHead ${
+                            Array.isArray(arr[index + 1])
+                              ? 'border-right-gray-thin'
+                              : ''
+                          } `}
+                        >
+                          {header.slice(1).map((cur) => (
+                            <div className=" PrimaryTable-head-cell">{cur}</div>
+                          ))}
+                        </div>
+                      </TableCell>
+                    ) : (
+                      <TableCell
+                        key={`head-${index}`}
+                        className="PrimaryTable-head-cell "
+                        style={index === imageIndex ? { paddingLeft: 72 } : {}}
+                        align={setAlignment(index)}
+                        style={applyStyle(index)}
+                      >
+                        {header}
+                      </TableCell>
+                    )
+                  )}
                 </TableRow>
               </TableHead>
               <TableBody className="PrimaryTable-body">
                 {bodyData.data.length > 0 &&
                   bodyData.data.map((body, ind) => (
                     <TableRow key={ind}>
+                      {AddElement?.first && (
+                        <TableCell component="th" scope="row" align="center">
+                          {React.cloneElement(AddElement.first, {
+                            rowNumber: ind + 1,
+                          })}
+                        </TableCell>
+                      )}
+
                       {Object.keys(body).map(
                         (key, index) =>
                           showEntries(key) && (
@@ -99,12 +121,13 @@ const PrimaryTable = (props) => {
                               component="th"
                               scope="row"
                               key={`body-${index}`}
-                              align={setAlignment(index)}
+                              align={setAlignment(index - hideKeys.length)}
                               style={
                                 index === imageIndex ? { paddingLeft: 72 } : {}
                               }
+                              style={applyStyle(index)}
                               className={`PrimaryTable-body-cell position-relative ${
-                                index === statusIndex
+                                index === statusIndex + hideKeys.length
                                   ? statusColor(body[key])
                                   : ''
                               }`}
@@ -119,10 +142,10 @@ const PrimaryTable = (props) => {
                             </TableCell>
                           )
                       )}
-                      {AddElement.last && (
+                      {AddElement?.last && (
                         <TableCell component="th" scope="row" align="center">
                           {React.cloneElement(AddElement.last, {
-                            rowNumber: ind + 1,
+                            rowNumber: ind,
                           })}
                         </TableCell>
                       )}
@@ -132,7 +155,7 @@ const PrimaryTable = (props) => {
               </TableBody>
             </Table>
             <div className="PrimaryTable-footer">
-              {highOffset - lowOffset >= count && page === 0 ? null : (
+              {
                 <div className="PrimaryTable-footer-records">
                   Showing{' '}
                   <span>
@@ -140,7 +163,7 @@ const PrimaryTable = (props) => {
                   </span>
                   of {count} Records
                 </div>
-              )}
+              }
 
               <div>
                 {count > size ? (

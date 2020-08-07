@@ -37,6 +37,8 @@ const SignInForm = () => {
         utils.setItemToStorage('userToken', responseJson.token);
         utils.setItemToStorage('userId', responseJson.userDto.userId);
         utils.setItemToStorage('officeId', responseJson.userDto.officeId);
+        utils.setItemToStorage('userData', JSON.stringify(responseJson));
+
         //
 
         history.push('/Office/Registration');

@@ -9,6 +9,10 @@ import {
   Availability,
   CreateUser,
   ChangePassword,
+  SearchOffice,
+  OfficeProfile,
+  OfficeCredit,
+  CreditLimitBreakup,
 } from 'Views/';
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
@@ -52,6 +56,42 @@ const Routes = () => (
       exact
       path={routes.office.changePassword}
       component={ChangePassword}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.searchOffice}
+      component={SearchOffice}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.createOffice}
+      component={OfficeProfile}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.viewOffice}
+      component={OfficeProfile}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.updateOffice}
+      component={OfficeProfile}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.manageCreditLimit}
+      component={OfficeCredit}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.creditLimitBreakup}
+      component={CreditLimitBreakup}
     />
 
     <PrivateRoute

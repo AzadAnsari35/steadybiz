@@ -10,7 +10,7 @@ const TextInput = (props) => {
     label,
     placeholder = '',
     disabled,
-    errors,
+    errors = {},
     register,
     validation,
   } = props;

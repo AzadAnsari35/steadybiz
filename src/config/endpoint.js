@@ -36,6 +36,13 @@ export default {
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.countries,
     },
+    cities: {
+      url: config.api.url + '/api/v1/master/cities',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.GET,
+      actionType: actionTypeConstant.master.cities,
+    },
+
     objectStatuses: {
       url: config.api.url + '/api/v1/master/objectstatuses',
       isAuth: true,
@@ -47,7 +54,7 @@ export default {
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.airlines,
-      reducerName: "masterAirlines",
+      reducerName: 'masterAirlines',
     },
   },
 
@@ -56,7 +63,7 @@ export default {
       url: config.api.url + '/api/v1/offices/user/searchUser',
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.POST,
-      actionType: actionTypeConstant.override.searchResult,
+      actionType: actionTypeConstant.office.searchUser,
       actualActionType: actionTypeConstant.office.searchUser,
     },
     createUser: {
@@ -77,6 +84,36 @@ export default {
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.override.selectedOption,
       actualActionType: actionTypeConstant.office.viewUser,
+    },
+    searchOffice: {
+      url: config.api.url + '/api/v1/offices/searchOffice',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.office.searchOffice,
+    },
+    viewOffice: {
+      url: config.api.url + '/api/v1/offices/viewOffice',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+    },
+    createOffice: {
+      url: config.api.url + '/api/v1/offices',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+    },
+    updateOffice: {
+      url: config.api.url + '/api/v1/offices',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.PUT,
+    },
+  },
+
+  creditLimit: {
+    getInstantCreditlimit: {
+      url: config.api.url + '/api/v1/creditLimit/getInstantCreditlimit',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.creditLimit.getInstantCreditlimit,
     },
   },
 };

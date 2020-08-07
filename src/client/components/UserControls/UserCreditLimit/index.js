@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from 'Widgets/Avatar';
 import { Link } from 'react-router-dom';
 import routes from 'Constants/routes';
+import { getItemFromStorage, showError } from 'Helpers/utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { commonAction } from 'Actions/index';
+import endpoint from 'Config/endpoint';
 
 import './style.scss';
 
-const UserCreditLimit = () => {
+const UserCreditLimit = (props) => {
+  const { creditLimitDetails, officeDto, fullName } = props;
   return (
     <div className="HeaderPopover br-6">
       <div className="HeaderPopover-head">
@@ -14,20 +19,22 @@ const UserCreditLimit = () => {
         </Avatar>
         <div className="HeaderPopover-head__detail pl-24 d-flex flex-direction-column">
           <span className=" HeaderPopover-head__detail-name font-primary-medium-24">
-            Ok Travels
+            {fullName}
           </span>
           <span className="HeaderPopover-head__detail-email font-primary-semibold-16">
-            oktravels@yopmail.com
+            {officeDto.officeEmail}{' '}
           </span>
         </div>
       </div>
       <div className="HeaderPopover-body font-primary-semibold-18 p-12">
         <div className="HeaderPopover-body-creditDetails  pb-4">
-          <span name="office-name">Steady Biz</span>{' '}
-          <span name="office-id">[DXBOKT0000]</span>
+          <span name="office-name">{officeDto.officeName}</span>{' '}
+          <span name="office-id">[{officeDto.officeId}]</span>
         </div>
         <div className="HeaderPopover-body-creditLimit">
-          <span>Credit Limit Balance :</span> <span>$</span> <span>2000</span>
+          <span>Credit Limit Balance :</span>{' '}
+          <span>{creditLimitDetails?.currencyCode}</span>{' '}
+          <span>{creditLimitDetails?.balanceAmount}</span>
         </div>
       </div>
 

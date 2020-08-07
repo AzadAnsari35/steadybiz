@@ -70,12 +70,24 @@ const MultiSelect = (props) => {
     errors = {},
     validation,
     disabled,
+    getValues = () => {},
   } = props;
   // const [selectedOption, setSelectedOption] = useState(null);
 
   // const handleChange = (selectedOption) => {
   //   setSelectedOption(selectedOption);
   // };
+
+  // useEffect(() => {
+  //   let selectedOption = options.find(
+  //     (option) => option.value === control.defaultValuesRef.current[name]
+  //   );
+
+  //   console.log('selectedOption', selectedOption);
+  // }, []);
+
+  // console.log('control', getValues(name));
+  // console.log('control', control.defaultValuesRef.current[name]);
 
   return (
     <>

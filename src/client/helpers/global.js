@@ -33,6 +33,19 @@ export const applyCommaToPrice = (price) => {
   return price.toLocaleString('en-IN');
 };
 
+export const bindDropDown = (data, label, value) => {
+  const dropDownItems = [];
+
+  data.forEach((name) => {
+    dropDownItems.push({
+      label: name[label],
+      value: name[value],
+    });
+  });
+
+  return dropDownItems;
+};
+
 export const countriesDialCodeFormatter = (data) => {
   let dropDownItems = [];
   data.map((curData) => {
