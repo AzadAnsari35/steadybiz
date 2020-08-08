@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack --mode development",
+    "start": "webpack --mode development --env.PORT=3100",
     "dev": "webpack-dev-server --env.PORT=3100 --mode development --hot --open",
     "build": "webpack --mode production  --env.PORT=3100"
   },
@@ -28,6 +28,7 @@
     "@material-ui/utils": "^4.10.2",
     "axios": "^0.19.2",
     "babel-loader": "^8.1.0",
+    "body-parser": "^1.19.0",
     "copy-webpack-plugin": "^6.0.3",
     "css-loader": "^3.6.0",
     "date-fns": "^2.15.0",
@@ -60,5 +61,8 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "express": "^4.17.1",
+    "path": "^0.12.7"
+  }
 }
