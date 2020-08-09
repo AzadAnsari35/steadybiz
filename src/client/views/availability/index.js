@@ -57,6 +57,9 @@ const Availability = () => {
       showError(err, setError);
     }
     if (!!flightSearchInputData) {
+      if (showSearch) {
+        setShowSearch(false);
+      }
       try {
         dispatch(commonAction(
           endpoint.flights.flightSearch,
@@ -71,7 +74,7 @@ const Availability = () => {
         showError(err, setError);
       }
     }
-  }, []);
+  }, [flightSearchInputData]);
 
   return (
     <div className="Availability">

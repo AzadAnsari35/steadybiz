@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -123,8 +123,8 @@ const SearchBar = () => {
   const [passengers, setPassengers] = useState(passengerTypes);
 
   const [formData, setFormData] = useState({
-    departureAirport: null,
-    arrivalAirport: null,
+    departureAirport: initialDepartureAirport,
+    arrivalAirport: initialArrivalAirport,
   });
 
   const [error, setError] = useState(null);
