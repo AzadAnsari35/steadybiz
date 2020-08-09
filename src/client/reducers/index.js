@@ -29,6 +29,18 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.flights.flightSearch
   ),
+  flightSelect: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.flights.flightSelect
+  ),
+  passengerInformationData: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.common.passengerInformationData
+  ),
+  transaction: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.transaction
+  ),
   overrideSelectedOption: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.override.selectedOption

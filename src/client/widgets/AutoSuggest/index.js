@@ -48,6 +48,30 @@ const airportsData = [
     title: "Indira Gandhi International",
     level: 1,
   },
+  {
+    code: "DXB",
+    subTitle: "Dubai, UAE",
+    title: "Dubai Airport",
+    level: 1,
+  },
+  {
+    code: "JFK",
+    subTitle: "New York, USA",
+    title: "JFK Airport",
+    level: 1,
+  },
+  {
+    code: "BAH",
+    subTitle: "Bahrain",
+    title: "Bahrain International Airport",
+    level: 0,
+  },
+  {
+    code: "AUH",
+    subTitle: "Abu Dhabi, UAE",
+    title: "Abu Dhabi Airport",
+    level: 0,
+  },
 ];
 
 const AutoSuggest = props => {

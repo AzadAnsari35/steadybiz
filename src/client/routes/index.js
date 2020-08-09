@@ -13,6 +13,8 @@ import {
   OfficeProfile,
   OfficeCredit,
   CreditLimitBreakup,
+  PassengerInformation,
+  Transaction,
 } from 'Views/';
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
@@ -101,6 +103,21 @@ const Routes = () => (
       exact
       path={routes.flight.availability}
       component={Availability}
+    />
+    <PrivateRoute
+      exact
+      path={routes.common.passengerInformation}
+      component={PassengerInformation}
+    />
+    <PrivateRoute
+      exact
+      path={routes.transaction.viewPNR}
+      component={Transaction}
+    />
+    <PrivateRoute
+      exact
+      path={routes.transaction.viewBooking}
+      component={Transaction}
     />
     <PrivateRoute exact path="/private" component={() => <div>private</div>} />
     <PublicRoute

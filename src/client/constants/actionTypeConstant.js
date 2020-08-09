@@ -5,7 +5,9 @@ export const actionTypeConstant = {
   },
   flights: {
     flightSearchInput: 'flights.flightSearchInput',
-    flightSearch: 'flightSearch',
+    flightSearch: "flightSearch",
+    flightSelect: "flightSelect",
+    airprice: 'airprice',
   },
   users: {
     signIn: 'usersSignIn',
@@ -31,4 +33,8 @@ export const actionTypeConstant = {
   toast: {
     toastStatus: 'toast.toastStatus',
   },
+  common: {
+    passengerInformationData: 'passengerInformationData',
+  },
+  transaction: 'transaction',
 };

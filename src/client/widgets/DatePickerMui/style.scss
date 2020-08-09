@@ -1,0 +1,288 @@
+@import "./../../styles/variables";
+
+$root: ".DatePicker";
+
+#{$root} {
+  .date-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .MuiFormControl-marginNormal {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 10px 0 15px;
+    width: 100%;
+    height: 44px;
+    border-radius: 4px;
+    border: 1px solid $black5;
+    background-color: $white;
+    .MuiInput-underline {
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+    .MuiInput-root {
+      height: 100%;
+      .MuiInputBase-input {
+        padding: 0;
+        font-size: 16px;
+        line-height: 25px;
+        font-family: "Montserrat SemiBold";
+        text-transform: uppercase;
+      }
+      .MuiIconButton-root {
+        padding: 0;
+        &:hover {
+          background-color: transparent;
+        }
+      }
+    }
+    p.Mui-error {
+      display: none;
+    }
+  }
+  &.has-error {
+    .MuiFormControl-marginNormal {
+      border: 1px solid $red;
+    }
+  }
+}
+
+.MuiPickersBasePicker-container {
+  .MuiPickersDatePickerRoot-toolbar {
+    flex-direction: row-reverse;
+  }
+  .MuiPickersToolbar-toolbar {
+    height: 84px;
+    background-color: $white;
+    align-items: center;
+    justify-content: space-between;
+    .MuiPickersToolbarButton-toolbarBtn {
+      span.MuiButton-label {
+        h6.MuiPickersToolbarText-toolbarTxt,
+        h4.MuiPickersToolbarText-toolbarTxt {
+          font-family: "Montserrat Medium";
+          font-size: 24px;
+          line-height: 30px;
+        }
+        h6.MuiPickersToolbarText-toolbarTxt {
+          color: $royalBlue;
+        }
+        h4.MuiPickersToolbarText-toolbarTxt {
+          color: $black;
+        }
+        h4.MuiPickersToolbarText-toolbarBtnSelected {
+          font-family: "Montserrat Medium";
+          font-size: 24px;
+          line-height: 30px;
+          color: $black;
+        }
+      }
+    }
+    .MuiButton-root {
+      &:hover {
+        background-color: $white;
+      }
+    }
+  }
+  .MuiPickersBasePicker-pickerView {
+    min-width: 416px;
+    min-height: 400px;
+    justify-content: initial;
+    margin-top: -10px;
+    overflow: hidden;
+    z-index: 2;
+
+    .MuiPickersCalendarHeader-switchHeader {
+      margin-top: 0;
+      .MuiPickersCalendarHeader-iconButton {
+        color: $royalBlue;
+      }
+      .MuiIconButton-root.Mui-disabled {
+        opacity: 0.26;
+      }
+      .MuiPickersCalendarHeader-transitionContainer {
+        p.MuiTypography-body1 {
+          font-family: "Montserrat Medium";
+          font-size: 20px;
+          line-height: 24px;
+          color: $royalBlue;
+        }
+      }
+    }
+    .MuiPickersCalendarHeader-daysHeader {
+      .MuiPickersCalendarHeader-dayLabel {
+        font-family: "Montserrat Regular";
+        font-size: 18px;
+        line-height: 22px;
+        color: $black;
+        width: 52px;
+      }
+    }
+
+    .MuiPickersCalendar-transitionContainer {
+      .MuiPickersCalendar-week {
+        .MuiPickersDay {
+          &-day {
+            width: 52px;
+            height: 52px;
+            .MuiIconButton-label {
+              .MuiTypography-body2 {
+                font-family: "Montserrat Regular";
+                font-size: 20px;
+                line-height: 22px;
+                color: $black;
+              }
+            }
+            &Disabled {
+              .MuiIconButton-label {
+                .MuiTypography-body2 {
+                  font-family: "Montserrat Regular";
+                  font-size: 20px;
+                  line-height: 24px;
+                  color: $silverChalice;
+                }
+              }
+            }
+            &Selected {
+              background-color: $royalBlue;
+              .MuiIconButton-label {
+                .MuiTypography-body2 {
+                  font-family: "Montserrat Regular";
+                  font-size: 20px;
+                  line-height: 24px;
+                  color: $white;
+                }
+              }
+            }
+          }
+          &-hidden {
+            opacity: 1;
+            .MuiIconButton-label {
+              .MuiTypography-body2 {
+                font-family: "Montserrat Regular";
+                font-size: 18px;
+                line-height: 22px;
+                color: $silverChalice;
+              }
+            }
+          }
+        }
+      }
+    }
+    .MuiPickersYearSelection-container {
+      height: 400px;
+      .MuiPickersYear {
+        &-root {
+          font-family: "Montserrat Regular";
+          font-size: 18px;
+          line-height: 22px;
+          color: $black;
+        }
+        &-yearSelected {
+          font-family: "Montserrat Medium";
+          font-size: 24px;
+          line-height: 30px;
+          color: $royalBlue;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .MuiPickersBasePicker-container {
+    .MuiPickersToolbar-toolbar {
+      .MuiPickersToolbarButton-toolbarBtn {
+        span.MuiButton-label {
+          h6.MuiPickersToolbarText-toolbarTxt,
+          h4.MuiPickersToolbarText-toolbarTxt {
+            font-size: 20px;
+            line-height: 24px;
+          }
+          h4.MuiPickersToolbarText-toolbarBtnSelected {
+            font-size: 20px;
+            line-height: 24px;
+          }
+        }
+      }
+    }
+    .MuiPickersBasePicker-pickerView {
+      min-width: 343px;
+      min-height: 360px;
+  
+      .MuiPickersCalendarHeader-switchHeader {
+        .MuiPickersCalendarHeader-transitionContainer {
+          p.MuiTypography-body1 {
+            font-family: "Montserrat Medium";
+            font-size: 18px;
+            line-height: 22px;
+          }
+        }
+      }
+      .MuiPickersCalendarHeader-daysHeader {
+        .MuiPickersCalendarHeader-dayLabel {
+          font-size: 16px;
+          line-height: 19px;
+          width: 45px;
+        }
+      }
+  
+      .MuiPickersCalendar-transitionContainer {
+        .MuiPickersCalendar-week {
+          .MuiPickersDay {
+            &-day {
+              width: 45px;
+              height: 45px;
+              .MuiIconButton-label {
+                .MuiTypography-body2 {
+                  font-family: "Montserrat Regular";
+                  font-size: 18px;
+                  line-height: 22px;
+                }
+              }
+              &Disabled {
+                .MuiIconButton-label {
+                  .MuiTypography-body2 {
+                    font-size: 18px;
+                    line-height: 22px;
+                  }
+                }
+              }
+              &Selected {
+                .MuiIconButton-label {
+                  .MuiTypography-body2 {
+                    font-size: 18px;
+                    line-height: 22px;
+                  }
+                }
+              }
+            }
+            &-hidden {
+              .MuiIconButton-label {
+                .MuiTypography-body2 {
+                  font-size: 16px;
+                  line-height: 19px;
+                }
+              }
+            }
+          }
+        }
+      }
+      .MuiPickersYearSelection-container {
+        height: 360px;
+        .MuiPickersYear {
+          &-root {
+            font-size: 16px;
+            line-height: 19px;
+          }
+          &-yearSelected {
+            font-size: 20px;
+            line-height: 24px;
+          }
+        }
+      }
+    }
+  }
+}

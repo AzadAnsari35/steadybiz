@@ -10,6 +10,8 @@ import OfficeCredit from './office/manageOffice/officeCredit';
 import CreditLimitBreakup from './office/manageOffice/creditLimitBreakup';
 import Search from './search';
 import Availability from './availability';
+import PassengerInformation from './passengerInformation';
+import Transaction from './transaction';
 
 export {
   Home,
@@ -24,4 +26,6 @@ export {
   OfficeProfile,
   OfficeCredit,
   CreditLimitBreakup,
+  PassengerInformation,
+  Transaction,
 };

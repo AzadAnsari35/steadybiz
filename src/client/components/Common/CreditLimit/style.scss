@@ -1,0 +1,17 @@
+$root: ".CreditLimit";
+
+#{$root} {
+  padding-left: 20px;
+  &-title {
+    margin-bottom: 18px;
+    margin-left: -20px;
+  }
+  &-table {
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+  &-net {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

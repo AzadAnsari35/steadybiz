@@ -9,6 +9,7 @@ import endpoint from 'Config/endpoint';
 import { utils } from 'Helpers/index';
 import { useHistory } from 'react-router-dom';
 import endpointWithoutApi from 'Config/endpointWithoutApi';
+import routes from 'Constants/routes';
 
 import './style.scss';
 
@@ -46,7 +47,8 @@ const SignInForm = (props) => {
 
         //
 
-        history.push('/Office/Registration');
+        // history.push('/Office/Registration');
+        history.push(routes.flight.search);
       }
     }
 

@@ -1,0 +1,11 @@
+@import "./../../../styles/variables";
+
+$root: ".PassportDetails";
+
+#{$root} {
+  margin-bottom: 24px;
+  &-title {
+    margin-bottom: 20px;
+    color: $biscay;
+  }
+}

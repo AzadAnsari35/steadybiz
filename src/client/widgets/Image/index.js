@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { displayImage } from "Helpers/utils";
 
 const Image = props => {
-  const { altText = "", imgName, imgPath, fallbackImgName, ...rest } = props;
+  const { altText = "", imgName, imgPath = "images", fallbackImgName, ...rest } = props;
   const [failed, setFailed] = useState(false);
 
   const fallback = () => {

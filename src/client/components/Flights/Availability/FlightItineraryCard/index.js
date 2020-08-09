@@ -1,13 +1,17 @@
 import React, { useState, Fragment, lazy, Suspense } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import moment from "moment";
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import FlightIcon from '@material-ui/icons/Flight';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ShareIcon from '@material-ui/icons/Share';
 
+import { commonActionWithoutApi } from "Actions";
+import endpointWithoutApi from 'Config/endpointWithoutApi';
 import colors from "Constants/colors";
-import useToggle from "Hooks/useToggle";
+import routes from "Constants/routes";
+import { applyCommaToPrice, extractTime, getDataFromRedux } from "Helpers/global";
 import {
   checkIsFareRefundable,
   getTotalItineraryFareAndCurrency,
@@ -18,7 +22,8 @@ import {
   getTotalFlightDuration,
   getAirlineName,
 } from "Helpers/flight.helpers";
-import { applyCommaToPrice, extractTime, getDataFromRedux } from "Helpers/global";
+import { showError } from "Helpers/utils";
+import useToggle from "Hooks/useToggle";
 
 import { ArrowIcon, Button, Dot, Image, Line, Tag, Text } from "Widgets";
 
@@ -44,11 +49,13 @@ const flightDetailsTabs = [
 ];
 
 const FlightItineraryCard = props => {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const { itinerary } = props;
   const [activeFlightTab, setActiveFlightTab] = useState("flightDetails");
   const [showTabSection, setShowTabSection] = useToggle(false);
-
   const masterAirlinesResponse = useSelector(state => state.masterAirlines);
+  const [error, setError] = useState(null);
   
   const isFareRefundable = checkIsFareRefundable(itinerary);
   const { currency, totalAmount } = getTotalItineraryFareAndCurrency(itinerary);
@@ -75,8 +82,23 @@ const FlightItineraryCard = props => {
 
   const airlines = getDataFromRedux(masterAirlinesResponse).data;
 
+  const handleSelectFlight = () => {
+    try {
+      dispatch(
+        commonActionWithoutApi(
+          endpointWithoutApi.flights.flightSelect,
+          { outboundItinerary: itinerary }
+        )
+      );
+      history.push(routes.common.passengerInformation);
+    } catch (err) {
+      showError(err, setError);
+    }
+  }
+
   return (
     <div className="FlightItineraryCard">
+      <p>{error}</p>
       <div className="FlightItineraryCard-content">
         <div className="FlightItineraryCard-top d-flex justify-content-between">
           <div>
@@ -246,7 +268,7 @@ const FlightItineraryCard = props => {
                 <RefreshIcon />
                 <Text className="font-primary-bold-20" text={`${currency} ${applyCommaToPrice(totalAmount)}`} />
               </div>
-              <Button text="select flight" />
+              <Button text="select flight" onClick={handleSelectFlight} />
             </div>
           </div>
         </div>

@@ -1,0 +1,10 @@
+@import "./../../../styles/variables";
+
+$root: ".FrequentFlyerDetails";
+
+#{$root} {
+  &-title {
+    margin-bottom: 20px;
+    color: $biscay;
+  }
+}

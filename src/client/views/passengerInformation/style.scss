@@ -1,0 +1,56 @@
+@import "./../../styles/global.scss";
+
+$root: '.passenger-information';
+
+#{$root} {
+  padding-top: 32px;
+  .alert-section {
+    margin-bottom: 20px;
+  }
+  .passenger-details {
+    .left-section {
+      padding-right: 8px;
+    }
+    &__content {
+      padding-bottom: 36px;
+    }
+    &__panelSubmit {
+      margin-right: 72px;
+    }
+    .right-section {
+      padding-left: 8px;
+      .FareDetailsCard {
+        color: $codGray;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  #{$root} {
+    .passenger-details {
+      flex-direction: column;
+      .left-section {
+        padding-right: 0;
+        .card-title {
+          margin-bottom: 30px;
+        }
+        .fareDetails-mob {
+          .card-title {
+            margin-bottom: 0;
+          }
+        }
+      }
+      &__content {
+        padding: 0 8px 20px;
+      }
+      &__panelSubmit {
+        margin-right: 10px;
+      }
+      .right-section {
+        padding-left: 0;
+      }
+    }
+  }
+}

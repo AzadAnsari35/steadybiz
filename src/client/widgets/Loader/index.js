@@ -5,27 +5,34 @@ import { Grid } from "@material-ui/core";
 import endpointWithoutApi from "Config/endpointWithoutApi";
 
 import { PrimaryLoader, LinearLoader } from "Widgets";
+import { getDataFromRedux } from "Helpers/global";
 
 
 const Loader = () => {
   const loaderStatus = useSelector(state => state[endpointWithoutApi.loader.loaderStatus.reducerName]);
 
+  const loaderData = getDataFromRedux(loaderStatus);
+
   return (
     <>
-      {loaderStatus.items && loaderStatus.items.data.loaderType === "primary" ?
+      {loaderData.isLoaderVisible &&
         <>
-          <div className={`${loaderStatus.items.data.isLoaderVisible ? "loader-bg": ""}`}></div>
-          {loaderStatus.items.data.isLoaderVisible && <PrimaryLoader />}
+          {loaderData.loaderType === "primary" ?
+            <>
+              <div className="loader-bg"></div>
+              <PrimaryLoader />
+            </>
+            : loaderData.loaderType === "linearProgress" &&
+            <Grid item xs={12}>
+              <LinearLoader
+                label={loaderData.loaderText}
+                style={{
+                  top: !!loaderData.top && loaderData.top
+                }}
+              />
+            </Grid>
+          }
         </>
-        : loaderStatus.items && loaderStatus.items.data.loaderType === "linearProgress" &&
-          <Grid item xs={12}>
-            <LinearLoader
-              label={loaderStatus.items.data.loaderText}
-              style={{
-                top: !!loaderStatus.items.data.top && loaderStatus.items.data.top
-              }}
-            />
-          </Grid>
       }
     </>
   );

@@ -19,12 +19,12 @@ import { Text } from "Widgets";
 import "./style.scss";
 
 const FlightSummary = (props) => {
-  const { isSearch = false, outboundItinerary, requestBody } = props;
+  const { outboundItinerary, requestBody } = props;
 
   let departureAirportCode, arrivalAirportCode, departureDate, arrivalDate, cabinClass,
   passengerCountAndType = [], departureCityName, arrivalCityName;
 
-  if (isSearch && requestBody.flightSearchRQ) {
+  if (requestBody.flightSearchRQ) {
     const { flightSearchRQ } = requestBody;
     departureAirportCode = flightSearchRQ.originDestination[0].originAirportCode;
     departureCityName = flightSearchRQ.originDestination[0].originAirport.subTitle.split(",")[0],
