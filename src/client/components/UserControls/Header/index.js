@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MenuIcon from '@material-ui/icons/Menu';
 import FlightIcon from '@material-ui/icons/Flight';
 import CallIcon from '@material-ui/icons/Call';
-import MailIcon from '@material-ui/icons/Mail';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import SimplePopover from 'Widgets/Popover';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import SideDrawer from 'Widgets/SideDrawer';
@@ -70,7 +70,7 @@ const Header = () => {
               style={{ color: colors.white, transform: 'rotate(90deg)' }}
             />
           </div>
-          <div className="font-primary-medium-30">OK Travels</div>
+          <div className="font-primary-medium-22">OK Travels</div>
         </div>
 
         {isAuthenticated ? (
@@ -87,16 +87,16 @@ const Header = () => {
             <KeyboardArrowDownIcon />
           </div>
         ) : (
-          <div className="Header-right ">
-            <div className="d-flex align-items-center pb-24">
-              <CallIcon fontSize="large" />
-              <span className="font-primary-medium-22 ml-28">
+          <div className="Header-right d-flex">
+            <div className="d-flex align-items-center ">
+              <CallIcon style={{ fontSize: 20 }} />
+              <span className="font-primary-medium-16 ml-16">
                 +971 25575800
               </span>
             </div>
-            <div className="d-flex align-items-center ">
-              <MailIcon fontSize="large" />
-              <span className="font-primary-medium-22 ml-28">
+            <div className="d-flex align-items-center pl-40">
+              <MailOutlineIcon style={{ fontSize: 20 }} />
+              <span className="font-primary-medium-16 ml-16">
                 oktravels.mussafah@gmail.com
               </span>
             </div>

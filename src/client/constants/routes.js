@@ -4,6 +4,7 @@ const routes = {
   user: {
     signIn: '/User/SignIn',
     signOut: '/User/SignOut',
+    resetPassword: '/User/Reset-Password',
   },
 
   common: {

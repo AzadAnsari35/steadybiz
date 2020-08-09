@@ -8,12 +8,16 @@ import { commonAction, commonActionWithoutApi } from 'Actions/';
 import endpoint from 'Config/endpoint';
 import { utils } from 'Helpers/index';
 import { useHistory } from 'react-router-dom';
+import endpointWithoutApi from 'Config/endpointWithoutApi';
 
-const SignInForm = () => {
+import './style.scss';
+
+const SignInForm = (props) => {
   const history = useHistory();
   const { register, handleSubmit, watch, errors } = useForm();
   const [error, setError] = useState(null);
-  const [errorMsg, setErrorMsg] = useState('');
+
+  const { setSelectedForm } = props;
 
   const dispatch = useDispatch();
   const apiResponse = useSelector((state) => state.usersSignIn);
@@ -25,13 +29,14 @@ const SignInForm = () => {
     if (apiResponse.items != null) {
       const errMsg = utils.checkError(apiResponse.items);
 
-      dispatch(
-        commonActionWithoutApi(
-          endpoint.flights.flightSearchResult,
-          apiResponse.items
-        )
-      );
-      if (errMsg !== '') setErrorMsg(errMsg);
+      if (errMsg !== '')
+        dispatch(
+          commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
+            toastStatus: false,
+            toastMessage: errMsg,
+            isToastVisible: true,
+          })
+        );
       else {
         const responseJson = apiResponse.items.data;
         utils.setItemToStorage('userToken', responseJson.token);
@@ -57,47 +62,61 @@ const SignInForm = () => {
   }; //
 
   return (
-    <>
-      <div>
-        <div className="d-flex justify-content-center">
-          <p className="font-primary-medium-32 mb-28">Sign In</p>
-          <p>{error}</p>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <TextInput
-            name="emailId"
-            register={register}
-            errors={errors}
-            label="Email ID"
-            validation={{
-              required: 'This input is required.',
-              pattern: {
-                value: regex.email,
-                message: 'Please enter a valid email id',
-              },
-            }}
-            classes={{ root: 'mb-16', input: '' }}
-          />
-          <TextInput
-            type="password"
-            name="password"
-            register={register}
-            errors={errors}
-            label="Password"
-            validation={{
-              required: 'This input is required.',
-            }}
-          />
-          <div className="d-flex justify-content-end">
-            <p className="font-primary-medium-18 my-8">Forgot Password</p>
-          </div>
-          <div className="d-flex justify-content-end">
-            <Button text="Submit" type="submit" />
-          </div>
-        </form>
+    <div className="SignInForm">
+      <div className="d-flex">
+        <p className="font-primary-medium-20 mb-28">Sign In to your account</p>
+        <p>{error}</p>
       </div>
-      {errorMsg && <Toast isSuccess={!errorMsg} message={errorMsg} />}
-    </>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextInput
+          name="emailId"
+          register={register}
+          errors={errors}
+          label="Email ID"
+          validation={{
+            required: 'This input is required.',
+            pattern: {
+              value: regex.email,
+              message: 'Please enter a valid email id',
+            },
+          }}
+          classes={{ root: 'mb-16', input: '' }}
+        />
+        <TextInput
+          type="password"
+          name="password"
+          register={register}
+          errors={errors}
+          label="Password"
+          validation={{
+            required: 'Please enter a password.',
+          }}
+        />
+        <div className="d-flex justify-content-end link-text">
+          <p
+            className="font-primary-medium-14 mt-24 mb-16"
+            onClick={() => setSelectedForm('ForgotPasswordForm')}
+          >
+            Forgot Password?
+          </p>
+        </div>
+        <Button text="Submit" type="submit" className="SignInForm-btn" />
+        <div className="font-primary-medium-14 d-flex justify-content-center mt-12">
+          <div>
+            {' '}
+            Don't have account?
+            <span
+              className="link-text"
+              onClick={() => setSelectedForm('SignUpForm')}
+            >
+              {' '}
+              Email{' '}
+            </span>
+            to Signup
+          </div>
+        </div>
+      </form>
+    </div>
   );
 };
 

@@ -21,6 +21,9 @@ import routes from 'Constants/routes';
 const Routes = () => (
   <Switch>
     <Route exact path="/" component={Home} />
+
+    <Route exact path={routes.user.resetPassword} component={Home} />
+
     <PrivateRoute exact path={routes.flight.search} component={Search} />
     <PrivateRoute
       exact
