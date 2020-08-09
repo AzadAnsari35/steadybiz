@@ -74,7 +74,7 @@ const CreateUserForm = () => {
     const selectedOffice = utils.getItemFromStorage('selectedOffice') || '';
     console.log('selectedOffice', selectedOffice);
 
-    if (Number.isInteger(parseInt(selectedOffice))) {
+    if (Number.isInteger(parseInt(selectedOffice)) && searchResult.data) {
       let selectedItem = searchResult.data[selectedOffice] || {};
       console.log('selectedcreate', selectedItem);
 

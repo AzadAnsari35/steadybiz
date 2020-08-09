@@ -8,9 +8,7 @@ $root: '.Carousel';
     justify-content: flex-end;
     height: 495px;
     position: relative;
-    background: transparent
-      radial-gradient(closest-side at 50% 50%, #0c99da 0%, #1c698f 100%) 0% 0%
-      no-repeat padding-box;
+    background-image: url('../../../../../public/assets/images/home-banner.png');
 
     &-right {
       width: 350px;

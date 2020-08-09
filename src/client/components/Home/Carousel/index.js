@@ -34,7 +34,6 @@ const Carousel = () => {
     <div className="Carousel">
       <Slider {...settings}>
         <div className="Carousel-getStarted"></div>
-        <div className="Carousel-getStarted"></div>
       </Slider>
       <div
         className={`Carousel-form ${

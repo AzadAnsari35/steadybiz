@@ -15,64 +15,73 @@ const Home = () => {
       </div>
 
       <div className="Home-features">
-        <div className="Home-features-title font-primary-semibold-35">
-          Technology approach for best travel content &amp; fares to book and
-          earn...
+        <div className="Home-features-title font-primary-semibold-30">
+          B2B Travel Services &minus; Technology approach for best travel
+          content &amp; fares to book &amp; earn…
         </div>
         <Grid container spacing={8}>
           <Grid item xs={3} className="Home-features-single">
-            <img src={utils.displayImage('feature1.png')} className="py-44" />
+            <div className="d-flex align-items-end py-44 Home-features-single__icon">
+              <img src={utils.displayImage('feature1.svg')} />
+            </div>
             <Text
               showLeftBorder
-              text="CLOSE TO THE METAL"
+              text="TRAVEL SERVICES"
               className="font-primary-medium-20 mb-22"
             />
             <span className="Home-features-single__para  font-primary-medium-18_1">
-              From direct integrations with card networks and banks to checkout
-              flows in the browser, we operate on and optimize at every level of
-              the financial stack.
+              It offers multiple travel services, connected with multiple
+              providers including GDS and Airlines, offering wide range of
+              content at best possible prices including best deals…
             </span>
           </Grid>
 
           <Grid item xs={3} className="Home-features-single">
-            <img src={utils.displayImage('feature2.png')} className="py-44" />
+            <div className="d-flex align-items-end py-44 Home-features-single__icon">
+              <img src={utils.displayImage('feature2.svg')} />
+            </div>
+
             <Text
               showLeftBorder
-              text="FASTEST-IMPROVING PLATFORM"
+              text="SCALING DISTRIBUTION"
               className="font-primary-medium-20 mb-22"
             />
             <span className="Home-features-single__para  font-primary-medium-18_1">
-              We release hundreds of features and improvements each year to help
-              you stay ahead of industry shifts. (On average, we deploy our
-              production API 16x per day.)
+              It offers agencies to create multiple level of sub agencies to
+              increase their reach of distribution and in turn increasing sales
+              and earnings from increased bookings…
             </span>
           </Grid>
 
           <Grid item xs={3} className="Home-features-single">
-            <img src={utils.displayImage('feature3.png')} className="py-44" />
+            <div className="d-flex align-items-end py-44 Home-features-single__icon">
+              <img src={utils.displayImage('feature3.svg')} />
+            </div>
             <Text
               showLeftBorder
-              text="BATTLE-TESTED RELIABILITY"
+              text="AUTOMATED TRAVEL PROCESSES"
               className="font-primary-medium-20 mb-22"
             />
             <span className="Home-features-single__para  font-primary-medium-18_1">
-              Our systems operate with 99.9%+ uptime and are highly scalable and
-              redundant. Stripe is certified to the highest compliance
-              standards.
+              It offers the complete automation of all travel processes
+              including booking, cancellation, rebooking, sub agents, branches,
+              users, security features and many others…
             </span>
           </Grid>
 
           <Grid item xs={3} className="Home-features-single">
-            <img src={utils.displayImage('feature4.png')} className="py-44" />
+            <div className="d-flex align-items-end py-44 Home-features-single__icon">
+              <img src={utils.displayImage('feature4.svg')} />
+            </div>
             <Text
               showLeftBorder
-              text="INTELLIGENT OPTIMIZATIONS"
+              text="MULTIPLE CURRENCIES"
               className="font-primary-medium-20 mb-22"
             />
             <span className="Home-features-single__para  font-primary-medium-18_1">
-              Our machine learning models train on billions of data points and
-              help increase revenue across conversion, fraud, revenue recovery,
-              and more.
+              It offers transactions and deposits to be done in multiple
+              currencies with multiple forms of payments including credit limit,
+              credit card, cash, wallets, and others…
             </span>
           </Grid>
         </Grid>
