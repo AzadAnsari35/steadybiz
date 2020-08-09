@@ -87,7 +87,7 @@ const UserProfileForm = (props) => {
     let officeId = '';
     let officeName = '';
 
-    if (Number.isInteger(parseInt(selectedOffice))) {
+    if (Number.isInteger(parseInt(selectedOffice)) && searchOffice.data) {
       let selectedItem = searchOffice.data[selectedOffice] || {};
       console.log('selected', selectedItem);
 

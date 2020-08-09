@@ -28,7 +28,9 @@ const PrimaryTable = (props) => {
   } = props;
 
   const [lowOffset, setLowOffset] = React.useState(1);
-  const [highOffset, setHighOffset] = React.useState(size);
+  const [highOffset, setHighOffset] = React.useState(
+    count > size ? size : count
+  );
 
   const statusColor = (status) => {
     return `PrimaryTable-status ${status} `;
@@ -42,6 +44,7 @@ const PrimaryTable = (props) => {
   const handleOffset = (newPage) => {
     setLowOffset(size * (newPage - 1) + 1);
     let updatedHightOffset = newPage * size;
+    console.log('newPage', newPage);
     setHighOffset(count > updatedHightOffset ? updatedHightOffset : count);
   };
 
