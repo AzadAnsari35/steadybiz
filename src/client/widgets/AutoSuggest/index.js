@@ -6,73 +6,11 @@ import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import FlightOutlinedIcon from '@material-ui/icons/FlightOutlined';
 
 import colors from "Constants/colors";
+import airportData from "Constants/airportData";
 
 import { Text } from "Widgets";
 
 import "./style.scss";
-
-const airportsData = [
-  {
-    code: "LON",
-    subTitle: "London, United Kingdom",
-    title: "London (All Airports)",
-    level: 0,
-  },
-  {
-    code: "LON",
-    subTitle: "London, United Kingdom",
-    title: "London (London City Airport)",
-    level: 1,
-  },
-  {
-    code: "ZLS",
-    subTitle: "London, United Kingdom",
-    title: "London (Liverpool St Rail Station)",
-    level: 1,
-  },
-  {
-    code: "LGW",
-    subTitle: "London, United Kingdom",
-    title: "London (Getwick)",
-    level: 1,
-  },
-  {
-    code: "DEL",
-    subTitle: "New Delhi, India",
-    title: "New Delhi (DEL)",
-    level: 0,
-  },
-  {
-    code: "DEL",
-    subTitle: "New Delhi, India",
-    title: "Indira Gandhi International",
-    level: 1,
-  },
-  {
-    code: "DXB",
-    subTitle: "Dubai, UAE",
-    title: "Dubai Airport",
-    level: 1,
-  },
-  {
-    code: "JFK",
-    subTitle: "New York, USA",
-    title: "JFK Airport",
-    level: 1,
-  },
-  {
-    code: "BAH",
-    subTitle: "Bahrain",
-    title: "Bahrain International Airport",
-    level: 0,
-  },
-  {
-    code: "AUH",
-    subTitle: "Abu Dhabi, UAE",
-    title: "Abu Dhabi Airport",
-    level: 0,
-  },
-];
 
 const AutoSuggest = props => {
   const { icon, id, label, initialValue, onSelectSuggestion } = props;
@@ -100,7 +38,7 @@ const AutoSuggest = props => {
   };
 
   const handleChange = (event, newInputValue) => {
-    setInputValue(newInputValue);
+    setInputValue(newInputValue.toUpperCase());
 
     if (newInputValue.length >= 3) {
       getData();
@@ -112,7 +50,7 @@ const AutoSuggest = props => {
   const getData = async () => {
     // const response = await fetch("https://country.register.gov.uk/records.json?page-size=5000");
     // const countries = await response.json();
-    const countries = airportsData;
+    const countries = airportData;
     // setOptions(Object.keys(countries).map((key) => countries[key].item[0]));
     setOptions(countries);
   }
@@ -123,7 +61,7 @@ const AutoSuggest = props => {
         {icon}
         <Autocomplete
           inputValue={inputValue}
-          loading={loading}
+          // loading={loading}
           open={open}
           options={options}
           value={value}
@@ -146,7 +84,7 @@ const AutoSuggest = props => {
                 ...params.InputProps,
                 endAdornment: (
                   <Fragment>
-                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                    {/* {loading ? <CircularProgress color="inherit" size={20} /> : null} */}
                     {params.InputProps.endAdornment}
                   </Fragment>
                 ),
