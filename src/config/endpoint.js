@@ -122,7 +122,7 @@ export default {
   },
   transaction: {
     airprice: {
-      url: config.api.url + '/api/v1/flights/airprice',
+      url: config.api.url + '/api/v1/flights/airPrice',
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.POST,
       actionType: actionTypeConstant.transaction,
