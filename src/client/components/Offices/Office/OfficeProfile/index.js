@@ -91,8 +91,7 @@ const OfficeProfileForm = (props) => {
   const countriesDialCodeList = useDropDown(
     endpoint.master.countries,
     dropDownParam.countriesDialCode,
-    'masterCountries',
-    countriesDialCodeFormatter
+    'masterCountries'
   );
 
   const citiesList = useDropDown(
@@ -102,33 +101,52 @@ const OfficeProfileForm = (props) => {
   );
 
   const setDefaultValue = () => {
-    const {
-      address1,
-      address2,
-      cityCode,
-      officeEmail,
-      noOfUserRequested,
-      paymentOptions,
-      officeName,
-      officeId,
-      mobile,
-      officeType,
-      zipCode,
-    } = selectedItem;
-    console.log('selectedItem', selectedItem);
-    reset({
-      address1,
-      address2,
-      cityCode,
-      emailId: officeEmail,
-      noOfUserRequested,
-      paymentOptions,
-      officeId,
-      officeName,
-      phone: mobile,
-      officeType,
-      zipCode,
-    });
+    if (
+      countriesList.dropDownItems !== null &&
+      countriesDialCodeList.dropDownItems !== null &&
+      citiesList.dropDownItems !== null &&
+      !isCreateOffice
+    ) {
+      const {
+        address1,
+        address2,
+        cityCode,
+        officeEmail,
+        noOfUserRequested,
+        paymentOptions,
+        officeName,
+        officeId,
+        phone,
+        officeType,
+        zipCode,
+        countryCode,
+        status,
+      } = selectedItem;
+      console.log('selectedItem', selectedItem);
+      reset({
+        address1,
+        address2,
+        cityCode: citiesList.dropDownItems.findItem(cityCode),
+        emailId: officeEmail,
+        paymentOptions,
+        officeId,
+        officeName,
+        phone: phone.split('-')[1],
+        phoneDialCode: countriesDialCodeList.dropDownItems.findItem(
+          phone.split('-')[0]
+        ),
+        officeType: commonConstant.officeType.findItem(officeType, 'label'),
+        zipCode,
+        countryCode: countriesList.dropDownItems.findItem(countryCode),
+        noOfUserRequested: commonConstant.numberOfUsers.findItem(
+          noOfUserRequested
+        ),
+        status: objectStatusesList.dropDownItems.findItem(
+          status.toUpperCase(),
+          'label'
+        ),
+      });
+    }
   };
 
   const setCreateOfficeDefaultValue = () => {
@@ -139,6 +157,13 @@ const OfficeProfileForm = (props) => {
       });
     }
   };
+
+  // const setDropDownDefaultValue = () => {
+  //   if (countriesList.dropDownItems !== null) {
+  //     const { countryCode } = selectedItem;
+  //     reset({ countryCode: countriesList.dropDownItems.findItem(countryCode) });
+  //   }
+  // };
 
   useEffect(() => {
     if (createRes !== null) {
@@ -167,11 +192,17 @@ const OfficeProfileForm = (props) => {
     }
   }, [createRes]);
 
-  useEffect(() => setDefaultValue(), []);
+  useEffect(() => setDefaultValue(), [
+    countriesList.dropDownItems,
+    countriesDialCodeList.dropDownItems,
+    citiesList.dropDownItems,
+  ]);
 
   useEffect(() => setCreateOfficeDefaultValue(), [
     objectStatusesList.dropDownItems,
   ]);
+
+  // useEffect(() => setDropDownDefaultValue(), [countriesList.dropDownItems]);
 
   const onSubmit = (data, e) => {
     console.log('data', data);

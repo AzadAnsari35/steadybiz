@@ -16,7 +16,11 @@ import colors from 'Constants/colors';
 import routes from 'Constants/routes';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 import useDropDown from 'Hooks/useDropDown';
-import { dropDownParam, titles } from 'Constants/commonConstant';
+import {
+  dropDownParam,
+  titles,
+  securityGroups,
+} from 'Constants/commonConstant';
 import { countriesDialCodeFormatter } from 'Helpers/global';
 import { useDispatch, useSelector } from 'react-redux';
 import endpointWithoutApi from 'Config/endpointWithoutApi';
@@ -61,8 +65,7 @@ const UserProfileForm = (props) => {
   const countriesDialCodeList = useDropDown(
     endpoint.master.countries,
     dropDownParam.countriesDialCode,
-    'masterCountries',
-    countriesDialCodeFormatter
+    'masterCountries'
   );
 
   let rowNumber = utils.getItemFromStorage('selectedUser');
@@ -103,28 +106,38 @@ const UserProfileForm = (props) => {
       officeName = officeDto.officeName;
     }
 
-    const {
-      firstName,
-      lastName,
-      title,
-      mobile,
-      emailId,
-      objectStatusDesc,
-      securityGroup,
-    } = selectedItem;
-    console.log('selectedItem', selectedItem);
-    reset({
-      firstName,
-      lastName,
-      title,
-      mobileDialCode: mobile.split('-')[0],
-      mobile: mobile.split('-')[1],
-      emailId,
-      objectStatusDesc,
-      securityGroup,
-      officeId,
-      officeName,
-    });
+    if (
+      countriesDialCodeList.dropDownItems !== null &&
+      objectStatusesList.dropDownItems != null
+    ) {
+      const {
+        firstName,
+        lastName,
+        title,
+        mobile,
+        emailId,
+        objectStatusDesc,
+        securityGroup,
+      } = selectedItem;
+      console.log('selectedItem', selectedItem);
+      reset({
+        firstName,
+        lastName,
+        title: titles.findItem(title),
+        mobile: mobile.split('-')[1],
+        mobileDialCode: countriesDialCodeList.dropDownItems.findItem(
+          mobile.split('-')[0]
+        ),
+        emailId,
+        status: objectStatusesList.dropDownItems.findItem(
+          objectStatusDesc.toUpperCase(),
+          'label'
+        ),
+        securityGroup: securityGroups.findItem(securityGroup),
+        officeId,
+        officeName,
+      });
+    }
   };
 
   useEffect(() => {
@@ -151,7 +164,10 @@ const UserProfileForm = (props) => {
     }
   }, [updateRes]);
 
-  useEffect(() => setDefaultValue(), []);
+  useEffect(() => setDefaultValue(), [
+    countriesDialCodeList.dropDownItems,
+    objectStatusesList.dropDownItems,
+  ]);
 
   const onSubmit = (data, e) => {
     console.log('data', data);
@@ -304,10 +320,7 @@ const UserProfileForm = (props) => {
                 <MultiSelect
                   label="Security Group:"
                   name="securityGroup"
-                  options={[
-                    { label: 'Admin', value: 'Admin' },
-                    { label: 'Account', value: 'Account' },
-                  ]}
+                  options={securityGroups}
                   placeholder="Select Security Group"
                   showBorder={true}
                   changeStyle={true}

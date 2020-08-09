@@ -9,6 +9,9 @@ $root: '.Home';
       color: $black;
     }
     &-single {
+      &__icon {
+        height: 48.5px;
+      }
       &__para {
         color: $black;
       }

@@ -316,6 +316,12 @@ p {
   line-height: 25px;
 }
 
+.font-primary-semibold-30 {
+  @extend .font-primary-semibold;
+  font-size: 30px;
+  line-height: 55px;
+}
+
 .font-primary-semibold-35 {
   @extend .font-primary-semibold;
   font-size: 35px;
