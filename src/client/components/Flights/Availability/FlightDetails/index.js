@@ -333,7 +333,7 @@ const FlightDetails = props => {
     }
   };
       
-  const returnItinerary= type => {
+  const returnItinerary = type => {
     const data = itinerary.flightSegments.filter(element => element.flightSegmentDirection === type);
     return data;
   };

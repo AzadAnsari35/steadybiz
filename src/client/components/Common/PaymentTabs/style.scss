@@ -1,0 +1,70 @@
+@import "./../../../styles/variables";
+
+$root: ".PaymentTabs";
+
+#{$root} {
+  margin-left: -70px;
+  margin-right: 32px;
+  &-tab {
+    height: 60px;
+    padding: 0 36px;
+    background-color: $mercury1;
+    position: relative;
+    &.active {
+      background-color: $biscay;
+      color: $white;
+      &::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-top: 14px solid transparent;
+        border-bottom: 14px solid transparent;
+        border-right: 17px solid $white;
+        clear: both;
+      }
+    }
+    &__icon {
+      width: 20px;
+      margin-right: 24px;
+    }
+    &__text {
+      font-family: "Montserrat SemiBold";
+      font-size: 20px;
+      line-height: 25px;
+    }
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  #{$root} {
+    margin-left: -8px;
+    margin-right: -8px;
+    display: flex;
+    &-tab {
+      height: 40px;
+      padding: 0 8px;
+      width: 50%;
+      &.active {
+        &::after {
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: 0;
+          border-top: 0;
+          border-right: 10px solid transparent;
+          border-bottom: 10px solid #FFF;
+          border-left: 10px solid transparent;
+        }
+      }
+      &__icon {
+        width: 12px;
+        margin-right: 10px;
+      }
+      &__text {
+        font-size: 14px;
+        line-height: 24px;
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+$root: ".ContactDetailsStatic";
+
+#{$root} {
+  &-category {
+    margin-bottom: 16px;
+    &__title, &__content {
+      margin-bottom: 8px;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

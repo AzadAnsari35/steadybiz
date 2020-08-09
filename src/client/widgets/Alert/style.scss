@@ -1,0 +1,99 @@
+@import "./../../styles/global.scss";
+
+$root: '.alert';
+
+#{$root} {
+  padding: 24px 30px 24px 34px;
+  border-radius: 6px;
+  display: flex;
+  &.danger {
+    background-color: $pippin;
+  }
+  &.success {
+    background-color: $tara;
+  }
+  &-border {
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 100%;
+    }
+    &.danger {
+      border-radius: 6px;
+      background-color: $red;
+    }
+    &.success {
+      border-radius: 6px;
+      background-color: $sushi;
+    }
+  }
+  &-content {
+    width: 100%;
+    &__text {
+      max-width: 85%;
+      margin-left: 16px;
+      margin-bottom: 10px;
+      .icon {
+        margin-top: 16px;
+        margin-right: 10px;
+        min-width: 29px;
+        height: 29px;
+        border-radius: 50%;
+        &.danger {
+          border: 2px solid $red;
+        }
+        &.success {
+          border: 2px solid $sushi;
+        }
+      }
+      .alert-text {
+        &.danger {
+          color: $red;
+        }
+        &.success {
+          color: $sushi;
+        }
+        &__title {
+          font-size: 24px;
+          line-height: 60px;
+          text-transform: uppercase;
+          font-family: "Montserrat SemiBold";
+        }
+        &__message {
+          font-size: 22px;
+          line-height: 30px;
+          font-family: "Montserrat Medium";
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  #{$root} {
+    &-border {
+      &::before {
+        width: 8px;
+      }
+    }
+    &-content {
+      &__text {
+        max-width: 100%;
+        .icon {
+          margin-top: 8px;
+        }
+        .alert-text {
+          &__title {
+            font-size: 20px;
+            line-height: 48px;
+          }
+          &__message {
+            font-size: 18px;
+            line-height: 24px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+export const ERROR_MESSAGE = {
+	TITLE_FIRST_NAME_REQUIRED: "Please enter title and first name",
+	TITLE_REQUIRED: "Please select title",
+	FIRST_NAME_REQUIRED: "Please enter first name",
+	VALID_FIRST_NAME_REQUIRED: "Please enter valid first name",
+	LAST_NAME_REQUIRED: "Please enter last name",
+	VALID_LAST_NAME_REQUIRED: "Please enter valid last name",
+	DOB_REQUIRED: "Please select DOB",
+	PASSPORT_NUMBER_REQUIRED: "Please enter passport number",
+	ISSUING_COUNTRY_REQUIRED: "Please select country",
+	PASSPORT_EXPIRY_REQUIRED: "Please select passport expiry",
+	NATIONALITY_REQUIRED: "Please select nationality",
+	AIRLINE_REQUIRED: "Please select airline",
+	FREQUENT_FLYER_NUMBER_REQUIRED: "Please enter flyer number",
+};

@@ -6,6 +6,10 @@ export default {
       actionType: actionTypeConstant.flights.flightSearchInput,
       reducerName: 'flightSearchInput',
     },
+    flightSelect: {
+      actionType: actionTypeConstant.flights.flightSelect,
+      reducerName: 'flightSelect',
+    },
   },
   loader: {
     loaderStatus: {
@@ -19,4 +23,10 @@ export default {
       reducerName: 'toastStatus',
     },
   },
+  common: {
+    passengerInformationData: {
+      actionType: actionTypeConstant.common.passengerInformationData,
+      reducerName: 'passengerInformationData',
+    },
+  }
 };

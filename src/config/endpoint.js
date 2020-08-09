@@ -11,8 +11,10 @@ export default {
       isAuth: true,
     },
     flightSelect: {
-      url: config.api.url + '/flights/flightSelect',
+      url: config.api.url + '/api/v1/flights/flightSelect',
       isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.flights.flightSelect,
     },
     flightSearch: {
       url: config.api.url + '/api/v1/flights/flightSearch',
@@ -35,6 +37,7 @@ export default {
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.countries,
+      reducerName: 'masterCountries',
     },
     cities: {
       url: config.api.url + '/api/v1/master/cities',
@@ -114,6 +117,23 @@ export default {
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.POST,
       actionType: actionTypeConstant.creditLimit.getInstantCreditlimit,
+      reducerName: 'getInstantCreditLimit',
     },
   },
+  transaction: {
+    airprice: {
+      url: config.api.url + '/api/v1/flights/airprice',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.transaction,
+      reducerName: 'transaction',
+    },
+    airPriceAndTicketing: {
+      url: config.api.url + '/api/v1/flights/airPriceAndTicketing',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.transaction,
+      reducerName: 'transaction',
+    },
+  }
 };

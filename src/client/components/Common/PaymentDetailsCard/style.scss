@@ -1,0 +1,26 @@
+$root: ".PaymentDetailsCard";
+
+#{$root} {
+	.tag {
+		top: 12px;
+		right: 0;
+	}
+	.container {
+		.price-category {
+			&-container {
+				margin-bottom: 14px;
+			}
+			&__title {
+				margin-bottom: 14px;
+			}
+			&__description {
+				&-price {
+					margin-bottom: 10px;
+				}
+			}
+		}
+		.total-section {
+			margin-bottom: 14px;
+		}
+	}
+}

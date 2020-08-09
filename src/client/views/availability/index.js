@@ -79,7 +79,7 @@ const Availability = () => {
         {!showSearch ? 
           <div className="d-flex justify-content-between align-items-center">
             {!!flightSearchInputData &&
-              <FlightSummary isSearch requestBody={flightSearchInputData} />
+              <FlightSummary requestBody={flightSearchInputData} />
             }
             <Button className="ml-auto" secondary text="Modify Search" onClick={setShowSearch} />
           </div> :

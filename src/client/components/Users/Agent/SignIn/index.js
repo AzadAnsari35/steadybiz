@@ -8,6 +8,7 @@ import { commonAction, commonActionWithoutApi } from 'Actions/';
 import endpoint from 'Config/endpoint';
 import { utils } from 'Helpers/index';
 import { useHistory } from 'react-router-dom';
+import routes from 'Constants/routes';
 
 const SignInForm = () => {
   const history = useHistory();
@@ -41,7 +42,8 @@ const SignInForm = () => {
 
         //
 
-        history.push('/Office/Registration');
+        // history.push('/Office/Registration');
+        history.push(routes.flight.search);
       }
     }
 

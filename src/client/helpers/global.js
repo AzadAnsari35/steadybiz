@@ -126,3 +126,95 @@ export const getRange = (value, min, max) => {
   }
   return [min, max];
 };
+
+export const convertMinutesToTime = (minutes) => {
+	return moment.utc().startOf("day").add(minutes, "minutes").format("hh:mm:ss");
+};
+
+export const isEmptyObj = (obj) => {
+  return obj && obj instanceof Object && !Object.keys(obj).length;
+};
+
+const formatDate = (dateTime) => {
+	return moment(dateTime).format("YYYY-MM-DD");
+};
+
+const formatTime = (time) => {
+	return moment(time, "HH:mm:ss").format("HH:mm:ss");
+};
+
+export const formatDateFromDateTime = (date, time) => {
+	const defaultTime = "00:00:00";
+	const dateTime = new Date(`${date} ${formatTime(!!time ? time : defaultTime)}`);
+	return moment(dateTime).format("YYYY-MM-DD HH:mm:ss");
+};
+
+export const subtractTimeFromDateTime = (dateTime, timeToSubtract) => {
+	const time = moment.duration(timeToSubtract);
+	let date = moment(dateTime);
+	date.subtract(time);
+	return [formatDate(date), formatTime(date)];
+};
+
+export const roundDownHourTime = (date, time) => {
+	const formattedTime = moment(formatDateFromDateTime(date, time));
+	return formatTime(formattedTime.startOf("hour"));
+};
+
+export const extractHourFromTime = (time) => {
+	return Number(time.split(":")[0]);
+};
+
+// Check if all the properties in object has undefined, null or empty value
+export const checkAllEmptyProperties = (obj) => {
+	for (let key in obj) {
+		if (obj[key] !== null && obj[key] != "") return false;
+	}
+	return true;
+};
+
+export const getCountryNamesList = (countries) => {
+	const countryNamesList = [];
+	countries.forEach((country) => {
+		!!country.countryCode &&
+			!!country.countryname &&
+			countryNamesList.push({
+				label: country.countryname,
+				value: country.countryCode,
+			});
+	});
+	return countryNamesList;
+};
+
+export const getCountryPhoneCodeList = (countries) => {
+	const countryPhoneCodesList = [];
+	countries.forEach((country) => {
+		!!(country.countryIsdCode.trim()) &&
+			countryPhoneCodesList.push({
+				label: `+${country.countryIsdCode}`,
+				value: country.countryIsdCode,
+			});
+	});
+	return countryPhoneCodesList;
+};
+
+export const getModifiedAirlinesList = (airlines) => {
+	const modifiedAirlines = [];
+	airlines.forEach((airline, index) => {
+		!!airline.airlineCode &&
+			modifiedAirlines.push({
+				label: airline.airlineName,
+				value: airline.airlineCode,
+			});
+	});
+	return modifiedAirlines;
+};
+
+export const getUniqueArrayOfObjects = (data, key) => {
+	return data.filter((value, index, self) => self.map(x => x[key]).indexOf(value[key]) == index);
+};
+
+export const sortList = (data, key) => {
+	const sortedData = data.sort((a, b) => a[key] - b[key]);
+	return data;
+};
