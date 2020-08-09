@@ -41,6 +41,7 @@ const routes = {
     updateOrder: '/Transaction/Update-Order',
     issueTicket: '/Transaction/Issue-Ticket',
     viewBooking: '/Transaction/View-Booking',
+    viewPNR: '/Transaction/View-PNR',
   },
 };
 

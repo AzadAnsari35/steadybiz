@@ -1,0 +1,44 @@
+@import "./../../styles/global.scss";
+
+$root: ".FormPanel";
+
+#{$root} {
+  width: 100%;
+  padding-bottom: 22px;
+  &.active {
+    background-color: $mystic;
+    padding-left: 70px;
+    padding-right: 70px;
+    margin-left: -70px;
+    margin-right: -70px;
+    margin-bottom: 24px;
+  }
+  &-header {
+    padding: 10px 12px 10px 0;
+    margin-bottom: 16px;
+    &.closed {
+      border-radius: 4px;
+      padding-left: 16px;
+    }
+  }
+  &-body {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  #{$root} {
+    &.active {
+      padding-left: 8px;
+      padding-right: 8px;
+      margin-left: -8px;
+      margin-right: -8px;
+      margin-bottom: 16px;
+    }
+    &-header {
+      &.closed {
+        padding-left: 12px;
+      }
+    }
+  }
+}

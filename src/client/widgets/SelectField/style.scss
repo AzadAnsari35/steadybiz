@@ -1,0 +1,63 @@
+@import "./../../styles/variables";
+
+$root: ".SelectField";
+
+#{$root} {
+	&-label {
+		margin-bottom: 8px;
+	}
+	.MuiFormControl-root {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0 20px;
+		width: 100%;
+		height: 44px;
+		border-radius: 4px;
+		border: 1px solid $black5;
+		background-color: $white;
+		.MuiInputLabel-animated {
+			transition: none;
+		}
+		.MuiFormLabel-root.Mui-focused {
+			color: rgba(0, 0, 0, 0.54);
+		}
+		.MuiInputLabel-formControl {
+			transform: none;
+			font-size: 16px;
+			line-height: 25px;
+			font-family: "Montserrat SemiBold";
+			top: 9.5px;
+			left: 20px;
+		}
+		.MuiInput-root {
+			height: 100%;
+		}
+		label + .MuiInput-formControl {
+			margin-top: 0;
+		}
+		.MuiInput-underline,
+		.MuiInput-underline:hover:not(.Mui-disabled) {
+			&::before,
+			&::after {
+				display: none;
+			}
+		}
+		.MuiSelect-select {
+			&.MuiSelect-select {
+				padding: 0;
+				font-size: 16px;
+				line-height: 25px;
+				font-family: "Montserrat SemiBold";
+			}
+			&:focus {
+				background-color: transparent;
+			}
+		}
+	}
+
+	&.has-error {
+		.MuiFormControl-root {
+			border: 1px solid $red;
+		}
+	}
+}

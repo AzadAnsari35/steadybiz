@@ -1,0 +1,12 @@
+@import "./../../../styles/variables";
+
+$root: ".TicketTimeLimitDetails";
+
+#{$root} {
+  &-title {
+    color: $biscay;
+  }
+  &-title, &-form {
+    margin-bottom: 20px;
+  }
+}

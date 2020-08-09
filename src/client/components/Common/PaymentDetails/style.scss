@@ -1,0 +1,13 @@
+@import "./../../../styles/variables";
+
+$root: ".PaymentDetails";
+
+#{$root} {
+	&-title {
+		color: $biscay;
+		margin-bottom: 20px;
+	}
+	&-content {
+		margin-bottom: 20px;
+	}
+}
