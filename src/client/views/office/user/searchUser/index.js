@@ -122,15 +122,17 @@ const SearchUser = () => {
     'masterObjectStatuses'
   );
 
-  const searchUser = useSelector((state) => state.searchUser);
+  const searchUser = useSelector((state) => state.searchUser?.items);
+  console.log('searchUser', searchUser);
   const searchResult =
     useSelector((state) => state.searchOffice?.items?.data) || [];
+  console.log('searchResult', searchResult);
 
   const getOfficeDetail = () => {
     const selectedOffice = utils.getItemFromStorage('selectedOffice') || '';
     // console.log('selectedOffice', selectedOffice);
 
-    if (selectedOffice) {
+    if (Number.isInteger(parseInt(selectedOffice)) && searchResult.data) {
       let selectedItem = searchResult.data[selectedOffice] || {};
       // console.log('searchResult', searchResult);
 

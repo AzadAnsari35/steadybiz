@@ -208,6 +208,12 @@ p {
   line-height: 22px;
 }
 
+.font-primary-medium-18_1 {
+  @extend .font-primary-medium;
+  font-size: 18px;
+  line-height: 30px;
+}
+
 .font-primary-medium-20 {
   @extend .font-primary-medium;
   font-size: 20px;
@@ -308,6 +314,18 @@ p {
   @extend .font-primary-semibold;
   font-size: 22px;
   line-height: 25px;
+}
+
+.font-primary-semibold-30 {
+  @extend .font-primary-semibold;
+  font-size: 30px;
+  line-height: 55px;
+}
+
+.font-primary-semibold-35 {
+  @extend .font-primary-semibold;
+  font-size: 35px;
+  line-height: 55px;
 }
 
 .font-primary-bold-14 {
@@ -421,6 +439,16 @@ p {
   padding-bottom: 12px;
 }
 
+.py-44 {
+  padding-top: 44px;
+  padding-bottom: 44px;
+}
+
+.py-82 {
+  padding-top: 82px;
+  padding-bottom: 82px;
+}
+
 .p-0 {
   padding: 0;
 }
@@ -443,6 +471,10 @@ p {
 
 .pt-20 {
   padding-top: 20px;
+}
+
+.pt-22 {
+  padding-top: 22px;
 }
 
 .pt-24 {
@@ -518,6 +550,10 @@ p {
   padding-bottom: 20px;
 }
 
+.pb-22 {
+  padding-bottom: 22px;
+}
+
 .pb-24 {
   padding-bottom: 24px;
 }
@@ -536,6 +572,10 @@ p {
 
 .pb-36 {
   padding-bottom: 36px;
+}
+
+.pb-44 {
+  padding-bottom: 44px;
 }
 
 // Padding Left
@@ -563,6 +603,10 @@ p {
   padding-left: 36px;
 }
 
+.pl-40 {
+  padding-left: 40px;
+}
+
 /*Margins*/
 
 //Margin Vertical
@@ -586,6 +630,10 @@ p {
 //Margin top
 .mt-6 {
   margin-top: 6px;
+}
+
+.mt-12 {
+  margin-top: 12px;
 }
 
 .mt-24 {
@@ -719,6 +767,14 @@ p {
   margin-right: 16px;
 }
 
+.mr-150 {
+  margin-right: 150px;
+}
+
+.mr-200 {
+  margin-right: 200px;
+}
+
 // Margin Left
 .ml-auto {
   margin-left: auto;
@@ -843,4 +899,17 @@ p {
   &:before {
     background-color: $red;
   }
+}
+
+/* top */
+.top-115 {
+  top: 115px;
+}
+
+.top-154 {
+  top: 154px;
+}
+
+.top-148 {
+  top: 148px;
 }

@@ -1,0 +1,24 @@
+$root: '.Carousel';
+
+#{$root} {
+  overflow: hidden;
+  &-getStarted {
+    display: flex !important;
+    width: auto !important;
+    justify-content: flex-end;
+    height: 495px;
+    position: relative;
+    background-image: url('../../../../../public/assets/images/home-banner.png');
+
+    &-right {
+      width: 350px;
+      padding: 32px 50px;
+
+      background-color: white;
+    }
+  }
+  &-form {
+    position: absolute;
+    right: 144px;
+  }
+}
