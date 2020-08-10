@@ -5,11 +5,11 @@ import FlightItineraryCard from "Components/Flights/Availability/FlightItinerary
 import "./style.scss";
 
 const FlightResults = props => {
-  const { results: { commonRS: { flightItinerary } } } = props;
+  const { results } = props;
 
   return (
     <div className="FlightResults">
-      {flightItinerary[0].outboundItinerary.map(itinerary =>
+      {results.map(itinerary =>
         <FlightItineraryCard
           key={itinerary.flightItineraryId}
           itinerary={itinerary}

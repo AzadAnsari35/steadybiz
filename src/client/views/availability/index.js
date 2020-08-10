@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Grid } from "@material-ui/core";
@@ -49,6 +49,16 @@ const Availability = () => {
   const { flightItinerary } = !!flightSearchResponseData && flightSearchResponseData.commonRS;
   const { outboundItinerary, flightSegmentType } = !!flightItinerary && flightItinerary[0];
   const { totalfareDetails } = !!outboundItinerary && outboundItinerary[0];
+
+  const [itineraries, setItineraries] = useState([]);
+  const [filteredItineraries, setFilteredItineraries] = useState([]);
+
+  useEffect(() => {
+    if (!!outboundItinerary) {
+      setItineraries(outboundItinerary);
+      setFilteredItineraries(outboundItinerary);
+    }
+  }, [outboundItinerary]);
   
   useEffect(() => {
     try {
@@ -101,49 +111,53 @@ const Availability = () => {
           loaderStatus.items && !loaderStatus.items.data.isLoaderVisible ? "adjust-padding" : ""
         }`}
       >
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={3}>
-            <div className="Availability-mainSection__filtersContainer">
-              <Filters
-                flightSegmentType={!!flightSegmentType && flightSegmentType}
-                outboundItinerary={!!outboundItinerary && outboundItinerary}
-              />
-            </div>
-          </Grid>
-          <Grid item xs={12} md={9}>
-            <div className="Availability-mainSection__lowestFareFlightsSection">
-              <ScrollableList />
-            </div>
-            <div className="Availability-mainSection__resultsContainer">
-              <div className="info-sort-section d-flex justify-content-between align-items-center">
-                {!!totalfareDetails &&
-                  <div className="d-flex">
-                    <Text className="font-primary-medium-14 mr-4" text="All Amounts in " />
-                    <Text className="font-primary-bold-14" text={totalfareDetails.totalAmountCurrency} />
-                  </div>
-                }
-                <div className="sort d-flex align-items-center ml-auto">
-                  <SwapVertIcon className="sort-reverse" />
-                  <Text className="font-primary-medium-14 mr-10" text="Sort by: " />
-                  <MultiSelect
-                    control={control}
-                    isOptionUppercase
-                    labelKey="label"
-                    name="sortingOptions"
-                    options={sortingOptions}
-                    valueKey="value"
-                    width={100}
+        {!!filteredItineraries && filteredItineraries.length > 0 &&
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={3}>
+              <div className="Availability-mainSection__filtersContainer">
+                {!!flightSegmentType && !!filteredItineraries && filteredItineraries.length > 0 &&
+                  <Filters
+                    flightSegmentType={!!flightSegmentType && flightSegmentType}
+                    outboundItinerary={!!filteredItineraries && filteredItineraries}
                   />
-                </div>
+                }
               </div>
-              {!!flightSearchResponseData &&
-                <FlightResults
-                  results={flightSearchResponseData}
-                />
-              }
-            </div>
+            </Grid>
+            <Grid item xs={12} md={9}>
+              <div className="Availability-mainSection__lowestFareFlightsSection">
+                <ScrollableList />
+              </div>
+              <div className="Availability-mainSection__resultsContainer">
+                <div className="info-sort-section d-flex justify-content-between align-items-center">
+                  {!!totalfareDetails &&
+                    <div className="d-flex">
+                      <Text className="font-primary-medium-14 mr-4" text="All Amounts in " />
+                      <Text className="font-primary-bold-14" text={totalfareDetails.totalAmountCurrency} />
+                    </div>
+                  }
+                  <div className="sort d-flex align-items-center ml-auto">
+                    <SwapVertIcon className="sort-reverse" />
+                    <Text className="font-primary-medium-14 mr-10" text="Sort by: " />
+                    <MultiSelect
+                      control={control}
+                      isOptionUppercase
+                      labelKey="label"
+                      name="sortingOptions"
+                      options={sortingOptions}
+                      valueKey="value"
+                      width={100}
+                    />
+                  </div>
+                </div>
+                {!!filteredItineraries && filteredItineraries.length > 0 &&
+                  <FlightResults
+                    results={filteredItineraries}
+                  />
+                }
+              </div>
+            </Grid>
           </Grid>
-        </Grid>
+        }
       </div>
     </div>
   )
