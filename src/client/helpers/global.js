@@ -239,7 +239,7 @@ Array.prototype.findItem = function (value, key = 'value') {
 
   console.log(
     'result',
-    arr.filter((option) => option[key] === value)
+    arr.find((option) => option[key] === value)
   );
-  return arr.filter((option) => option[key] === value);
+  return arr.find((option) => option[key] === value);
 };
