@@ -101,12 +101,12 @@ const AutoSuggest = props => {
                   }
                   <div>
                     <Text className="top-text font-primary-medium-16" text={option.title} />
-                    <Text className="bottom-text font-primary-medium-14" text={option.subTitle} />
+                    {/* <Text className="bottom-text font-primary-medium-14" text={option.subTitle} /> */}
                   </div>
                 </div>
-                <div className="listItem__right">
+                {/* <div className="listItem__right">
                   <Text className="font-primary-medium-14" text={option.code} />
-                </div>
+                </div> */}
               </div>
             </Fragment>
           )}
