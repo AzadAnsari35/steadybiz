@@ -4,6 +4,7 @@ export const actionTypeConstant = {
     selectedOption: 'override.selectedOption',
   },
   flights: {
+    airportSuggestions: 'flights.airportSuggestions',
     flightSearchInput: 'flights.flightSearchInput',
     flightSearch: "flightSearch",
     flightSelect: "flightSelect",

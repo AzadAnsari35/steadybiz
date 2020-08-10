@@ -1,24 +1,32 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import FlightOutlinedIcon from '@material-ui/icons/FlightOutlined';
 
+import { commonAction } from "Actions/index";
+import endpoint from "Config/endpoint";
 import colors from "Constants/colors";
 import airportData from "Constants/airportData";
+import { getDataFromRedux } from "Helpers/global";
 
 import { Text } from "Widgets";
 
 import "./style.scss";
 
 const AutoSuggest = props => {
+  const dispatch = useDispatch();
   const { icon, id, label, initialValue, onSelectSuggestion } = props;
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const loading = open && inputValue.length >= 3 && options.length === 0;
+
+  const airportSuggestionsData = useSelector(state => state[endpoint.flights.airportSuggestions.reducerName]);
+  const airportSuggestions = getDataFromRedux(airportSuggestionsData);
 
   useEffect(() => {
     if (!!initialValue) {
@@ -31,6 +39,12 @@ const AutoSuggest = props => {
       setOptions([]);
     }
   }, [open]);
+  
+  useEffect(() => {
+    if (!!airportSuggestions.length > 0) {
+      setOptions(airportSuggestions);
+    }
+  }, [airportSuggestionsData]);
 
   const handleSelect = (event, newValue) => {
     setValue(newValue);
@@ -48,11 +62,19 @@ const AutoSuggest = props => {
   }
 
   const getData = async () => {
+    try {
+      await dispatch(
+        commonAction(endpoint.flights.airportSuggestions)
+      );
+    } catch (err) {
+      console.log('err', err);
+    }
     // const response = await fetch("https://country.register.gov.uk/records.json?page-size=5000");
     // const countries = await response.json();
-    const countries = airportData;
+
+    // const countries = airportData;
     // setOptions(Object.keys(countries).map((key) => countries[key].item[0]));
-    setOptions(countries);
+    // setOptions(countries);
   }
 
   return (
@@ -61,7 +83,7 @@ const AutoSuggest = props => {
         {icon}
         <Autocomplete
           inputValue={inputValue}
-          // loading={loading}
+          loading={loading}
           open={open}
           options={options}
           value={value}
@@ -84,7 +106,7 @@ const AutoSuggest = props => {
                 ...params.InputProps,
                 endAdornment: (
                   <Fragment>
-                    {/* {loading ? <CircularProgress color="inherit" size={20} /> : null} */}
+                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
                     {params.InputProps.endAdornment}
                   </Fragment>
                 ),

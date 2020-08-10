@@ -2,6 +2,13 @@ import config from './index';
 import { actionTypeConstant, commonConstant } from 'Constants/';
 export default {
   flights: {
+    airportSuggestions: {
+      url: config.api.url + '/api/v1/flights/airportSuggestions',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.flights.airportSuggestions,
+      reducerName: 'airportSuggestions',
+    },
     flightSearchResult: {
       actionType: actionTypeConstant.override.searchResult,
       actualActionType: 'flights.flightSearchResult',
