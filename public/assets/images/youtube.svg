@@ -1,10 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48.953" height="48.953" viewBox="0 0 48.953 48.953">
-  <g id="Youtube" transform="translate(-1782 -1004)">
-    <g id="whatsapp" transform="translate(1782 1004)">
-      <rect id="Rectangle_1413" data-name="Rectangle 1413" width="48.953" height="48.953" rx="6" fill="red"/>
-    </g>
-    <g id="youtube-2" data-name="youtube" transform="translate(1658.451 1099.225)">
-      <path id="Path_1459" data-name="Path 1459" d="M204.969,120.04l15.24-8.778-15.24-8.778Zm0,0" transform="translate(-63.42 -181.71)" fill="#fff"/>
-    </g>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="19" height="13.063" viewBox="0 0 19 13.063"><defs><style>.a{fill:red;}</style></defs><g transform="translate(0 -80)"><g transform="translate(0 80)"><path class="a" d="M18.193,81.259c-.515-.917-1.075-1.085-2.214-1.15S11.981,80,9.5,80s-5.345.032-6.481.108-1.7.233-2.217,1.151S0,83.751,0,86.528v.009C0,89.3.273,90.891.8,91.8s1.079,1.083,2.216,1.16,4,.106,6.483.106,5.339-.039,6.478-.1,1.7-.243,2.214-1.16c.536-.906.806-2.495.806-5.259v-.009C19,83.751,18.729,82.174,18.193,81.259ZM7.125,90.094V82.969l5.938,3.563Z" transform="translate(0 -80)"/></g></g></svg>

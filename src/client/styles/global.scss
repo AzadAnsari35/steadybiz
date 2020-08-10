@@ -340,6 +340,11 @@ p {
   line-height: 19px;
 }
 
+.font-primary-bold-24 {
+  @extend .font-primary-bold;
+  font-size: 24px;
+  line-height: 25px;
+}
 .font-primary-semibold-24 {
   @extend .font-primary-semibold;
   font-size: 24px;
@@ -512,6 +517,10 @@ p {
   padding-right: 8px;
 }
 
+.pr-10 {
+  padding-right: 10px;
+}
+
 .pr-12 {
   padding-right: 12px;
 }
@@ -545,7 +554,9 @@ p {
 .pb-12 {
   padding-bottom: 12px;
 }
-
+.pb-16 {
+  padding-bottom: 16px;
+}
 .pb-20 {
   padding-bottom: 20px;
 }
@@ -578,6 +589,10 @@ p {
   padding-bottom: 44px;
 }
 
+.pb-48 {
+  padding-bottom: 48px;
+}
+
 // Padding Left
 .pl-6 {
   padding-left: 6px;
@@ -597,6 +612,14 @@ p {
 
 .pl-24 {
   padding-left: 24px;
+}
+
+.pl-20 {
+  padding-left: 20px;
+}
+
+.pl-28 {
+  padding-left: 28px;
 }
 
 .pl-36 {
@@ -912,4 +935,8 @@ p {
 
 .top-148 {
   top: 148px;
+}
+
+.left-136 {
+  left: 136px;
 }

@@ -27,14 +27,14 @@ const Toast = (props) => {
   const { isToastVisible = false, toastMessage = '', toastStatus } =
     toastData?.items?.data || {};
 
-  const [showToast, setShowToast] = useState(isToastVisible);
-
-  useEffect(() => setShowToast(isToastVisible), [isToastVisible]);
-
   useEffect(() => {
     if (removeAfterNumberOfSeconds) {
       setTimeout(() => {
-        setShowToast(false);
+        dispatch(
+          commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
+            isToastVisible: false,
+          })
+        );
       }, removeAfterNumberOfSeconds * 1000);
     }
   }, []);
@@ -49,7 +49,7 @@ const Toast = (props) => {
 
   return (
     <Fragment>
-      {showToast && (
+      {isToastVisible && (
         <div
           className={`Toast ${
             toastStatus ? 'success' : 'error'

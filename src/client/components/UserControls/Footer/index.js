@@ -14,30 +14,20 @@ const Footer = () => {
         <div className="ml-16 mr-4">Call us at:</div>
         <div className="font-primary-semibold-14">+971 9956789432</div>
       </div>
-      <div className="Footer-rights d-flex align-items-center">
-        <CopyrightIcon />
-        <div className="ml-8">
-          2020 OK Travel & Tourism. All Rights Reserved.
-        </div>
-      </div>
 
       <div className="Footer-links d-flex align-items-center">
-        <img
-          src={displayImage('whatsapp.svg')}
-          alt="Whatsapp Icon"
-          className="pr-20"
-        />
-        <img
-          src={displayImage('facebook.svg')}
-          alt="Facebook Icon"
-          className="pr-20"
-        />
-        <img
-          src={displayImage('youtube.svg')}
-          alt="Youtube Icon"
-          className="pr-20"
-        />
-        <img src={displayImage('twitter.svg')} alt="Twitter Icon" />
+        <div className="Footer-links-whatsapp mr-20 d-flex align-items-center justify-content-center">
+          <img src={displayImage('whatsapp.svg')} alt="Whatsapp Icon" />
+        </div>
+        <div className="Footer-links-facebook mr-20 d-flex align-items-center justify-content-center">
+          <img src={displayImage('facebook.svg')} alt="Facebook Icon" />
+        </div>
+        <div className="Footer-links-youtube mr-20 d-flex align-items-center justify-content-center">
+          <img src={displayImage('youtube.svg')} alt="Youtube Icon" />
+        </div>
+        <div className="Footer-links-twitter mr-20 d-flex align-items-center justify-content-center">
+          <img src={displayImage('twitter.svg')} alt="Twitter Icon" />
+        </div>
       </div>
     </div>
   );

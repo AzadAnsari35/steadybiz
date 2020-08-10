@@ -43,7 +43,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       subList: [
         {
           text: 'Flight Search',
-          link: '/search',
+          link: routes.flight.search,
         },
       ],
     },
