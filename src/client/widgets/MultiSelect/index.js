@@ -52,6 +52,7 @@ const MultiValue = (props, value) => {
 
 const MultiSelect = (props) => {
   const {
+    id = '',
     label,
     closeMenuOnSelect = true,
     isMulti = false,
@@ -71,12 +72,16 @@ const MultiSelect = (props) => {
     validation,
     disabled,
     getValues = () => {},
+    defaultValue = null,
+    useReactHookForm = true,
+    onSelectChange,
   } = props;
-  // const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(defaultValue);
 
-  // const handleChange = (selectedOption) => {
-  //   setSelectedOption(selectedOption);
-  // };
+  const handleChange = (id, selectedOption) => {
+    setSelectedOption(selectedOption);
+    onSelectChange(selectedOption, id);
+  };
 
   // useEffect(() => {
   //   let selectedOption = options.find(
@@ -94,51 +99,90 @@ const MultiSelect = (props) => {
       {!!label && (
         <p className="TextInput-label font-primary-medium-16 mb-8">{label}</p>
       )}
-      <Controller
-        render={(props) => (
-          <div
-            className={`MultiSelect ${className ? className : ''} ${
-              changeStyle ? `MultiSelect-customStyle` : ''
-            }  ${showBorder ? `MultiSelect-showBorder` : ''} ${
-              errors[name] ? `thin-red-border` : ''
-            } ${disabled ? 'input-disabled border-none py-10' : ''}`}
-            style={{ width: `${width}px` }}
-          >
-            <Select
-              className={`react-select-container`}
-              classNamePrefix="react-select"
-              clearable={true}
-              closeMenuOnSelect={closeMenuOnSelect}
-              components={{
-                DropdownIndicator,
-                Option: (props) => Option(props, labelKey, isOptionUppercase),
-                MultiValue: (props) => MultiValue(props, valueKey),
-              }}
-              hideSelectedOptions={false}
-              isClearable={false}
-              isMulti={isMulti}
-              isSearchable={false}
-              placeholder={placeholder}
-              getOptionLabel={(option) =>
-                `${showValue ? option[valueKey] : option[labelKey]}`
-              }
-              getOptionValue={(option) => option[valueKey]}
-              options={options}
-              isDisabled={disabled}
-              // menuIsOpen={true}
-              {...props}
-            />
-          </div>
-        )}
-        control={control}
-        name={name}
-        rules={validation}
-      />
-      {errors[name] && (
-        <p className="error-message mt-6 font-primary-medium-16 mb-0">
-          {errors[name].message}
-        </p>
-      )}
+      {useReactHookForm ?
+        <>
+          <Controller
+            render={(props) => (
+              <div
+                className={`MultiSelect ${className ? className : ''} ${
+                  changeStyle ? `MultiSelect-customStyle` : ''
+                }  ${showBorder ? `MultiSelect-showBorder` : ''} ${
+                  errors[name] ? `thin-red-border` : ''
+                } ${disabled ? 'input-disabled border-none py-10' : ''}`}
+                style={{ width: `${width}px` }}
+              >
+                <Select
+                  className={`react-select-container`}
+                  classNamePrefix="react-select"
+                  clearable={true}
+                  closeMenuOnSelect={closeMenuOnSelect}
+                  components={{
+                    DropdownIndicator,
+                    Option: (props) => Option(props, labelKey, isOptionUppercase),
+                    MultiValue: (props) => MultiValue(props, valueKey),
+                  }}
+                  hideSelectedOptions={false}
+                  isClearable={false}
+                  isMulti={isMulti}
+                  isSearchable={false}
+                  placeholder={placeholder}
+                  getOptionLabel={(option) =>
+                    `${showValue ? option[valueKey] : option[labelKey]}`
+                  }
+                  getOptionValue={(option) => option[valueKey]}
+                  options={options}
+                  isDisabled={disabled}
+                  // menuIsOpen={true}
+                  {...props}
+                />
+              </div>
+            )}
+            control={control}
+            name={name}
+            rules={validation}
+          />
+          {errors[name] && (
+            <p className="error-message mt-6 font-primary-medium-16 mb-0">
+              {errors[name].message}
+            </p>
+          )}
+        </> :
+        <div
+          className={`MultiSelect ${className ? className : ''} ${
+            changeStyle ? `MultiSelect-customStyle` : ''
+          }  ${showBorder ? `MultiSelect-showBorder` : ''} ${
+            errors[name] ? `thin-red-border` : ''
+          } ${disabled ? 'input-disabled border-none py-10' : ''}`}
+          style={{ width: `${width}px` }}
+        >
+          <Select
+            className={`react-select-container`}
+            classNamePrefix="react-select"
+            clearable={true}
+            closeMenuOnSelect={closeMenuOnSelect}
+            components={{
+              DropdownIndicator,
+              Option: (props) => Option(props, labelKey, isOptionUppercase),
+              MultiValue: (props) => MultiValue(props, valueKey),
+            }}
+            hideSelectedOptions={false}
+            isClearable={false}
+            isMulti={isMulti}
+            isSearchable={false}
+            placeholder={placeholder}
+            getOptionLabel={(option) =>
+              `${showValue ? option[valueKey] : option[labelKey]}`
+            }
+            getOptionValue={(option) => option[valueKey]}
+            options={options}
+            isDisabled={disabled}
+            // menuIsOpen={true}
+            value={selectedOption}
+            onChange={value => handleChange(id, value)}
+            {...props}
+          />
+        </div>
+      }
     </>
   );
 };

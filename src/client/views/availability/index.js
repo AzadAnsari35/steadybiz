@@ -33,6 +33,7 @@ const sortingOptions = [
 const Availability = () => {
   const dispatch = useDispatch();
   const [showSearch, setShowSearch] = useToggle(false);
+  const [sortingOption, setSortingOption] = useState(sortingOptions[0]);
   const { control } = useForm({
     defaultValues: {
       sortingOptions: sortingOptions[0],
@@ -85,6 +86,10 @@ const Availability = () => {
       }
     }
   }, [flightSearchInputData]);
+
+  const handleSelectOption = (value, id) => {
+    setSortingOption(value);
+  }
 
   return (
     <div className="Availability">
@@ -139,13 +144,15 @@ const Availability = () => {
                     <SwapVertIcon className="sort-reverse" />
                     <Text className="font-primary-medium-14 mr-10" text="Sort by: " />
                     <MultiSelect
-                      control={control}
                       isOptionUppercase
                       labelKey="label"
                       name="sortingOptions"
                       options={sortingOptions}
                       valueKey="value"
                       width={100}
+                      defaultValue={sortingOption}
+                      useReactHookForm={false}
+                      onSelectChange={handleSelectOption}
                     />
                   </div>
                 </div>
