@@ -45,11 +45,6 @@ const Carousel = () => {
             <ResetPasswordForm />
           ) : selectedForm === 'SignInForm' ? (
             <SignInForm setSelectedForm={setSelectedForm} />
-          ) : selectedForm === 'ForgotPasswordForm' ? (
-            <ForgotPasswordForm
-              setSelectedForm={setSelectedForm}
-              selectedForm={selectedForm}
-            />
           ) : (
             <ForgotPasswordForm
               setSelectedForm={setSelectedForm}

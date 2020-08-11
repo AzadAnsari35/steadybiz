@@ -7,6 +7,7 @@ export const displayImage = (name, path = 'images') => {
 export const isLogin = () => {
   return getItemFromStorage('userToken');
 };
+
 export const isDevelopment = () => {
   return config.mode.environment !== 'production';
 };
@@ -23,6 +24,17 @@ export const getItemFromStorage = (key, storageType = 1) => {
     item = sessionStorage.getItem(key);
   } else {
     item = sessionStorage.getItem(key);
+  }
+
+  return item;
+};
+
+export const removeItemFromStorage = (key, storageType = 1) => {
+  let item = '';
+  if (storageType === 1) {
+    item = sessionStorage.removeItem(key);
+  } else {
+    item = sessionStorage.removeItem(key);
   }
 
   return item;

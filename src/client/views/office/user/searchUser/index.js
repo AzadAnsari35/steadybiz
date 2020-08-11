@@ -122,6 +122,12 @@ const SearchUser = () => {
     'masterObjectStatuses'
   );
 
+  const countriesDialCodeList = useDropDown(
+    endpoint.master.countries,
+    dropDownParam.countriesDialCode,
+    'masterCountries'
+  );
+
   const searchUser = useSelector((state) => state.searchUser?.items);
   console.log('searchUser', searchUser);
   const searchResult =
@@ -268,7 +274,7 @@ const SearchUser = () => {
             </Grid>
             <Grid item xs={3}>
               <TextInput
-                name="loginId"
+                name="emailId"
                 register={register}
                 errors={errors}
                 label="Login ID | Email :"
@@ -284,10 +290,7 @@ const SearchUser = () => {
               <SelectWithTextInput
                 name="mobile"
                 selectInputName="mobileDialCode"
-                data={[
-                  { label: 'India', value: 'IN (+91)' },
-                  { label: 'Canada', value: 'CA (+1)' },
-                ]}
+                data={countriesDialCodeList.dropDownItems}
                 label="Mobile Number"
                 placeholder="Mobile Number"
                 selectPlaceholder="Code"
@@ -346,7 +349,7 @@ const SearchUser = () => {
             <Grid item xs={3}>
               <MultiSelect
                 label="Status:"
-                name="status"
+                name="objectStatus"
                 options={objectStatusesList.dropDownItems}
                 valueKey="label"
                 showBorder={true}

@@ -1,15 +1,23 @@
-import React, { useEffect } from 'react';
-import Avatar from 'Widgets/Avatar';
-import { Link } from 'react-router-dom';
 import routes from 'Constants/routes';
-import { getItemFromStorage, showError } from 'Helpers/utils';
-import { useDispatch, useSelector } from 'react-redux';
-import { commonAction } from 'Actions/index';
+import { utils } from 'Helpers';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Avatar from 'Widgets/Avatar';
+import './style.scss';
+import { useHistory } from 'react-router-dom';
+import { commonAction, commonActionWithoutApi } from 'Actions/';
 import endpoint from 'Config/endpoint';
 
-import './style.scss';
+import { useDispatch, useSelector } from 'react-redux';
 
 const UserCreditLimit = (props) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const signOut = () => {
+    utils.removeItemFromStorage('userToken');
+    dispatch(commonActionWithoutApi(endpoint.user.login, {}));
+  };
+
   const { creditLimitDetails, officeDto, fullName } = props;
   return (
     <div className="HeaderPopover br-6">
@@ -22,14 +30,14 @@ const UserCreditLimit = (props) => {
             {fullName}
           </span>
           <span className="HeaderPopover-head__detail-email font-primary-semibold-16">
-            {officeDto.officeEmail}{' '}
+            {officeDto?.officeEmail}{' '}
           </span>
         </div>
       </div>
       <div className="HeaderPopover-body font-primary-semibold-18 p-12">
         <div className="HeaderPopover-body-creditDetails  pb-4">
-          <span name="office-name">{officeDto.officeName}</span>{' '}
-          <span name="office-id">[{officeDto.officeId}]</span>
+          <span name="office-name">{officeDto?.officeName}</span>{' '}
+          <span name="office-id">[{officeDto?.officeId}]</span>
         </div>
         <div className="HeaderPopover-body-creditLimit">
           <span>Credit Limit Balance :</span>{' '}
@@ -45,7 +53,9 @@ const UserCreditLimit = (props) => {
           Manage Profile
         </Link>
         <Link to={routes.office.changePassword}>Change Password</Link>
-        <Link to="#">Signout</Link>
+        <Link to="/" onClick={() => signOut()}>
+          Signout
+        </Link>
       </div>
     </div>
   );

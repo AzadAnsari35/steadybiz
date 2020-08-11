@@ -21,7 +21,7 @@ import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam, titles } from 'Constants/commonConstant';
 import { countriesDialCodeFormatter } from 'Helpers/global';
 import { useDispatch, useSelector } from 'react-redux';
-import { commonActionWithoutApi } from 'Actions';
+import { commonActionWithoutApi, commonAction } from 'Actions';
 import endpoint from 'Config/endpoint';
 
 import endpointWithoutApi from 'Config/endpointWithoutApi';
@@ -62,7 +62,15 @@ const OfficeProfileForm = (props) => {
 
   const dispatch = useDispatch();
 
-  const { register, handleSubmit, errors, control, watch, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    watch,
+    reset,
+    getValues,
+  } = useForm({
     defaultValues,
   });
 
@@ -71,10 +79,18 @@ const OfficeProfileForm = (props) => {
     useSelector((state) => state.searchOffice?.items?.data?.data) || [];
   let selectedItem = searchResult[rowNumber] || {};
 
+  console.log('selectedItem', selectedItem);
+
   let officeId = utils.getItemFromStorage('officeId');
   let userId = utils.getItemFromStorage('userId');
 
   const [createRes, postCreateRequest] = createEndpoint();
+
+  const citiesList = useSelector(
+    (state) => state.masterCities?.items?.data?.data
+  );
+
+  console.log('citiesList', citiesList);
 
   const countriesList = useDropDown(
     endpoint.master.countries,
@@ -94,17 +110,17 @@ const OfficeProfileForm = (props) => {
     'masterCountries'
   );
 
-  const citiesList = useDropDown(
-    endpoint.master.cities,
-    dropDownParam.cities,
-    'masterCities'
+  const allCities = useDropDown(
+    endpoint.master.allCities,
+    dropDownParam.countriesDialCode,
+    'masterCountries'
   );
 
   const setDefaultValue = () => {
     if (
       countriesList.dropDownItems !== null &&
       countriesDialCodeList.dropDownItems !== null &&
-      citiesList.dropDownItems !== null &&
+      !!citiesList &&
       !isCreateOffice
     ) {
       const {
@@ -126,7 +142,6 @@ const OfficeProfileForm = (props) => {
       reset({
         address1,
         address2,
-        cityCode: citiesList.dropDownItems.findItem(cityCode),
         emailId: officeEmail,
         paymentOptions,
         officeId,
@@ -138,6 +153,8 @@ const OfficeProfileForm = (props) => {
         officeType: commonConstant.officeType.findItem(officeType, 'label'),
         zipCode,
         countryCode: countriesList.dropDownItems.findItem(countryCode),
+        cityCode: citiesList.findItem(cityCode),
+
         noOfUserRequested: commonConstant.numberOfUsers.findItem(
           noOfUserRequested
         ),
@@ -195,12 +212,25 @@ const OfficeProfileForm = (props) => {
   useEffect(() => setDefaultValue(), [
     countriesList.dropDownItems,
     countriesDialCodeList.dropDownItems,
-    citiesList.dropDownItems,
+    !!citiesList,
   ]);
 
   useEffect(() => setCreateOfficeDefaultValue(), [
     objectStatusesList.dropDownItems,
   ]);
+
+  useEffect(() => {
+    const selectedCountry = isCreateOffice
+      ? getValues('countryCode')?.value
+      : selectedItem?.countryCode;
+    if (selectedCountry) {
+      dispatch(
+        commonAction(endpoint.master.cities, {
+          countryCode: selectedCountry,
+        })
+      );
+    }
+  }, [isCreateOffice ? getValues('countryCode') : selectedItem?.countryCode]);
 
   // useEffect(() => setDropDownDefaultValue(), [countriesList.dropDownItems]);
 
@@ -334,8 +364,8 @@ const OfficeProfileForm = (props) => {
                     control={control}
                     errors={errors}
                     validation={{ required: 'Please enter the country' }}
-                    showLabel
                     width="auto"
+                    showLabel
                     disabled={isViewOffice}
                   />
                 </Grid>
@@ -344,10 +374,7 @@ const OfficeProfileForm = (props) => {
                   <MultiSelect
                     label="City"
                     name="cityCode"
-                    options={[
-                      { label: 'New Delhi', value: 'DEL' },
-                      { label: 'Mumbai', value: 'BOM' },
-                    ]}
+                    options={citiesList || []}
                     placeholder="Select City"
                     showBorder={true}
                     changeStyle={true}
