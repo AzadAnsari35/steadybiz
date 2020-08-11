@@ -47,9 +47,12 @@ const PaymentDetails = (props) => {
 
 	const totalAmount = getTotalAmount(outboundItinerary);
 	const totalAmountCurrencyCode = getTotalAmountCurrency(outboundItinerary);
-	const creditLimitAmount = !isEmptyObj(creditLimit.data) && Number(creditLimit.data.balanceAmount);
-	const creditLimitCurrencyCode = !isEmptyObj(creditLimit.data) && creditLimit.data.currencyCode;
-	const remainingCreditLimitAmount = !isEmptyObj(creditLimit.data) && Number(creditLimit.data.balanceAmount) - totalAmount;
+	const creditLimitAmount = !isEmptyObj(creditLimit.data) &&
+		!!creditLimit.data && Number(creditLimit.data.balanceAmount);
+	const creditLimitCurrencyCode = !isEmptyObj(creditLimit.data) &&
+		!!creditLimit.data && creditLimit.data.currencyCode;
+	const remainingCreditLimitAmount = !isEmptyObj(creditLimit.data) &&
+		!!creditLimit.data && Number(creditLimit.data.balanceAmount) - totalAmount;
 
 	const handleTabClick = (id) => {
 		setActiveTab(id);
