@@ -5,8 +5,8 @@ export const actionTypeConstant = {
   },
   flights: {
     flightSearchInput: 'flights.flightSearchInput',
-    flightSearch: "flightSearch",
-    flightSelect: "flightSelect",
+    flightSearch: 'flightSearch',
+    flightSelect: 'flightSelect',
     airprice: 'airprice',
   },
   users: {
@@ -17,6 +17,7 @@ export const actionTypeConstant = {
     cities: 'master.cities',
     objectStatuses: 'master.objectStatuses',
     airlines: 'master.airlines',
+    allCities: 'master.allCities',
   },
   office: {
     searchUser: 'office.searchUser',

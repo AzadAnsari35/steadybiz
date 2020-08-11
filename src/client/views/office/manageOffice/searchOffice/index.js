@@ -22,6 +22,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam } from 'Constants/commonConstant';
 import { utils } from 'Helpers';
+import { commonConstant } from 'Constants';
+import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 
 import './style.scss';
 
@@ -182,20 +184,25 @@ const SearchOffice = () => {
     'masterCountries'
   );
 
-  const citiesList = useDropDown(
-    endpoint.master.cities,
-    dropDownParam.cities,
-    'masterCities'
-  );
-
   const { register, handleSubmit, errors, control, getValues } = useForm({
     defaultValues: {
       status: '',
       cityCode: '',
       countryCode: '',
-      officeType: 'Branch',
+      officeType: '',
     },
   });
+
+  useEffect(() => {
+    const selectedCountry = getValues('country');
+    if (selectedCountry) {
+      dispatch(
+        commonAction(endpoint.master.cities, {
+          countryCode: selectedCountry.value,
+        })
+      );
+    }
+  }, [getValues('country')]);
 
   const ofId = utils.getItemFromStorage('officeId');
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
@@ -206,6 +213,8 @@ const SearchOffice = () => {
   } = userData;
 
   const searchOffice = useSelector((state) => state.searchOffice?.items);
+
+  const citiesList = useSelector((state) => state.masterCities?.items?.data);
 
   useEffect(() => {
     if (requestJson !== null) {
@@ -285,17 +294,13 @@ const SearchOffice = () => {
               <MultiSelect
                 label="Office Type:"
                 name="officeType"
-                options={[
-                  { label: 'All', value: 'All' },
-                  { label: 'Branch', value: 'Branch' },
-                  { label: 'Own', value: 'Own' },
-                ]}
+                options={commonConstant.officeType}
                 showBorder={true}
                 changeStyle={true}
                 control={control}
                 errors={errors}
                 getValues={getValues}
-                showValue
+                showLabel
                 width="auto"
               />
             </Grid>
@@ -333,7 +338,7 @@ const SearchOffice = () => {
             <Grid item xs={3}>
               <MultiSelect
                 label="Country"
-                name="countryCode"
+                name="country"
                 options={countriesList.dropDownItems}
                 placeholder="Country"
                 showBorder={true}
@@ -348,8 +353,8 @@ const SearchOffice = () => {
             <Grid item xs={3}>
               <MultiSelect
                 label="City"
-                name="cityCode"
-                options={citiesList.dropDownItems}
+                name="city"
+                options={citiesList?.data || []}
                 placeholder="City"
                 showBorder={true}
                 changeStyle={true}

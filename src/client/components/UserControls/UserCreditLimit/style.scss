@@ -36,13 +36,15 @@ $root: '.HeaderPopover';
   }
 
   &-foot {
-    a {
+    a,
+    div {
       text-decoration: none;
       color: $black;
       opacity: 0.45;
       padding: 6px 12px;
     }
-    a:hover {
+    a:hover,
+    div:hover {
       background-color: $mercury;
     }
   }

@@ -53,36 +53,34 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       clickFunc: () => setShowSubagency(!showSubagency),
       show: showSubagency,
       subList: [
-        {
-          text: 'Registration',
-          link: '/createAccount',
-        },
-        {
-          text: 'Profile & Credit Limit',
-          link: '/agency/subAgent',
-        },
-
-        {
-          text: 'Deal & Commission',
-          link: '#',
-        },
-
-        {
-          text: 'Markup & Discount',
-          link: '#',
-        },
-        {
-          text: 'Productivity Group',
-          link: '#',
-        },
-        {
-          text: 'Invoice Details',
-          link: '#',
-        },
-        {
-          text: 'Account Statement',
-          link: '#',
-        },
+        // {
+        //   text: 'Registration',
+        //   link: '/createAccount',
+        // },
+        // {
+        //   text: 'Profile & Credit Limit',
+        //   link: '/agency/subAgent',
+        // },
+        // {
+        //   text: 'Deal & Commission',
+        //   link: '#',
+        // },
+        // {
+        //   text: 'Markup & Discount',
+        //   link: '#',
+        // },
+        // {
+        //   text: 'Productivity Group',
+        //   link: '#',
+        // },
+        // {
+        //   text: 'Invoice Details',
+        //   link: '#',
+        // },
+        // {
+        //   text: 'Account Statement',
+        //   link: '#',
+        // },
       ],
     },
 

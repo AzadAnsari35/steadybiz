@@ -42,8 +42,15 @@ export default {
     cities: {
       url: config.api.url + '/api/v1/master/cities',
       isAuth: true,
-      httpVerb: commonConstant.HttpVerbsConstant.GET,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
       actionType: actionTypeConstant.master.cities,
+    },
+
+    allCities: {
+      url: config.api.url + '/api/v1/master/cities',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.GET,
+      actionType: actionTypeConstant.master.allCities,
     },
 
     objectStatuses: {
@@ -135,5 +142,5 @@ export default {
       actionType: actionTypeConstant.transaction,
       reducerName: 'transaction',
     },
-  }
+  },
 };
