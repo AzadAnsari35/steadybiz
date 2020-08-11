@@ -24,6 +24,7 @@ const AutoSuggest = props => {
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const loading = open && inputValue.length >= 3 && options.length === 0;
+  const [isSelected, setIsSelected] = useState(false);
 
   const airportSuggestionsData = useSelector(state => state[endpoint.flights.airportSuggestions.reducerName]);
   const airportSuggestions = getDataFromRedux(airportSuggestionsData);
@@ -40,41 +41,43 @@ const AutoSuggest = props => {
     }
   }, [open]);
   
-  useEffect(() => {
-    if (!!airportSuggestions.length > 0) {
-      setOptions(airportSuggestions);
-    }
-  }, [airportSuggestionsData]);
+  // useEffect(() => {
+  //   if (!!airportSuggestions.length > 0) {
+  //     setOptions(airportSuggestions);
+  //   }
+  // }, [airportSuggestionsData]);
 
   const handleSelect = (event, newValue) => {
+    setIsSelected(true);
     setValue(newValue);
     onSelectSuggestion(id, newValue);
   };
 
   const handleChange = (event, newInputValue) => {
+    setIsSelected(false);
     setInputValue(newInputValue.toUpperCase());
 
-    if (newInputValue.length >= 3) {
+    if (newInputValue.length >= 3 && !isSelected) {
       getData();
     } else {
       setOptions([]);
     }
   }
 
-  const getData = async () => {
-    try {
-      await dispatch(
-        commonAction(endpoint.flights.airportSuggestions)
-      );
-    } catch (err) {
-      console.log('err', err);
-    }
+  const getData = () => {
+    // try {
+    //   dispatch(
+    //     commonAction(endpoint.flights.airportSuggestions)
+    //   );
+    // } catch (err) {
+    //   console.log('err', err);
+    // }
     // const response = await fetch("https://country.register.gov.uk/records.json?page-size=5000");
     // const countries = await response.json();
 
-    // const countries = airportData;
+    const countries = airportData;
     // setOptions(Object.keys(countries).map((key) => countries[key].item[0]));
-    // setOptions(countries);
+    setOptions(countries);
   }
 
   return (

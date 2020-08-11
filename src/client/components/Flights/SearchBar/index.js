@@ -263,7 +263,10 @@ const SearchBar = () => {
           <Grid container spacing={1}>
             <Grid item xs={12} md={10} className="d-flex align-items-center">
               <div className="d-flex">
-                <div className="d-flex align-items-center mr-24">
+                <div
+                  className="d-flex align-items-center mr-24 cursor-pointer"
+                  onClick={setExpandAdvanceSearch}
+                >
                   <Text
                     className="font-primary-medium-16 mr-16"
                     text="Advance Search"
@@ -272,7 +275,6 @@ const SearchBar = () => {
                   <ExpandArrow
                     isHorizontal
                     expand={expandAdvanceSearch}
-                    onClick={setExpandAdvanceSearch}
                   />
                 </div>
                 {expandAdvanceSearch && (
