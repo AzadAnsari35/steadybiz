@@ -27,7 +27,8 @@ const SignInForm = (props) => {
   }, [apiResponse]);
 
   const postLogin = () => {
-    if (apiResponse.items != null && apiResponse.items.data != {}) {
+    console.log('apiResponse', apiResponse);
+    if (!!apiResponse.items && !!apiResponse.items.data) {
       const errMsg = utils.checkError(apiResponse.items);
 
       console.log('errMsg'), errMsg;

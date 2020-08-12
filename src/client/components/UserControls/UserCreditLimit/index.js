@@ -15,10 +15,15 @@ const UserCreditLimit = (props) => {
   const dispatch = useDispatch();
   const signOut = () => {
     utils.removeItemFromStorage('userToken');
-    dispatch(commonActionWithoutApi(endpoint.user.login, {}));
+    utils.removeItemFromStorage('userId');
+    utils.removeItemFromStorage('officeId');
+    utils.removeItemFromStorage('userData');
+
+    dispatch(commonActionWithoutApi(endpoint.user.login, null));
+    handleClose();
   };
 
-  const { creditLimitDetails, officeDto, fullName } = props;
+  const { creditLimitDetails, officeDto, fullName, handleClose } = props;
   return (
     <div className="HeaderPopover br-6">
       <div className="HeaderPopover-head">
