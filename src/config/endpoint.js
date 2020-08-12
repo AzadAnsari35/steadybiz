@@ -66,6 +66,12 @@ export default {
       actionType: actionTypeConstant.master.airlines,
       reducerName: 'masterAirlines',
     },
+    settlementPlans: {
+      url: config.api.url + '/api/v1/master/settlementplans',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.GET,
+      actionType: actionTypeConstant.master.settlementPlans,
+    },
   },
 
   office: {
