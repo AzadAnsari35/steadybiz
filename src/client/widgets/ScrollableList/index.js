@@ -23,9 +23,9 @@ const Airline = props => {
         <Image
           altText={airlineCode}
           imgName={`${airlineCode}.png`}
-          imgPath="images/airlines/bigicons"
-          fallbackImgName="airlineBgDefault.png"
-          style={{ height: '100%', width: '100%' }}
+          imgPath="images/airlines/newIcons"
+          fallbackImgName="airlineDefault.png"
+          style={{ height: '100%', width: '100%', borderRadius: 'inherit' }}
         />
       </div>
       <div className="airline-content d-flex flex-direction-column justify-content-around">

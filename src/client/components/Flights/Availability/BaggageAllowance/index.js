@@ -43,9 +43,9 @@ const BaggageAllowance = props => {
                   <Image
                     altText={segment.flightSegmentGroup[0].airlineDetails.marketingAirline}
                     imgName={`${segment.flightSegmentGroup[0].airlineDetails.marketingAirline}.png`}
-                    imgPath="images/airlines/bigicons"
-                    fallbackImgName="airlineBgDefault.png"
-                    style={{ height: '100%', width: '100%' }}
+                    imgPath="images/airlines/newIcons"
+                    fallbackImgName="airlineDefault.png"
+                    style={{ height: '100%', width: '100%', borderRadius: 'inherit' }}
                   />
                 </div>
                 <div className="BaggageAllowance-airline__name">

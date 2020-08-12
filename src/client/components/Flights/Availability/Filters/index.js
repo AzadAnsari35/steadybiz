@@ -221,7 +221,8 @@ const AirlineCheckbox = (props) => {
           <Image
             altText={airlineCode}
             imgName={`${airlineCode}.png`}
-            imgPath="images/airlines/smallicons"
+            // imgPath="images/airlines/smallicons"
+            imgPath="images/airlines/newIcons"
             fallbackImgName="airlineSmDefault.png"
             style={{ height: '26px', width: '26px', marginRight: '16px' }}
           />

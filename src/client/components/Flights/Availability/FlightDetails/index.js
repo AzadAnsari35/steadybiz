@@ -188,6 +188,7 @@ const FlightSegmentGroup = (props) => {
           }}
         >
           <div className="FlightSegmentGroup-right__baggageDetails">
+            {!!segmentGroupArray[0].baggageInformation && !!segmentGroupArray[0].baggageInformation.checkInBaggage &&
             <div className="checkin d-flex align-items-center">
               <Text
                 className="font-primary-regular-14 mr-10"
@@ -214,23 +215,26 @@ const FlightSegmentGroup = (props) => {
                 }
               />
             </div>
-            <div className="cabin d-flex align-items-center">
-              <Text
-                className="font-primary-regular-14 mr-10"
-                style={{
-                  opacity: "0.5",
-                  minWidth: "80px",
-                }}
-                text="Cabin"
-              />
-              <WorkOutlineIcon
-                style={{ width: "24px", height: "24px", marginRight: "10px" }}
-              />
-              <Text
-                className="font-primary-regular-14"
-                text={`${segmentGroupArray[0].baggageInformation.cabinBaggage.weight} kg / Person`}
-              />
-            </div>
+            }
+            {!!segmentGroupArray[0].baggageInformation && !!segmentGroupArray[0].baggageInformation.cabinBaggage.weight &&
+              <div className="cabin d-flex align-items-center">
+                <Text
+                  className="font-primary-regular-14 mr-10"
+                  style={{
+                    opacity: "0.5",
+                    minWidth: "80px",
+                  }}
+                  text="Cabin"
+                />
+                <WorkOutlineIcon
+                  style={{ width: "24px", height: "24px", marginRight: "10px" }}
+                />
+                <Text
+                  className="font-primary-regular-14"
+                  text={`${segmentGroupArray[0].baggageInformation.cabinBaggage.weight} kg / Person`}
+                />
+              </div>
+            }
           </div>
         </div>
         <div>

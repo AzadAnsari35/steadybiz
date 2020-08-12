@@ -122,8 +122,9 @@ const FlightItineraryCard = props => {
                           ? outboundAirlineDetails.marketingAirline
                           : inboundAirlineDetails.marketingAirline
                         }.png`}
-                        imgPath="images/airlines/bigicons"
-                        fallbackImgName="airline default.png"
+                        imgPath="images/airlines/newIcons"
+                        fallbackImgName="airlineDefault.png"
+                        style={{ borderRadius: 'inherit' }}
                       />
                     </div>
                     <Text
@@ -301,6 +302,10 @@ const FlightItineraryCard = props => {
                 <Text className="font-primary-medium-14" text={tab.name} />
               </div>
             )}
+            <div className="FlightItineraryCard-flightDetails__staticDetails d-flex align-items-center">
+              <Text className="font-primary-medium-12" text={`Source : ${itinerary.itinerarySourceCode}`} />
+              <Text className="font-primary-medium-12" text={`PCC : ${itinerary.itineraryPCC}`} />
+            </div>
           </div>
           <div className="FlightItineraryCard-flightDetails__content">
             {activeFlightTab === "flightDetails" &&
