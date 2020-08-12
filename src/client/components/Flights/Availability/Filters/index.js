@@ -238,7 +238,7 @@ const AirlineCheckbox = (props) => {
 
 const Filters = (props) => {
   const dispatch = useDispatch();
-  const { flightSegmentType, outboundItinerary ,parentFilterDataCallback,sortingOption} = props;
+  const { flightSegmentType, outboundItinerary ,parentFilterDataCallback,sortingOption,sortDirection} = props;
   const [showAllAirlines, toggleShowAllAirlines] = useToggle(false);
   const [activeTab, setActiveTab] = useState({
     nearbyAirports: swtichTab2[0].id,
@@ -255,12 +255,13 @@ const Filters = (props) => {
   const [flightSlotsState, setflightSlots] = useCheckboxData([]);
   const [newPriceRange, setNewPriceRange] = useState([]);
   const [stops, setStops] = useCheckboxData([]);
-  const [sortType, setSortType] = useState(sortingOption);
-  const [sortOrder, setSortOrder] = useState('dsc');
+  // const [sortType, setSortType] = useState(sortingOption);
+  // console.log(sortingOption)
+  const [sortOrder, setSortOrder] = useState('asc');
   useEffect(() => {
     //console.log(stops);
     //2020-09-01T23:35:00+05:30
-    console.log(moment('2020-09-01T23:35:00+05:30').format('X'));
+   // console.log(moment('2020-09-01T23:35:00+05:30').format('X'));
     //console.log(stops);
     const list =outboundItinerary;//      availabilityResults.commonRS.flightItinerary[0].outboundItinerary;
     //const result =outboundItinerary // availabilityResults;
@@ -289,7 +290,7 @@ const Filters = (props) => {
     );
 
     filterData = returnFilterData(oStops, filterData, 'oStops');
-    console.log('hi', filterData);
+   // console.log('hi', filterData);
     if (isReturn) {
       const rStops = returnFilterArray(stops, 'return').map((el) =>
         parseInt(el)
@@ -334,14 +335,14 @@ const Filters = (props) => {
         'rArrFlightSlots'
       );
     }
-    console.log(flightSlotsState);
+    //console.log(flightSlotsState);
     filterData = returnRangeFilterData(
       newPriceRange,
       filterData,
       'newPriceRange'
     );
 
-    filterData = returnSortArray(filterData, sortType, sortOrder);
+    filterData = returnSortArray(filterData, sortingOption.value, sortDirection);
     parentFilterDataCallback(filterData);
     // result.outboundItinerary = [];
     // result.outboundItinerary = filterData;
@@ -381,6 +382,8 @@ const Filters = (props) => {
     stops,
     newPriceRange,
     flightSlotsState,
+    sortingOption,
+    sortDirection
   ]);
   function download(content, fileName, contentType) {
     var a = document.createElement('a');
@@ -410,7 +413,7 @@ const Filters = (props) => {
     tripDurations,
     itineraryCityNames,
   } = !!outboundItinerary && getFiltersData(outboundItinerary);
-  console.log(flightSlots);
+  //console.log(flightSlots);
   const updateActiveTab = (id, activeTabId) => {
     setActiveTab({
       ...activeTab,
@@ -421,7 +424,7 @@ const Filters = (props) => {
     setNewPriceRange(newValue);
   };
   const handleResetAll = () => {
-    console.log('hh');
+    //console.log('hh');
     setAirlines([]);
     setFareType([]);
   };

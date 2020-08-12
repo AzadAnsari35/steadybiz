@@ -34,6 +34,7 @@ const Availability = () => {
   const dispatch = useDispatch();
   const [showSearch, setShowSearch] = useToggle(false);
   const [sortingOption, setSortingOption] = useState(sortingOptions[0]);
+  const [sortDirection,setSortDirection]=useState('asc');
   const { control } = useForm({
     defaultValues: {
       sortingOptions: sortingOptions[0],
@@ -53,7 +54,13 @@ const Availability = () => {
 
   const [itineraries, setItineraries] = useState([]);
   const [filteredItineraries, setFilteredItineraries] = useState([]);
-
+const handleSortDirection = ()=>{
+  
+  if(sortDirection==='asc')
+  setSortDirection('dsc');
+  else
+  setSortDirection('asc');
+}
   useEffect(() => {
     if (!!outboundItinerary) {
       setItineraries(outboundItinerary);
@@ -123,7 +130,7 @@ const parentFilterDataCallback=(data)=>{
             <Grid item xs={12} md={3}>
               <div className="Availability-mainSection__filtersContainer">
                 {!!flightSegmentType && !!itineraries && itineraries.length > 0 &&
-                  <Filters sortingOption={sortingOption}
+                  <Filters sortDirection={sortDirection} sortingOption={sortingOption}
                   parentFilterDataCallback={parentFilterDataCallback}
                     flightSegmentType={!!flightSegmentType && flightSegmentType}
                     outboundItinerary={!!itineraries && itineraries}
@@ -149,7 +156,7 @@ const parentFilterDataCallback=(data)=>{
                     </div>
                   }
                   <div className="sort d-flex align-items-center ml-auto">
-                    <SwapVertIcon className="sort-reverse" />
+                    <SwapVertIcon className="sort-reverse" onClick={handleSortDirection} />
                     <Text className="font-primary-medium-14 mr-10" text="Sort by: " />
                     <MultiSelect
                       isOptionUppercase

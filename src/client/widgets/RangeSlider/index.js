@@ -17,14 +17,16 @@ const RangeSlider = (props) => {
     setValue(newValue);
     parentCallback(newValue);
   };
-  // const handleDragEnd = () => {
+  // const handleDragStop = () => {
+  //   console.log(value);
   //   parentCallback(value);
   // };
   return (
     <div className="RangeSlider">
       <Slider
         value={value}
-        onChange={handleChange}
+        onChangeCommitted={handleChange}
+       
         valueLabelDisplay="off"
         aria-labelledby="range-slider"
         min={range[0]}
