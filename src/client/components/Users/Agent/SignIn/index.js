@@ -110,13 +110,14 @@ const SignInForm = (props) => {
           <div>
             {' '}
             Don't have account?
-            <span
-              className="link-text"
-              onClick={() => setSelectedForm('SignUpForm')}
+            <a
+              className="link-text text-decoration-none"
+              href="mailto:oktravels.mussafah@gmail.com
+              ?subject=SubAgent SignUp"
             >
               {' '}
               Email{' '}
-            </span>
+            </a>
             to Signup
           </div>
         </div>

@@ -83,3 +83,13 @@ export const selectedItem = (searchResult, rowNumber) => {
     ? searchResult.items.data.data[rowNumber - 1]
     : null;
 };
+
+export const sortObjectArray = (objArray, key = 'label') => {
+  objArray.sort(function (a, b) {
+    var textA = a[key].toUpperCase();
+    var textB = b[key].toUpperCase();
+    return textA < textB ? -1 : textA > textB ? 1 : 0;
+  });
+
+  return objArray;
+};
