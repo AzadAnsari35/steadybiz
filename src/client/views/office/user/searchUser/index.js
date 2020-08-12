@@ -240,6 +240,7 @@ const SearchUser = () => {
 
   const onSubmit = (data, e) => {
     setReqeustJson(data);
+    setPage(1);
   };
 
   const handleReset = () => {

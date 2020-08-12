@@ -12,7 +12,12 @@ import colors from 'Constants/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { commonAction } from 'Actions/index';
 import endpoint from 'Config/endpoint';
-import { getItemFromStorage, checkStatus, getShortName } from 'Helpers/utils';
+import {
+  getItemFromStorage,
+  checkStatus,
+  getShortName,
+  isLogin,
+} from 'Helpers/utils';
 
 import './style.scss';
 
@@ -59,7 +64,7 @@ const Header = () => {
         console.log('err', err);
       }
     }
-  }, [usersSignIn]);
+  }, [token || usersSignIn]);
 
   return (
     <>

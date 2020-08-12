@@ -234,12 +234,12 @@ export const sortList = (data, key) => {
 
 Array.prototype.findItem = function (value, key = 'value') {
   var arr = this;
-  console.log('arr', arr);
-  console.log('value', value);
+  // console.log('arr', arr);
+  // console.log('value', value);
 
-  console.log(
-    'result',
-    arr.find((option) => option[key] === value)
-  );
+  // console.log(
+  //   'result',
+  //   arr.find((option) => option[key] === value)
+  // );
   return arr.find((option) => option[key] === value);
 };
