@@ -36,6 +36,26 @@ const returnItem = (name, item) => {
       ].arrivalDetails.time.split(':');
   }
 };
+const converDurationToMin=(value,separtor=':')=>
+{
+  if(value==null)
+  value='0:0';
+
+  const checkValue=value.split(separtor);
+             const totalValue = +checkValue[0] * 60 + +checkValue[1];
+             return totalValue;
+}
+const totalDuration=(item,rangeSlider)=>
+{
+    let sum=0;
+           item.forEach(function(obj){
+  sum += converDurationToMin(obj.arrivalDetails.layOverTime);
+          
+    });
+   return ( sum <= parseInt(rangeSlider[1]) &&
+       sum >= parseInt(rangeSlider[0]));
+  }
+ 
 const returnRangeSliderItem = (name, item, rangeSlider) => {
   switch (name) {
     case 'newPriceRange':
@@ -43,7 +63,18 @@ const returnRangeSliderItem = (name, item, rangeSlider) => {
         item.totalfareDetails.totalAmount <= rangeSlider[1] &&
         item.totalfareDetails.totalAmount >= rangeSlider[0]
       );
+      break;
+      case 'oLayoverRange':
+       return (totalDuration(item.flightSegments[0].flightSegmentGroup,rangeSlider) ) ; 
+       break; 
+       case 'rLayoverRange':
+       return (totalDuration(item.flightSegments[1].flightSegmentGroup,rangeSlider) ) ;  
+       break;
+       case 'oTripRange':
+       return (totalDuration(item.flightSegments[1].flightSegmentGroup,rangeSlider) ) ;  
+       break;
   }
+          
 };
 export const returnRangeFilterData = (rangeSlider, listArray, keyName) => {
   if (rangeSlider.length > 0) {

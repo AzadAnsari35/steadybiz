@@ -42,6 +42,28 @@ const swtichTab2 = [
     text: 'return',
   },
 ];
+const LayoverHtml = (props) => {
+  const { layoverDurations, activeTab, segmentType, setLayoverDuration } = props;
+  //console.log(stopsData, activeTab);
+  // style={{
+  //   display: activeTab == segmentType ? 'block' : 'none',
+  // }}
+  return (
+    <Fragment>
+      <div  style={{
+              display: activeTab == segmentType ? 'block' : 'none',
+            }}>
+      <RangeSlider
+              isTime
+              range={layoverDurations[activeTab]}
+
+            />
+        </div>
+      
+    </Fragment>
+  );
+};
+
 const StopsHtml = (props) => {
   const { stopsData, activeTab, segmentType, setStops } = props;
   //console.log(stopsData, activeTab);
@@ -263,6 +285,10 @@ const Filters = (props) => {
   const [nearByAirports, setNearByAirports] = useCheckboxData([]);
   const [flightSlotsState, setflightSlots] = useCheckboxData([]);
   const [newPriceRange, setNewPriceRange] = useState([]);
+  const [oLayoverRange,setOLayoverRange]=useState([]);
+  const [rLayoverRange,setRLayoverRange]=useState([]);
+  const [oTripRange,setOTripRange]=useState([]);
+  const [rTripRange,setRTripRange]=useState([]);
   const [stops, setStops] = useCheckboxData([]);
   // const [sortType, setSortType] = useState(sortingOption);
   // console.log(sortingOption)
@@ -275,7 +301,7 @@ const Filters = (props) => {
     const list =outboundItinerary;//      availabilityResults.commonRS.flightItinerary[0].outboundItinerary;
     //const result =outboundItinerary // availabilityResults;
     let filterData = returnFilterData(airlines, list, 'airlines');
-    console.log(filterData);
+    // console.log(oLayoverRange);
     
     filterData = returnFilterData(fareType, filterData, 'fareType');
 
@@ -350,7 +376,19 @@ const Filters = (props) => {
       filterData,
       'newPriceRange'
     );
-
+    filterData = returnRangeFilterData(
+      oLayoverRange,
+      filterData,
+      'oLayoverRange'
+    );
+if(isReturn)
+{
+  filterData = returnRangeFilterData(
+      rLayoverRange,
+      filterData,
+      'rLayoverRange'
+    );
+}
     filterData = returnSortArray(filterData, sortingOption.value, sortDirection);
     parentFilterDataCallback(filterData);
     // result.outboundItinerary = [];
@@ -391,6 +429,9 @@ const Filters = (props) => {
     stops,
     newPriceRange,
     flightSlotsState,
+    oLayoverRange,
+    rLayoverRange,
+    oTripRange,
     sortingOption,
     sortDirection
   ]);
@@ -432,6 +473,19 @@ const Filters = (props) => {
   const priceRangeCallback = (newValue) => {
     setNewPriceRange(newValue);
   };
+  const oLayoverCallback=(newValue)=>{
+    setOLayoverRange(newValue);
+  }
+  const rLayoverCallback=(newValue)=>{
+    setRLayoverRange(newValue);
+  }
+   const oTripRangeCallback=(newValue)=>{
+    setOTripRange(newValue);
+  }
+  const rTripRangeCallback=(newValue)=>{
+    setRTripRange(newValue);
+  }
+  
   const handleResetAll = () => {
     //console.log('hh');
     setAirlines([]);
@@ -450,8 +504,8 @@ const Filters = (props) => {
             text={`${outboundItinerary.length} flights found.`}
           />
         )}
-        <Link className="ml-auto" text="Reset All" onClick={handleResetAll} />
-        <span onClick={handleResetAll}>reset all</span>
+        <Link className="ml-auto" text="Reset All" />
+        {/* <span onClick={handleResetAll}>reset all</span> */}
       </div>
       {!!priceRange && (
         <div className="Filters-section d-flex justify-content-between">
@@ -701,10 +755,27 @@ const Filters = (props) => {
                 callback={updateActiveTab}
               />
             )}
+            {/* <LayoverHtml layoverDurations={layoverDurations} activeTab={activeTab.layoverDuration} segmentType={'outbound'}/>
+            {flightSegmentType === 'RT' && <LayoverHtml layoverDurations={layoverDurations} activeTab={activeTab.layoverDuration} segmentType={'return'}/>} */}
+           <div style={{
+    display: activeTab.layoverDuration == 'outbound' ? 'block' : 'none',
+  }}>
             <RangeSlider
               isTime
-              range={layoverDurations[activeTab.layoverDuration]}
+              range={layoverDurations['outbound']}
+ parentCallback={oLayoverCallback}
             />
+            </div>
+              {flightSegmentType === 'RT' && <div style={{
+    display: activeTab.layoverDuration == 'return' ? 'block' : 'none',
+  }}>
+             <RangeSlider
+              isTime
+              range={layoverDurations['return']}
+              parentCallback={rLayoverCallback}
+            />
+            </div>
+}
           </PrimaryAccordion>
         </div>
       )}
@@ -719,6 +790,25 @@ const Filters = (props) => {
                 callback={updateActiveTab}
               />
             )}
+              {/* <div style={{
+    display: activeTab.tripDurations == 'outbound' ? 'block' : 'none',
+  }}>
+            <RangeSlider
+              isTime
+              range={tripDurations['outbound']}
+ parentCallback={oTripRangeCallback}
+            />
+            </div>
+              {flightSegmentType === 'RT' && <div style={{
+    display: activeTab.tripDurations == 'return' ? 'block' : 'none',
+  }}>
+             <RangeSlider
+              isTime
+              range={tripDurations['return']}
+              parentCallback={rTripRangeCallback}
+            />
+            </div>
+} */}
             <RangeSlider isTime range={tripDurations[activeTab.tripDuration]} />
           </PrimaryAccordion>
         </div>
