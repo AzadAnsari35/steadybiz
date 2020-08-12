@@ -12,7 +12,8 @@ import endpointWithoutApi from 'Config/endpointWithoutApi';
 import colors from "Constants/colors";
 import routes from "Constants/routes";
 import { getDataFromRedux } from "Helpers/global";
-import { displayImage, showError } from "Helpers/utils";
+import { displayImage, showError, setItemToStorage, getItemFromStorage } from "Helpers/utils";
+import endpoint from "Config/endpoint";
 
 import {
   AutoSuggest,
@@ -179,6 +180,9 @@ const SearchBar = () => {
     };
 
     try {
+      const searchCount = getItemFromStorage("searchCount", 1);
+      setItemToStorage("searchCount", Number(searchCount) + 1, 1);
+      dispatch(commonActionWithoutApi(endpoint.flights.flightSearch, false));
       dispatch(commonActionWithoutApi(endpointWithoutApi.flights.flightSearchInput, searchRequest));
       history.push(routes.flight.availability);
     } catch (err) {

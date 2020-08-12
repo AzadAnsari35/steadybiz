@@ -10,7 +10,7 @@ import { loaderTypes } from "Constants/commonConstant";
 import useToggle from "Hooks/useToggle";
 import { commonAction } from "Actions";
 import endpoint from 'Config/endpoint';
-import { showError } from "Helpers/utils";
+import { showError, getItemFromStorage } from "Helpers/utils";
 import { getDataFromRedux } from "Helpers/global";
 
 import Filters from "Components/Flights/Availability/Filters";
@@ -54,6 +54,9 @@ const Availability = () => {
 
   const [itineraries, setItineraries] = useState([]);
   const [filteredItineraries, setFilteredItineraries] = useState([]);
+
+  const searchCount = getItemFromStorage("searchCount", 1);
+
 const handleSortDirection = ()=>{
   
   if(sortDirection==='asc')
@@ -61,6 +64,14 @@ const handleSortDirection = ()=>{
   else
   setSortDirection('asc');
 }
+
+  useEffect(() => {
+    if (Number(searchCount) > 1) {
+      setItineraries([]);
+      setFilteredItineraries([]);
+    }
+  }, [searchCount]);
+
   useEffect(() => {
     if (!!outboundItinerary) {
       setItineraries(outboundItinerary);

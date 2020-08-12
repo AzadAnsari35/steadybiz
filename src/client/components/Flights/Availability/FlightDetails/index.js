@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { useSelector } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import FlightIcon from '@material-ui/icons/Flight';
@@ -6,8 +7,9 @@ import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 
 import colors from "Constants/colors";
 import { displayImage } from "Helpers/utils";
-import { changeDateFormat, convertIntoTime, extractTime } from "Helpers/global";
-import { getCabinClassName } from "Helpers/flight.helpers";
+import { changeDateFormat, convertIntoTime, extractTime, getDataFromRedux } from "Helpers/global";
+import { getCabinClassName, getAirlineName } from "Helpers/flight.helpers";
+import endpoint from "Config/endpoint";
 
 import Chip from "Widgets/Chip/index";
 import DashedLine from "Widgets/DashedLine/index";
@@ -53,6 +55,14 @@ const AirlineText = (props) => {
 
 const FlightSegmentGroup = (props) => {
   const { segmentGroupArray, index, fareBasisCode } = props;
+  const masterAirlinesResponse = useSelector(
+    (state) => state[endpoint.master.airlines.reducerName]
+  );
+
+  const masterAirlines =
+    !!getDataFromRedux(masterAirlinesResponse) &&
+    getDataFromRedux(masterAirlinesResponse).data;
+
   return (
     <div className="FlightSegmentGroup d-flex">
       <div className="FlightSegmentGroup-left d-flex flex-direction-column justify-content-between">
@@ -139,7 +149,7 @@ const FlightSegmentGroup = (props) => {
             <FlightIcon className="airline-icon" style={{ transform: "rotate(90deg)" }} />
             <AirlineText
               showBorder
-              text="United Airline"
+              text={!!masterAirlines && getAirlineName(masterAirlines, segmentGroupArray[index].airlineDetails.marketingAirline)}
             />
             <AirlineText
               leftPadding
