@@ -1,2 +1,6 @@
-import {commonAction,commonActionWithoutApi} from './actionMethod';
-export  {commonAction,commonActionWithoutApi}
+import {
+  commonAction,
+  commonActionWithoutApi,
+  commonActionUpdate,
+} from './actionMethod';
+export { commonAction, commonActionWithoutApi, commonActionUpdate };

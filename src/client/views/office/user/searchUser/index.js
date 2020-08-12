@@ -19,7 +19,11 @@ import routes from 'Constants/routes';
 import { useHistory } from 'react-router-dom';
 import endpoint from 'Config/endpoint.js';
 import endpointWithoutApi from 'Config/endpointWithoutApi';
-import { commonAction, commonActionWithoutApi } from 'Actions/';
+import {
+  commonAction,
+  commonActionWithoutApi,
+  commonActionUpdate,
+} from 'Actions/';
 import { useDispatch, useSelector } from 'react-redux';
 import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam } from 'Constants/commonConstant';
@@ -133,11 +137,10 @@ const SearchUser = () => {
   const searchResult =
     useSelector((state) => state.searchOffice?.items?.data) || [];
   console.log('searchResult', searchResult);
+  const selectedOffice = utils.getItemFromStorage('selectedOffice') || '';
+  console.log('selectedOffice', selectedOffice);
 
   const getOfficeDetail = () => {
-    const selectedOffice = utils.getItemFromStorage('selectedOffice') || '';
-    // console.log('selectedOffice', selectedOffice);
-
     if (Number.isInteger(parseInt(selectedOffice)) && searchResult.data) {
       let selectedItem = searchResult.data[selectedOffice] || {};
       // console.log('searchResult', searchResult);

@@ -22,15 +22,18 @@ const Header = () => {
 
   const dispatch = useDispatch();
 
-  const usersSignIn = useSelector((state) => state.usersSignIn?.items);
+  const usersSignIn = useSelector((state) => state.usersSignIn?.items?.data);
+  console.log('usersSignIn', usersSignIn);
 
   const creditLimitDetails = useSelector(
     (state) => state.getInstantCreditLimit?.items?.data?.data
   );
 
-  let isAuthenticated = checkStatus(usersSignIn);
+  let isAuthenticated = !!usersSignIn;
 
-  const { data: { userDto = {} } = {} } = usersSignIn || {};
+  const token = getItemFromStorage('userToken');
+
+  const { userDto = {} } = usersSignIn || {};
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -40,17 +43,23 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  let ofid = getItemFromStorage('officeId');
-
   useEffect(() => {
-    try {
-      dispatch(
-        commonAction(endpoint.creditLimit.getInstantCreditlimit, { ofid })
+    if (token && !!usersSignIn?.userDto?.officeId) {
+      console.log(
+        ' usersSignIn.userDto.officeId',
+        usersSignIn.userDto.officeId
       );
-    } catch (err) {
-      console.log('err', err);
+      try {
+        dispatch(
+          commonAction(endpoint.creditLimit.getInstantCreditlimit, {
+            ofid: usersSignIn.userDto.officeId,
+          })
+        );
+      } catch (err) {
+        console.log('err', err);
+      }
     }
-  }, []);
+  }, [usersSignIn]);
 
   return (
     <>
@@ -107,6 +116,7 @@ const Header = () => {
             creditLimitDetails={creditLimitDetails}
             officeDto={userDto?.officeDto}
             fullName={`${userDto.firstName} ${userDto.lastName}`}
+            handleClose={handleClose}
           />
         </SimplePopover>
       </div>

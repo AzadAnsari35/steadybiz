@@ -1,6 +1,6 @@
-import React from 'react';
 import Collapse from '@material-ui/core/Collapse';
 import Drawer from '@material-ui/core/Drawer';
+import ApartmentIcon from '@material-ui/icons/Apartment';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -8,16 +8,19 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import FlightIcon from '@material-ui/icons/Flight';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { Link } from 'react-router-dom';
-import { ConstructIcon } from 'Widgets';
-import ApartmentIcon from '@material-ui/icons/Apartment';
-import { useLocation } from 'react-router-dom';
-
+import { commonActionUpdate } from 'Actions/';
+import endpoint from 'Config/endpoint.js';
 import routes from 'Constants/routes';
+import { setItemToStorage } from 'Helpers/utils';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
+import { ConstructIcon } from 'Widgets';
 import './styles.scss';
 
 const SideDrawer = ({ showDrawer, setShowDrawer }) => {
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const [showFlight, setShowFlight] = React.useState(false);
   const [showSubagency, setShowSubagency] = React.useState(false);
@@ -93,10 +96,17 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Manage Office',
           link: routes.office.searchOffice,
+          clickFunc: () => {
+            dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
+          },
         },
         {
           text: 'Manage User',
           link: routes.office.searchOfficeUser,
+          clickFunc: () => {
+            setItemToStorage('selectedOffice', '');
+            dispatch(commonActionUpdate(endpoint.office.searchUser, null));
+          },
         },
         {
           text: 'Security Group',
@@ -173,6 +183,9 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
                         ? `SideDrawer-toggleList-selected`
                         : ''
                     }`}
+                    {...(subrow.clickFunc && {
+                      onClick: subrow.clickFunc,
+                    })}
                   >
                     {subrow.text}
                   </Link>
