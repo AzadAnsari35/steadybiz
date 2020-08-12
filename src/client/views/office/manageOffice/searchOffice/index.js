@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import {
   Button,
   MultiSelect,
-  SelectWithTextInput,
+  IconWithBackground,
   Text,
   TextInput,
   SimplePopover,
@@ -27,28 +27,10 @@ import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam } from 'Constants/commonConstant';
 import { utils } from 'Helpers';
 import { commonConstant } from 'Constants';
-import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
+import CachedIcon from '@material-ui/icons/Cached';
 
 import './style.scss';
 
-const response = {
-  status: 'OK',
-  count: 9,
-  data: [
-    {
-      // ofId: '37d3be08-60c6-4ffa-8538-66075f19acbd',
-      officeName: 'Steady Biz level 1',
-      officeId: 'DELSTB0001',
-      officeType: 'OWN',
-      countryCode: 'IN',
-      cityName: 'Bangalore',
-      mobile: '9900567489',
-      currCode: 'INR',
-      creaditLimitBalance: '300',
-      objectStatusId: 'eb2c823c-790a-44c7-a1fb-777cb9b7caa8',
-    },
-  ],
-};
 const headerData = [
   'OFFICE NAME',
   'OFFICE ID',
@@ -167,6 +149,15 @@ const PopoverAction = (props) => {
   );
 };
 
+const defaultValues = {
+  status: '',
+  city: '',
+  country: '',
+  officeType: '',
+  officeName: '',
+  officeId: '',
+};
+
 const SearchOffice = () => {
   const [requestJson, setReqeustJson] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
@@ -189,14 +180,14 @@ const SearchOffice = () => {
     'masterCountries'
   );
 
-  const { register, handleSubmit, errors, control, getValues } = useForm({
-    defaultValues: {
-      status: '',
-      cityCode: '',
-      countryCode: '',
-      officeType: '',
-    },
-  });
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    getValues,
+    reset,
+  } = useForm({ defaultValues });
 
   useEffect(() => {
     const selectedCountry = getValues('country');
@@ -207,6 +198,7 @@ const SearchOffice = () => {
         })
       );
     }
+    return dispatch(commonActionUpdate(endpoint.master.cities, null));
   }, [getValues('country')]);
 
   const ofId = utils.getItemFromStorage('officeId');
@@ -283,10 +275,23 @@ const SearchOffice = () => {
     utils.setItemToStorage('selectedOffice', '');
   };
 
+  const handleReset = () => {
+    reset(defaultValues);
+  };
+
   return (
     <div className="SearchOffice">
       <div className="SearchOffice-head">
-        <div className="font-primary-semibold-24 pb-4">MANAGE OFFICE</div>
+        <div className="d-flex justify-content-between align-items-end pb-4">
+          <div className="font-primary-semibold-24 ">MANAGE OFFICE</div>
+          <IconWithBackground
+            bgColor="#74D3DC33"
+            showCursor
+            onClick={handleReset}
+          >
+            <CachedIcon style={{ color: '#74D3DC' }} />
+          </IconWithBackground>
+        </div>
         <div className="horizontal-grey-divider"></div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input type="hidden" name="ofid" value={ofId} ref={register}></input>
@@ -362,7 +367,12 @@ const SearchOffice = () => {
               <MultiSelect
                 label="City"
                 name="city"
-                options={citiesList?.data || []}
+                options={
+                  (citiesList &&
+                    citiesList.data &&
+                    utils.sortObjectArray(citiesList.data)) ||
+                  []
+                }
                 placeholder="City"
                 showBorder={true}
                 changeStyle={true}

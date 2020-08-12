@@ -21,7 +21,11 @@ import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam, titles } from 'Constants/commonConstant';
 import { countriesDialCodeFormatter } from 'Helpers/global';
 import { useDispatch, useSelector } from 'react-redux';
-import { commonActionWithoutApi, commonAction } from 'Actions';
+import {
+  commonActionWithoutApi,
+  commonAction,
+  commonActionUpdate,
+} from 'Actions';
 import endpoint from 'Config/endpoint';
 
 import endpointWithoutApi from 'Config/endpointWithoutApi';
@@ -230,9 +234,10 @@ const OfficeProfileForm = (props) => {
         })
       );
     }
+    return dispatch(commonActionUpdate(endpoint.master.cities, null));
   }, [isCreateOffice ? getValues('countryCode') : selectedItem?.countryCode]);
 
-  // useEffect(() => setDropDownDefaultValue(), [countriesList.dropDownItems]);
+  // useEffect(() => dispatch(commonActionUpdate(endpoint.master.cities, null)), []);
 
   const onSubmit = (data, e) => {
     console.log('data', data);
