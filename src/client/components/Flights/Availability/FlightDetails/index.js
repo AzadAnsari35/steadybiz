@@ -16,6 +16,7 @@ import DashedLine from "Widgets/DashedLine/index";
 import Dot from "Widgets/Dot/index";
 import Line from "Widgets/Line/index";
 import Text from "Widgets/Text/index";
+import { Image } from "Widgets";
 
 import "./style.scss";
 
@@ -142,11 +143,13 @@ const FlightSegmentGroup = (props) => {
         </div>
         <div className="FlightSegmentGroup-right__flightInformation">
           <div className="flight-info d-flex align-items-center">
-            {/* <img
-              src=""
+            <Image
               className="airline-icon"
-            /> */}
-            <FlightIcon className="airline-icon" style={{ transform: "rotate(90deg)" }} />
+              altText={segmentGroupArray[index].airlineDetails.marketingAirline}
+              imgName={`${segmentGroupArray[index].airlineDetails.marketingAirline}.png`}
+              imgPath="images/airlines/newIcons"
+              fallbackImgName="airlineDefault.png"
+            />
             <AirlineText
               showBorder
               text={!!masterAirlines && getAirlineName(masterAirlines, segmentGroupArray[index].airlineDetails.marketingAirline)}
