@@ -99,6 +99,7 @@ const PopoverAction = (props) => {
       case 'search': {
         history.push(routes.office.searchOfficeUser);
         utils.setItemToStorage('selectedOffice', rowNumber);
+        dispatch(commonActionUpdate(endpoint.office.searchUser, null));
 
         break;
       }
