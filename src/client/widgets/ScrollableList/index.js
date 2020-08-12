@@ -27,7 +27,6 @@ const Airline = props => {
           fallbackImgName="airlineBgDefault.png"
           style={{ height: '100%', width: '100%' }}
         />
-
       </div>
       <div className="airline-content d-flex flex-direction-column justify-content-around">
         <Text className="font-primary-semibold-12" text={airlineName} />

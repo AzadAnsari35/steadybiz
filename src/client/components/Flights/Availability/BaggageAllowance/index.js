@@ -1,13 +1,25 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Grid } from "@material-ui/core";
 import FlightIcon from '@material-ui/icons/Flight';
 
-import { Chip, Text } from "Widgets";
+import { getAirlineName } from "Helpers/flight.helpers";
+import { getDataFromRedux } from "Helpers/global";
+import endpoint from "Config/endpoint";
+
+import { Chip, Image, Text } from "Widgets";
 
 import "./style.scss";
 
 const BaggageAllowance = props => {
   const { itinerary } = props;
+  const masterAirlinesResponse = useSelector(
+    (state) => state[endpoint.master.airlines.reducerName]
+  );
+
+  const masterAirlines =
+    !!getDataFromRedux(masterAirlinesResponse) &&
+    getDataFromRedux(masterAirlinesResponse).data;
 
   return (
     <div className="BaggageAllowance d-flex">
@@ -27,11 +39,21 @@ const BaggageAllowance = props => {
             </Chip>
             <div className="BaggageAllowance-content height-100">
               <div className="BaggageAllowance-airline d-inline-flex align-items-center">
-                <div className="BaggageAllowance-airline__icon" />
+                <div className="BaggageAllowance-airline__icon d-flex justify-content-center align-items-center">
+                  <Image
+                    altText={segment.flightSegmentGroup[0].airlineDetails.marketingAirline}
+                    imgName={`${segment.flightSegmentGroup[0].airlineDetails.marketingAirline}.png`}
+                    imgPath="images/airlines/bigicons"
+                    fallbackImgName="airlineBgDefault.png"
+                    style={{ height: '100%', width: '100%' }}
+                  />
+                </div>
                 <div className="BaggageAllowance-airline__name">
                   <Text
                     className="font-primary-medium-16"
-                    text={segment.flightSegmentGroup[0].airlineDetails.marketingAirline}
+                    text={!!masterAirlines &&
+                      getAirlineName(masterAirlines, segment.flightSegmentGroup[0].airlineDetails.marketingAirline)
+                    }
                   />
                   <Text
                     className="font-primary-regular-15"
