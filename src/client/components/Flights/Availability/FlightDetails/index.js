@@ -7,7 +7,7 @@ import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 
 import colors from "Constants/colors";
 import { displayImage } from "Helpers/utils";
-import { changeDateFormat, convertIntoTime, extractTime, getDataFromRedux } from "Helpers/global";
+import { changeDateFormat, convertIntoTime, extractTime, getDataFromRedux, convertDurationIntoHourAndMinutes } from "Helpers/global";
 import { getCabinClassName, getAirlineName } from "Helpers/flight.helpers";
 import endpoint from "Config/endpoint";
 
@@ -84,9 +84,9 @@ const FlightSegmentGroup = (props) => {
           <Text
             className="font-primary-regular-16"
             style={{ opacity: "0.5" }}
-            text={extractTime(
+            text={convertDurationIntoHourAndMinutes(extractTime(
               segmentGroupArray[index].arrivalDetails.flightDuration
-            )}
+            ))}
           />
         </div>
         <div>
@@ -253,13 +253,13 @@ const FlightSegmentGroup = (props) => {
         <div>
           <Text
             className="font-primary-bold-16"
-            text={segmentGroupArray[0].arrivalDetails.airportName}
+            text={segmentGroupArray[index].arrivalDetails.airportName}
           />
           <div className="d-flex">
             <Text
               className="font-primary-regular-14 pr-8"
-              text={segmentGroupArray[0].arrivalDetails.terminal
-                ? `Terminal ${segmentGroupArray[0].arrivalDetails.terminal}`
+              text={segmentGroupArray[index].arrivalDetails.terminal
+                ? `Terminal ${segmentGroupArray[index].arrivalDetails.terminal}`
                 : "Terminal"
               }
             />
