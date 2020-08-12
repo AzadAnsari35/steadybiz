@@ -19,6 +19,7 @@ export const actionTypeConstant = {
     objectStatuses: 'master.objectStatuses',
     airlines: 'master.airlines',
     allCities: 'master.allCities',
+    settlementPlans: 'master.settlementPlans',
   },
   office: {
     searchUser: 'office.searchUser',

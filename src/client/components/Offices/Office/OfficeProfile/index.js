@@ -94,6 +94,9 @@ const OfficeProfileForm = (props) => {
     (state) => state.masterCities?.items?.data?.data
   );
 
+  const settlementPlans =
+    useSelector((state) => state.masterSettlementPlans?.items?.data) || [];
+
   console.log('citiesList', citiesList);
 
   const countriesList = useDropDown(
@@ -110,12 +113,6 @@ const OfficeProfileForm = (props) => {
 
   const countriesDialCodeList = useDropDown(
     endpoint.master.countries,
-    dropDownParam.countriesDialCode,
-    'masterCountries'
-  );
-
-  const allCities = useDropDown(
-    endpoint.master.allCities,
     dropDownParam.countriesDialCode,
     'masterCountries'
   );
@@ -236,6 +233,12 @@ const OfficeProfileForm = (props) => {
     }
     return dispatch(commonActionUpdate(endpoint.master.cities, null));
   }, [isCreateOffice ? getValues('countryCode') : selectedItem?.countryCode]);
+
+  const getSettlementPlans = () => {
+    dispatch(commonAction(endpoint.master.settlementPlans));
+  };
+
+  useEffect(() => getSettlementPlans(), []);
 
   // useEffect(() => dispatch(commonActionUpdate(endpoint.master.cities, null)), []);
 
@@ -490,20 +493,7 @@ const OfficeProfileForm = (props) => {
                     name="paymentOptions[0]"
                     register={register}
                     disabled={isViewOffice}
-                    checkboxes={[
-                      {
-                        primaryLabel: 'Advance Deposit',
-                        value: 'advanceDeposit',
-                      },
-                      {
-                        value: 'creditCard',
-                        primaryLabel: 'Credit Card',
-                      },
-                      {
-                        value: 'bankGuarantee',
-                        primaryLabel: 'Bank Guarantee',
-                      },
-                    ]}
+                    checkboxes={settlementPlans || []}
                   ></CheckboxGroup>
                 </Grid>
 

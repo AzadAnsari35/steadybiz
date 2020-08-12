@@ -39,7 +39,8 @@ const rootReducer = combineReducers({
   ),
   passengerInformationData: createFilteredReducer(
     reducerState,
-    (action) => action.type === actionTypeConstant.common.passengerInformationData
+    (action) =>
+      action.type === actionTypeConstant.common.passengerInformationData
   ),
   transaction: createFilteredReducer(
     reducerState,
@@ -65,6 +66,10 @@ const rootReducer = combineReducers({
   masterCities: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.master.cities
+  ),
+  masterSettlementPlans: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.master.settlementPlans
   ),
   masterObjectStatuses: createFilteredReducer(
     reducerState,

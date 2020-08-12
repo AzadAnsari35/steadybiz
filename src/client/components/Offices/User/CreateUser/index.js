@@ -54,8 +54,7 @@ const CreateUserForm = () => {
   const countriesDialCodeList = useDropDown(
     endpoint.master.countries,
     dropDownParam.countriesDialCode,
-    'masterCountries',
-    countriesDialCodeFormatter
+    'masterCountries'
   );
 
   const dispatch = useDispatch();
@@ -83,6 +82,7 @@ const CreateUserForm = () => {
         reset({
           officeId: selectedItem.officeId,
           officeName: selectedItem.officeName,
+          status: objectStatusesList.dropDownItems[3],
         });
       } else {
         console.log('selectedSession');
