@@ -86,10 +86,12 @@ export const returnFilterTimeSlot = (searchItem, list, keyName) => {
   return list;
 };
 export const returnSortArray = (list, sortType, sortOrder) => {
-  console.log(sortType);
+  console.log('sss',sortType);
+  //sortType='duration';
   return list.sort(function (a, b) {
     var x = a.totalfareDetails.totalAmount,
       y = b.totalfareDetails.totalAmount;
+      
     switch (sortType) {
       case 'airline': {
         x =
@@ -102,15 +104,29 @@ export const returnSortArray = (list, sortType, sortOrder) => {
       }
       case 'departure': {
         x = moment(a.flightSegments[0].dateTime).format('X');
-        y = moment(a.flightSegments[0].dateTime).format('X');
+        y = moment(b.flightSegments[0].dateTime).format('X');
 
         break;
       }
       case 'arrival': {
         
-        x = moment(a.flightSegments[a.flightSegments.length-1].dateTime).format('X');
-        y = moment(a.flightSegments[a.flightSegments.length-1].dateTime).format('X');
-
+      x = moment(
+          a.flightSegments[0].flightSegmentGroup[
+            a.flightSegments[0].flightSegmentGroup.length - 1
+          ].arrivalDetails.date +'T'+
+            a.flightSegments[0].flightSegmentGroup[
+              a.flightSegments[0].flightSegmentGroup.length - 1
+            ].arrivalDetails.time
+        ).format('X');
+      
+ y = moment(
+          b.flightSegments[0].flightSegmentGroup[
+            b.flightSegments[0].flightSegmentGroup.length - 1
+          ].arrivalDetails.date +'T'+
+            b.flightSegments[0].flightSegmentGroup[
+              b.flightSegments[0].flightSegmentGroup.length - 1
+            ].arrivalDetails.time
+        ).format('X');
         
         break;
       }
@@ -124,6 +140,7 @@ export const returnSortArray = (list, sortType, sortOrder) => {
 
         x = +aTimeRange[0] * 60 + +aTimeRange[1];
         y = +bTimeRange[0] * 60 + +bTimeRange[1];
+        //console.log(x);
       }
     }
     // if (currentSort == 'HotelName') {
