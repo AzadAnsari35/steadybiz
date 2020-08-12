@@ -14,6 +14,7 @@ import {
   SimplePopover,
   PrimaryTable,
   PrimaryTableHeader,
+  IconWithBackground,
 } from 'Widgets';
 import routes from 'Constants/routes';
 import { useHistory } from 'react-router-dom';
@@ -27,6 +28,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam } from 'Constants/commonConstant';
+import CachedIcon from '@material-ui/icons/Cached';
 
 import './style.scss';
 
@@ -106,6 +108,15 @@ const PopoverAction = (props) => {
   );
 };
 
+const defaultValues = {
+  firstName: '',
+  lastName: '',
+  emailId: '',
+  objectStatus: '',
+  mobile: '',
+  mobileDialCode: '',
+};
+
 const SearchUser = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [page, setPage] = useState(1);
@@ -165,11 +176,11 @@ const SearchUser = () => {
     }
   };
 
-  const { register, handleSubmit, errors, control, getValues } = useForm({
-    defaultValues: {
-      status: { label: 'Active', value: 'Active' },
-    },
-  });
+  const { register, handleSubmit, errors, control, getValues, reset } = useForm(
+    {
+      defaultValues,
+    }
+  );
 
   useEffect(() => {
     getOfficeDetail();
@@ -231,10 +242,23 @@ const SearchUser = () => {
     setReqeustJson(data);
   };
 
+  const handleReset = () => {
+    reset(defaultValues);
+  };
+
   return (
     <div className="SearchUser">
       <div className="SearchUser-head">
-        <div className="font-primary-semibold-24 pb-4">MANAGE USERS</div>
+        <div className="d-flex justify-content-between align-items-end pb-4">
+          <div className="font-primary-semibold-24 pb-4">MANAGE USERS</div>
+          <IconWithBackground
+            bgColor="#74D3DC33"
+            showCursor
+            onClick={handleReset}
+          >
+            <CachedIcon style={{ color: '#74D3DC' }} />
+          </IconWithBackground>
+        </div>
         <div className="horizontal-grey-divider"></div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Text

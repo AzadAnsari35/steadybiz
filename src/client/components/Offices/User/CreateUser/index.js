@@ -71,36 +71,39 @@ const CreateUserForm = () => {
   const [createRes, postCreateRequest] = createEndpoint();
 
   const getOfficeDetail = () => {
-    const selectedOffice = utils.getItemFromStorage('selectedOffice') || '';
-    console.log('selectedOffice', selectedOffice);
+    if (!!objectStatusesList.dropDownItems) {
+      const selectedOffice = utils.getItemFromStorage('selectedOffice') || '';
+      console.log('selectedOffice', selectedOffice);
 
-    if (Number.isInteger(parseInt(selectedOffice)) && searchResult.data) {
-      let selectedItem = searchResult.data[selectedOffice] || {};
-      console.log('selectedcreate', selectedItem);
+      if (Number.isInteger(parseInt(selectedOffice)) && searchResult.data) {
+        let selectedItem = searchResult.data[selectedOffice] || {};
+        console.log('selectedcreate', selectedItem);
 
-      setOfId(selectedItem.ofId);
-      reset({
-        officeId: selectedItem.officeId,
-        officeName: selectedItem.officeName,
-      });
-    } else {
-      console.log('selectedSession');
+        setOfId(selectedItem.ofId);
+        reset({
+          officeId: selectedItem.officeId,
+          officeName: selectedItem.officeName,
+        });
+      } else {
+        console.log('selectedSession');
 
-      const {
-        userDto: {
-          officeDto: { officeName, officeId, ofId },
-        },
-      } = JSON.parse(utils.getItemFromStorage('userData'));
+        const {
+          userDto: {
+            officeDto: { officeName, officeId, ofId },
+          },
+        } = JSON.parse(utils.getItemFromStorage('userData'));
 
-      setOfId(ofId);
-      reset({
-        officeId,
-        officeName,
-      });
+        setOfId(ofId);
+        reset({
+          officeId,
+          officeName,
+          status: objectStatusesList.dropDownItems[3],
+        });
+      }
     }
   };
 
-  useEffect(() => getOfficeDetail(), []);
+  useEffect(() => getOfficeDetail(), [objectStatusesList.dropDownItems]);
 
   useEffect(() => {
     if (createRes !== null) {
@@ -281,6 +284,7 @@ const CreateUserForm = () => {
                   errors={errors}
                   // validation={{ required: 'Please enter the status' }}
                   width="auto"
+                  disabled
                 />
               </Grid>
             </Grid>

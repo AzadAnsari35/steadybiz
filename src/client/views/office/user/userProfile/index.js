@@ -40,7 +40,7 @@ const UserProfile = () => {
         headerActionContent={
           <IconWithBackground
             bgColor={colors.lightRed}
-            onClick={() => history.push('/office/user/search-user')}
+            onClick={() => history.push(routes.office.searchOfficeUser)}
             showCursor
           >
             <CloseIcon style={{ color: colors.red }} />
