@@ -90,7 +90,9 @@ const Availability = () => {
   const handleSelectOption = (value, id) => {
     setSortingOption(value);
   }
-
+const parentFilterDataCallback=(data)=>{
+      setFilteredItineraries(data);
+}
   return (
     <div className="Availability">
       <div className="Availability-modifySearch layout-wrapper">
@@ -116,14 +118,15 @@ const Availability = () => {
           loaderStatus.items && !loaderStatus.items.data.isLoaderVisible ? "adjust-padding" : ""
         }`}
       >
-        {!!filteredItineraries && filteredItineraries.length > 0 &&
+        {!!itineraries && itineraries.length > 0 &&
           <Grid container spacing={4}>
             <Grid item xs={12} md={3}>
               <div className="Availability-mainSection__filtersContainer">
-                {!!flightSegmentType && !!filteredItineraries && filteredItineraries.length > 0 &&
-                  <Filters
+                {!!flightSegmentType && !!itineraries && itineraries.length > 0 &&
+                  <Filters sortingOption={sortingOption}
+                  parentFilterDataCallback={parentFilterDataCallback}
                     flightSegmentType={!!flightSegmentType && flightSegmentType}
-                    outboundItinerary={!!filteredItineraries && filteredItineraries}
+                    outboundItinerary={!!itineraries && itineraries}
                   />
                 }
               </div>
