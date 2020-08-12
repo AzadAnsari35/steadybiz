@@ -133,7 +133,12 @@ const parentFilterDataCallback=(data)=>{
             </Grid>
             <Grid item xs={12} md={9}>
               <div className="Availability-mainSection__lowestFareFlightsSection">
-                <ScrollableList />
+                {!!totalfareDetails && !!itineraries &&
+                  <ScrollableList
+                    results={itineraries}
+                    currency={totalfareDetails.totalAmountCurrency}
+                  />
+                }
               </div>
               <div className="Availability-mainSection__resultsContainer">
                 <div className="info-sort-section d-flex justify-content-between align-items-center">

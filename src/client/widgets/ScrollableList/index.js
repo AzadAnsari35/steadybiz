@@ -1,36 +1,59 @@
 import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
-import FlightIcon from "@material-ui/icons/Flight";
+import { useSelector } from "react-redux";
 
+import { getFiltersData, getAirlineName } from 'Helpers/flight.helpers';
 import colors from "Constants/colors";
+import endpoint from "Config/endpoint";
+import { getDataFromRedux } from "Helpers/global";
 
-import { Text } from "Widgets";
+import { Image, Text } from "Widgets";
 
 import "./style.scss";
 
 const Airline = props => {
-  const { airlineName, count, price, currency } = props;
+  const { airlineCode, airlineName, count, price, currency } = props;
   return (
     <div className="airline-container d-flex">
       <div
         className="airline-icon d-flex justify-content-center align-items-center"
-        style={{ width: "46px", height: "46px", borderRadius: "4px", backgroundColor: colors.gray, marginRight: "12px" }}
+        style={{ width: "46px", height: "46px", borderRadius: "4px", marginRight: "12px" }}
       >
-        <FlightIcon
-          style={{ transform: "rotate(90deg)", color: colors.white }}
+        <Image
+          altText={airlineCode}
+          imgName={`${airlineCode}.png`}
+          imgPath="images/airlines/bigicons"
+          fallbackImgName="airlineBgDefault.png"
+          style={{ height: '100%', width: '100%' }}
         />
+
       </div>
-      <div className="airline-content d-flex flex-direction-column">
+      <div className="airline-content d-flex flex-direction-column justify-content-around">
         <Text className="font-primary-semibold-12" text={airlineName} />
-        <Text className="font-primary-semibold-10" text={`${count} Flights`} />
+        {/* <Text className="font-primary-semibold-10" text={`${count} Flights`} /> */}
         <Text className="font-primary-semibold-12" text={`${currency} ${price}`} style={{ color: colors.biscay }} />
       </div>
     </div>
   )
 };
 
-const ScrollableList = () => {
+const ScrollableList = props => {
+  const { results, currency } = props;
+  
+  const masterAirlinesResponse = useSelector(
+    (state) => state[endpoint.master.airlines.reducerName]
+  );
+
+  const masterAirlines =
+    !!getDataFromRedux(masterAirlinesResponse) &&
+    getDataFromRedux(masterAirlinesResponse).data;
+
+  const {
+    airlinesData,
+  } = !!results && getFiltersData(results);
+  
+  
   return (
     <div className="ScrollableList d-flex justify-content-center">
       <AppBar position="static" color="default">
@@ -41,13 +64,19 @@ const ScrollableList = () => {
           textColor="primary"
           aria-label="scrollable force tabs example"
         >
-          <Airline airlineName="Lufhtansa" count="10" price="4,000" currency="AED" />
-          <Airline airlineName="Air Asia" count="10" price="4,500" currency="AED" />
-          <Airline airlineName="American Airlines" count="04" price="5,000" currency="AED" />
-          <Airline airlineName="Air Lingus" count="08" price="5,500" currency="AED" />
-          <Airline airlineName="KLM" count="15" price="6,000" currency="AED" />
-          <Airline airlineName="Emirates" count="09" price="6,600" currency="AED" />
-          <Airline airlineName="Etihad" count="14" price="7,000" currency="AED" />
+          {!!airlinesData &&
+            Object.keys(airlinesData).map((airline, index) => {
+              return (
+                <Airline
+                  key={index}
+                  airlineCode={airline}
+                  airlineName={!!masterAirlines && getAirlineName(masterAirlines, airline)}
+                  count="14"
+                  price={airlinesData[airline]}
+                  currency={currency}
+                />
+              )
+            })}
         </Tabs>
       </AppBar>
     </div>
