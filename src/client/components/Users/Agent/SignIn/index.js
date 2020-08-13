@@ -28,10 +28,10 @@ const SignInForm = (props) => {
 
   const postLogin = () => {
     console.log('apiResponse', apiResponse);
-    if (!!apiResponse.items && !!apiResponse.items.data) {
+    if (!!apiResponse.items) {
       const errMsg = utils.checkError(apiResponse.items);
 
-      console.log('errMsg'), errMsg;
+      console.log('errMsg', errMsg);
 
       if (errMsg !== '')
         dispatch(
@@ -41,7 +41,7 @@ const SignInForm = (props) => {
             isToastVisible: true,
           })
         );
-      else {
+      else if (!!apiResponse.items.data && errMsg === '') {
         const responseJson = apiResponse.items.data;
         utils.setItemToStorage('userToken', responseJson.token);
         utils.setItemToStorage('userId', responseJson.userDto.userId);

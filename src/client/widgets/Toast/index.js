@@ -28,7 +28,7 @@ const Toast = (props) => {
     toastData?.items?.data || {};
 
   useEffect(() => {
-    if (removeAfterNumberOfSeconds) {
+    if (isToastVisible) {
       setTimeout(() => {
         dispatch(
           commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
@@ -37,7 +37,7 @@ const Toast = (props) => {
         );
       }, removeAfterNumberOfSeconds * 1000);
     }
-  }, []);
+  }, [isToastVisible]);
 
   const handleCloseToastClick = () => {
     dispatch(

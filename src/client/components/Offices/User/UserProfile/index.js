@@ -78,64 +78,106 @@ const UserProfileForm = (props) => {
   const searchOffice =
     useSelector((state) => state.searchOffice?.items?.data) || [];
 
-  let selectedItem = searchResult.data[rowNumber] || {};
+  let selectedItem =
+    (Number.isInteger(parseInt(rowNumber)) && searchResult?.data[rowNumber]) ||
+    {};
   console.log('selectedItem', selectedItem);
 
-  let userId = selectedItem.userId;
+  let userId = selectedItem.userId || utils.getItemFromStorage('userId');
 
   const [updateRes, postUpdateRequest] = updateEndpoint();
 
   const setDefaultValue = () => {
-    const selectedOffice = utils.getItemFromStorage('selectedOffice') || '';
-    let officeId = '';
-    let officeName = '';
+    if (!isManageProfile) {
+      const selectedOffice = utils.getItemFromStorage('selectedOffice') || '';
+      let officeId = '';
+      let officeName = '';
 
-    if (Number.isInteger(parseInt(selectedOffice)) && searchOffice.data) {
-      let selectedItem = searchOffice.data[selectedOffice] || {};
-      console.log('selected', selectedItem);
+      if (Number.isInteger(parseInt(selectedOffice)) && searchOffice.data) {
+        let selectedItem = searchOffice.data[selectedOffice] || {};
+        console.log('selected', selectedItem);
 
-      officeId = selectedItem.officeId;
-      officeName = selectedItem.officeName;
-    } else {
-      const {
-        userDto: { officeDto },
-      } = JSON.parse(utils.getItemFromStorage('userData'));
+        officeId = selectedItem.officeId;
+        officeName = selectedItem.officeName;
+      } else {
+        const {
+          userDto: { officeDto },
+        } = JSON.parse(utils.getItemFromStorage('userData'));
 
-      console.log('userId', userId);
-      officeId = officeDto.officeId;
-      officeName = officeDto.officeName;
+        console.log('userId', userId);
+        officeId = officeDto.officeId;
+        officeName = officeDto.officeName;
+      }
+
+      if (
+        countriesDialCodeList.dropDownItems !== null &&
+        objectStatusesList.dropDownItems != null
+      ) {
+        const {
+          firstName,
+          lastName,
+          title,
+          mobile,
+          emailId,
+          objectStatusDesc,
+          securityGroup,
+        } = selectedItem;
+        console.log('selectedItem', selectedItem);
+        reset({
+          firstName,
+          lastName,
+          title: titles.findItem(title),
+          mobile: mobile.split('-')[1],
+          mobileDialCode: countriesDialCodeList.dropDownItems.findItem(
+            mobile.split('-')[0]
+          ),
+          emailId,
+          status: objectStatusesList.dropDownItems.findItem(
+            objectStatusDesc.toUpperCase(),
+            'label'
+          ),
+          securityGroup: securityGroups.findItem(securityGroup),
+          officeId,
+          officeName,
+        });
+      }
     }
+  };
 
+  const setManageProfileDefaultValue = () => {
     if (
-      countriesDialCodeList.dropDownItems !== null &&
-      objectStatusesList.dropDownItems != null
+      isManageProfile &&
+      !!countriesDialCodeList.dropDownItems &&
+      !!objectStatusesList.dropDownItems
     ) {
       const {
-        firstName,
-        lastName,
-        title,
-        mobile,
-        emailId,
-        objectStatusDesc,
-        securityGroup,
-      } = selectedItem;
-      console.log('selectedItem', selectedItem);
+        userDto: {
+          officeDto,
+          firstName,
+          lastName,
+          title,
+          emailId,
+          objectStatusId,
+          securityGroup,
+        },
+      } = JSON.parse(utils.getItemFromStorage('userData'));
+
       reset({
         firstName,
         lastName,
         title: titles.findItem(title),
-        mobile: mobile.split('-')[1],
+        mobile: officeDto.mobile.split('-')[1],
         mobileDialCode: countriesDialCodeList.dropDownItems.findItem(
-          mobile.split('-')[0]
+          officeDto.mobile.split('-')[0]
         ),
         emailId,
         status: objectStatusesList.dropDownItems.findItem(
-          objectStatusDesc.toUpperCase(),
-          'label'
+          objectStatusId,
+          'value'
         ),
-        securityGroup: securityGroups.findItem(securityGroup),
-        officeId,
-        officeName,
+        securityGroup: securityGroups.findItem(securityGroup || 'Admin'),
+        officeId: officeDto.officeId,
+        officeName: officeDto.officeName,
       });
     }
   };
@@ -160,6 +202,14 @@ const UserProfileForm = (props) => {
             isToastVisible: true,
           })
         );
+        if (isManageProfile) {
+          const userData = JSON.parse(utils.getItemFromStorage('userData'));
+          userData.userDto.officeDto.mobile = updateRes.data.data.mobile;
+          utils.setItemToStorage('userData', JSON.stringify(userData));
+          console.log('response', updateRes);
+
+          console.log('userData', userData);
+        }
       }
     }
   }, [updateRes]);
@@ -169,11 +219,16 @@ const UserProfileForm = (props) => {
     objectStatusesList.dropDownItems,
   ]);
 
+  useEffect(() => setManageProfileDefaultValue(), [
+    countriesDialCodeList.dropDownItems,
+    objectStatusesList.dropDownItems,
+  ]);
+
   const onSubmit = (data, e) => {
     console.log('data', data);
+    console.log('userId', userId);
 
-    if (isUpdateUser) {
-      console.log('userId', userId);
+    if (isUpdateUser || isManageProfile) {
       postUpdateRequest(
         {
           ...data,
@@ -183,6 +238,17 @@ const UserProfileForm = (props) => {
         endpoint.office.createUser
       );
     }
+
+    // if (isManageProfile) {
+    //   postUpdateRequest(
+    //     {
+    //       ...data,
+    //       action: 'U',
+    //       userId: JSON.parse(utils.getItemFromStorage('userId')),
+    //     },
+    //     endpoint.office.createUser
+    //   );
+    // }
   };
 
   return (
