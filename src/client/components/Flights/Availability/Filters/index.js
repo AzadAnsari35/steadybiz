@@ -55,6 +55,13 @@ const StopsHtml = (props) => {
         'oneStopFlighstMinPrice',
         'twoStopFlighstMinPrice',
       ].map((item, index) => (
+         <div
+            style={{
+              display: activeTab == segmentType ? 'block' : 'none',
+            }}
+            key={index}
+            className="mb-20"
+          >
         <CustomCheckbox
           onChange={setStops}
           useReactHookForm={false}
@@ -71,6 +78,7 @@ const StopsHtml = (props) => {
               : ''
           }
         />
+        </div>
       ))}
     </Fragment>
   );
