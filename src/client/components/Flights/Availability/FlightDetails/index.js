@@ -178,12 +178,12 @@ const FlightSegmentGroup = (props) => {
             />
           </div>
           <div>
-            {/* Add operating Airline logic for text */}
             <AirlineText
               text={
-                segmentGroupArray[index].airlineDetails.marketingAirline !==
-                  segmentGroupArray[index].airlineDetails.operatingAirline &&
-                `Operated by ${segmentGroupArray[index].airlineDetails.operatingAirline}`
+                `Operated by ${
+                  !!masterAirlines &&
+                  getAirlineName(masterAirlines, segmentGroupArray[index].airlineDetails.operatingAirline)
+                }`
               }
             />
           </div>

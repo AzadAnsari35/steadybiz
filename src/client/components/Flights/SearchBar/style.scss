@@ -2,6 +2,11 @@
 $root: ".SearchBar";
 
 #{$root} {
+  .MultiSelect {
+    .react-select-container {
+      font-family: "Montserrat SemiBold";
+    }
+  }
   &-basicSearch {
     margin-bottom: 16px;
     .MultiSelect {

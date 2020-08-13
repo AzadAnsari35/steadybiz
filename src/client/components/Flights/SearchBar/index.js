@@ -37,7 +37,7 @@ const segmentTypes = [
 const cabinClasses = [
   { value: "F", label: "First" },
   { value: "J", label: "Business" },
-  { value: "P", label: "Premium Economy" },
+  { value: "W", label: "Premium Economy" },
   { value: "Y", label: "Economy" },
 ];
 
