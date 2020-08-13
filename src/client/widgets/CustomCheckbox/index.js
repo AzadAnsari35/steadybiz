@@ -21,6 +21,7 @@ const CustomCheckbox = (props) => {
     disabled = false,
     useReactHookForm = true,
     onChange,
+    checkedValues = [],
   } = props;
   // const [checked, setChecked] = useState(false);
 
@@ -35,6 +36,7 @@ const CustomCheckbox = (props) => {
         name={name}
         inputRef={register}
         disabled={disabled}
+        checked={checkedValues.includes(value)}
         icon={
           <div
             className={`CustomCheckbox-icon ${

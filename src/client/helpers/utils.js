@@ -49,6 +49,7 @@ export const appendHeader = (endpoint) => {
   };
 };
 export const checkError = (apiResponse) => {
+  console.log('checkError', apiResponse);
   if (!apiResponse.status) {
     return apiResponse.error.message;
   } else return '';
