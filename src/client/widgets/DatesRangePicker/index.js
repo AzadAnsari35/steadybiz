@@ -26,9 +26,6 @@ const DatesRangePicker = props => {
 
   const setDateSelection = () => {
     setFocusedInput(null);
-    if (!dates.startDate || !dates.endDate) {
-      onDateChange(moment(), moment().add(1, "days"));
-    }
   };
 
   const handleDateReset = () => {
@@ -53,45 +50,47 @@ const DatesRangePicker = props => {
   return (
     <div className="DatesRangePicker">
       {!enableSingleDatePicker ?
-        <DateRangePicker
-          startDateId="startDate"
-          endDateId="endDate"
-          startDatePlaceholderText="Departure Date"
-          endDatePlaceholderText="Return Date"
-          startDate={dates.startDate}
-          endDate={dates.endDate}
-          anchorDirection="right"
-          customInputIcon={<DepartureDateIcon />}
-          daySize={60}
-          displayFormat="DD MMM YYYY"
-          focusedInput={focusedInput}
-          hideKeyboardShortcutsPanel
-          keepOpenOnDateSelect
-          navPrev={
-            <ArrowIcon
-              size={18}
-              color={colors.royalBlue}
-              orientation={180}
-            />
-          }
-          navNext={
-            <ArrowIcon
-              size={18}
-              color={colors.royalBlue}
-            />
-          }
-          noBorder
-          readOnly
-          weekDayFormat="ddd"
-          onFocusChange={(focusedInput) => {
-            setFocusedInput(focusedInput);
-          }}
-          onDatesChange={({ startDate, endDate }) => {
-            onDateChange(startDate, endDate);
-          }}
-          renderCalendarInfo={renderCalendarBottomInfo}
-          onClose={setDateSelection}
-        /> :
+        <>
+          <DateRangePicker
+            startDateId="startDate"
+            endDateId="endDate"
+            startDatePlaceholderText="Departure Date"
+            endDatePlaceholderText="Return Date"
+            startDate={dates.startDate}
+            endDate={dates.endDate}
+            anchorDirection="right"
+            customInputIcon={<DepartureDateIcon />}
+            daySize={60}
+            displayFormat="DD MMM YYYY"
+            focusedInput={focusedInput}
+            hideKeyboardShortcutsPanel
+            keepOpenOnDateSelect
+            navPrev={
+              <ArrowIcon
+                size={18}
+                color={colors.royalBlue}
+                orientation={180}
+              />
+            }
+            navNext={
+              <ArrowIcon
+                size={18}
+                color={colors.royalBlue}
+              />
+            }
+            noBorder
+            readOnly
+            weekDayFormat="ddd"
+            onFocusChange={(focusedInput) => {
+              setFocusedInput(focusedInput);
+            }}
+            onDatesChange={({ startDate, endDate }) => {
+              onDateChange(startDate, endDate);
+            }}
+            renderCalendarInfo={renderCalendarBottomInfo}
+            onClose={setDateSelection}
+          />
+        </> :
         <>
           <SingleDatePicker
             id="startDate"

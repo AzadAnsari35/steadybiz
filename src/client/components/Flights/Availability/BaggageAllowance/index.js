@@ -37,7 +37,7 @@ const BaggageAllowance = props => {
                 text={segment.flightSegmentGroup[segment.flightSegmentGroup.length - 1].arrivalDetails.cityName}
               />
             </Chip>
-            <div className="BaggageAllowance-content height-100">
+            <div className={`BaggageAllowance-content height-100 ${itinerary.flightSegments.length === 1 ? "no-border" : ""} `}>
               <div className="BaggageAllowance-airline d-inline-flex align-items-center">
                 <div className="BaggageAllowance-airline__icon d-flex justify-content-center align-items-center">
                   <Image

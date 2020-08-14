@@ -31,7 +31,8 @@ const FlightSummary = (props) => {
     departureDate = changeDateFormat(flightSearchRQ.originDestination[0].originDate);
     arrivalAirportCode = flightSearchRQ.originDestination[0].destinationAirportCode;
     arrivalCityName = flightSearchRQ.originDestination[0].destinationAirport.subTitle.split(",")[0],
-    arrivalDate = changeDateFormat(flightSearchRQ.originDestination[0].destinationDate);
+    arrivalDate = !!flightSearchRQ.originDestination[0].destinationDate &&
+      changeDateFormat(flightSearchRQ.originDestination[0].destinationDate);
     cabinClass = getCabinClassName(flightSearchRQ.cabinCode);
     flightSearchRQ.passengerList.passenger.map(item => {
       passengerCountAndType.push(`${item.count} ${getPassengerTypeName(item.PTC)}`)

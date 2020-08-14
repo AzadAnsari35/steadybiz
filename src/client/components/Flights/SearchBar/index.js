@@ -114,12 +114,13 @@ const SearchBar = () => {
   const [expandAdvanceSearch, setExpandAdvanceSearch] = useToggle(false);
   const [isPassengerCountDropdownOpen, setIsPassengerCountDropdownOpen] = useToggle(false);
   const [flightDates, setFlightDates] = useState(flightInitialDates);
-  const { handleSubmit,control } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues: {
-      segmentTypes: defaultSegmentType,
       cabinClasses: defaultCabinClass,
     },
   });
+
+  const [segmentType, setSegmentType] = useState(defaultSegmentType);
 
   const [passengers, setPassengers] = useState(passengerTypes);
 
@@ -144,14 +145,28 @@ const SearchBar = () => {
       ...formData,
       [id]: value,
     });
-  }
+  };
 
   const handleFlightDates = (startDate, endDate) => {
     let flightDate = { ...flightDates };
-    flightDate.startDate = startDate;
-    flightDate.endDate = endDate;
+    if (segmentType.value === "OW") {
+      flightDate.startDate = startDate;
+    } else {
+      flightDate.startDate = startDate;
+      flightDate.endDate = endDate;
+    }
     setFlightDates(flightDate);
   };
+
+  const handleSelectOption = (value, id) => {
+    if (value.value === "RT") {
+      setFlightDates({
+        ...flightDates,
+        endDate: moment(flightDates.startDate).add(1, "days"),
+      });
+    }
+    setSegmentType(value);
+  }
 
   const onSubmit = (data, e) => {
     const passengersData = passengers.filter(passenger => passenger.count > 0);
@@ -173,7 +188,9 @@ const SearchBar = () => {
             originDate: moment(flightDates.startDate).format("YYYY-MM-DD"),
             destinationAirportCode: formData.arrivalAirport.code,
             destinationAirport: formData.arrivalAirport,
-            destinationDate: moment(flightDates.endDate).format("YYYY-MM-DD"),
+            destinationDate: segmentType.value !== "OW"
+              ? moment(flightDates.endDate).format("YYYY-MM-DD")
+              : "",
           }
         ],
       },
@@ -196,9 +213,11 @@ const SearchBar = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="SearchBar-basicSearch d-flex">
           <MultiSelect
-            control={control}
             name="segmentTypes"
             options={segmentTypes}
+            defaultValue={segmentType}
+            useReactHookForm={false}
+            onSelectChange={handleSelectOption}
           />
           <MultiSelect
             control={control}
@@ -254,11 +273,9 @@ const SearchBar = () => {
             </Grid>
             <Grid item xs={12} md={4}>
               <DatesRangePicker
-                // control={control}
-                // name="flightDates"
                 dates={flightDates}
                 onDateChange={handleFlightDates}
-                // enableSingleDatePicker
+                enableSingleDatePicker={segmentType.value === "OW"}
               />
             </Grid>
           </Grid>
