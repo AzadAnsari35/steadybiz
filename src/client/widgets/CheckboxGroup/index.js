@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const CheckboxGroup = (props) => {
-  const { label, checkboxes, name, register, disabled } = props;
+  const { label, checkboxes, name, register, disabled, checkedValues } = props;
 
   return (
     <div className="CheckboxContainer">
@@ -22,6 +22,7 @@ const CheckboxGroup = (props) => {
             key={index}
             register={register}
             disabled={disabled}
+            checkedValues={checkedValues}
           />
 
           // <FormControlLabel

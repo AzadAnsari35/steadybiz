@@ -129,6 +129,11 @@ export default {
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.PUT,
     },
+    changePassword: {
+      url: config.api.url + '/api/v1/offices/user/changePassword',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+    },
   },
 
   creditLimit: {

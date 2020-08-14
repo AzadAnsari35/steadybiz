@@ -31,7 +31,7 @@ const ChangePassword = () => {
         headerActionContent={
           <IconWithBackground
             bgColor={colors.lightRed}
-            onClick={() => history.goBack()}
+            onClick={() => history.push(routes.flight.search)}
             showCursor
           >
             <CloseIcon style={{ color: colors.red }} />

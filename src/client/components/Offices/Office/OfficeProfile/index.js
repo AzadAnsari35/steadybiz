@@ -51,7 +51,7 @@ const defaultValues = {
   cityCode: '',
   zipCode: '',
   noOfUserRequested: '',
-  paymentOptions: [],
+  paymentOptions: '',
 };
 
 const OfficeProfileForm = (props) => {
@@ -94,10 +94,11 @@ const OfficeProfileForm = (props) => {
     (state) => state.masterCities?.items?.data?.data
   );
 
-  const settlementPlans =
-    useSelector((state) => state.masterSettlementPlans?.items?.data) || [];
+  const settlementPlans = useSelector(
+    (state) => state.masterSettlementPlans?.items?.data
+  );
 
-  console.log('citiesList', citiesList);
+  console.log('settlementPlans', settlementPlans);
 
   const countriesList = useDropDown(
     endpoint.master.countries,
@@ -122,8 +123,10 @@ const OfficeProfileForm = (props) => {
       countriesList.dropDownItems !== null &&
       countriesDialCodeList.dropDownItems !== null &&
       !!citiesList &&
+      !!settlementPlans &&
       !isCreateOffice
     ) {
+      console.log('settlementPlans', settlementPlans);
       const {
         address1,
         address2,
@@ -144,7 +147,7 @@ const OfficeProfileForm = (props) => {
         address1,
         address2,
         emailId: officeEmail,
-        paymentOptions,
+        paymentOptions: ['06266ac6-8990-4949-a943-9bffc95d91de'],
         officeId,
         officeName,
         phone: phone.split('-')[1],
@@ -214,6 +217,7 @@ const OfficeProfileForm = (props) => {
     countriesList.dropDownItems,
     countriesDialCodeList.dropDownItems,
     !!citiesList,
+    settlementPlans,
   ]);
 
   useEffect(() => setCreateOfficeDefaultValue(), [
@@ -304,7 +308,7 @@ const OfficeProfileForm = (props) => {
                     changeStyle={true}
                     control={control}
                     errors={errors}
-                    validation={{ required: 'Please enter the status' }}
+                    // validation={{ required: 'Please enter the status' }}
                     width="auto"
                     disabled={!isUpdateOffice}
                   />
@@ -317,13 +321,13 @@ const OfficeProfileForm = (props) => {
                       errors={errors}
                       label="Office Name"
                       placeholder="Office Name"
-                      validation={{
-                        required: 'Please enter the office name.',
-                        pattern: {
-                          value: regex.alphanumeric,
-                          message: 'Please enter valid office name.',
-                        },
-                      }}
+                      // validation={{
+                      //   required: 'Please enter the office name.',
+                      //   pattern: {
+                      //     value: regex.alphanumeric,
+                      //     message: 'Please enter valid office name.',
+                      //   },
+                      // }}
                       disabled={!isCreateOffice}
                     />
                   ) : (
@@ -344,9 +348,9 @@ const OfficeProfileForm = (props) => {
                     errors={errors}
                     placeholder="Address Line 1"
                     label="Address Line 1"
-                    validation={{
-                      required: 'Please enter the address line 1.',
-                    }}
+                    // validation={{
+                    //   required: 'Please enter the address line 1.',
+                    // }}
                     disabled={isViewOffice}
                   />
                 </Grid>
@@ -371,7 +375,7 @@ const OfficeProfileForm = (props) => {
                     changeStyle={true}
                     control={control}
                     errors={errors}
-                    validation={{ required: 'Please enter the country' }}
+                    // validation={{ required: 'Please enter the country' }}
                     width="auto"
                     showLabel
                     disabled={isViewOffice}
@@ -388,7 +392,7 @@ const OfficeProfileForm = (props) => {
                     changeStyle={true}
                     control={control}
                     errors={errors}
-                    validation={{ required: 'Please enter the city' }}
+                    // validation={{ required: 'Please enter the city' }}
                     width="auto"
                     disabled={isViewOffice}
                   />
@@ -400,9 +404,9 @@ const OfficeProfileForm = (props) => {
                     errors={errors}
                     placeholder="Zip Code"
                     label="Zip Code"
-                    validation={{
-                      required: 'Please enter the zip code.',
-                    }}
+                    // validation={{
+                    //   required: 'Please enter the zip code.',
+                    // }}
                     disabled={isViewOffice}
                   />
                 </Grid>
@@ -429,10 +433,10 @@ const OfficeProfileForm = (props) => {
                     selectPlaceholder="Code"
                     errors={errors}
                     register={register}
-                    validation={{ required: 'Please enter the phone number.' }}
-                    selectValidation={{
-                      required: 'Please enter the country code.',
-                    }}
+                    // validation={{ required: 'Please enter the phone number.' }}
+                    // selectValidation={{
+                    //   required: 'Please enter the country code.',
+                    // }}
                     control={control}
                     showValue
                     disabled={isViewOffice}
@@ -445,13 +449,13 @@ const OfficeProfileForm = (props) => {
                     errors={errors}
                     label="Email"
                     placeholder="Email Address"
-                    validation={{
-                      required: 'Please enter the email address.',
-                      pattern: {
-                        value: regex.email,
-                        message: 'Please enter valid email address.',
-                      },
-                    }}
+                    // validation={{
+                    //   required: 'Please enter the email address.',
+                    //   pattern: {
+                    //     value: regex.email,
+                    //     message: 'Please enter valid email address.',
+                    //   },
+                    // }}
                     disabled={!isCreateOffice}
                   />
                 </Grid>
@@ -474,7 +478,7 @@ const OfficeProfileForm = (props) => {
                     changeStyle={true}
                     control={control}
                     errors={errors}
-                    validation={{ required: 'Please enter the no of users' }}
+                    // validation={{ required: 'Please enter the no of users' }}
                     width="auto"
                     disabled={isViewOffice}
                   />
@@ -490,10 +494,11 @@ const OfficeProfileForm = (props) => {
                 <Grid item xs={12}>
                   <CheckboxGroup
                     label="Payment Option:"
-                    name="paymentOptions[0]"
+                    name="paymentOptions"
                     register={register}
                     disabled={isViewOffice}
                     checkboxes={settlementPlans || []}
+                    checkedValues={getValues('paymentOptions')}
                   ></CheckboxGroup>
                 </Grid>
 
