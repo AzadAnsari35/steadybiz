@@ -1,0 +1,65 @@
+@import '../../styles/variables.scss';
+
+$root: '.SelectWithDatePickers';
+
+#{$root} {
+  &-label {
+    margin-bottom: 8px;
+  }
+
+  &-container {
+    position: relative;
+    height: 42px;
+
+    .SelectWithDatePickers-container-datePicker-1 {
+      padding-left: 33%;
+
+      .MuiFormControl-marginNormal {
+        border: none;
+        padding: 0px 20px;
+        height: 42px;
+
+        &:after {
+          content: '';
+          background-color: #00000080;
+          height: 17px;
+          width: 1px;
+          position: absolute;
+          top: 12.5px;
+          right: 0px;
+          left: auto;
+          transform: none;
+          transition: none;
+          border-bottom: none;
+        }
+      }
+    }
+
+    .SelectWithDatePickers-container-datePicker-2 {
+      .MuiFormControl-marginNormal {
+        border: none;
+        padding: 0px 20px;
+        height: 42px;
+      }
+    }
+
+    &-select {
+      position: absolute;
+      padding: 10px 20px;
+
+      &:after {
+        content: '';
+        background-color: #00000080;
+        height: 17px;
+        width: 1px;
+        position: absolute;
+        top: 12.5px;
+        right: 2px;
+        left: auto;
+        transform: none;
+        transition: none;
+        border-bottom: none;
+      }
+    }
+  }
+}

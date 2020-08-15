@@ -1,5 +1,4 @@
 import React from 'react';
-
 import Grid from '@material-ui/core/Grid';
 import ClearIcon from '@material-ui/icons/Clear';
 import SaveIcon from '@material-ui/icons/Save';
@@ -13,6 +12,7 @@ import {
   MultiSelect,
   PrimaryTable,
   DateRangeTableHeader,
+  Button,
 } from 'Widgets';
 import './style.scss';
 import { useForm } from 'react-hook-form';
@@ -20,6 +20,9 @@ import { Link } from 'react-router-dom';
 import { utils } from 'Helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import { routes } from 'Constants';
+import { useHistory } from 'react-router-dom';
+import endpoint from 'Config/endpoint';
+import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 
 const initialState = {
   ofId: '',
@@ -73,14 +76,35 @@ const LinkAction = (props) => {
   );
 };
 
+const createEndpoint = () => {
+  return useAsyncEndpoint((data) => ({
+    _endpoint: endpoint.creditLimit.update,
+    data,
+  }));
+};
+
 const OfficeCredit = () => {
   const { register, handleSubmit, errors, control, getValues } = useForm({});
+
+  const history = useHistory();
+
+  let userId = utils.getItemFromStorage('userId');
 
   let rowNumber = utils.getItemFromStorage('selectedOffice');
   const searchResult =
     useSelector((state) => state.searchOffice?.items?.data?.data) || [];
   let selectedItem = searchResult[rowNumber] || {};
   console.log('selectedItem', selectedItem);
+
+  const onSubmit = (data) => {
+    const { dateFrom, dateTo, minimumCreditLimit, ...rest } = data;
+    console.log('data', {
+      ...rest,
+      ofId: selectedItem.ofId,
+      currencyCode: selectedItem.currCode,
+      updatedByUserId: userId,
+    });
+  };
 
   const {
     officeName,
@@ -100,13 +124,6 @@ const OfficeCredit = () => {
             <div className="font-primary-semibold-24">MANAGE OFFICE CREDIT</div>
 
             <div className="d-flex">
-              <IconWithBackground
-                showCursor
-                bgColor={colors.japaneseLaurel}
-                className="mr-12"
-              >
-                <SaveIcon style={{ color: colors.sushi }} />
-              </IconWithBackground>
               <IconWithBackground
                 showCursor
                 bgColor={colors.red1}
@@ -168,7 +185,9 @@ const OfficeCredit = () => {
               <div className="font-primary-medium-16">
                 Settlement Plan:&nbsp;
               </div>
-              <div className="font-primary-bold-16 ">{paymentOptions[0]}</div>
+              <div className="font-primary-bold-16 ">
+                {paymentOptions && paymentOptions[0]}
+              </div>
             </Grid>
           </Grid>
 
@@ -177,49 +196,50 @@ const OfficeCredit = () => {
             defaultOpen={true}
             className="ManageCreditLimit-accordian"
           >
-            <Grid container spacing={3}>
-              <Grid item xs={3}>
-                <TextInput
-                  name="minimumCreditLimit"
-                  register={register}
-                  errors={errors}
-                  label="Minimum Credit Limit:"
-                />
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Grid container spacing={3}>
+                <Grid item xs={3}>
+                  <TextInput
+                    name="minimumCreditLimit"
+                    register={register}
+                    errors={errors}
+                    label="Minimum Credit Limit:"
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <MultiSelect
+                    label="Payment Mode:"
+                    name="paymentType"
+                    options={[{ label: 'Bank', value: 'Bank' }]}
+                    showBorder={true}
+                    changeStyle={true}
+                    control={control}
+                    errors={errors}
+                    showValue
+                    width="auto"
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <TextInput
+                    name="amountUpdated"
+                    register={register}
+                    errors={errors}
+                    label="Deposit Amount:"
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <TextInput
+                    name="paymentDetailDesc"
+                    register={register}
+                    errors={errors}
+                    label="Deposit Description:"
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={3}>
-                <MultiSelect
-                  label="Payment Mode:"
-                  name="paymentMode"
-                  options={[
-                    { label: 'All', value: 'All' },
-                    { label: 'Branch', value: 'Branch' },
-                    { label: 'Own', value: 'Own' },
-                  ]}
-                  showBorder={true}
-                  changeStyle={true}
-                  control={control}
-                  errors={errors}
-                  showValue
-                  width="auto"
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <TextInput
-                  name="depositAmount"
-                  register={register}
-                  errors={errors}
-                  label="Deposit Amount:"
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <TextInput
-                  name="depositDescription"
-                  register={register}
-                  errors={errors}
-                  label="Deposit Description:"
-                />
-              </Grid>
-            </Grid>
+              <div className="d-flex justify-content-end mt-20">
+                <Button type="submit" text="Save" />
+              </div>
+            </form>
           </SecondaryAccordion>
         </div>
         <PrimaryTable

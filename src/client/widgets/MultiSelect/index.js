@@ -72,6 +72,7 @@ const MultiSelect = (props) => {
     validation,
     disabled,
     getValues = () => {},
+    style = {},
     defaultValue = null,
     useReactHookForm = true,
     onSelectChange,
@@ -99,7 +100,7 @@ const MultiSelect = (props) => {
       {!!label && (
         <p className="TextInput-label font-primary-medium-16 mb-8">{label}</p>
       )}
-      {useReactHookForm ?
+      {useReactHookForm ? (
         <>
           <Controller
             render={(props) => (
@@ -109,7 +110,7 @@ const MultiSelect = (props) => {
                 }  ${showBorder ? `MultiSelect-showBorder` : ''} ${
                   errors[name] ? `thin-red-border` : ''
                 } ${disabled ? 'input-disabled border-none py-10' : ''}`}
-                style={{ width: `${width}px` }}
+                style={{ width: `${width}px`, ...style }}
               >
                 <Select
                   className={`react-select-container`}
@@ -118,7 +119,8 @@ const MultiSelect = (props) => {
                   closeMenuOnSelect={closeMenuOnSelect}
                   components={{
                     DropdownIndicator,
-                    Option: (props) => Option(props, labelKey, isOptionUppercase),
+                    Option: (props) =>
+                      Option(props, labelKey, isOptionUppercase),
                     MultiValue: (props) => MultiValue(props, valueKey),
                   }}
                   hideSelectedOptions={false}
@@ -146,7 +148,8 @@ const MultiSelect = (props) => {
               {errors[name].message}
             </p>
           )}
-        </> :
+        </>
+      ) : (
         <div
           className={`MultiSelect ${className ? className : ''} ${
             changeStyle ? `MultiSelect-customStyle` : ''
@@ -178,11 +181,11 @@ const MultiSelect = (props) => {
             isDisabled={disabled}
             // menuIsOpen={true}
             value={selectedOption}
-            onChange={value => handleChange(id, value)}
+            onChange={(value) => handleChange(id, value)}
             {...props}
           />
         </div>
-      }
+      )}
     </>
   );
 };

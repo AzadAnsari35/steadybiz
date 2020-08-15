@@ -8,7 +8,6 @@ import { getDataFromRedux } from 'Helpers/global';
 export const commonActionWithoutApi = (_endpoint, _data) => {
   return (dispatch) => {
     const res = Response.success(_data);
-    console.log(_endpoint.actionType);
     dispatch({
       type: _endpoint.actionType,
       payload: res,
@@ -89,7 +88,6 @@ export const commonAction = (_endpoint, _data, _loaderData = {}) => {
 
 export const commonActionUpdate = (_endpoint, _data) => {
   return (dispatch) => {
-    console.log(_endpoint.actionType);
     dispatch({
       type: _endpoint.actionType,
       payload: _data,
