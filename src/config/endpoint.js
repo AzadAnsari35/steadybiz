@@ -137,6 +137,11 @@ export default {
       actionType: actionTypeConstant.creditLimit.getInstantCreditlimit,
       reducerName: 'getInstantCreditLimit',
     },
+    update: {
+      url: config.api.url + '/api/v1/creditLimit/update',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+    },
   },
   transaction: {
     airprice: {

@@ -71,6 +71,7 @@ const MultiSelect = (props) => {
     validation,
     disabled,
     getValues = () => {},
+    style = {},
   } = props;
   // const [selectedOption, setSelectedOption] = useState(null);
 
@@ -102,7 +103,7 @@ const MultiSelect = (props) => {
             }  ${showBorder ? `MultiSelect-showBorder` : ''} ${
               errors[name] ? `thin-red-border` : ''
             } ${disabled ? 'input-disabled border-none py-10' : ''}`}
-            style={{ width: `${width}px` }}
+            style={{ width: `${width}px`, ...style }}
           >
             <Select
               className={`react-select-container`}

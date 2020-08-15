@@ -36,7 +36,6 @@ const CustomCheckbox = (props) => {
         name={name}
         inputRef={register}
         disabled={disabled}
-        checked={checkedValues.includes(value)}
         icon={
           <div
             className={`CustomCheckbox-icon ${
@@ -53,6 +52,7 @@ const CustomCheckbox = (props) => {
             }}
           />
         }
+        disableRipple
         onChange={!useReactHookForm ? () => onChange(value) : null}
       />
       {!children ? (

@@ -161,7 +161,6 @@ const UserProfileForm = (props) => {
           securityGroup,
         },
       } = JSON.parse(utils.getItemFromStorage('userData'));
-
       reset({
         firstName,
         lastName,

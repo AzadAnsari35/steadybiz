@@ -12,6 +12,7 @@ import Search from './search';
 import Availability from './availability';
 import PassengerInformation from './passengerInformation';
 import Transaction from './transaction';
+import SearchOrder from './transaction/searchOrder';
 
 export {
   Home,
@@ -28,4 +29,5 @@ export {
   CreditLimitBreakup,
   PassengerInformation,
   Transaction,
+  SearchOrder,
 };
