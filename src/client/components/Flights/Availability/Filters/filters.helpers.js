@@ -36,26 +36,35 @@ const returnItem = (name, item) => {
       ].arrivalDetails.time.split(':');
   }
 };
-const converDurationToMin=(value,separtor=':')=>
-{
-  if(value==null)
-  value='0:0';
+const converDurationToMin = (value, separtor = ':') => {
+  if (value == null) value = '0:0';
 
-  const checkValue=value.split(separtor);
-             const totalValue = +checkValue[0] * 60 + +checkValue[1];
-             return totalValue;
-}
-const totalDuration=(item,rangeSlider)=>
-{
-    let sum=0;
-           item.forEach(function(obj){
-  sum += converDurationToMin(obj.arrivalDetails.layOverTime);
-          
-    });
-   return ( sum <= parseInt(rangeSlider[1]) &&
-       sum >= parseInt(rangeSlider[0]));
-  }
- 
+  const checkValue = value.split(separtor);
+  const totalValue = +checkValue[0] * 60 + +checkValue[1];
+  return totalValue;
+};
+const totalLayoverDuration = (item, rangeSlider) => {
+  let sum = 0;
+  item.forEach(function (obj) {
+    sum += converDurationToMin(obj.arrivalDetails.layOverTime);
+  });
+  return sum <= parseInt(rangeSlider[1]) && sum >= parseInt(rangeSlider[0]);
+};
+const TripDurationInMin = (item) => {
+  let sum = 0;
+  item.forEach(function (obj) {
+    sum += converDurationToMin(obj.arrivalDetails.layOverTime);
+  });
+  item.forEach(function (obj) {
+    sum += converDurationToMin(obj.arrivalDetails.flightDuration);
+  });
+  return sum;
+};
+const totalTripDuration = (item, rangeSlider) => {
+  let sum = TripDurationInMin(item);
+
+  return sum <= parseInt(rangeSlider[1]) && sum >= parseInt(rangeSlider[0]);
+};
 const returnRangeSliderItem = (name, item, rangeSlider) => {
   switch (name) {
     case 'newPriceRange':
@@ -63,18 +72,30 @@ const returnRangeSliderItem = (name, item, rangeSlider) => {
         item.totalfareDetails.totalAmount <= rangeSlider[1] &&
         item.totalfareDetails.totalAmount >= rangeSlider[0]
       );
-      break;
-      case 'oLayoverRange':
-       return (totalDuration(item.flightSegments[0].flightSegmentGroup,rangeSlider) ) ; 
-       break; 
-       case 'rLayoverRange':
-       return (totalDuration(item.flightSegments[1].flightSegmentGroup,rangeSlider) ) ;  
-       break;
-       case 'oTripRange':
-       return (totalDuration(item.flightSegments[1].flightSegmentGroup,rangeSlider) ) ;  
-       break;
+
+    case 'oLayoverRange':
+      return totalLayoverDuration(
+        item.flightSegments[0].flightSegmentGroup,
+        rangeSlider
+      );
+
+    case 'rLayoverRange':
+      return totalLayoverDuration(
+        item.flightSegments[1].flightSegmentGroup,
+        rangeSlider
+      );
+
+    case 'oTripRange':
+      return totalTripDuration(
+        item.flightSegments[0].flightSegmentGroup,
+        rangeSlider
+      );
+    case 'rTripRange':
+      return totalTripDuration(
+        item.flightSegments[1].flightSegmentGroup,
+        rangeSlider
+      );
   }
-          
 };
 export const returnRangeFilterData = (rangeSlider, listArray, keyName) => {
   if (rangeSlider.length > 0) {
@@ -117,12 +138,12 @@ export const returnFilterTimeSlot = (searchItem, list, keyName) => {
   return list;
 };
 export const returnSortArray = (list, sortType, sortOrder) => {
-  console.log('sss',sortType);
+  // console.log('sss', sortType);
   //sortType='duration';
   return list.sort(function (a, b) {
     var x = a.totalfareDetails.totalAmount,
       y = b.totalfareDetails.totalAmount;
-      
+
     switch (sortType) {
       case 'airline': {
         x =
@@ -140,37 +161,40 @@ export const returnSortArray = (list, sortType, sortOrder) => {
         break;
       }
       case 'arrival': {
-        
-      x = moment(
+        x = moment(
           a.flightSegments[0].flightSegmentGroup[
             a.flightSegments[0].flightSegmentGroup.length - 1
-          ].arrivalDetails.date +'T'+
+          ].arrivalDetails.date +
+            'T' +
             a.flightSegments[0].flightSegmentGroup[
               a.flightSegments[0].flightSegmentGroup.length - 1
             ].arrivalDetails.time
         ).format('X');
-      
- y = moment(
+
+        y = moment(
           b.flightSegments[0].flightSegmentGroup[
             b.flightSegments[0].flightSegmentGroup.length - 1
-          ].arrivalDetails.date +'T'+
+          ].arrivalDetails.date +
+            'T' +
             b.flightSegments[0].flightSegmentGroup[
               b.flightSegments[0].flightSegmentGroup.length - 1
             ].arrivalDetails.time
         ).format('X');
-        
+
         break;
       }
       case 'duration': {
-        const aTimeRange = a.flightSegments[0].flightSegmentGroup[0].arrivalDetails.flightDuration.split(
-          ':'
-        );
-        const bTimeRange = b.flightSegments[0].flightSegmentGroup[0].arrivalDetails.flightDuration.split(
-          ':'
-        );
+        // const aTimeRange = a.flightSegments[0].flightSegmentGroup[0].arrivalDetails.flightDuration.split(
+        //   ':'
+        // );
+        // const bTimeRange = b.flightSegments[0].flightSegmentGroup[0].arrivalDetails.flightDuration.split(
+        //   ':'
+        // );
+        x = TripDurationInMin(a.flightSegments[0].flightSegmentGroup);
+        y = TripDurationInMin(b.flightSegments[0].flightSegmentGroup);
 
-        x = +aTimeRange[0] * 60 + +aTimeRange[1];
-        y = +bTimeRange[0] * 60 + +bTimeRange[1];
+        // x = +aTimeRange[0] * 60 + +aTimeRange[1];
+        // y = +bTimeRange[0] * 60 + +bTimeRange[1];
         //console.log(x);
       }
     }
