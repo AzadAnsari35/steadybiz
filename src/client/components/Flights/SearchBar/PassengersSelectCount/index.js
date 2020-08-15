@@ -7,6 +7,7 @@ import "./style.scss";
 const PassengersSelectCount = props => {
   const { passengerTypes, calculateTotalPassengers, onResetClick, onApplyClick } = props;
   const [passengers, setPassengers] = useState(passengerTypes);
+  const [totalCount, setTotalCount] = useState(1);
 
   const handleCounter = (id, type = "add") => {
     const elementsIndex = passengers.findIndex(element => element.id == id);
@@ -20,6 +21,7 @@ const PassengersSelectCount = props => {
     };
     setPassengers(newArray);
     calculateTotalPassengers(newArray);
+    type === "add" ? setTotalCount(totalCount + 1) : setTotalCount(totalCount - 1);
   };
 
   return (
@@ -46,6 +48,12 @@ const PassengersSelectCount = props => {
               />
               <Button
                 className="font-primary-medium-16"
+                disabled={
+                  totalCount === 9 || 
+                  (passenger.id === "INF" &&
+                    passenger.count >= passengers[0].count
+                  )
+                }
                 text="+"
                 secondary
                 onClick={() => handleCounter(passenger.id)}
@@ -54,10 +62,13 @@ const PassengersSelectCount = props => {
           </div>
         </div>
       )}
+      {passengers[0].count < passengers[2].count &&
+        <Text className="font-primary-medium-14 mb-12" text="Infant should be less than or equal to Adult" />
+      }
       <div className="PassengersSelectCount-action d-flex justify-content-end">
         <div className="d-flex">
           <Button className="text-uppercase mr-24" isLinkType secondary text="Reset" onClick={onResetClick} />
-          <Button className="text-uppercase" isLinkType text="Apply" onClick={onApplyClick} />
+          <Button disabled={passengers[0].count < passengers[2].count} className="text-uppercase" isLinkType text="Apply" onClick={onApplyClick} />
         </div>
       </div>
     </div>

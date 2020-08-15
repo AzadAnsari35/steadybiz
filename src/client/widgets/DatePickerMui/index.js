@@ -35,7 +35,7 @@ const DatePicker = (props) => {
 	};
 
 	return (
-		<div className={`DatePicker ${!!hasError ? "has-error" : ""}`}>
+		<div className={`DatePickerMui ${!!hasError ? "has-error" : ""}`}>
 			{!!label && <Text className="SelectField-label font-primary-medium-16" text={label} />}
 			<MuiPickersUtilsProvider utils={DateFnsUtils}>
 				<KeyboardDatePicker

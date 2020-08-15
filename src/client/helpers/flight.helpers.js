@@ -180,25 +180,29 @@ const getMinimumValue = (value, min = positiveInfinity) => {
 };
 
 export const getFlightDuration = flightSegment => {
-  const { flightSegmentGroup = [] } = flightSegment;
+  const { flightSegmentGroup = [] } = !!flightSegment && flightSegment;
   let flightDurationTime = "00:00";
-  for (let i = 0; i <= flightSegment.stopCount; i++) {
-    let segmentFlightDuration =
-      flightSegmentGroup[i].arrivalDetails.flightDuration || "00:00";
-    let segmentlayOverDuration =
-      flightSegmentGroup[i].arrivalDetails.layOverTime || "00:00";
-    flightDurationTime = addDurations([flightDurationTime, segmentFlightDuration, segmentlayOverDuration]);
+  if (!!flightSegment) {
+    for (let i = 0; i <= flightSegment.stopCount; i++) {
+      let segmentFlightDuration =
+        flightSegmentGroup[i].arrivalDetails.flightDuration || "00:00";
+      let segmentlayOverDuration =
+        flightSegmentGroup[i].arrivalDetails.layOverTime || "00:00";
+      flightDurationTime = addDurations([flightDurationTime, segmentFlightDuration, segmentlayOverDuration]);
+    }
   }
   return flightDurationTime;
 };
 
 const getLayOverDuration = flightSegment => {
-  const { flightSegmentGroup = [] } = flightSegment;
+  const { flightSegmentGroup = [] } = !!flightSegment && flightSegment;
   let flightLayOverTime = "00:00";
-  for (let i = 0; i < flightSegment.stopCount; i++) {
-    let segmentlayOverDuration =
-      flightSegmentGroup[i].arrivalDetails.layOverTime || "00:00";
-    flightLayOverTime = addDurations([flightLayOverTime, segmentlayOverDuration]);
+  if (!!flightSegment) {
+    for (let i = 0; i < flightSegment.stopCount; i++) {
+      let segmentlayOverDuration =
+        flightSegmentGroup[i].arrivalDetails.layOverTime || "00:00";
+      flightLayOverTime = addDurations([flightLayOverTime, segmentlayOverDuration]);
+    }
   }
   return flightLayOverTime;
 };
@@ -270,16 +274,16 @@ export const getFiltersData = outboundItinerary => {
     const { flightSegments, totalfareDetails } = itinerary;
     const { totalAmount, fareRefundable } = totalfareDetails;
     const { flightSegmentGroup: outboundFlightSegmentGroup } = flightSegments[0];
-    const { flightSegmentGroup: returnFlightSegmentGroup } = flightSegments[1];
+    const { flightSegmentGroup: returnFlightSegmentGroup } = !!flightSegments && flightSegments.length > 1 && flightSegments[1];
     const outboundDepartureFlightSegmentGroup = outboundFlightSegmentGroup[0];
     const outboundArrivalFlightSegmentGroup = outboundFlightSegmentGroup[outboundFlightSegmentGroup.length - 1];
-    const returnDepartureFlightSegmentGroup = returnFlightSegmentGroup[0];
-    const returnArrivalFlightSegmentGroup = returnFlightSegmentGroup[returnFlightSegmentGroup.length - 1];
+    const returnDepartureFlightSegmentGroup = !!returnFlightSegmentGroup && returnFlightSegmentGroup[0];
+    const returnArrivalFlightSegmentGroup = !!returnFlightSegmentGroup && returnFlightSegmentGroup[returnFlightSegmentGroup.length - 1];
     const outboundDepartureFlightSegmentGroupAirline = outboundDepartureFlightSegmentGroup.airlineDetails.marketingAirline;
     const outboundDepartureDetails = outboundDepartureFlightSegmentGroup.departureDetails;
     const outboundArrivalDetails = outboundArrivalFlightSegmentGroup.arrivalDetails;
-    const returnDepartureDetails = returnDepartureFlightSegmentGroup.departureDetails;
-    const returnArrivalDetails = returnArrivalFlightSegmentGroup.arrivalDetails;
+    const returnDepartureDetails = !!returnDepartureFlightSegmentGroup && returnDepartureFlightSegmentGroup.departureDetails;
+    const returnArrivalDetails = !!returnArrivalFlightSegmentGroup && returnArrivalFlightSegmentGroup.arrivalDetails;
     // PRICE RANGE
     priceRange = getRange(totalAmount, priceRange[0], priceRange[1]);
     // NEARBY AIRPORTS
@@ -349,12 +353,14 @@ export const getFiltersData = outboundItinerary => {
     } else if (flightSegments[0].stopCount === 2 && totalAmount < stopsData.outbound.twoStopFlighstMinPrice) {
       stopsData.outbound.twoStopFlighstMinPrice = totalAmount;
     }
-    if (flightSegments[1].stopCount === 0 && totalAmount < stopsData.return.directFlightsMinPrice) {
-      stopsData.return.directFlightsMinPrice = totalAmount;
-    } else if (flightSegments[1].stopCount === 1 && totalAmount < stopsData.return.oneStopFlighstMinPrice) {
-      stopsData.return.oneStopFlighstMinPrice = totalAmount;
-    } else if (flightSegments[1].stopCount === 2 && totalAmount < stopsData.return.twoStopFlighstMinPrice) {
-      stopsData.return.twoStopFlighstMinPrice = totalAmount;
+    if (flightSegments.length > 1) {
+      if (flightSegments[1].stopCount === 0 && totalAmount < stopsData.return.directFlightsMinPrice) {
+        stopsData.return.directFlightsMinPrice = totalAmount;
+      } else if (flightSegments[1].stopCount === 1 && totalAmount < stopsData.return.oneStopFlighstMinPrice) {
+        stopsData.return.oneStopFlighstMinPrice = totalAmount;
+      } else if (flightSegments[1].stopCount === 2 && totalAmount < stopsData.return.twoStopFlighstMinPrice) {
+        stopsData.return.twoStopFlighstMinPrice = totalAmount;
+      }
     }
     // FARE TYPES
     if (fareRefundable) {
@@ -497,127 +503,129 @@ export const getFiltersData = outboundItinerary => {
     ) {
       flightSlots.outbound.arrival.fourth = totalAmount;
     }
-    // RETURN DEPARTURE
-    if (
-      calculateDurationInMinutes(
-        extractTime(
-          returnDepartureFlightSegmentGroup.departureDetails.time
-        )
-      ) >= 360 &&
-      calculateDurationInMinutes(
-        extractTime(
-          returnDepartureFlightSegmentGroup.departureDetails.time
-        )
-      ) <= 719 &&
-      totalAmount < flightSlots.return.departure.first
-    ) {
-      flightSlots.return.departure.first = totalAmount;
-    }
-    if (
-      calculateDurationInMinutes(
-        extractTime(
-          returnDepartureFlightSegmentGroup.departureDetails.time
-        )
-      ) >= 720 &&
-      calculateDurationInMinutes(
-        extractTime(
-          returnDepartureFlightSegmentGroup.departureDetails.time
-        )
-      ) <= 1079 &&
-      totalAmount < flightSlots.return.departure.second
-    ) {
-      flightSlots.return.departure.second = totalAmount;
-    }
-    if (
-      calculateDurationInMinutes(
-        extractTime(
-          returnDepartureFlightSegmentGroup.departureDetails.time
-        )
-      ) >= 1080 &&
-      calculateDurationInMinutes(
-        extractTime(
-          returnDepartureFlightSegmentGroup.departureDetails.time
-        )
-      ) <= 1439 &&
-      totalAmount < flightSlots.return.departure.third
-    ) {
-      flightSlots.return.departure.third = totalAmount;
-    }
-    if (
-      calculateDurationInMinutes(
-        extractTime(
-          returnDepartureFlightSegmentGroup.departureDetails.time
-        )
-      ) >= 0 &&
-      calculateDurationInMinutes(
-        extractTime(
-          returnDepartureFlightSegmentGroup.departureDetails.time
-        )
-      ) <= 359 &&
-      totalAmount < flightSlots.return.departure.fourth
-    ) {
-      flightSlots.return.departure.fourth = totalAmount;
-    }
-    // OUTBOUND ARRIVAL
-    if (
-      calculateDurationInMinutes(
-        extractTime(
-          returnArrivalFlightSegmentGroup.departureDetails.time
-        )
-      ) >= 360 &&
-      calculateDurationInMinutes(
-        extractTime(
-          returnArrivalFlightSegmentGroup.departureDetails.time
-        )
-      ) <= 719 &&
-      totalAmount < flightSlots.return.arrival.first
-    ) {
-      flightSlots.return.arrival.first = totalAmount;
-    }
-    if (
-      calculateDurationInMinutes(
-        extractTime(
-          returnArrivalFlightSegmentGroup.departureDetails.time
-        )
-      ) >= 720 &&
-      calculateDurationInMinutes(
-        extractTime(
-          returnArrivalFlightSegmentGroup.departureDetails.time
-        )
-      ) <= 1079 &&
-      totalAmount < flightSlots.return.arrival.second
-    ) {
-      flightSlots.return.arrival.second = totalAmount;
-    }
-    if (
-      calculateDurationInMinutes(
-        extractTime(
-          returnArrivalFlightSegmentGroup.departureDetails.time
-        )
-      ) >= 1080 &&
-      calculateDurationInMinutes(
-        extractTime(
-          returnArrivalFlightSegmentGroup.departureDetails.time
-        )
-      ) <= 1439 &&
-      totalAmount < flightSlots.return.arrival.third
-    ) {
-      flightSlots.return.arrival.third = totalAmount;
-    }
-    if (
-      calculateDurationInMinutes(
-        extractTime(
-          returnArrivalFlightSegmentGroup.departureDetails.time
-        )
-      ) >= 0 &&
-      calculateDurationInMinutes(
-        extractTime(
-          returnArrivalFlightSegmentGroup.departureDetails.time
-        )
-      ) <= 359 &&
-      totalAmount < flightSlots.return.arrival.fourth
-    ) {
-      flightSlots.return.arrival.fourth = totalAmount;
+    if (!!returnDepartureFlightSegmentGroup) {
+      // RETURN DEPARTURE
+      if (
+        calculateDurationInMinutes(
+          extractTime(
+            returnDepartureFlightSegmentGroup.departureDetails.time
+          )
+        ) >= 360 &&
+        calculateDurationInMinutes(
+          extractTime(
+            returnDepartureFlightSegmentGroup.departureDetails.time
+          )
+        ) <= 719 &&
+        totalAmount < flightSlots.return.departure.first
+      ) {
+        flightSlots.return.departure.first = totalAmount;
+      }
+      if (
+        calculateDurationInMinutes(
+          extractTime(
+            returnDepartureFlightSegmentGroup.departureDetails.time
+          )
+        ) >= 720 &&
+        calculateDurationInMinutes(
+          extractTime(
+            returnDepartureFlightSegmentGroup.departureDetails.time
+          )
+        ) <= 1079 &&
+        totalAmount < flightSlots.return.departure.second
+      ) {
+        flightSlots.return.departure.second = totalAmount;
+      }
+      if (
+        calculateDurationInMinutes(
+          extractTime(
+            returnDepartureFlightSegmentGroup.departureDetails.time
+          )
+        ) >= 1080 &&
+        calculateDurationInMinutes(
+          extractTime(
+            returnDepartureFlightSegmentGroup.departureDetails.time
+          )
+        ) <= 1439 &&
+        totalAmount < flightSlots.return.departure.third
+      ) {
+        flightSlots.return.departure.third = totalAmount;
+      }
+      if (
+        calculateDurationInMinutes(
+          extractTime(
+            returnDepartureFlightSegmentGroup.departureDetails.time
+          )
+        ) >= 0 &&
+        calculateDurationInMinutes(
+          extractTime(
+            returnDepartureFlightSegmentGroup.departureDetails.time
+          )
+        ) <= 359 &&
+        totalAmount < flightSlots.return.departure.fourth
+      ) {
+        flightSlots.return.departure.fourth = totalAmount;
+      }
+      // OUTBOUND ARRIVAL
+      if (
+        calculateDurationInMinutes(
+          extractTime(
+            returnArrivalFlightSegmentGroup.departureDetails.time
+          )
+        ) >= 360 &&
+        calculateDurationInMinutes(
+          extractTime(
+            returnArrivalFlightSegmentGroup.departureDetails.time
+          )
+        ) <= 719 &&
+        totalAmount < flightSlots.return.arrival.first
+      ) {
+        flightSlots.return.arrival.first = totalAmount;
+      }
+      if (
+        calculateDurationInMinutes(
+          extractTime(
+            returnArrivalFlightSegmentGroup.departureDetails.time
+          )
+        ) >= 720 &&
+        calculateDurationInMinutes(
+          extractTime(
+            returnArrivalFlightSegmentGroup.departureDetails.time
+          )
+        ) <= 1079 &&
+        totalAmount < flightSlots.return.arrival.second
+      ) {
+        flightSlots.return.arrival.second = totalAmount;
+      }
+      if (
+        calculateDurationInMinutes(
+          extractTime(
+            returnArrivalFlightSegmentGroup.departureDetails.time
+          )
+        ) >= 1080 &&
+        calculateDurationInMinutes(
+          extractTime(
+            returnArrivalFlightSegmentGroup.departureDetails.time
+          )
+        ) <= 1439 &&
+        totalAmount < flightSlots.return.arrival.third
+      ) {
+        flightSlots.return.arrival.third = totalAmount;
+      }
+      if (
+        calculateDurationInMinutes(
+          extractTime(
+            returnArrivalFlightSegmentGroup.departureDetails.time
+          )
+        ) >= 0 &&
+        calculateDurationInMinutes(
+          extractTime(
+            returnArrivalFlightSegmentGroup.departureDetails.time
+          )
+        ) <= 359 &&
+        totalAmount < flightSlots.return.arrival.fourth
+      ) {
+        flightSlots.return.arrival.fourth = totalAmount;
+      }
     }
 
     // LAYOVER DURATION

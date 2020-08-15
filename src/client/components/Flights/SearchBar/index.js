@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,8 @@ import endpointWithoutApi from 'Config/endpointWithoutApi';
 import colors from "Constants/colors";
 import routes from "Constants/routes";
 import { getDataFromRedux } from "Helpers/global";
-import { displayImage, showError } from "Helpers/utils";
+import { displayImage, showError, setItemToStorage, getItemFromStorage } from "Helpers/utils";
+import endpoint from "Config/endpoint";
 
 import {
   AutoSuggest,
@@ -36,7 +37,7 @@ const segmentTypes = [
 const cabinClasses = [
   { value: "F", label: "First" },
   { value: "J", label: "Business" },
-  { value: "P", label: "Premium Economy" },
+  { value: "W", label: "Premium Economy" },
   { value: "Y", label: "Economy" },
 ];
 
@@ -113,18 +114,19 @@ const SearchBar = () => {
   const [expandAdvanceSearch, setExpandAdvanceSearch] = useToggle(false);
   const [isPassengerCountDropdownOpen, setIsPassengerCountDropdownOpen] = useToggle(false);
   const [flightDates, setFlightDates] = useState(flightInitialDates);
-  const { handleSubmit,control } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues: {
-      segmentTypes: defaultSegmentType,
       cabinClasses: defaultCabinClass,
     },
   });
 
+  const [segmentType, setSegmentType] = useState(defaultSegmentType);
+
   const [passengers, setPassengers] = useState(passengerTypes);
 
   const [formData, setFormData] = useState({
-    departureAirport: null,
-    arrivalAirport: null,
+    departureAirport: initialDepartureAirport,
+    arrivalAirport: initialArrivalAirport,
   });
 
   const [error, setError] = useState(null);
@@ -143,14 +145,28 @@ const SearchBar = () => {
       ...formData,
       [id]: value,
     });
-  }
+  };
 
   const handleFlightDates = (startDate, endDate) => {
     let flightDate = { ...flightDates };
-    flightDate.startDate = startDate;
-    flightDate.endDate = endDate;
+    if (segmentType.value === "OW") {
+      flightDate.startDate = startDate;
+    } else {
+      flightDate.startDate = startDate;
+      flightDate.endDate = endDate;
+    }
     setFlightDates(flightDate);
   };
+
+  const handleSelectOption = (value, id) => {
+    if (value.value === "RT") {
+      setFlightDates({
+        ...flightDates,
+        endDate: moment(flightDates.startDate).add(1, "days"),
+      });
+    }
+    setSegmentType(value);
+  }
 
   const onSubmit = (data, e) => {
     const passengersData = passengers.filter(passenger => passenger.count > 0);
@@ -172,13 +188,18 @@ const SearchBar = () => {
             originDate: moment(flightDates.startDate).format("YYYY-MM-DD"),
             destinationAirportCode: formData.arrivalAirport.code,
             destinationAirport: formData.arrivalAirport,
-            destinationDate: moment(flightDates.endDate).format("YYYY-MM-DD"),
+            destinationDate: segmentType.value !== "OW"
+              ? moment(flightDates.endDate).format("YYYY-MM-DD")
+              : "",
           }
         ],
       },
     };
 
     try {
+      const searchCount = getItemFromStorage("searchCount", 1);
+      setItemToStorage("searchCount", Number(searchCount) + 1, 1);
+      dispatch(commonActionWithoutApi(endpoint.flights.flightSearch, false));
       dispatch(commonActionWithoutApi(endpointWithoutApi.flights.flightSearchInput, searchRequest));
       history.push(routes.flight.availability);
     } catch (err) {
@@ -192,9 +213,11 @@ const SearchBar = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="SearchBar-basicSearch d-flex">
           <MultiSelect
-            control={control}
             name="segmentTypes"
             options={segmentTypes}
+            defaultValue={segmentType}
+            useReactHookForm={false}
+            onSelectChange={handleSelectOption}
           />
           <MultiSelect
             control={control}
@@ -250,11 +273,9 @@ const SearchBar = () => {
             </Grid>
             <Grid item xs={12} md={4}>
               <DatesRangePicker
-                // control={control}
-                // name="flightDates"
                 dates={flightDates}
                 onDateChange={handleFlightDates}
-                // enableSingleDatePicker
+                enableSingleDatePicker={segmentType.value === "OW"}
               />
             </Grid>
           </Grid>
@@ -263,7 +284,10 @@ const SearchBar = () => {
           <Grid container spacing={1}>
             <Grid item xs={12} md={10} className="d-flex align-items-center">
               <div className="d-flex">
-                <div className="d-flex align-items-center mr-24">
+                <div
+                  className="d-flex align-items-center mr-24 cursor-pointer"
+                  onClick={setExpandAdvanceSearch}
+                >
                   <Text
                     className="font-primary-medium-16 mr-16"
                     text="Advance Search"
@@ -272,7 +296,6 @@ const SearchBar = () => {
                   <ExpandArrow
                     isHorizontal
                     expand={expandAdvanceSearch}
-                    onClick={setExpandAdvanceSearch}
                   />
                 </div>
                 {expandAdvanceSearch && (

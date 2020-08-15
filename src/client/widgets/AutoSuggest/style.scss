@@ -60,8 +60,11 @@ $root: ".AutoSuggest";
     &-endAdornment {
       display: none;
     }
-    &-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child {
-      padding-left: 56px;
+    &-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input {
+      &:first-child {
+        padding-left: 56px;
+      }
+      font-family: "Montserrat Medium";
     }
     &-inputRoot[class*="MuiOutlinedInput-root"] {
       padding: 11px;

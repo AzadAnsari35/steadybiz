@@ -9,6 +9,9 @@ $root: ".BaggageAllowance";
           &-content {
             padding-right: 20px;
             border-right: 1px solid $color2;
+            &.no-border {
+              border-right: none;
+            }
           }
         }
       }
@@ -36,7 +39,6 @@ $root: ".BaggageAllowance";
       width: 32px;
       height: 32px;
       border-radius: 4px;
-      background-color: $gray;
       margin-right: 12px;
     }
   }

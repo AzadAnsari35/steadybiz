@@ -21,6 +21,10 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.override.searchResult
   ),
+  airportSuggestions: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.flights.airportSuggestions
+  ),
   flightSearchInput: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.flights.flightSearchInput

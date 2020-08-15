@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { useSelector } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import FlightIcon from '@material-ui/icons/Flight';
@@ -6,14 +7,16 @@ import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 
 import colors from "Constants/colors";
 import { displayImage } from "Helpers/utils";
-import { changeDateFormat, convertIntoTime, extractTime } from "Helpers/global";
-import { getCabinClassName } from "Helpers/flight.helpers";
+import { changeDateFormat, convertIntoTime, extractTime, getDataFromRedux, convertDurationIntoHourAndMinutes } from "Helpers/global";
+import { getCabinClassName, getAirlineName } from "Helpers/flight.helpers";
+import endpoint from "Config/endpoint";
 
 import Chip from "Widgets/Chip/index";
 import DashedLine from "Widgets/DashedLine/index";
 import Dot from "Widgets/Dot/index";
 import Line from "Widgets/Line/index";
 import Text from "Widgets/Text/index";
+import { Image } from "Widgets";
 
 import "./style.scss";
 
@@ -53,6 +56,14 @@ const AirlineText = (props) => {
 
 const FlightSegmentGroup = (props) => {
   const { segmentGroupArray, index, fareBasisCode } = props;
+  const masterAirlinesResponse = useSelector(
+    (state) => state[endpoint.master.airlines.reducerName]
+  );
+
+  const masterAirlines =
+    !!getDataFromRedux(masterAirlinesResponse) &&
+    getDataFromRedux(masterAirlinesResponse).data;
+
   return (
     <div className="FlightSegmentGroup d-flex">
       <div className="FlightSegmentGroup-left d-flex flex-direction-column justify-content-between">
@@ -73,9 +84,9 @@ const FlightSegmentGroup = (props) => {
           <Text
             className="font-primary-regular-16"
             style={{ opacity: "0.5" }}
-            text={extractTime(
+            text={convertDurationIntoHourAndMinutes(extractTime(
               segmentGroupArray[index].arrivalDetails.flightDuration
-            )}
+            ))}
           />
         </div>
         <div>
@@ -132,14 +143,16 @@ const FlightSegmentGroup = (props) => {
         </div>
         <div className="FlightSegmentGroup-right__flightInformation">
           <div className="flight-info d-flex align-items-center">
-            {/* <img
-              src=""
+            <Image
               className="airline-icon"
-            /> */}
-            <FlightIcon className="airline-icon" style={{ transform: "rotate(90deg)" }} />
+              altText={segmentGroupArray[index].airlineDetails.marketingAirline}
+              imgName={`${segmentGroupArray[index].airlineDetails.marketingAirline}.png`}
+              imgPath="images/airlines/newIcons"
+              fallbackImgName="airlineDefault.png"
+            />
             <AirlineText
               showBorder
-              text="United Airline"
+              text={!!masterAirlines && getAirlineName(masterAirlines, segmentGroupArray[index].airlineDetails.marketingAirline)}
             />
             <AirlineText
               leftPadding
@@ -165,12 +178,12 @@ const FlightSegmentGroup = (props) => {
             />
           </div>
           <div>
-            {/* Add operating Airline logic for text */}
             <AirlineText
               text={
-                segmentGroupArray[index].airlineDetails.marketingAirline !==
-                  segmentGroupArray[index].airlineDetails.operatingAirline &&
-                `Operated by ${segmentGroupArray[index].airlineDetails.operatingAirline}`
+                `Operated by ${
+                  !!masterAirlines &&
+                  getAirlineName(masterAirlines, segmentGroupArray[index].airlineDetails.operatingAirline)
+                }`
               }
             />
           </div>
@@ -188,6 +201,7 @@ const FlightSegmentGroup = (props) => {
           }}
         >
           <div className="FlightSegmentGroup-right__baggageDetails">
+            {!!segmentGroupArray[0].baggageInformation && !!segmentGroupArray[0].baggageInformation.checkInBaggage &&
             <div className="checkin d-flex align-items-center">
               <Text
                 className="font-primary-regular-14 mr-10"
@@ -214,35 +228,38 @@ const FlightSegmentGroup = (props) => {
                 }
               />
             </div>
-            <div className="cabin d-flex align-items-center">
-              <Text
-                className="font-primary-regular-14 mr-10"
-                style={{
-                  opacity: "0.5",
-                  minWidth: "80px",
-                }}
-                text="Cabin"
-              />
-              <WorkOutlineIcon
-                style={{ width: "24px", height: "24px", marginRight: "10px" }}
-              />
-              <Text
-                className="font-primary-regular-14"
-                text={`${segmentGroupArray[0].baggageInformation.cabinBaggage.weight} kg / Person`}
-              />
-            </div>
+            }
+            {!!segmentGroupArray[0].baggageInformation && !!segmentGroupArray[0].baggageInformation.cabinBaggage.weight &&
+              <div className="cabin d-flex align-items-center">
+                <Text
+                  className="font-primary-regular-14 mr-10"
+                  style={{
+                    opacity: "0.5",
+                    minWidth: "80px",
+                  }}
+                  text="Cabin"
+                />
+                <WorkOutlineIcon
+                  style={{ width: "24px", height: "24px", marginRight: "10px" }}
+                />
+                <Text
+                  className="font-primary-regular-14"
+                  text={`${segmentGroupArray[0].baggageInformation.cabinBaggage.weight} kg / Person`}
+                />
+              </div>
+            }
           </div>
         </div>
         <div>
           <Text
             className="font-primary-bold-16"
-            text={segmentGroupArray[0].arrivalDetails.airportName}
+            text={segmentGroupArray[index].arrivalDetails.airportName}
           />
           <div className="d-flex">
             <Text
               className="font-primary-regular-14 pr-8"
-              text={segmentGroupArray[0].arrivalDetails.terminal
-                ? `Terminal ${segmentGroupArray[0].arrivalDetails.terminal}`
+              text={segmentGroupArray[index].arrivalDetails.terminal
+                ? `Terminal ${segmentGroupArray[index].arrivalDetails.terminal}`
                 : "Terminal"
               }
             />

@@ -2,6 +2,11 @@
 $root: ".SearchBar";
 
 #{$root} {
+  .MultiSelect {
+    .react-select-container {
+      font-family: "Montserrat SemiBold";
+    }
+  }
   &-basicSearch {
     margin-bottom: 16px;
     .MultiSelect {
@@ -51,6 +56,9 @@ $root: ".SearchBar";
       width: 100%;
       height: 60px;
       padding: 0 24px;
+      &.btn {
+        font-size: 16px;
+      }
     }
   }
 }

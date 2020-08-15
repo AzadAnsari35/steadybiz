@@ -140,6 +140,13 @@ export const convertMinutesToTime = (minutes) => {
   return moment.utc().startOf('day').add(minutes, 'minutes').format('hh:mm:ss');
 };
 
+export const convertDurationIntoHourAndMinutes = duration => {
+  const splittedDuration = duration.split(":");
+  const hours = Number(splittedDuration[0]), minutes = Number(splittedDuration[1]);
+  
+  return `${hours < 10 ? "0" : ""}${hours}:${minutes < 10 ? "0" : ""}${minutes}`
+};
+
 export const isEmptyObj = (obj) => {
   return obj && obj instanceof Object && !Object.keys(obj).length;
 };
