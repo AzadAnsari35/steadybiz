@@ -15,8 +15,8 @@ export const commonActionWithoutApi = (_endpoint, _data) => {
     });
   };
 };
-export const commonAction = (_endpoint, _data, _loaderData = {}) => {
-  const { loaderType, ...rest } = _loaderData;
+export const commonAction = (_endpoint, _data = {}, _loaderData = {}) => {
+  const { loaderType, showLoader = true, ...rest } = _loaderData;
   const state = store.getState();
   const loaderStatus =
     state[endpointWithoutApi.loader.loaderStatus.reducerName];
@@ -27,19 +27,21 @@ export const commonAction = (_endpoint, _data, _loaderData = {}) => {
   return async (dispatch) => {
     try {
       // callsCount++;
-      dispatch(
-        commonActionWithoutApi(endpointWithoutApi.loader.loaderStatus, {
-          loaderType: !!_loaderData.loaderType
-            ? loaderType
-            : loaderTypes.primary,
-          isLoaderVisible: true,
-          // asyncCallInProgress: callsCount,
-          asyncCallInProgress: !!getDataFromRedux(loaderStatus)
-            ? getDataFromRedux(loaderStatus).asyncCallInProgress + 1
-            : 1,
-          ...rest,
-        })
-      );
+      if (!!showLoader) {
+        dispatch(
+          commonActionWithoutApi(endpointWithoutApi.loader.loaderStatus, {
+            loaderType: !!_loaderData.loaderType
+              ? loaderType
+              : loaderTypes.primary,
+            isLoaderVisible: true,
+            // asyncCallInProgress: callsCount,
+            asyncCallInProgress: !!getDataFromRedux(loaderStatus)
+              ? getDataFromRedux(loaderStatus).asyncCallInProgress + 1
+              : 1,
+            ...rest,
+          })
+        );
+      }
       const res = await apiReqeust.httpRequest(
         _endpoint.httpVerb,
         _data,
@@ -68,20 +70,22 @@ export const commonAction = (_endpoint, _data, _loaderData = {}) => {
       });
     } finally {
       // callsCount--;
-      dispatch(
-        commonActionWithoutApi(endpointWithoutApi.loader.loaderStatus, {
-          loaderType: !!_loaderData.loaderType
-            ? loaderType
-            : loaderTypes.primary,
-          isLoaderVisible: false,
-          // asyncCallInProgress: callsCount,
-          // asyncCallInProgress: getDataFromRedux(loaderStatus).asyncCallInProgress - 1,
-          asyncCallInProgress: !!getDataFromRedux(loaderStatus)
-            ? getDataFromRedux(loaderStatus).asyncCallInProgress - 1
-            : 0,
-          ...rest,
-        })
-      );
+      if (!!showLoader) {
+        dispatch(
+          commonActionWithoutApi(endpointWithoutApi.loader.loaderStatus, {
+            loaderType: !!_loaderData.loaderType
+              ? loaderType
+              : loaderTypes.primary,
+            isLoaderVisible: false,
+            // asyncCallInProgress: callsCount,
+            // asyncCallInProgress: getDataFromRedux(loaderStatus).asyncCallInProgress - 1,
+            asyncCallInProgress: !!getDataFromRedux(loaderStatus)
+              ? getDataFromRedux(loaderStatus).asyncCallInProgress - 1
+              : 0,
+            ...rest,
+          })
+        );
+      }
     }
   };
 };

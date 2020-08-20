@@ -80,16 +80,12 @@ const handleSortDirection = ()=>{
   }, [outboundItinerary]);
   
   useEffect(() => {
-    try {
-      dispatch(commonAction(endpoint.master.airlines));
-    } catch (err) {
-      showError(err, setError);
-    }
     if (!!flightSearchInputData) {
       if (showSearch) {
         setShowSearch(false);
       }
       try {
+        dispatch(commonAction(endpoint.master.airlines, null, { showLoader: false }));
         dispatch(commonAction(
           endpoint.flights.flightSearch,
           flightSearchInputData,
