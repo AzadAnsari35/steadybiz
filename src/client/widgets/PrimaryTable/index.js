@@ -140,7 +140,7 @@ const PrimaryTable = (props) => {
                                     ? { paddingLeft: 72 }
                                     : {}
                                 }
-                                style={applyStyle(index)}
+                                style={applyStyle(index - hideKeys.length)}
                                 className={`PrimaryTable-body-cell position-relative ${
                                   index === statusIndex + hideKeys.length
                                     ? statusColor(body[key])

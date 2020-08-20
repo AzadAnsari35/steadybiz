@@ -26,6 +26,9 @@ export const actionTypeConstant = {
     updateUser: 'office.updateUser',
     viewUser: 'office.viewUser',
     searchOffice: 'office.searchOffice',
+    functionalGroups: 'office.functionalGroups',
+    searchSecurityGroup: 'office.searchSecurityGroup',
+    securityGroupNameList: 'office.securityGroupNameList',
   },
   creditLimit: {
     getInstantCreditlimit: 'creditLimit.getInstantCreditlimit',

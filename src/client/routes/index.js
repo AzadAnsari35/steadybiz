@@ -7,6 +7,8 @@ import {
   UserProfile,
   Search,
   Availability,
+  SearchSecurityGroup,
+  CreateSecurityGroup,
   CreateUser,
   ChangePassword,
   SearchOffice,
@@ -56,6 +58,71 @@ const Routes = () => (
       exact
       path={routes.office.manageUserProfile}
       component={UserProfile}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.changePassword}
+      component={ChangePassword}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.searchOffice}
+      component={SearchOffice}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.createOffice}
+      component={OfficeProfile}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.viewOffice}
+      component={OfficeProfile}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.updateOffice}
+      component={OfficeProfile}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.manageCreditLimit}
+      component={OfficeCredit}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.searchSecurityGroup}
+      component={SearchSecurityGroup}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.createSecurityGroup}
+      component={CreateSecurityGroup}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.updateSecurityGroup}
+      component={CreateSecurityGroup}
+    />
+    <PrivateRoute
+      exact
+      path={routes.office.viewSecurityGroup}
+      component={CreateSecurityGroup}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.creditLimitBreakup}
+      component={CreditLimitBreakup}
     />
 
     <PrivateRoute

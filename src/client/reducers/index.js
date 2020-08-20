@@ -88,5 +88,17 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.master.airlines
   ),
+  funtionalGroups: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.office.functionalGroups
+  ),
+  searchSecurityGroup: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.office.searchSecurityGroup
+  ),
+  securityGroupNameList: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.office.securityGroupNameList
+  ),
 });
 export default rootReducer;

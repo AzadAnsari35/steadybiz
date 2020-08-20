@@ -1,0 +1,23 @@
+@import '../../../../styles/variables';
+$root: '.CreateSecurityGroup';
+
+#{$root} {
+  &-head {
+    padding: 36px 100px 30px;
+    background-color: $white;
+    &__btn {
+      height: 44px;
+      padding: 0px 40px;
+    }
+  }
+
+  &-panel {
+    padding: 80px 100px;
+    .Panel-body {
+      padding: 40px 20px;
+    }
+    .SecondaryAccordion-content {
+      padding-bottom: 40px;
+    }
+  }
+}
