@@ -120,7 +120,7 @@ const PopoverAction = ({ rowNumber }) => {
 
 const defaultValues = {
   objectStatus: '',
-  securityGroupName: '',
+  userGroupId: '',
 };
 
 const SearchSecurityGroup = () => {
@@ -238,7 +238,7 @@ const SearchSecurityGroup = () => {
             <Grid item xs={6}>
               <MultiSelect
                 label="Security Group Name:"
-                name="securityGroupName"
+                name="userGroupId"
                 options={securityGroupNameList?.data || []}
                 valueKey="label"
                 showBorder={true}
