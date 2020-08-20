@@ -13,7 +13,7 @@ import Availability from './availability';
 import PassengerInformation from './passengerInformation';
 import Transaction from './transaction';
 import SearchOrder from './transaction/searchOrder';
-import SearchSecurityGroup from './office/securityGroup/SearchSecurityGroup';
+import SearchSecurityGroup from './office/securityGroup/searchSecurityGroup';
 import CreateSecurityGroup from './office/securityGroup/createSecurityGroup';
 
 export {

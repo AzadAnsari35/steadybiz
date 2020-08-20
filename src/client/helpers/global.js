@@ -253,3 +253,9 @@ Array.prototype.findItem = function (value, key = 'value') {
   // );
   return arr.find((option) => option[key] === value);
 };
+
+// Array.prototype.findName = (value) => {
+//   var arr = this;
+
+//   arr.find((option) => option === value);
+// }
