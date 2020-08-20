@@ -277,6 +277,7 @@ const Filters = (props) => {
     parentFilterDataCallback,
     sortingOption,
     sortDirection,
+    count,
   } = props;
   const [showAllAirlines, toggleShowAllAirlines] = useToggle(false);
   const [activeTab, setActiveTab] = useState({
@@ -516,10 +517,10 @@ const Filters = (props) => {
         text="filter results"
       />
       <div className="Filters-section d-flex justify-content-between pt-0">
-        {!!outboundItinerary && (
+        {!!count && (
           <Text
             className="font-primary-medium-14"
-            text={`${outboundItinerary.length} flights found.`}
+            text={`${count} flights found.`}
           />
         )}
         <Link className="ml-auto" text="Reset All" />

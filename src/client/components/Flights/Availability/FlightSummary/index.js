@@ -1,17 +1,16 @@
 import React from "react";
 
-// import {
-//   getArrivalDate,
-//   getArrivalAirportCodeCityName,
-//   getDepartureAirportCodeCityName,
-//   getDepartureDate,
-//   getPassengerTypeAndCount,
-//   getOutboundFlightSegmentGroup,
-//   getReturnFlightSegmentGroup,
-// } from "./../../utils/helpers/passengerInformation";
-// import { getCabinClassName } from "Helpers/flight.helpers";
 import { displayImage } from "Helpers/utils";
-import { getCabinClassName } from "Helpers/flight.helpers";
+import {
+  getCabinClassName,
+  getOutboundFlightSegmentGroup,
+  getReturnFlightSegmentGroup,
+  getDepartureAirportCodeCityName,
+  getDepartureDate,
+  getArrivalAirportCodeCityName,
+  getArrivalDate,
+  getPassengerTypeAndCount,
+} from "Helpers/flight.helpers";
 import { getPassengerTypeName, changeDateFormat } from "Helpers/global";
 
 import { Text } from "Widgets";
@@ -19,12 +18,12 @@ import { Text } from "Widgets";
 import "./style.scss";
 
 const FlightSummary = (props) => {
-  const { outboundItinerary, requestBody } = props;
+  const { outboundItinerary, requestBody, useSearchInput = true } = props;
 
   let departureAirportCode, arrivalAirportCode, departureDate, arrivalDate, cabinClass,
   passengerCountAndType = [], departureCityName, arrivalCityName;
 
-  if (requestBody.flightSearchRQ) {
+  if (!!requestBody && requestBody.flightSearchRQ && useSearchInput) {
     const { flightSearchRQ } = requestBody;
     departureAirportCode = flightSearchRQ.originDestination[0].originAirportCode;
     departureCityName = flightSearchRQ.originDestination[0].originAirport.subTitle.split(",")[0],
@@ -37,32 +36,28 @@ const FlightSummary = (props) => {
     flightSearchRQ.passengerList.passenger.map(item => {
       passengerCountAndType.push(`${item.count} ${getPassengerTypeName(item.PTC)}`)
     });
+  } else {
+    const outboundFlightSegmentGroup = getOutboundFlightSegmentGroup(outboundItinerary);
+    const returnFlightSegmentGroup = getReturnFlightSegmentGroup(outboundItinerary);
+    const { departureAirportCode: departureCode, departureCityName: departureName } =
+      outboundFlightSegmentGroup.length > 0 &&
+      getDepartureAirportCodeCityName(outboundFlightSegmentGroup);
+    departureAirportCode = departureCode;
+    departureCityName = departureName;
+    departureDate = outboundFlightSegmentGroup.length > 0 &&
+      getDepartureDate(outboundFlightSegmentGroup);
+    const { arrivalAirportCode: arrivalCode, arrivalCityName: arrivalName } =
+      returnFlightSegmentGroup.length > 0
+      ? getArrivalAirportCodeCityName(returnFlightSegmentGroup)
+      : getArrivalAirportCodeCityName(outboundFlightSegmentGroup, false);
+    arrivalAirportCode = arrivalCode;
+    arrivalCityName = arrivalName;
+    arrivalDate = returnFlightSegmentGroup.length > 0 &&
+      getArrivalDate(returnFlightSegmentGroup);
+    cabinClass = outboundFlightSegmentGroup.length > 0 &&
+      getCabinClassName(outboundFlightSegmentGroup[0].cabinClass);
+    passengerCountAndType = getPassengerTypeAndCount(outboundItinerary);
   }
-
-  // const outboundFlightSegmentGroup = getOutboundFlightSegmentGroup(
-  //   outboundItinerary
-  // );
-  // const returnFlightSegmentGroup = getReturnFlightSegmentGroup(
-  //   outboundItinerary
-  // );
-  // const departDate =
-  //   isValidList(outboundFlightSegmentGroup) &&
-  //   getDepartureDate(outboundFlightSegmentGroup);
-  // const arrivalDate =
-  //   isValidList(returnFlightSegmentGroup) &&
-  //   getArrivalDate(returnFlightSegmentGroup);
-  // const passengerCountAndType = getPassengerTypeAndCount(outboundItinerary);
-  // const cabinClass =
-  //   isValidList(outboundFlightSegmentGroup) &&
-  // getCabinClassName(outboundFlightSegmentGroup[0].cabinClass);
-  // const { departureAirportCode, departureCityName } =
-  //   isValidList(outboundFlightSegmentGroup) &&
-  //   getDepartureAirportCodeCityName(outboundFlightSegmentGroup);
-  // const { arrivalAirportCode, arrivalCityName } = isValidList(
-  //   returnFlightSegmentGroup
-  // )
-  //   ? getArrivalAirportCodeCityName(returnFlightSegmentGroup)
-  //   : getArrivalAirportCodeCityName(outboundFlightSegmentGroup, false);
 
   return (
     <div className="FlightSummary d-flex">

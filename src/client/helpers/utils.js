@@ -1,5 +1,28 @@
 import config from 'Config/';
+import endpointWithoutApi from 'Config/endpointWithoutApi';
+import { commonActionWithoutApi } from 'Actions/';
 
+export const showErrorBox = (errorMsg) => {
+  return commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
+    toastStatus: false,
+    toastMessage: errorMsg,
+    isToastVisible: true,
+  });
+};
+export const showSuccessBox = (msg) => {
+  return commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
+    toastStatus: true,
+    toastMessage: msg,
+    isToastVisible: true,
+  });
+};
+export const HideAlertBox = () => {
+  return commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
+    toastStatus: false,
+    toastMessage: '',
+    isToastVisible: false,
+  });
+};
 export const displayImage = (name, path = 'images') => {
   return '/public/assets/' + path + '/' + name;
 };

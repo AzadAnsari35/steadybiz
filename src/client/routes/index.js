@@ -187,6 +187,11 @@ const Routes = () => (
       path={routes.transaction.viewBooking}
       component={Transaction}
     />
+    <PrivateRoute
+      exact
+      path={routes.transaction.issueTicket}
+      component={Transaction}
+    />
 
     <PrivateRoute
       exact

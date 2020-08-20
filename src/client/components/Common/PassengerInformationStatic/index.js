@@ -27,8 +27,8 @@ const PassengerInformationStatic = (props) => {
 								const departureCityCode = segmentGroup.departureDetails.cityCode;
 								const arrivalCityName = segmentGroup.arrivalDetails.cityName;
 								const arrivalCityCode = segmentGroup.arrivalDetails.cityCode;
-								const checkinBaggageObj = segmentGroup.baggageInformation.checkInBaggage;
-								const cabinBaggageObj = segmentGroup.baggageInformation.cabinBaggage;
+								const checkinBaggageObj = !!segmentGroup.baggageInformation && segmentGroup.baggageInformation.checkInBaggage;
+								const cabinBaggageObj = !!segmentGroup.baggageInformation && segmentGroup.baggageInformation.cabinBaggage;
 								return (
 									<div key={index} className="PassengerInformationStatic-passenger__segment">
 										<Text
@@ -66,9 +66,9 @@ const PassengerInformationStatic = (props) => {
 													<Text
 														className="font-primary-bold-14"
 														text={`${
-															checkinBaggageObj.unit === "kg"
-																? `${checkinBaggageObj.weight} kg`
-																: `${checkinBaggageObj.noOfPieces} Pieces`
+															!!checkinBaggageObj && checkinBaggageObj.unit === "kg"
+																? `${!!checkinBaggageObj && checkinBaggageObj.weight} kg`
+																: `${!!checkinBaggageObj && checkinBaggageObj.noOfPieces} Pieces`
 														} / Person`}
 													/>
 												</div>

@@ -18,17 +18,11 @@ import {
 import routes from 'Constants/routes';
 import { useHistory } from 'react-router-dom';
 import endpoint from 'Config/endpoint.js';
-import endpointWithoutApi from 'Config/endpointWithoutApi';
-import {
-  commonAction,
-  commonActionWithoutApi,
-  commonActionUpdate,
-} from 'Actions/';
+
+import { commonAction, commonActionUpdate } from 'Actions/';
 import { useDispatch, useSelector } from 'react-redux';
-import useDropDown from 'Hooks/useDropDown';
-import { dropDownParam } from 'Constants/commonConstant';
 import { utils } from 'Helpers';
-import { commonConstant } from 'Constants';
+
 import CachedIcon from '@material-ui/icons/Cached';
 
 import './style.scss';
@@ -51,7 +45,9 @@ const headerData = [
 const PopoverAction = (props) => {
   const [showPopover, setShowPopover] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const searchResult = useSelector(
+    (state) => state[endpoint.orders.searchOrders.reducerName]?.items
+  );
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -66,24 +62,35 @@ const PopoverAction = (props) => {
     setAnchorEl(null);
     setShowPopover(false);
   };
-
+  const viewOrder = (orderNumber, type) => {
+    dispatch(utils.HideAlertBox());
+    utils.setItemToStorage('searchOrderActionType', type);
+    dispatch(
+      commonAction(endpoint.orders.viewOrder, {
+        orderNumber: orderNumber,
+        type: type,
+      })
+    );
+  };
+  //const retieveOrder = (orderNo) => {};
   const handleClick = (e) => {
     const selectedOption = e.currentTarget.getAttribute('name');
+    // console.log(searchResult[rowNumber]);
+    // let selectedItem = searchResult[rowNumber].orderNo;
 
     switch (selectedOption) {
       case 'view': {
-        history.push(routes.office.viewOffice);
-        utils.setItemToStorage('selectedOffice', rowNumber);
+        viewOrder('OKT0000000085', 'view');
+
         break;
       }
       case 'modify': {
-        history.push(routes.office.updateOffice);
-        utils.setItemToStorage('selectedOffice', rowNumber);
+        viewOrder('OKT0000000085', 'retieve');
         break;
       }
 
       case 'search': {
-        history.push(routes.office.searchOfficeUser);
+        history.push(routes.office.searchResultUser);
         utils.setItemToStorage('selectedOffice', rowNumber);
         dispatch(commonActionUpdate(endpoint.office.searchUser, null));
 
@@ -154,91 +161,62 @@ const PopoverAction = (props) => {
 };
 
 const defaultValues = {
-  status: '',
-  city: '',
-  country: '',
-  officeType: '',
-  officeName: '',
-  officeId: '',
+  orderNo: '',
+  pnr: '',
 };
 
 const SearchOrder = () => {
   const [requestJson, setReqeustJson] = useState(null);
-  const [errorMsg, setErrorMsg] = useState('');
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(5);
+  const [size, setSize] = useState(20);
   const firstPageUpdate = useRef(true);
-
   let history = useHistory();
   let dispatch = useDispatch();
 
-  const objectStatusesList = useDropDown(
-    endpoint.master.objectStatuses,
-    dropDownParam.objectStatuses,
-    'masterObjectStatuses'
-  );
-
-  const countriesList = useDropDown(
-    endpoint.master.countries,
-    dropDownParam.countries,
-    'masterCountries'
-  );
-
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    getValues,
-    reset,
-  } = useForm({ defaultValues });
-
-  useEffect(() => {
-    const selectedCountry = getValues('country');
-    if (selectedCountry) {
-      dispatch(
-        commonAction(endpoint.master.cities, {
-          countryCode: selectedCountry.value,
-        })
-      );
-    }
-    return dispatch(commonActionUpdate(endpoint.master.cities, null));
-  }, [getValues('country')]);
-
-  const ofId = utils.getItemFromStorage('officeId');
+  const { register, handleSubmit, errors, control, reset } = useForm({
+    defaultValues,
+  });
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
   const {
     userDto: {
       officeDto: { officeId, officeName, officeLevel },
     },
   } = userData;
-
-  const searchOffice = useSelector((state) => state.searchOffice?.items);
-
-  const citiesList = useSelector((state) => state.masterCities?.items?.data);
-
+  const ofId = utils.getItemFromStorage('officeId');
+  const searchResult = useSelector(
+    (state) => state[endpoint.orders.searchOrders.reducerName]?.items
+  );
+  const viewPNR = useSelector(
+    (state) => state[endpoint.orders.viewOrder.reducerName]?.items
+  );
+  useEffect(() => {
+    //console.log(viewPNR);
+    const actionType = utils.getItemFromStorage('searchOrderActionType');
+    console.log(actionType);
+    if (viewPNR != null && actionType != '') {
+      const error = utils.checkError(viewPNR);
+      if (error == '') {
+        utils.setItemToStorage('searchOrderActionType', '');
+        if (actionType == 'view') history.push(routes.transaction.viewPNR);
+        else history.push(routes.transaction.issueTicket);
+      } else utils.showErrorBox(error);
+    }
+  }, [viewPNR]);
   useEffect(() => {
     if (requestJson !== null) {
+      dispatch(utils.HideAlertBox());
       callSearch(page);
     }
-
-    // return dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
   }, [requestJson]);
 
   useEffect(() => {
-    if (searchOffice != null) {
-      const errMsg = utils.checkError(searchOffice);
+    if (searchResult != null) {
+      const errMsg = utils.checkError(searchResult);
       if (errMsg !== '') {
-        dispatch(
-          commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
-            toastStatus: false,
-            toastMessage: errMsg,
-            isToastVisible: true,
-          })
-        );
+        dispatch(utils.showErrorBox(errMsg));
       }
     }
-  }, [searchOffice]);
+  }, [searchResult]);
 
   useEffect(() => {
     if (firstPageUpdate.current) {
@@ -249,22 +227,23 @@ const SearchOrder = () => {
   }, [page]);
 
   const handlePage = (newPage) => {
+    console.log(newPage);
     setPage(newPage);
   };
 
   const callSearch = (page) => {
+    console.log('hi', requestJson);
     try {
-      setErrorMsg('');
       dispatch(
-        commonAction(endpoint.office.searchOffice, {
+        commonAction(endpoint.orders.searchOrders, {
           ...requestJson,
-          page: page - 1,
+          page: page,
           size,
           ofid: ofId,
         })
       );
     } catch (err) {
-      console.log('err', err);
+      dispatch(utils.showErrorBox(err.message));
     }
   };
 
@@ -284,8 +263,8 @@ const SearchOrder = () => {
   };
 
   return (
-    <div className="SearchOffice">
-      <div className="SearchOffice-head">
+    <div className="searchResult">
+      <div className="searchResult-head">
         <div className="d-flex justify-content-between align-items-end pb-4">
           <div className="font-primary-semibold-24 ">SEARCH ORDER</div>
           <IconWithBackground
@@ -310,18 +289,18 @@ const SearchOrder = () => {
             <Grid item xs={3}>
               <TextInput
                 label="Order Number:"
-                name="orderNumber"
+                name="orderNo"
                 register={register}
                 errors={errors}
               />
             </Grid>
             <Grid item xs={3}>
               <SelectWithTextInput
-                name="pnrNumber"
+                name="pnr"
                 selectInputName="sabre"
                 data={[]}
                 label="PNR: "
-                placeholder="Phone Number"
+                placeholder="PNR Number"
                 selectPlaceholder="Sabre"
                 errors={errors}
                 register={register}
@@ -445,7 +424,7 @@ const SearchOrder = () => {
 
         <div></div>
       </div>
-      {searchOffice?.status && (
+      {searchResult?.status && (
         <PrimaryTable
           header={
             <PrimaryTableHeader
@@ -455,12 +434,12 @@ const SearchOrder = () => {
             />
           }
           headerData={headerData}
-          bodyData={searchOffice.data}
+          bodyData={searchResult.data}
           page={page}
           AddElement={{
             last: <PopoverAction />,
           }}
-          count={searchOffice.data.count}
+          count={searchResult.data.count}
           size={size}
           columnAlignments={[
             'left',
@@ -476,16 +455,7 @@ const SearchOrder = () => {
           ]}
           statusIndex={8}
           handlePage={handlePage}
-          hideKeys={[
-            'ofId',
-            'address1',
-            'address2',
-            'cityCode',
-            'officeEmail',
-            'noOfUserRequested',
-            'paymentOptions',
-            'zipCode',
-          ]}
+          hideKeys={['officeId']}
         />
       )}
     </div>

@@ -3,6 +3,7 @@ import {
   addDurations,
   calculateDurationInMinutes,
   calculateTotalDuration,
+  changeDateFormat,
   extractTime,
   getPassengerTypeName,
   getRange,
@@ -666,4 +667,84 @@ export const getFiltersData = outboundItinerary => {
     tripDurations,
     itineraryCityNames,
   };
+};
+
+export const getOutboundFlightSegmentGroup = outboundItinerary => {
+  const { flightSegments } = outboundItinerary;
+  const outboundFlightSegment = flightSegments.find(segment => 
+    segment.flightSegmentDirection.toLowerCase() === "outbound"
+  );
+  return outboundFlightSegment.flightSegmentGroup;
+};
+
+export const getReturnFlightSegmentGroup = outboundItinerary => {
+  const { flightSegments } = outboundItinerary;
+  const returnFlightSegment = flightSegments.find(segment => 
+    segment.flightSegmentDirection.toLowerCase() === "inbound"
+  );
+  return !!returnFlightSegment &&returnFlightSegment.flightSegmentGroup;
+};
+
+export const getDepartureAirportCodeCityName = outboundFlightSegmentGroup => {
+  if (outboundFlightSegmentGroup[0].departureDetails &&
+    outboundFlightSegmentGroup[0].departureDetails.airportCode &&
+    outboundFlightSegmentGroup[0].departureDetails.cityName
+  ) {
+    return {
+      departureAirportCode: outboundFlightSegmentGroup[0].departureDetails.airportCode,
+      departureCityName: outboundFlightSegmentGroup[0].departureDetails.cityName,
+    };
+  }
+  return {
+    departureAirportCode: "",
+    departureCityName: "",
+  };
+};
+
+export const getArrivalAirportCodeCityName = (flightSegmentGroup, isRoundTrip = true) => {
+  if (isRoundTrip && flightSegmentGroup[0].departureDetails &&
+    flightSegmentGroup[0].departureDetails.airportCode &&
+    flightSegmentGroup[0].departureDetails.cityName
+  ) {
+    return {
+      arrivalAirportCode: flightSegmentGroup[0].departureDetails.airportCode,
+      arrivalCityName: flightSegmentGroup[0].departureDetails.cityName,
+    };
+  } else if (
+    flightSegmentGroup[0].arrivalDetails &&
+    flightSegmentGroup[0].arrivalDetails.airportCode &&
+    flightSegmentGroup[0].arrivalDetails.cityName
+  ) {
+    return {
+      arrivalAirportCode: flightSegmentGroup[0].arrivalDetails.airportCode,
+      arrivalCityName: flightSegmentGroup[0].arrivalDetails.cityName,
+    };
+  }
+  return {
+    arrivalAirportCode: "",
+    arrivalCityName: "",
+  };
+};
+
+export const getDepartureDate = outboundFlightSegmentGroup => {
+  if (outboundFlightSegmentGroup[0].departureDetails && outboundFlightSegmentGroup[0].departureDetails.date) {
+    return changeDateFormat(outboundFlightSegmentGroup[0].departureDetails.date)
+  }
+  return "";
+};
+
+export const getArrivalDate = returnFlightSegmentGroup => {
+  if (returnFlightSegmentGroup[0].departureDetails && returnFlightSegmentGroup[0].departureDetails.date) {
+    return changeDateFormat(returnFlightSegmentGroup[0].departureDetails.date)
+  }
+  return "";
+};
+
+export const getPassengerTypeAndCount = outboundItinerary => {
+  const passengerCountAndType = [];
+  if (outboundItinerary && outboundItinerary.totalfareDetails &&
+  outboundItinerary.totalfareDetails.fareDetails && outboundItinerary.totalfareDetails.fareDetails.length > 0) {
+    outboundItinerary.totalfareDetails.fareDetails.map(item => passengerCountAndType.push(`${item.count} ${getPassengerTypeName(item.ptc)}`));
+  }
+  return passengerCountAndType;
 };

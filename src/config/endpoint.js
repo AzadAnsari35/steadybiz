@@ -1,6 +1,22 @@
 import config from './index';
 import { actionTypeConstant, commonConstant } from 'Constants/';
 export default {
+  orders: {
+    searchOrders: {
+      url: config.api.url + '/api/v1/orders/searchOrder',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.orders.searchOrders,
+      reducerName: 'ordersSearchOrders',
+    },
+    viewOrder: {
+      url: config.api.url + '/api/v1/orders/viewOrder',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.transaction,
+      reducerName: 'transaction',
+    },
+  },
   flights: {
     airportSuggestions: {
       url: config.api.url + '/api/v1/flights/airportSuggestions',
@@ -181,6 +197,11 @@ export default {
       httpVerb: commonConstant.HttpVerbsConstant.POST,
       actionType: actionTypeConstant.transaction,
       reducerName: 'transaction',
+    },
+    airTicketing: {
+      url: config.api.url + '/api/v1/flights/airTicketing',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
     },
     airPriceAndTicketing: {
       url: config.api.url + '/api/v1/flights/airPriceAndTicketing',

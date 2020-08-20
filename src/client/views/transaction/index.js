@@ -30,9 +30,11 @@ import {
 import MailIcon from "Widgets/Icons/MailIcon";
 import SearchAirplaneIcon from "Widgets/Icons/SearchAirplaneIcon";
 import endpoint from "Config/endpoint";
+import endpointWithoutApi from "Config/endpointWithoutApi";
 import { getDataFromRedux } from "Helpers/global";
 
 import "./style.scss";
+import { commonActionWithoutApi } from "Actions/index";
 
 const Transaction = () => {
 	const dispatch = useDispatch();
@@ -41,7 +43,7 @@ const Transaction = () => {
 
 	// const { data: transactionData } = useSelector((state) => state.transaction);
 	const transaction = useSelector((state) => state[endpoint.transaction.airprice.reducerName]);
-	const flightSearchInput = useSelector(state => state.flightSearchInput);
+	const flightSearchInput = useSelector(state => state[endpointWithoutApi.flights.flightSearchInput.reducerName]);
 	const transactionData = getDataFromRedux(transaction);
 	const flightSearchInputData = getDataFromRedux(flightSearchInput);
 
@@ -72,6 +74,12 @@ const Transaction = () => {
 		obj[v.passengerInfo.passengerType] = (obj[v.passengerInfo.passengerType] || 0) + 1;
 		return obj;
 	}, {});
+
+	useEffect(() => {
+		dispatch(commonActionWithoutApi(endpoint.flights.flightSearch, null));
+		dispatch(commonActionWithoutApi(endpointWithoutApi.flights.flightSearchInput, null));
+		dispatch(commonActionWithoutApi(endpointWithoutApi.flights.flightSelect, null));
+	}, []);
 
 	const handlePanelToggle = (id, value) => {
 		setPanelsState({
@@ -104,9 +112,13 @@ const Transaction = () => {
 		</div>
 	);
 
-	// const flightSummary = () => <PassengerInformationFlightSummary outboundItinerary={transactionData.outboundItinerary} />;
-	// const flightSummary = () => <FlightSummary outboundItinerary={!!transactionData && transactionData.outboundItinerary} />;
-	const flightSummary = () => <FlightSummary requestBody={flightSearchInputData} />;
+	const flightSummary = () => (
+		<FlightSummary
+			outboundItinerary={!!transactionData && transactionData.outboundItinerary}
+			useSearchInput={false}
+		/>
+	);
+	// const flightSummary = () => <FlightSummary requestBody={flightSearchInputData} />;
 
 	return (
 		<Fragment>
