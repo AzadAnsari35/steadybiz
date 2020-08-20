@@ -1,15 +1,15 @@
-import React, { Fragment } from "react";
+import React, { Fragment } from 'react';
 
-import Card from "Widgets/Card";
-import Text from "Widgets/Text";
-import ExpandArrow from "Widgets/ExpandArrow";
+import Card from 'Widgets/Card';
+import Text from 'Widgets/Text';
+import ExpandArrow from 'Widgets/ExpandArrow';
 
-import "./style.scss";
+import './style.scss';
 
 const Panel = (props) => {
   const {
     addExtraMargin,
-    cardClassName = "",
+    cardClassName = '',
     id,
     title,
     panelHeaderIcon,
@@ -24,6 +24,7 @@ const Panel = (props) => {
     headerActionContent,
     onClick,
     alwaysOpen = false,
+    hideHeader = false,
   } = props;
 
   return (
@@ -34,50 +35,53 @@ const Panel = (props) => {
       addExtraMargin={addExtraMargin}
     >
       <div className="Panel">
-        <div
-          className={`Panel-header d-flex align-items-center ${
-            !!expand ? "box-shadow-ternary" : ""
-          }`}
-        >
+        {!hideHeader && (
           <div
-            className={`Panel-header__icon ${!!expand ? "" : "rounded"} ${
-              !!panelIconMarginLeft ? "" : "justify-content-center"
+            className={`Panel-header d-flex align-items-center ${
+              !!expand ? 'box-shadow-ternary' : ''
             }`}
           >
-            <span className="icon">{panelHeaderIcon}</span>
-          </div>
-          <div className="Panel-header__content d-flex align-items-center">
-            {!!showHeaderContent ? (
-              headerContent
-            ) : (
-              <Text
-                text={headerText}
-                className="Panel-header__title font-primary-medium-22"
-              />
-            )}
-          </div>
-
-          {!alwaysOpen && (
-            <div className="Panel-header__action ml-auto d-flex">
-              {hidePanelAction ? (
-                <Fragment>
-                  {!!headerActionContent && headerActionContent}
-                </Fragment>
+            <div
+              className={`Panel-header__icon ${!!expand ? '' : 'rounded'} ${
+                !!panelIconMarginLeft ? '' : 'justify-content-center'
+              }`}
+            >
+              <span className="icon">{panelHeaderIcon}</span>
+            </div>
+            <div className="Panel-header__content d-flex align-items-center">
+              {!!showHeaderContent ? (
+                headerContent
               ) : (
-                <Fragment>
-                  <Text
-                    className="Panel-header__action-title font-primary-medium-16 text-capitalize d-flex align-items-center mr-10"
-                    text={title}
-                  />
-                  <ExpandArrow expand={expand} onClick={() => onClick(id)} />
-                </Fragment>
+                <Text
+                  text={headerText}
+                  className="Panel-header__title font-primary-medium-22"
+                />
               )}
             </div>
-          )}
-        </div>
+
+            {!alwaysOpen && (
+              <div className="Panel-header__action ml-auto d-flex">
+                {hidePanelAction ? (
+                  <Fragment>
+                    {!!headerActionContent && headerActionContent}
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <Text
+                      className="Panel-header__action-title font-primary-medium-16 text-capitalize d-flex align-items-center mr-10"
+                      text={title}
+                    />
+                    <ExpandArrow expand={expand} onClick={() => onClick(id)} />
+                  </Fragment>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         <div
-          className={`Panel-body ${expand ? "d-block" : "d-none"} ${
-            !!noPadding ? "p-0" : ""
+          className={`Panel-body ${expand ? 'd-block' : 'd-none'} ${
+            !!noPadding ? 'p-0' : ''
           }`}
         >
           {children}

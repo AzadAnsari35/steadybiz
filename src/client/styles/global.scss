@@ -335,6 +335,17 @@ p {
   font-size: 35px;
   line-height: 55px;
 }
+.font-primary-semibold-30 {
+  @extend .font-primary-semibold;
+  font-size: 30px;
+  line-height: 55px;
+}
+
+.font-primary-semibold-35 {
+  @extend .font-primary-semibold;
+  font-size: 35px;
+  line-height: 55px;
+}
 
 .font-primary-bold-14 {
   @extend .font-primary-bold;
@@ -461,6 +472,15 @@ p {
   padding-top: 82px;
   padding-bottom: 82px;
 }
+.py-44 {
+  padding-top: 44px;
+  padding-bottom: 44px;
+}
+
+.py-82 {
+  padding-top: 82px;
+  padding-bottom: 82px;
+}
 
 .p-0 {
   padding: 0;
@@ -492,6 +512,10 @@ p {
 
 .pt-24 {
   padding-top: 24px;
+}
+
+.pt-28 {
+  padding-top: 28px;
 }
 .pt-32 {
   padding-top: 32px;
