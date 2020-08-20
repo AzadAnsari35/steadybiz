@@ -27,6 +27,7 @@ const DatePicker = (props) => {
     validation = '',
     control,
     name,
+    className,
   } = props;
   // const [selectedDate, setSelectedDate] = React.useState(!!maxDate ? maxDate : new Date());
   //   const [selectedDate, setSelectedDate] = useState();
@@ -42,7 +43,11 @@ const DatePicker = (props) => {
   //   };
 
   return (
-    <div className={`DatePicker ${!!hasError ? 'has-error' : ''}`}>
+    <div
+      className={`DatePicker ${!!hasError ? 'has-error' : ''} ${
+        className ? className : ''
+      }`}
+    >
       {!!label && (
         <Text
           className="SelectField-label font-primary-medium-16"

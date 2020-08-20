@@ -1,6 +1,6 @@
-@import "../../styles/variables.scss";
+@import '../../styles/variables.scss';
 
-$root: ".SelectWithTextInput";
+$root: '.SelectWithTextInput';
 
 #{$root} {
   &-label {
@@ -12,11 +12,10 @@ $root: ".SelectWithTextInput";
 
     &-select {
       position: absolute;
-      width: calc(30% - 40px) !important;
       padding: 10px 20px;
 
       &:after {
-        content: "";
+        content: '';
         background-color: #00000080;
         height: 17px;
         width: 1px;
@@ -38,7 +37,6 @@ $root: ".SelectWithTextInput";
       border-radius: 4px;
       height: 44px;
       padding: 0 20px 0 200px;
-      padding-left: 30%;
       &::placeholder {
         color: #00000080;
       }

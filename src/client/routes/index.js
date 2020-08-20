@@ -15,6 +15,7 @@ import {
   CreditLimitBreakup,
   PassengerInformation,
   Transaction,
+  SearchOrder,
 } from 'Views/';
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
@@ -118,6 +119,17 @@ const Routes = () => (
       exact
       path={routes.transaction.viewBooking}
       component={Transaction}
+    />
+    <PrivateRoute
+      exact
+      path={routes.transaction.issueTicket}
+      component={Transaction}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.transaction.searchOrder}
+      component={SearchOrder}
     />
     <PrivateRoute exact path="/private" component={() => <div>private</div>} />
     <PublicRoute

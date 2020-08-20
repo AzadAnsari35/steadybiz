@@ -1,49 +1,43 @@
 import React from 'react';
-import MultiSelect from 'Widgets/MultiSelect';
-import Text from 'Widgets/Text';
-import '../../styles/_variables.scss';
+import { DatePicker, MultiSelect, Text } from 'Widgets';
+
 import './style.scss';
 
-const SelectWithTextInput = (props) => {
+const SelectWithDatePickers = (props) => {
   const {
-    name,
-    selectInputName,
-    className,
+    name = { select: '', datePicker1: '', datePicker2: '' },
     data,
-    icon,
-    type = 'text',
     label,
-    placeholder = '',
     selectPlaceholder = '',
     initialSelectedValue = '',
-    value,
     disabled,
-    onFocus,
-    onChange,
     errors,
-    register,
-    validation,
     selectValidation,
     control,
     showValue,
-    selectWidth = '30%',
+    selectWidth = '33%',
   } = props;
-
   return (
-    <div className="SelectWithTextInput">
+    <div className="SelectWithDatePickers">
       {!!label && (
         <Text
           className="SelectWithTextInput-label font-primary-medium-16"
           text={label}
         />
       )}
-      <div className="SelectWithTextInput-container">
+      <div
+        className="SelectWithDatePickers-container"
+        style={{
+          border: '1px solid #00000080',
+          display: 'flex',
+          borderRadius: 4,
+        }}
+      >
         <MultiSelect
-          className={`SelectWithTextInput-container-select  ${
-            disabled ? 'input-disabled' : ''
-          }`}
+          className={`SelectWithDatePickers-container-select  pl-20 pr-20
+          ${disabled ? 'input-disabled' : ''}`}
           style={{ width: `calc(${selectWidth} - 40px)` }}
-          name={selectInputName}
+          name={name?.select}
           options={data}
           placeholder={selectPlaceholder}
           changeStyle={true}
@@ -55,18 +49,19 @@ const SelectWithTextInput = (props) => {
           disabled={disabled}
         />
 
-        <input
-          name={name}
-          className={`SelectWithTextInput-container-input font-primary-semibold-16 ${
-            errors[name] || errors[selectInputName] ? 'thin-red-border' : ''
-          }  ${disabled ? 'input-disabled border-none' : ''}  `}
-          type={type}
-          disabled={disabled}
-          placeholder={placeholder}
-          ref={register(validation)}
-          style={{ paddingLeft: selectWidth }}
+        <DatePicker
+          control={control}
+          name={name?.datePicker1}
+          className="SelectWithDatePickers-container-datePicker-1"
         />
-        {errors[name] ? (
+
+        <DatePicker
+          control={control}
+          name={name?.datePicker1}
+          className="SelectWithDatePickers-container-datePicker-2"
+        />
+
+        {/* {errors[name] ? (
           <p className="error-message mt-6 font-primary-medium-16 mb-0">
             {errors[name].message}
           </p>
@@ -76,10 +71,9 @@ const SelectWithTextInput = (props) => {
           </p>
         ) : (
           ''
-        )}
+        )} */}
       </div>
     </div>
   );
 };
-
-export default SelectWithTextInput;
+export default SelectWithDatePickers;

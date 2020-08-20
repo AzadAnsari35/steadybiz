@@ -9,6 +9,11 @@ import { reducerState, createFilteredReducer } from './commonReducer';
 // });
 
 const rootReducer = combineReducers({
+  ordersSearchOrders: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.orders.searchOrders
+  ),
+
   loaderStatus: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.loader.loaderStatus
