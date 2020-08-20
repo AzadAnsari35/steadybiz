@@ -266,10 +266,10 @@ const CreateSecurityGroup = () => {
           <div className="font-primary-semibold-24 pb-4">
             {` ${
               isViewSecurityGroup
-                ? 'VIEW'
+                ? 'VIEW '
                 : isCreateSecurityGroup
-                ? 'CREATE'
-                : 'MODIFY'
+                ? 'CREATE '
+                : 'MODIFY '
             }`}
             SECURITY GROUP
           </div>
