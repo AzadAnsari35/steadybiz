@@ -19,7 +19,7 @@ import routes from 'Constants/routes';
 import { useHistory } from 'react-router-dom';
 import endpoint from 'Config/endpoint.js';
 
-import { commonAction, commonActionUpdate } from 'Actions/';
+import { commonAction } from 'Actions/';
 import { useDispatch, useSelector } from 'react-redux';
 import { utils } from 'Helpers';
 
@@ -51,7 +51,7 @@ const PopoverAction = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { rowNumber } = props;
+  const { rowNumber, isBooking } = props;
 
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -75,31 +75,43 @@ const PopoverAction = (props) => {
   //const retieveOrder = (orderNo) => {};
   const handleClick = (e) => {
     const selectedOption = e.currentTarget.getAttribute('name');
-    // console.log(searchResult[rowNumber]);
-    // let selectedItem = searchResult[rowNumber].orderNo;
 
+    let selectedItem = searchResult.data.data[rowNumber];
+    const status = selectedItem.status.toUpperCase();
+
+    let orderNo = selectedItem.orderNo;
+    // orderNo = 'OKT0000000155';
+    //console.log(orderNo);
     switch (selectedOption) {
       case 'view': {
-        viewOrder('OKT0000000085', 'view');
-
+        if (status == 'HOLD' || status == 'CANCELLED')
+          viewOrder(orderNo, 'view');
+        else
+          dispatch(
+            utils.showErrorBox(
+              'you can perform this action on hold or cancelled status pnr'
+            )
+          );
         break;
       }
-      case 'modify': {
-        viewOrder('OKT0000000085', 'retieve');
+      case 'issue': {
+        if (status == 'HOLD') viewOrder(orderNo, 'retieve');
+        else
+          dispatch(
+            utils.showErrorBox('you can perform this action on hold status pnr')
+          );
         break;
       }
 
-      case 'search': {
-        history.push(routes.office.searchResultUser);
-        utils.setItemToStorage('selectedOffice', rowNumber);
-        dispatch(commonActionUpdate(endpoint.office.searchUser, null));
+      case 'viewBooking': {
+        if (status == 'BOOKED') viewOrder(orderNo, 'view');
+        else
+          dispatch(
+            utils.showErrorBox(
+              'you can perform this action on booked status pnr'
+            )
+          );
 
-        break;
-      }
-
-      case 'deposit': {
-        history.push(routes.office.manageCreditLimit);
-        utils.setItemToStorage('selectedOffice', rowNumber);
         break;
       }
 
@@ -136,23 +148,16 @@ const PopoverAction = (props) => {
           <div
             className="font-primary-regular-14 cursor-pointer"
             onClick={handleClick}
-            name="modify"
+            name="issue"
           >
             Issue Ticket{' '}
           </div>
           <div
             className="font-primary-regular-14 cursor-pointer"
             onClick={handleClick}
-            name="search"
+            name="viewBooking"
           >
-            Modify PNR{' '}
-          </div>
-          <div
-            className="font-primary-regular-14 cursor-pointer"
-            onClick={handleClick}
-            name="deposit"
-          >
-            Cancel PNR{' '}
+            View Booking{' '}
           </div>
         </div>
       </SimplePopover>
@@ -160,28 +165,29 @@ const PopoverAction = (props) => {
   );
 };
 
-const defaultValues = {
-  orderNo: '',
-  pnr: '',
-};
-
 const SearchOrder = () => {
   const [requestJson, setReqeustJson] = useState(null);
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(20);
+  const [size, setSize] = useState(10);
   const firstPageUpdate = useRef(true);
   let history = useHistory();
   let dispatch = useDispatch();
-
-  const { register, handleSubmit, errors, control, reset } = useForm({
-    defaultValues,
-  });
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
   const {
     userDto: {
       officeDto: { officeId, officeName, officeLevel },
     },
   } = userData;
+  const defaultValues = {
+    orderNo: '',
+    pnr: '',
+    officeID: officeId,
+  };
+
+  const { register, handleSubmit, errors, control, reset } = useForm({
+    defaultValues,
+  });
+
   const ofId = utils.getItemFromStorage('officeId');
   const searchResult = useSelector(
     (state) => state[endpoint.orders.searchOrders.reducerName]?.items
@@ -192,14 +198,17 @@ const SearchOrder = () => {
   useEffect(() => {
     //console.log(viewPNR);
     const actionType = utils.getItemFromStorage('searchOrderActionType');
-    console.log(actionType);
+    // console.log(actionType);
+    // alert(actionType);
     if (viewPNR != null && actionType != '') {
       const error = utils.checkError(viewPNR);
       if (error == '') {
         utils.setItemToStorage('searchOrderActionType', '');
         if (actionType == 'view') history.push(routes.transaction.viewPNR);
-        else history.push(routes.transaction.issueTicket);
-      } else utils.showErrorBox(error);
+        else if (actionType == 'retieve')
+          history.push(routes.transaction.issueTicket);
+        else history.push(routes.transaction.viewBooking);
+      } else dispatch(utils.showErrorBox(error));
     }
   }, [viewPNR]);
   useEffect(() => {
@@ -227,12 +236,12 @@ const SearchOrder = () => {
   }, [page]);
 
   const handlePage = (newPage) => {
-    console.log(newPage);
+    // console.log(newPage);
     setPage(newPage);
   };
 
   const callSearch = (page) => {
-    console.log('hi', requestJson);
+    //console.log('hi', requestJson);
     try {
       dispatch(
         commonAction(endpoint.orders.searchOrders, {
@@ -248,7 +257,7 @@ const SearchOrder = () => {
   };
 
   const onSubmit = (data, e) => {
-    console.log('data', data);
+    // console.log('data', data);
     setReqeustJson(data);
     setPage(1);
   };
@@ -263,8 +272,8 @@ const SearchOrder = () => {
   };
 
   return (
-    <div className="searchResult">
-      <div className="searchResult-head">
+    <div className="SearchOrder">
+      <div className="SearchOrder-head">
         <div className="d-flex justify-content-between align-items-end pb-4">
           <div className="font-primary-semibold-24 ">SEARCH ORDER</div>
           <IconWithBackground
@@ -289,6 +298,7 @@ const SearchOrder = () => {
             <Grid item xs={3}>
               <TextInput
                 label="Order Number:"
+                placeholder="Order Number"
                 name="orderNo"
                 register={register}
                 errors={errors}
@@ -375,6 +385,7 @@ const SearchOrder = () => {
                 label="Office ID:"
                 name="officeID"
                 register={register}
+                control={control}
                 errors={errors}
               />
             </Grid>
@@ -409,12 +420,12 @@ const SearchOrder = () => {
 
             <Grid item xs={3}>
               <div className="d-flex justify-content-end pt-32">
-                <Button
+                {/* <Button
                   text="CHANGE OFFICE"
                   secondary
                   className=" px-48 mr-10"
                   onClick={() => handleClick()}
-                />
+                /> */}
 
                 <Button type="submit" text="Search" className=" px-48" />
               </div>
@@ -437,7 +448,7 @@ const SearchOrder = () => {
           bodyData={searchResult.data}
           page={page}
           AddElement={{
-            last: <PopoverAction />,
+            last: <PopoverAction isBooking={1} />,
           }}
           count={searchResult.data.count}
           size={size}

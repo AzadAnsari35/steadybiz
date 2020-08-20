@@ -4,11 +4,13 @@ const useCheckboxData = (initialValue = []) => {
   const [checkboxData, setCheckboxData] = useState(initialValue);
 
   const handleCheckbox = useCallback((value) => {
+    // console.log('value', value);
     let data = [...checkboxData];
+    // console.log('data before', data);
     if (!data.includes(value)) {
-      data.push(value);
+      Array.isArray(value) ? (data = [...value]) : data.push(value);
     } else {
-      data = data.filter(item => item !== value);
+      data = data.filter((item) => item !== value);
     }
     setCheckboxData(data);
   });

@@ -48,6 +48,10 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           text: 'Flight Search',
           link: routes.flight.search,
         },
+        {
+          text: 'Search Order',
+          link: routes.transaction.searchOrder,
+        },
       ],
     },
     {
@@ -110,7 +114,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         },
         {
           text: 'Security Group',
-          link: '#',
+          link: routes.office.searchSecurityGroup,
         },
       ],
     },

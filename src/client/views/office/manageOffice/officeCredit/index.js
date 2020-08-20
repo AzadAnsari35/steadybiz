@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import ClearIcon from '@material-ui/icons/Clear';
 import SaveIcon from '@material-ui/icons/Save';
@@ -23,6 +23,11 @@ import { routes } from 'Constants';
 import { useHistory } from 'react-router-dom';
 import endpoint from 'Config/endpoint';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
+import {
+  commonActionWithoutApi,
+  commonAction,
+  commonActionUpdate,
+} from 'Actions';
 
 const initialState = {
   ofId: '',
@@ -76,7 +81,7 @@ const LinkAction = (props) => {
   );
 };
 
-const createEndpoint = () => {
+const updateEndpoint = () => {
   return useAsyncEndpoint((data) => ({
     _endpoint: endpoint.creditLimit.update,
     data,
@@ -87,18 +92,37 @@ const OfficeCredit = () => {
   const { register, handleSubmit, errors, control, getValues } = useForm({});
 
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const [res, postData] = updateEndpoint();
 
   let userId = utils.getItemFromStorage('userId');
 
   let rowNumber = utils.getItemFromStorage('selectedOffice');
+
+  const settlementPlans = useSelector(
+    (state) => state.masterSettlementPlans?.items?.data
+  );
+
   const searchResult =
     useSelector((state) => state.searchOffice?.items?.data?.data) || [];
   let selectedItem = searchResult[rowNumber] || {};
   console.log('selectedItem', selectedItem);
 
+  useEffect(() => {
+    dispatch(commonAction(endpoint.master.settlementPlans));
+  }, []);
+
   const onSubmit = (data) => {
     const { dateFrom, dateTo, minimumCreditLimit, ...rest } = data;
     console.log('data', {
+      ...rest,
+      ofId: selectedItem.ofId,
+      currencyCode: selectedItem.currCode,
+      updatedByUserId: userId,
+    });
+
+    postData({
       ...rest,
       ofId: selectedItem.ofId,
       currencyCode: selectedItem.currCode,
@@ -186,7 +210,9 @@ const OfficeCredit = () => {
                 Settlement Plan:&nbsp;
               </div>
               <div className="font-primary-bold-16 ">
-                {paymentOptions && paymentOptions[0]}
+                {paymentOptions &&
+                  settlementPlans &&
+                  settlementPlans.findItem(paymentOptions[0]).label}
               </div>
             </Grid>
           </Grid>

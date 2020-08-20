@@ -29,6 +29,9 @@ searchOrders:'orders.SearchOrders'
     updateUser: 'office.updateUser',
     viewUser: 'office.viewUser',
     searchOffice: 'office.searchOffice',
+    functionalGroups: 'office.functionalGroups',
+    searchSecurityGroup: 'office.searchSecurityGroup',
+    securityGroupNameList: 'office.securityGroupNameList',
   },
   creditLimit: {
     getInstantCreditlimit: 'creditLimit.getInstantCreditlimit',

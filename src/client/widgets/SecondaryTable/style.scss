@@ -1,0 +1,42 @@
+@import '../../styles/variables';
+
+$root: '.SecondaryTable';
+
+#{$root} {
+  .MuiTableCell-root {
+    padding: 12px 16px;
+    border-bottom: 0px;
+  }
+  .MuiTableCell-head {
+    font-size: 14px;
+    font-family: 'Montserrat SemiBold';
+  }
+
+  .MuiTableCell-body {
+    font-size: 14px;
+    font-family: 'Montserrat Regular';
+  }
+
+  &-body {
+    padding-bottom: 40px;
+    > tr {
+      > th {
+        .CustomCheckbox {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 0px;
+        }
+        .CustomCheckbox .MuiCheckbox-root {
+          margin-right: 0px;
+        }
+      }
+    }
+    > :nth-child(1) {
+      background: $athensGray;
+    }
+    > :nth-child(2n) {
+      background: $white;
+    }
+    background: $mercury;
+  }
+}

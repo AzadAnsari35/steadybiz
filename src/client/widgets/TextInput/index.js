@@ -13,8 +13,11 @@ const TextInput = (props) => {
     errors = {},
     register,
     validation,
+    useReactHookForm = true,
+    onChange,
+    value,
   } = props;
-
+  console.log('errors[name]', errors[name]);
   return (
     <div className={`TextInput ${classes.root ? classes.root : ''} `}>
       {!!label && (
@@ -29,6 +32,7 @@ const TextInput = (props) => {
         disabled={disabled}
         placeholder={placeholder}
         ref={register(validation)}
+        // onChange={!useReactHookForm ? () => onChange(value) : null}
       />
       {errors[name] && (
         <p className="error-message mt-6 font-primary-medium-16 mb-0">

@@ -51,7 +51,7 @@ const defaultValues = {
   cityCode: '',
   zipCode: '',
   noOfUserRequested: '',
-  paymentOptions: '',
+  paymentOptions: [],
 };
 
 const OfficeProfileForm = (props) => {
@@ -147,7 +147,7 @@ const OfficeProfileForm = (props) => {
         address1,
         address2,
         emailId: officeEmail,
-        paymentOptions: ['06266ac6-8990-4949-a943-9bffc95d91de'],
+        paymentOptions: paymentOptions,
         officeId,
         officeName,
         phone: phone.split('-')[1],
@@ -270,255 +270,253 @@ const OfficeProfileForm = (props) => {
   };
 
   return (
-    <>
-      <div className="OfficeProfileForm">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container>
-            <Grid item xs={6} className="OfficeProfileForm-left">
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Text
-                    showLeftBorder
-                    text="Office Details"
-                    className="font-primary-semibold-18"
-                  />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <MultiSelect
-                    label="Office Type:"
-                    name="officeType"
-                    options={commonConstant.officeType}
-                    showBorder={true}
-                    changeStyle={true}
-                    control={control}
-                    errors={errors}
-                    showLabel
-                    width="auto"
-                    disabled
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <MultiSelect
-                    label="Status:"
-                    name="status"
-                    options={objectStatusesList.dropDownItems}
-                    placeholder="Select Status"
-                    showBorder={true}
-                    changeStyle={true}
-                    control={control}
-                    errors={errors}
-                    // validation={{ required: 'Please enter the status' }}
-                    width="auto"
-                    disabled={!isUpdateOffice}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  {isCreateOffice ? (
-                    <TextInput
-                      name="officeName"
-                      register={register}
-                      errors={errors}
-                      label="Office Name"
-                      placeholder="Office Name"
-                      // validation={{
-                      //   required: 'Please enter the office name.',
-                      //   pattern: {
-                      //     value: regex.alphanumeric,
-                      //     message: 'Please enter valid office name.',
-                      //   },
-                      // }}
-                      disabled={!isCreateOffice}
-                    />
-                  ) : (
-                    <TextWithTextInput
-                      names={{ input1: 'officeId', input2: 'officeName' }}
-                      label="Office ID | Name:"
-                      errors={errors}
-                      register={register}
-                      disabled
-                    />
-                  )}
-                </Grid>
-
-                <Grid item xs={12}>
-                  <TextInput
-                    name="address1"
-                    register={register}
-                    errors={errors}
-                    placeholder="Address Line 1"
-                    label="Address Line 1"
-                    // validation={{
-                    //   required: 'Please enter the address line 1.',
-                    // }}
-                    disabled={isViewOffice}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextInput
-                    name="address2"
-                    register={register}
-                    errors={errors}
-                    placeholder="Address Line 2"
-                    label="Address Line 2"
-                    disabled={isViewOffice}
-                  />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <MultiSelect
-                    label="Country"
-                    name="countryCode"
-                    options={countriesList.dropDownItems}
-                    placeholder="Select Country"
-                    showBorder={true}
-                    changeStyle={true}
-                    control={control}
-                    errors={errors}
-                    // validation={{ required: 'Please enter the country' }}
-                    width="auto"
-                    showLabel
-                    disabled={isViewOffice}
-                  />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <MultiSelect
-                    label="City"
-                    name="cityCode"
-                    options={citiesList || []}
-                    placeholder="Select City"
-                    showBorder={true}
-                    changeStyle={true}
-                    control={control}
-                    errors={errors}
-                    // validation={{ required: 'Please enter the city' }}
-                    width="auto"
-                    disabled={isViewOffice}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextInput
-                    name="zipCode"
-                    register={register}
-                    errors={errors}
-                    placeholder="Zip Code"
-                    label="Zip Code"
-                    // validation={{
-                    //   required: 'Please enter the zip code.',
-                    // }}
-                    disabled={isViewOffice}
-                  />
-                </Grid>
+    <div className="OfficeProfileForm">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid container>
+          <Grid item xs={6} className="OfficeProfileForm-left">
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Text
+                  showLeftBorder
+                  text="Office Details"
+                  className="font-primary-semibold-18"
+                />
               </Grid>
-            </Grid>
 
-            <Grid item xs={6} className="OfficeProfileForm-right">
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Text
-                    showLeftBorder
-                    text="Contact Details"
-                    className="font-primary-semibold-18"
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <SelectWithTextInput
-                    name="phone"
-                    selectInputName="phoneDialCode"
-                    data={countriesDialCodeList.dropDownItems}
-                    label="Contact Number: "
-                    placeholder="Phone Number"
-                    selectPlaceholder="Code"
-                    errors={errors}
-                    register={register}
-                    // validation={{ required: 'Please enter the phone number.' }}
-                    // selectValidation={{
-                    //   required: 'Please enter the country code.',
-                    // }}
-                    control={control}
-                    showValue
-                    disabled={isViewOffice}
-                  />
-                </Grid>
-                <Grid item xs={12}>
+              <Grid item xs={6}>
+                <MultiSelect
+                  label="Office Type:"
+                  name="officeType"
+                  options={commonConstant.officeType}
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  showLabel
+                  width="auto"
+                  disabled
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <MultiSelect
+                  label="Status:"
+                  name="status"
+                  options={objectStatusesList.dropDownItems}
+                  placeholder="Select Status"
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  validation={{ required: 'Please enter the status' }}
+                  width="auto"
+                  disabled={!isUpdateOffice}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                {isCreateOffice ? (
                   <TextInput
-                    name="emailId"
+                    name="officeName"
                     register={register}
                     errors={errors}
-                    label="Email"
-                    placeholder="Email Address"
-                    // validation={{
-                    //   required: 'Please enter the email address.',
-                    //   pattern: {
-                    //     value: regex.email,
-                    //     message: 'Please enter valid email address.',
-                    //   },
-                    // }}
+                    label="Office Name"
+                    placeholder="Office Name"
+                    validation={{
+                      required: 'Please enter the office name.',
+                      pattern: {
+                        value: regex.alphanumeric,
+                        message: 'Please enter valid office name.',
+                      },
+                    }}
                     disabled={!isCreateOffice}
                   />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <Text
-                    showLeftBorder
-                    text="User Details"
-                    className="font-primary-semibold-18"
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <MultiSelect
-                    label="Number of Users"
-                    name="noOfUserRequested"
-                    options={commonConstant.numberOfUsers}
-                    placeholder="Select"
-                    showBorder={true}
-                    changeStyle={true}
-                    control={control}
+                ) : (
+                  <TextWithTextInput
+                    names={{ input1: 'officeId', input2: 'officeName' }}
+                    label="Office ID | Name:"
                     errors={errors}
-                    // validation={{ required: 'Please enter the no of users' }}
-                    width="auto"
-                    disabled={isViewOffice}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Text
-                    showLeftBorder
-                    text="Payment Details"
-                    className="font-primary-semibold-18"
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <CheckboxGroup
-                    label="Payment Option:"
-                    name="paymentOptions"
                     register={register}
-                    disabled={isViewOffice}
-                    checkboxes={settlementPlans || []}
-                    checkedValues={getValues('paymentOptions')}
-                  ></CheckboxGroup>
-                </Grid>
-
-                {!isViewOffice && (
-                  <Grid item xs={12} className="d-flex justify-content-end">
-                    <Button
-                      text={`${
-                        isCreateOffice ? 'Create Office' : 'Modify Office'
-                      }`}
-                      type="submit"
-                      className="mb-30"
-                    />
-                  </Grid>
+                    disabled
+                  />
                 )}
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextInput
+                  name="address1"
+                  register={register}
+                  errors={errors}
+                  placeholder="Address Line 1"
+                  label="Address Line 1"
+                  validation={{
+                    required: 'Please enter the address line 1.',
+                  }}
+                  disabled={isViewOffice}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextInput
+                  name="address2"
+                  register={register}
+                  errors={errors}
+                  placeholder="Address Line 2"
+                  label="Address Line 2"
+                  disabled={isViewOffice}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <MultiSelect
+                  label="Country"
+                  name="countryCode"
+                  options={countriesList.dropDownItems}
+                  placeholder="Select Country"
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  validation={{ required: 'Please enter the country' }}
+                  width="auto"
+                  showLabel
+                  disabled={isViewOffice}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <MultiSelect
+                  label="City"
+                  name="cityCode"
+                  options={citiesList || []}
+                  placeholder="Select City"
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  validation={{ required: 'Please enter the city' }}
+                  width="auto"
+                  disabled={isViewOffice}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextInput
+                  name="zipCode"
+                  register={register}
+                  errors={errors}
+                  placeholder="Zip Code"
+                  label="Zip Code"
+                  validation={{
+                    required: 'Please enter the zip code.',
+                  }}
+                  disabled={isViewOffice}
+                />
               </Grid>
             </Grid>
           </Grid>
-        </form>
-      </div>
-    </>
+
+          <Grid item xs={6} className="OfficeProfileForm-right">
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Text
+                  showLeftBorder
+                  text="Contact Details"
+                  className="font-primary-semibold-18"
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <SelectWithTextInput
+                  name="phone"
+                  selectInputName="phoneDialCode"
+                  data={countriesDialCodeList.dropDownItems}
+                  label="Contact Number: "
+                  placeholder="Phone Number"
+                  selectPlaceholder="Code"
+                  errors={errors}
+                  register={register}
+                  validation={{ required: 'Please enter the phone number.' }}
+                  selectValidation={{
+                    required: 'Please enter the country code.',
+                  }}
+                  control={control}
+                  showValue
+                  disabled={isViewOffice}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextInput
+                  name="emailId"
+                  register={register}
+                  errors={errors}
+                  label="Email"
+                  placeholder="Email Address"
+                  validation={{
+                    required: 'Please enter the email address.',
+                    pattern: {
+                      value: regex.email,
+                      message: 'Please enter valid email address.',
+                    },
+                  }}
+                  disabled={!isCreateOffice}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Text
+                  showLeftBorder
+                  text="User Details"
+                  className="font-primary-semibold-18"
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <MultiSelect
+                  label="Number of Users"
+                  name="noOfUserRequested"
+                  options={commonConstant.numberOfUsers}
+                  placeholder="Select"
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  validation={{ required: 'Please enter the no of users' }}
+                  width="auto"
+                  disabled={isViewOffice}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Text
+                  showLeftBorder
+                  text="Payment Details"
+                  className="font-primary-semibold-18"
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <CheckboxGroup
+                  label="Payment Option:"
+                  name="paymentOptions"
+                  control={control}
+                  getValues={getValues}
+                  disabled={isViewOffice}
+                  checkboxes={settlementPlans || []}
+                />
+              </Grid>
+
+              {!isViewOffice && (
+                <Grid item xs={12} className="d-flex justify-content-end">
+                  <Button
+                    text={`${
+                      isCreateOffice ? 'Create Office' : 'Modify Office'
+                    }`}
+                    type="submit"
+                    className="mb-30"
+                  />
+                </Grid>
+              )}
+            </Grid>
+          </Grid>
+        </Grid>
+      </form>
+    </div>
   );
 };
 
