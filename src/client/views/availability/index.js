@@ -107,10 +107,12 @@ const handleSortDirection = ()=>{
 
   const handleSelectOption = (value, id) => {
     setSortingOption(value);
-  }
-const parentFilterDataCallback=(data)=>{
-      setFilteredItineraries(data);
-}
+  };
+  
+  const parentFilterDataCallback=(data)=>{
+    setFilteredItineraries(data);
+  };
+
   return (
     <div className="Availability">
       <div className="Availability-modifySearch layout-wrapper">
@@ -142,9 +144,10 @@ const parentFilterDataCallback=(data)=>{
               <div className="Availability-mainSection__filtersContainer">
                 {!!flightSegmentType && !!itineraries && itineraries.length > 0 &&
                   <Filters sortDirection={sortDirection} sortingOption={sortingOption}
-                  parentFilterDataCallback={parentFilterDataCallback}
+                    parentFilterDataCallback={parentFilterDataCallback}
                     flightSegmentType={!!flightSegmentType && flightSegmentType}
                     outboundItinerary={!!itineraries && itineraries}
+                    count={!!filteredItineraries && filteredItineraries.length}
                   />
                 }
               </div>

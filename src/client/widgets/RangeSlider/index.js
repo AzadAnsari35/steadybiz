@@ -15,7 +15,7 @@ const RangeSlider = (props) => {
   const [value, setValue] = useState(range);
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    parentCallback(newValue);
+    // parentCallback(newValue);
   };
   // const handleDragStop = () => {
   //   console.log(value);
@@ -25,8 +25,8 @@ const RangeSlider = (props) => {
     <div className="RangeSlider">
       <Slider
         value={value}
-        onChangeCommitted={handleChange}
-       
+        onChange={handleChange}
+        onChangeCommitted={() => parentCallback(value)}
         valueLabelDisplay="off"
         aria-labelledby="range-slider"
         min={range[0]}
