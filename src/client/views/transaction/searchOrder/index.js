@@ -272,8 +272,8 @@ const SearchOrder = () => {
   };
 
   return (
-    <div className="searchResult">
-      <div className="searchResult-head">
+    <div className="SearchOrder">
+      <div className="SearchOrder-head">
         <div className="d-flex justify-content-between align-items-end pb-4">
           <div className="font-primary-semibold-24 ">SEARCH ORDER</div>
           <IconWithBackground
