@@ -16,12 +16,12 @@ const CustomCheckbox = (props) => {
     children,
     value,
     checked,
-    register,
     validation = '',
     disabled = false,
     useReactHookForm = true,
     onChange,
     checkedValues = [],
+    getValues,
   } = props;
   // const [checked, setChecked] = useState(false);
 
@@ -29,32 +29,80 @@ const CustomCheckbox = (props) => {
   //   setChecked(event.target.checked);
   // };
 
+  const handleCheck = (value) => {
+    const selectedValues = getValues(name);
+    const newValues = selectedValues?.includes(value)
+      ? selectedValues?.filter((id) => id !== value)
+      : [...(selectedValues || []), value];
+    return newValues;
+  };
+
+  // console.log(
+  //   { name: name },
+  //   { control: control },
+  //   { getValues: getValues },
+  //   { value: value }
+  // );
+  // console.log('checkedValues', checkedValues.includes(value));
+
   return (
     <div className="CustomCheckbox d-flex align-items-center">
-      <Checkbox
-        value={value}
-        name={name}
-        inputRef={register}
-        disabled={disabled}
-        icon={
-          <div
-            className={`CustomCheckbox-icon ${
-              disabled ? 'CustomCheckbox-disabled' : ''
-            }`}
-          ></div>
-        }
-        checkedIcon={
-          <CheckIcon
-            classes={{
-              root: `CustomCheckbox-checkedIcon ${
+      {useReactHookForm ? (
+        <Controller
+          name={name}
+          control={control}
+          value={value}
+          render={(props) => (
+            <Checkbox
+              onChange={() => props.onChange(handleCheck(value))}
+              checked={props.value && props.value.includes(value)}
+              disableRipple
+              disabled={disabled}
+              icon={
+                <div
+                  className={`CustomCheckbox-icon ${
+                    disabled ? 'CustomCheckbox-disabled' : ''
+                  }`}
+                ></div>
+              }
+              checkedIcon={
+                <CheckIcon
+                  classes={{
+                    root: `CustomCheckbox-checkedIcon ${
+                      disabled ? 'CustomCheckbox-disabled' : ''
+                    }`,
+                  }}
+                />
+              }
+            />
+          )}
+        />
+      ) : (
+        <Checkbox
+          value={value}
+          name={name}
+          disabled={disabled}
+          icon={
+            <div
+              className={`CustomCheckbox-icon ${
                 disabled ? 'CustomCheckbox-disabled' : ''
-              }`,
-            }}
-          />
-        }
-        disableRipple
-        onChange={!useReactHookForm ? () => onChange(value) : null}
-      />
+              }`}
+            ></div>
+          }
+          checkedIcon={
+            <CheckIcon
+              classes={{
+                root: `CustomCheckbox-checkedIcon ${
+                  disabled ? 'CustomCheckbox-disabled' : ''
+                }`,
+              }}
+            />
+          }
+          disableRipple
+          onChange={() => onChange(value)}
+          checked={checked || checkedValues.includes(value)}
+        />
+      )}
       {!children ? (
         <div className="CustomCheckbox-label d-flex justify-content-between">
           <Text className="font-primary-regular-14" text={primaryLabel} />

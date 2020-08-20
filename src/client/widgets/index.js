@@ -51,6 +51,7 @@ import SelectField from './SelectField';
 import FormPanel from './FormPanel';
 import DatePickerMui from './DatePickerMui';
 import SelectWithDatePickers from './SelectWithDatePickers';
+import SecondaryTable from './SecondaryTable';
 
 export {
   Avatar,
@@ -106,4 +107,5 @@ export {
   FormPanel,
   DatePickerMui,
   SelectWithDatePickers,
+  SecondaryTable,
 };

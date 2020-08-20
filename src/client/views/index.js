@@ -13,6 +13,8 @@ import Availability from './availability';
 import PassengerInformation from './passengerInformation';
 import Transaction from './transaction';
 import SearchOrder from './transaction/searchOrder';
+import SearchSecurityGroup from './office/securityGroup/SearchSecurityGroup';
+import CreateSecurityGroup from './office/securityGroup/createSecurityGroup';
 
 export {
   Home,
@@ -21,6 +23,8 @@ export {
   UserProfile,
   Search,
   Availability,
+  SearchSecurityGroup,
+  CreateSecurityGroup,
   CreateUser,
   ChangePassword,
   SearchOffice,

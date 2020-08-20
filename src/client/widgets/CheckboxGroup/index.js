@@ -5,7 +5,17 @@ import { Controller } from 'react-hook-form';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const CheckboxGroup = (props) => {
-  const { label, checkboxes, name, register, disabled, checkedValues } = props;
+  const {
+    label,
+    checkboxes,
+    name,
+    disabled,
+    checkedValues = [],
+    getValues,
+    control,
+  } = props;
+
+  console.log('checkboxes', checkboxes);
 
   return (
     <div className="CheckboxContainer">
@@ -14,16 +24,19 @@ const CheckboxGroup = (props) => {
       </div>
 
       <div className="d-flex justify-content-between">
-        {checkboxes.map((cur, index) => (
-          <CustomCheckbox
-            value={cur.value}
-            primaryLabel={cur.primaryLabel}
-            name={name}
-            key={index}
-            register={register}
-            disabled={disabled}
-            checkedValues={checkedValues}
-          />
+        {checkboxes.map(
+          (cur, index) => (
+            <CustomCheckbox
+              value={cur.value}
+              primaryLabel={cur.primaryLabel}
+              name={name}
+              key={index}
+              control={control}
+              getValues={getValues}
+              disabled={disabled}
+              checkedValues={checkedValues}
+            />
+          )
 
           // <FormControlLabel
           //   control={
@@ -38,7 +51,7 @@ const CheckboxGroup = (props) => {
           //   key={index}
           //   label={cur.value}
           // />
-        ))}
+        )}
       </div>
     </div>
   );

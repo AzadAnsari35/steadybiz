@@ -150,6 +150,30 @@ export default {
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.POST,
     },
+    createSecurityGroup: {
+      url: config.api.url + '/api/v1/offices/securityGroup',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+    },
+    functionalGroups: {
+      url: config.api.url + '/api/v1/offices/functionalGroupsList',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.GET,
+      actionType: actionTypeConstant.office.functionalGroups,
+    },
+
+    searchSecurityGroup: {
+      url: config.api.url + '/api/v1/offices/searchSecurityGroup',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.office.searchSecurityGroup,
+    },
+    securityGroupNameList: {
+      url: config.api.url + '/api/v1/offices/securityGroupNameList',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.office.securityGroupNameList,
+    },
   },
 
   creditLimit: {

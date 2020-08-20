@@ -9,6 +9,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Text, TextInput, TextWithTextInput } from 'Widgets';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import './style.scss';
 
@@ -31,6 +32,7 @@ const ChangePasswordForm = () => {
   });
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   let userId = utils.getItemFromStorage('userId');
 
@@ -50,6 +52,15 @@ const ChangePasswordForm = () => {
       officeId: officeDto.officeId,
       officeName: officeDto.officeName,
     });
+  };
+
+  const signOut = () => {
+    utils.removeItemFromStorage('userToken');
+    utils.removeItemFromStorage('userId');
+    utils.removeItemFromStorage('officeId');
+    utils.removeItemFromStorage('userData');
+
+    dispatch(commonActionWithoutApi(endpoint.user.login, null));
   };
 
   useEffect(() => {
@@ -77,6 +88,10 @@ const ChangePasswordForm = () => {
           })
         );
         reset(defaultValues);
+        setTimeout(() => {
+          signOut();
+          history.push('/');
+        }, 1500);
       }
     }
   }, [response]);

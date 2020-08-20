@@ -3,4 +3,5 @@ export const regex = {
   name: /^[a-z|A-Z]+(?: [a-z|A-Z]+)*$/,
   number: /^[0-9]+$/,
   alphanumeric: /^[a-zA-Z0-9 ]+$/,
+  securityGroupName: /^([a-zA-Z0-9]){2,50}$/,
 };
