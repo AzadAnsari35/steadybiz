@@ -178,6 +178,8 @@ export default {
       url: config.api.url + '/api/v1/flights/airTicketing',
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.transaction,
+      reducerName: 'transaction',
     },
     airPriceAndTicketing: {
       url: config.api.url + '/api/v1/flights/airPriceAndTicketing',
