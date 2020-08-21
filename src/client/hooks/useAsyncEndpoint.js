@@ -1,11 +1,20 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
+import endpointWithoutApi from 'Config/endpointWithoutApi';
+import { loaderTypes } from 'Constants/commonConstant';
 import { apiReqeust, utils, Response } from 'Helpers/';
+import { getDataFromRedux } from 'Helpers/global';
+import { commonActionWithoutApi } from 'Actions';
 
 const useAsyncEndpoint = (fn) => {
+  const dispatch = useDispatch();
   const [res, setRes] = useState(null);
   const [req, setReq] = useState();
+  const loaderStatus = useSelector(
+    (state) => state[endpointWithoutApi.loader.loaderStatus.reducerName]
+  );
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -15,7 +24,15 @@ const useAsyncEndpoint = (fn) => {
     const doAxios = async () => {
       //   setLoading(true);
       try {
-        console.log('req.data.request');
+        dispatch(
+          commonActionWithoutApi(endpointWithoutApi.loader.loaderStatus, {
+            loaderType: loaderTypes.primary,
+            isLoaderVisible: true,
+            asyncCallInProgress: !!getDataFromRedux(loaderStatus)
+            ? getDataFromRedux(loaderStatus).asyncCallInProgress + 1
+            : 1,
+          })
+        );
         const result = await apiReqeust.httpRequest(
           req._endpoint.httpVerb,
           req.data,
@@ -24,7 +41,7 @@ const useAsyncEndpoint = (fn) => {
         );
         if (!signal.aborted) {
           // console.log(res);
-          setRes(result);
+          setRes( result);
           //console.log(res);
         }
       } catch (exception) {
@@ -35,6 +52,15 @@ const useAsyncEndpoint = (fn) => {
         if (!signal.aborted) {
           //     setLoading(false);
         }
+        dispatch(
+          commonActionWithoutApi(endpointWithoutApi.loader.loaderStatus, {
+            loaderType: loaderTypes.primary,
+            isLoaderVisible: false,
+            asyncCallInProgress: !!getDataFromRedux(loaderStatus)
+              ? getDataFromRedux(loaderStatus).asyncCallInProgress - 1
+              : 0,
+          })
+        );
       }
     };
     doAxios();
