@@ -2,10 +2,10 @@ const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-
+dotenv.config();
 const app = express();
-const PORT = 3100;
-
+const PORT = process.env.PORT;
+//const PORT = 80;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../../build')));
@@ -24,4 +24,3 @@ app.listen(PORT, () => {
     `Development Environment: 🌎 Listening on http://localhost:${PORT}`
   );
 });
- 
