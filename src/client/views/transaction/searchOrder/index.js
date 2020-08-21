@@ -246,7 +246,7 @@ const SearchOrder = () => {
       dispatch(
         commonAction(endpoint.orders.searchOrders, {
           ...requestJson,
-          page: page,
+          page: page - 1,
           size,
           ofid: ofId,
         })
@@ -258,8 +258,9 @@ const SearchOrder = () => {
 
   const onSubmit = (data, e) => {
     // console.log('data', data);
-    setReqeustJson(data);
     setPage(1);
+    setReqeustJson(data);
+    //setPage(1);
   };
 
   const handleClick = () => {
@@ -448,20 +449,20 @@ const SearchOrder = () => {
           bodyData={searchResult.data}
           page={page}
           AddElement={{
-            last: <PopoverAction isBooking={1} />,
+            last: <PopoverAction />,
           }}
           count={searchResult.data.count}
           size={size}
           columnAlignments={[
-            'left',
             'center',
-            'left',
             'center',
             'left',
             'center',
             'center',
-            'right',
+            'center',
             'left',
+            'center',
+            'center',
             'center',
           ]}
           statusIndex={8}
