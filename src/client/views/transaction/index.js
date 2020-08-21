@@ -252,6 +252,7 @@ const Transaction = () => {
                 transactionData.outboundItinerary.sourcePnr
               }
               isTicketing={transactionData.isTicketing}
+              pnrStatus={transactionData.PNR_STATUS}
               ticketTimeLimit={transactionData.ticketTimeLimit}
             />
           </Panel>

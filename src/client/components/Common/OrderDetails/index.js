@@ -7,7 +7,7 @@ import { Text } from "Widgets";
 import "./style.scss";
 
 const OrderDetails = (props) => {
-	const { isTicketing = false, orderNumber = "", sourceName = "", sourcePnr = "", ticketTimeLimit = "" } = props;
+	const { isTicketing = false, pnrStatus = "", orderNumber = "", sourceName = "", sourcePnr = "", ticketTimeLimit = "" } = props;
 
 	return (
 		<div className="OrderDetails">
@@ -39,9 +39,10 @@ const OrderDetails = (props) => {
 						}
 					</div>
 					<div className="font-primary-semibold-16-1 text-align-right">
-						<Text className="" text={moment().format("DD MMM YYYY")} />
-						{!!sourcePnr && <Text className="" text={sourcePnr} />}
-						<Text className="" text={!!isTicketing ? "Confirmed" : "Hold"} />
+						<Text text={moment().format("DD MMM YYYY")} />
+						{!!sourcePnr && <Text text={sourcePnr} />}
+						<Text text={!!pnrStatus ? pnrStatus : "-"} />
+						{/* <Text text={!!isTicketing ? "Confirmed" : "Hold"} /> */}
 						{!!ticketTimeLimit && (
 							<Text className="text-align-right" text={`${moment(ticketTimeLimit).format("DD MMMM YYYY, hh:mm")} Hrs`} />
 						)}
