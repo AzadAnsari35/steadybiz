@@ -1,19 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import moment from "moment";
-import { Grid } from "@material-ui/core";
-import FlightIcon from "@material-ui/icons/Flight";
+import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
+import { Grid } from '@material-ui/core';
+import FlightIcon from '@material-ui/icons/Flight';
 
-import { commonActionWithoutApi } from "Actions";
-import useToggle from "Client/hooks/useToggle";
+import { commonActionWithoutApi } from 'Actions';
+import useToggle from 'Client/hooks/useToggle';
 import endpointWithoutApi from 'Config/endpointWithoutApi';
-import colors from "Constants/colors";
-import routes from "Constants/routes";
-import { getDataFromRedux } from "Helpers/global";
-import { displayImage, showError, setItemToStorage, getItemFromStorage } from "Helpers/utils";
-import endpoint from "Config/endpoint";
+import colors from 'Constants/colors';
+import routes from 'Constants/routes';
+import { getDataFromRedux } from 'Helpers/global';
+import {
+  displayImage,
+  showError,
+  setItemToStorage,
+  getItemFromStorage,
+} from 'Helpers/utils';
+import { utils } from 'Helpers';
+import endpoint from 'Config/endpoint';
 
 import {
   AutoSuggest,
@@ -24,95 +30,114 @@ import {
   MultiSelect,
   RoundedButton,
   Text,
-} from "Widgets";
-import PassengersSelectCount from "./PassengersSelectCount";
+} from 'Widgets';
+import PassengersSelectCount from './PassengersSelectCount';
 
-import "./style.scss";
+import './style.scss';
 
 const segmentTypes = [
-  { value: "RT", label: "Return" },
-  { value: "OW", label: "One-way" },
+  { value: 'RT', label: 'Return' },
+  { value: 'OW', label: 'One-way' },
 ];
 
 const cabinClasses = [
-  { value: "F", label: "First" },
-  { value: "J", label: "Business" },
-  { value: "W", label: "Premium Economy" },
-  { value: "Y", label: "Economy" },
+  { value: 'F', label: 'First' },
+  { value: 'J', label: 'Business' },
+  { value: 'W', label: 'Premium Economy' },
+  { value: 'Y', label: 'Economy' },
 ];
 
 const passengerTypes = [
   {
-    id: "ADT",
-    type: "Adult",
-    ageLimitText: "(Above 12 Yrs)",
+    id: 'ADT',
+    type: 'Adult',
+    ageLimitText: '(Above 12 Yrs)',
     count: 1,
   },
   {
-    id: "CHD",
-    type: "Children",
-    ageLimitText: "(2 - 12 Yrs)",
+    id: 'CHD',
+    type: 'Children',
+    ageLimitText: '(2 - 12 Yrs)',
     count: 0,
   },
   {
-    id: "INF",
-    type: "Infants",
-    ageLimitText: "(Below 2 Yrs)",
+    id: 'INF',
+    type: 'Infants',
+    ageLimitText: '(Below 2 Yrs)',
     count: 0,
   },
 ];
 
 const airlinesOptions = [
-  { airlineValue: "FZ", airlineLabel: "Flydubai (FZ)" },
-  { airlineValue: "G9", airlineLabel: "Air Arabia (G9)" },
-  { airlineValue: "WY", airlineLabel: "Oman Air (WY)" },
-  { airlineValue: "EY", airlineLabel: "Etihad Airways (EY)" },
-  { airlineValue: "ET", airlineLabel: "Ethiopian Airlines (ET)" },
+  { airlineValue: 'FZ', airlineLabel: 'Flydubai (FZ)' },
+  { airlineValue: 'G9', airlineLabel: 'Air Arabia (G9)' },
+  { airlineValue: 'WY', airlineLabel: 'Oman Air (WY)' },
+  { airlineValue: 'EY', airlineLabel: 'Etihad Airways (EY)' },
+  { airlineValue: 'ET', airlineLabel: 'Ethiopian Airlines (ET)' },
 ];
 
 const gdsAggregatorOptions = [
-  { value: "1S", label: "Sabre (1S)" },
-  { value: "1A", label: "Amadeus (1A)" },
-  { value: "1G", label: "Travelport (1G)" },
-  { value: "TF", label: "Travelfusion (TF)" },
-  { value: "HH", label: "HitchHiker (HH)" },
+  { value: '1S', label: 'Sabre (1S)' },
+  { value: '1A', label: 'Amadeus (1A)' },
+  { value: '1G', label: 'Travelport (1G)' },
+  { value: 'TF', label: 'Travelfusion (TF)' },
+  { value: 'HH', label: 'HitchHiker (HH)' },
 ];
 
 const directConnectOptions = [
-  { value: "FZ", label: "Flydubai (FZ)" },
-  { value: "G9", label: "Air Arabia (G9)" },
-  { value: "WY", label: "Oman Air (WY)" },
-  { value: "EY", label: "Etihad Airways (EY)" },
-  { value: "ET", label: "Airlines (ET)" },
+  { value: 'FZ', label: 'Flydubai (FZ)' },
+  { value: 'G9', label: 'Air Arabia (G9)' },
+  { value: 'WY', label: 'Oman Air (WY)' },
+  { value: 'EY', label: 'Etihad Airways (EY)' },
+  { value: 'ET', label: 'Airlines (ET)' },
 ];
 
 const flightInitialDates = {
   startDate: moment(),
-  endDate: moment().add(1, "days"),
+  endDate: moment().add(1, 'days'),
 };
 
 const SearchBar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const flightSearchInput = useSelector(state => state[endpointWithoutApi.flights.flightSearchInput.reducerName]);
-  let defaultSegmentType = segmentTypes[0], defaultCabinClass = cabinClasses[3],
-    initialDepartureAirport = null, initialArrivalAirport = null;
-  if (!!getDataFromRedux(flightSearchInput)) {
+  const flightSearchInput = useSelector(
+    (state) => state[endpointWithoutApi.flights.flightSearchInput.reducerName]
+  );
+  let defaultSegmentType = segmentTypes[0],
+    defaultCabinClass = cabinClasses[3],
+    initialDepartureAirport = null,
+    initialArrivalAirport = null;
+  if (getDataFromRedux(flightSearchInput)) {
     const { flightSearchRQ } = flightSearchInput.items.data;
-    defaultSegmentType = flightSearchRQ.originDestination.length === 1 &&
-    !!flightSearchRQ.originDestination[0].destinationDate ? segmentTypes[0] : segmentTypes[1];
-    defaultCabinClass = cabinClasses.find(cabinClass => cabinClass.value === flightSearchRQ.cabinCode);
-    flightSearchRQ.passengerList.passenger.forEach(item => {
-      const passengerType = passengerTypes.find(passenger => passenger.id === item.PTC);
+    defaultSegmentType =
+      flightSearchRQ.originDestination.length === 1 &&
+      !!flightSearchRQ.originDestination[0].destinationDate
+        ? segmentTypes[0]
+        : segmentTypes[1];
+    defaultCabinClass = cabinClasses.find(
+      (cabinClass) => cabinClass.value === flightSearchRQ.cabinCode
+    );
+    flightSearchRQ.passengerList.passenger.forEach((item) => {
+      const passengerType = passengerTypes.find(
+        (passenger) => passenger.id === item.PTC
+      );
       passengerType.count = item.count;
     });
-    flightInitialDates.startDate = moment(flightSearchRQ.originDestination[0].originDate);
-    flightInitialDates.endDate = moment(flightSearchRQ.originDestination[0].destinationDate);
+    flightInitialDates.startDate = moment(
+      flightSearchRQ.originDestination[0].originDate
+    );
+    flightInitialDates.endDate = moment(
+      flightSearchRQ.originDestination[0].destinationDate
+    );
     initialDepartureAirport = flightSearchRQ.originDestination[0].originAirport;
-    initialArrivalAirport = flightSearchRQ.originDestination[0].destinationAirport;
+    initialArrivalAirport =
+      flightSearchRQ.originDestination[0].destinationAirport;
   }
   const [expandAdvanceSearch, setExpandAdvanceSearch] = useToggle(false);
-  const [isPassengerCountDropdownOpen, setIsPassengerCountDropdownOpen] = useToggle(false);
+  const [
+    isPassengerCountDropdownOpen,
+    setIsPassengerCountDropdownOpen,
+  ] = useToggle(false);
   const [flightDates, setFlightDates] = useState(flightInitialDates);
   const { handleSubmit, control } = useForm({
     defaultValues: {
@@ -131,7 +156,7 @@ const SearchBar = () => {
 
   const [error, setError] = useState(null);
 
-  const calculateTotalPassengers = passengers => {
+  const calculateTotalPassengers = (passengers) => {
     setPassengers(passengers);
   };
 
@@ -149,7 +174,7 @@ const SearchBar = () => {
 
   const handleFlightDates = (startDate, endDate) => {
     let flightDate = { ...flightDates };
-    if (segmentType.value === "OW") {
+    if (segmentType.value === 'OW') {
       flightDate.startDate = startDate;
     } else {
       flightDate.startDate = startDate;
@@ -159,48 +184,62 @@ const SearchBar = () => {
   };
 
   const handleSelectOption = (value, id) => {
-    if (value.value === "RT") {
+    if (value.value === 'RT') {
       setFlightDates({
         ...flightDates,
-        endDate: moment(flightDates.startDate).add(1, "days"),
+        endDate: moment(flightDates.startDate).add(1, 'days'),
       });
     }
     setSegmentType(value);
-  }
+  };
 
   const onSubmit = (data, e) => {
-    const passengersData = passengers.filter(passenger => passenger.count > 0);
+    const securityMessage = utils.checkSecurityGroup(2);
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
+    return;
+    const passengersData = passengers.filter(
+      (passenger) => passenger.count > 0
+    );
     const searchRequest = {
       flightSearchRQ: {
         cabinCode: data.cabinClasses.value,
         passengerList: {
-          passenger: passengersData.map(passenger => {
+          passenger: passengersData.map((passenger) => {
             return {
               PTC: passenger.id,
-              count: passenger.count
-            }
+              count: passenger.count,
+            };
           }),
         },
         originDestination: [
           {
             originAirportCode: formData.departureAirport.code,
             originAirport: formData.departureAirport,
-            originDate: moment(flightDates.startDate).format("YYYY-MM-DD"),
+            originDate: moment(flightDates.startDate).format('YYYY-MM-DD'),
             destinationAirportCode: formData.arrivalAirport.code,
             destinationAirport: formData.arrivalAirport,
-            destinationDate: segmentType.value !== "OW"
-              ? moment(flightDates.endDate).format("YYYY-MM-DD")
-              : "",
-          }
+            destinationDate:
+              segmentType.value !== 'OW'
+                ? moment(flightDates.endDate).format('YYYY-MM-DD')
+                : '',
+          },
         ],
       },
     };
 
     try {
-      const searchCount = getItemFromStorage("searchCount", 1);
-      setItemToStorage("searchCount", Number(searchCount) + 1, 1);
+      const searchCount = getItemFromStorage('searchCount', 1);
+      setItemToStorage('searchCount', Number(searchCount) + 1, 1);
       dispatch(commonActionWithoutApi(endpoint.flights.flightSearch, false));
-      dispatch(commonActionWithoutApi(endpointWithoutApi.flights.flightSearchInput, searchRequest));
+      dispatch(
+        commonActionWithoutApi(
+          endpointWithoutApi.flights.flightSearchInput,
+          searchRequest
+        )
+      );
       history.push(routes.flight.availability);
     } catch (err) {
       showError(err, setError);
@@ -227,7 +266,9 @@ const SearchBar = () => {
           />
           <DropdownBox
             isContentVisible={isPassengerCountDropdownOpen}
-            placeholder={`${passengers[0].count + passengers[1].count + passengers[2].count} Passenger(s)`}
+            placeholder={`${
+              passengers[0].count + passengers[1].count + passengers[2].count
+            } Passenger(s)`}
             onClick={setIsPassengerCountDropdownOpen}
           >
             <PassengersSelectCount
@@ -245,7 +286,7 @@ const SearchBar = () => {
                 icon={
                   <img
                     alt="departure"
-                    src={displayImage("departure.svg")}
+                    src={displayImage('departure.svg')}
                     className="SearchBar-inputs__autoSuggestIcon"
                   />
                 }
@@ -261,7 +302,7 @@ const SearchBar = () => {
                 icon={
                   <img
                     alt="arrival"
-                    src={displayImage("arrival.svg")}
+                    src={displayImage('arrival.svg')}
                     className="SearchBar-inputs__autoSuggestIcon"
                   />
                 }
@@ -275,7 +316,7 @@ const SearchBar = () => {
               <DatesRangePicker
                 dates={flightDates}
                 onDateChange={handleFlightDates}
-                enableSingleDatePicker={segmentType.value === "OW"}
+                enableSingleDatePicker={segmentType.value === 'OW'}
               />
             </Grid>
           </Grid>
@@ -293,10 +334,7 @@ const SearchBar = () => {
                     text="Advance Search"
                     style={{ color: colors.royalBlue }}
                   />
-                  <ExpandArrow
-                    isHorizontal
-                    expand={expandAdvanceSearch}
-                  />
+                  <ExpandArrow isHorizontal expand={expandAdvanceSearch} />
                 </div>
                 {expandAdvanceSearch && (
                   <div className="d-flex align-items-center">
@@ -338,7 +376,7 @@ const SearchBar = () => {
                 className="SearchBar-advanceSearch__searchFlight"
                 icon={
                   <FlightIcon
-                    style={{ color: colors.white, transform: "rotate(90deg)" }}
+                    style={{ color: colors.white, transform: 'rotate(90deg)' }}
                   />
                 }
                 text="search flight"

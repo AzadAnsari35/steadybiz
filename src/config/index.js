@@ -7,7 +7,10 @@ export default {
     },
     client:{
         app_host: process.env.APP_HOST,
-        port: process.env.PORT
+        port: process.env.PORT,
+        securityGroup:process.env.SECURITY_GROUP
+
+
     },
     mode:{
         environment :process.env.NODE_ENV
