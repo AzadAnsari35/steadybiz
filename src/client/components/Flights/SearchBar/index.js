@@ -199,7 +199,7 @@ const SearchBar = () => {
       dispatch(utils.showErrorBox(securityMessage));
       return;
     }
-    return;
+
     const passengersData = passengers.filter(
       (passenger) => passenger.count > 0
     );
