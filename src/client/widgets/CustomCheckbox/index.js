@@ -29,8 +29,6 @@ const CustomCheckbox = (props) => {
   //   setChecked(event.target.checked);
   // };
 
-  console.log('checkedValues', checkedValues, checked);
-
   const otherProps = {
     ...(checked ||
       (checkedValues && {

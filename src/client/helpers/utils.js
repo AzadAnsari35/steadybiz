@@ -1,6 +1,17 @@
 import config from 'Config/';
 import endpointWithoutApi from 'Config/endpointWithoutApi';
 import { commonActionWithoutApi } from 'Actions/';
+export const checkSecurityGroup = (number) => {
+  const isSecurityGroup = config.client.securityGroup;
+  if (isSecurityGroup === '1') {
+    let userData = JSON.parse(getItemFromStorage('userData'));
+    console.log(userData.userDto.userGroups.indexOf(number));
+    if (userData.userDto.userGroups.indexOf(number) === -1) {
+      return 'you are not aurthorised to perform this action';
+    }
+  }
+  return '';
+};
 
 export const showErrorBox = (errorMsg) => {
   return commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
