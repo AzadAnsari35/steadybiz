@@ -47,8 +47,6 @@ const defaultValues = {
   securityGroup: '',
   address1: '',
   emailId: '',
-  countryCode: '',
-  cityCode: '',
   zipCode: '',
   noOfUserRequested: '',
   paymentOptions: [],
@@ -462,7 +460,13 @@ const OfficeProfileForm = (props) => {
                   selectPlaceholder="Code"
                   errors={errors}
                   register={register}
-                  validation={{ required: 'Please enter the phone number.' }}
+                  validation={{
+                    required: 'Please enter the phone number.',
+                    pattern: {
+                      value: regex.number,
+                      message: 'Please enter valid phone number.',
+                    },
+                  }}
                   selectValidation={{
                     required: 'Please enter the country code.',
                   }}

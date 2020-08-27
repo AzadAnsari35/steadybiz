@@ -5,7 +5,7 @@ import endpoint from 'Config/endpoint.js';
 import endpointWithoutApi from 'Config/endpointWithoutApi';
 import routes from 'Constants/routes';
 import { utils } from 'Helpers';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
 import {
@@ -136,6 +136,7 @@ const SearchSecurityGroup = () => {
   const [requestJson, setReqeustJson] = useState(null);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(5);
+  const firstPageUpdate = useRef(true);
 
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
   const {
@@ -191,6 +192,14 @@ const SearchSecurityGroup = () => {
     );
   }, []);
 
+  useEffect(() => {
+    if (firstPageUpdate.current) {
+      firstPageUpdate.current = false;
+      return;
+    }
+    callSearch(page);
+  }, [page]);
+
   const callSearch = (page) => {
     try {
       dispatch(
@@ -205,15 +214,20 @@ const SearchSecurityGroup = () => {
       console.log('err', err);
     }
   };
-
-  const onSubmit = (data, e) => {
-    console.log('data', data);
-    setReqeustJson(data);
+  const handlePage = (newPage) => {
+    setPage(newPage);
   };
 
   const handleReset = () => {
     reset(defaultValues);
   };
+
+  const onSubmit = (data, e) => {
+    console.log('data', data);
+    setReqeustJson(data);
+    setPage(1);
+  };
+
   return (
     <div className="SearchSecurityGroup">
       <div className="SearchSecurityGroup-head">
@@ -290,6 +304,7 @@ const SearchSecurityGroup = () => {
               officeLevel={officeLevel}
             />
           }
+          handlePage={handlePage}
           headerData={headerData}
           bodyData={securityGroupList?.data}
           AddElement={{
@@ -297,6 +312,7 @@ const SearchSecurityGroup = () => {
           }}
           count={securityGroupList.data.count}
           size={size}
+          page={page}
           columnAlignments={['left', 'center', 'left', 'center']}
           statusIndex={2}
           tableStyling={[{ paddingLeft: 72 }]}

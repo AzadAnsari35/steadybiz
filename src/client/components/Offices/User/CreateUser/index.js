@@ -252,7 +252,13 @@ const CreateUserForm = () => {
                   selectPlaceholder="Dial Code"
                   errors={errors}
                   register={register}
-                  validation={{ required: 'Please enter the mobile number.' }}
+                  validation={{
+                    required: 'Please enter the mobile number.',
+                    pattern: {
+                      value: regex.number,
+                      message: 'Please enter valid mobile number.',
+                    },
+                  }}
                   selectValidation={{
                     required: 'Please enter the country code.',
                   }}

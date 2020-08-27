@@ -122,10 +122,13 @@ const Header = () => {
             officeDto={userDto?.officeDto}
             fullName={`${userDto.firstName} ${userDto.lastName}`}
             handleClose={handleClose}
+            setShowDrawer={setShowDrawer}
           />
         </SimplePopover>
       </div>
-      <SideDrawer showDrawer={showDrawer} setShowDrawer={setShowDrawer} />
+      {isAuthenticated && (
+        <SideDrawer showDrawer={showDrawer} setShowDrawer={setShowDrawer} />
+      )}
     </>
   );
 };
