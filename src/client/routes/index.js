@@ -18,6 +18,8 @@ import {
   PassengerInformation,
   Transaction,
   SearchOrder,
+  SearchDeals,
+  CreateDeal,
 } from 'Views/';
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
@@ -177,6 +179,27 @@ const Routes = () => (
       path={routes.common.passengerInformation}
       component={PassengerInformation}
     />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.searchDeals}
+      component={SearchDeals}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.createDeal}
+      component={CreateDeal}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.modifyDeal}
+      component={CreateDeal}
+    />
+
+    <PrivateRoute exact path={routes.agency.viewDeal} component={CreateDeal} />
+
     <PrivateRoute
       exact
       path={routes.transaction.viewPNR}

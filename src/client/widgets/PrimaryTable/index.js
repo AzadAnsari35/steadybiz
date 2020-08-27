@@ -41,6 +41,8 @@ const PrimaryTable = (props) => {
     return `PrimaryTable-status ${status} `;
   };
 
+  console.log('bodyData', bodyData);
+
   const handleChangePage = (event, newPage) => {
     handlePage(newPage);
     handleOffset(newPage);
@@ -49,7 +51,6 @@ const PrimaryTable = (props) => {
   const handleOffset = (newPage) => {
     setLowOffset(size * (newPage - 1) + 1);
     let updatedHightOffset = newPage * size;
-    console.log('newPage', newPage);
     setHighOffset(count > updatedHightOffset ? updatedHightOffset : count);
   };
 

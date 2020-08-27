@@ -189,29 +189,32 @@ const SearchOffice = () => {
     reset,
   } = useForm({ defaultValues });
 
-  useEffect(() => {
-    const selectedCountry = getValues('country');
-    if (selectedCountry) {
-      dispatch(
-        commonAction(endpoint.master.cities, {
-          countryCode: selectedCountry.value,
-        })
-      );
-    }
-    return dispatch(commonActionUpdate(endpoint.master.cities, null));
-  }, [getValues('country')]);
-
   const ofId = utils.getItemFromStorage('officeId');
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
   const {
     userDto: {
-      officeDto: { officeId, officeName, officeLevel },
+      officeDto: { officeId, officeName, officeLevel, countryCode, cityCode },
     },
   } = userData;
 
   const searchOffice = useSelector((state) => state.searchOffice?.items);
 
-  const citiesList = useSelector((state) => state.masterCities?.items?.data);
+  const citiesList = useSelector(
+    (state) => state.masterCities?.items?.data?.data
+  );
+
+  useEffect(() => {
+    const selectedCountry =
+      getValues('country') === '' ? countryCode : getValues('country').value;
+    if (selectedCountry) {
+      dispatch(
+        commonAction(endpoint.master.cities, {
+          countryCode: selectedCountry,
+        })
+      );
+    }
+    // return dispatch(commonActionUpdate(endpoint.master.cities, null));
+  }, [getValues('country')]);
 
   useEffect(() => {
     if (requestJson !== null) {
@@ -244,11 +247,29 @@ const SearchOffice = () => {
     callSearch(page);
   }, [page]);
 
+  useEffect(() => {
+    if (countriesList.dropDownItems !== null && !!citiesList) {
+      console.log('countriesList.dropDownItems', countriesList.dropDownItems);
+      reset({
+        country: countriesList.dropDownItems.findItem(countryCode),
+        city: citiesList.findItem(cityCode),
+      });
+    }
+  }, [countriesList.dropDownItems, !!citiesList]);
+
+  // useEffect(() => {
+  //   if (citiesList && citiesList.data !== null) {
+  //     reset({
+  //     });
+  //   }
+  // }, [citiesList]);
+
   const handlePage = (newPage) => {
     setPage(newPage);
   };
 
   const callSearch = (page) => {
+    console.log('callsearch');
     try {
       setErrorMsg('');
       dispatch(
@@ -315,6 +336,7 @@ const SearchOffice = () => {
                 getValues={getValues}
                 showLabel
                 width="auto"
+                isSearchable
               />
             </Grid>
             <Grid item xs={3}>
@@ -346,6 +368,7 @@ const SearchOffice = () => {
                 errors={errors}
                 showValue
                 width="auto"
+                isSearchable
               />
             </Grid>
             <Grid item xs={3}>
@@ -358,8 +381,8 @@ const SearchOffice = () => {
                 changeStyle={true}
                 control={control}
                 errors={errors}
-                showValue
                 width="auto"
+                isSearchable
               />
             </Grid>
 
@@ -368,10 +391,7 @@ const SearchOffice = () => {
                 label="City"
                 name="city"
                 options={
-                  (citiesList &&
-                    citiesList.data &&
-                    utils.sortObjectArray(citiesList.data)) ||
-                  []
+                  (citiesList && utils.sortObjectArray(citiesList)) || []
                 }
                 placeholder="City"
                 showBorder={true}
@@ -379,6 +399,7 @@ const SearchOffice = () => {
                 control={control}
                 errors={errors}
                 width="auto"
+                isSearchable
               />
             </Grid>
             <Grid item xs={6}>
@@ -438,6 +459,7 @@ const SearchOffice = () => {
             'noOfUserRequested',
             'paymentOptions',
             'zipCode',
+            'minimumBalance',
           ]}
         />
       )}

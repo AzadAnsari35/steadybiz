@@ -24,7 +24,7 @@ import {
 import { countriesDialCodeFormatter } from 'Helpers/global';
 import { useDispatch, useSelector } from 'react-redux';
 import endpointWithoutApi from 'Config/endpointWithoutApi';
-import { commonActionWithoutApi } from 'Actions';
+import { commonActionWithoutApi, commonAction } from 'Actions';
 
 import endpoint from 'Config/endpoint';
 import { utils } from 'Helpers';
@@ -68,6 +68,9 @@ const UserProfileForm = (props) => {
     'masterCountries'
   );
 
+  const securityGroupNameList = useSelector(
+    (state) => state.securityGroupNameList?.items?.data
+  );
   let rowNumber = utils.getItemFromStorage('selectedUser');
   console.log('rowNumber', rowNumber);
 
@@ -84,6 +87,7 @@ const UserProfileForm = (props) => {
   console.log('selectedItem', selectedItem);
 
   let userId = selectedItem.userId || utils.getItemFromStorage('userId');
+  let ofId = utils.getItemFromStorage('officeId');
 
   const [updateRes, postUpdateRequest] = updateEndpoint();
 
@@ -223,6 +227,16 @@ const UserProfileForm = (props) => {
     objectStatusesList.dropDownItems,
   ]);
 
+  useEffect(() => {
+    dispatch(
+      commonAction(endpoint.office.securityGroupNameList, {
+        ofId,
+        page: 0,
+        size: 100,
+      })
+    );
+  }, []);
+
   const onSubmit = (data, e) => {
     console.log('data', data);
     console.log('userId', userId);
@@ -303,6 +317,7 @@ const UserProfileForm = (props) => {
                   }}
                   control={control}
                   disabled={!isUpdateUser}
+                  isSearchable
                 />
               </Grid>
 
@@ -345,6 +360,7 @@ const UserProfileForm = (props) => {
                   control={control}
                   showValue
                   disabled={isViewUser}
+                  isSearchable
                 />
               </Grid>
             </Grid>
@@ -385,16 +401,17 @@ const UserProfileForm = (props) => {
                 <MultiSelect
                   label="Security Group:"
                   name="securityGroup"
-                  options={securityGroups}
+                  options={securityGroupNameList?.data || []}
                   placeholder="Select Security Group"
                   showBorder={true}
                   changeStyle={true}
                   control={control}
                   errors={errors}
                   validation={{ required: 'Please enter the security group' }}
-                  showValue
+                  showLabel
                   width="auto"
                   disabled={!isUpdateUser}
+                  isSearchable
                 />
               </Grid>
 
@@ -411,6 +428,7 @@ const UserProfileForm = (props) => {
                   validation={{ required: 'Please enter the status' }}
                   width="auto"
                   disabled={!isUpdateUser}
+                  isSearchable
                 />
               </Grid>
 

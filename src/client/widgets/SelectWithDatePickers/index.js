@@ -16,6 +16,7 @@ const SelectWithDatePickers = (props) => {
     control,
     showValue,
     selectWidth = '33%',
+    isSearchable = false,
   } = props;
   return (
     <div className="SelectWithDatePickers">
@@ -47,6 +48,7 @@ const SelectWithDatePickers = (props) => {
           initialValue={initialSelectedValue}
           showValue={showValue}
           disabled={disabled}
+          isSearchable
         />
 
         <DatePicker

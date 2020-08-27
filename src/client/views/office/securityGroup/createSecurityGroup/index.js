@@ -70,7 +70,6 @@ const CreateSecurityGroup = () => {
   );
 
   const [createResponse, postData] = createEndpoint();
-
   const [allSection, setAllSection] = useCheckboxData();
   // const [flight, setFlight] = useCheckboxData([]);
   // const [agency, setAgency] = useCheckboxData([]);
@@ -107,6 +106,7 @@ const CreateSecurityGroup = () => {
   const setCreateDefaultValues = () => {
     if (objectStatusesList.dropDownItems.length > 0 && isCreateSecurityGroup) {
       reset({ objectStatusId: objectStatusesList.dropDownItems[3] });
+      setAllSection([]);
     }
   };
 
@@ -317,6 +317,7 @@ const CreateSecurityGroup = () => {
                 errors={errors}
                 width="auto"
                 disabled={!isUpdateSecurityGroup}
+                isSearchable
               />
             </Grid>
 

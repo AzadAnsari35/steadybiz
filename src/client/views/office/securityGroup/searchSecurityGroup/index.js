@@ -247,6 +247,7 @@ const SearchSecurityGroup = () => {
                 errors={errors}
                 showValue
                 width="auto"
+                isSearchable
               />
             </Grid>
 
@@ -262,6 +263,7 @@ const SearchSecurityGroup = () => {
                 errors={errors}
                 showValue
                 width="auto"
+                isSearchable
               />
             </Grid>
             <Grid item xs={12} className="d-flex justify-content-end pt-32">

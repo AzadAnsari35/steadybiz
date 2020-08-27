@@ -22,7 +22,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import endpoint from 'Config/endpoint';
 import { utils } from 'Helpers';
 import endpointWithoutApi from 'Config/endpointWithoutApi';
-import { commonActionWithoutApi } from 'Actions';
+import { commonActionWithoutApi, commonAction } from 'Actions';
 
 import './style.scss';
 
@@ -41,7 +41,6 @@ let defaultValues = {
   firstName: '',
   lastName: '',
   securityGroup: '',
-  status: '',
 };
 
 const CreateUserForm = () => {
@@ -56,6 +55,12 @@ const CreateUserForm = () => {
     dropDownParam.countriesDialCode,
     'masterCountries'
   );
+
+  const securityGroupNameList = useSelector(
+    (state) => state.securityGroupNameList?.items?.data
+  );
+
+  console.log('securityGroupNameList', securityGroupNameList);
 
   const dispatch = useDispatch();
 
@@ -150,6 +155,18 @@ const CreateUserForm = () => {
     //   }
   };
 
+  useEffect(() => {
+    if (!!ofId) {
+      dispatch(
+        commonAction(endpoint.office.securityGroupNameList, {
+          ofId,
+          page: 0,
+          size: 100,
+        })
+      );
+    }
+  }, [ofId]);
+
   return (
     <div className="CreateUserForm">
       <div className="CreateUserForm-imageContainer d-flex align-items-center">
@@ -200,6 +217,7 @@ const CreateUserForm = () => {
                     required: 'Please enter the title.',
                   }}
                   control={control}
+                  isSearchable
                 />
               </Grid>
 
@@ -240,6 +258,7 @@ const CreateUserForm = () => {
                   }}
                   control={control}
                   showValue
+                  isSearchable
                 />
               </Grid>
 
@@ -257,18 +276,16 @@ const CreateUserForm = () => {
                 <MultiSelect
                   label="Security Group:"
                   name="securityGroup"
-                  options={[
-                    { label: 'Admin', value: 'Admin' },
-                    { label: 'Account', value: 'Account' },
-                  ]}
+                  options={securityGroupNameList?.data || []}
                   placeholder="Select Security Group"
                   showBorder={true}
                   changeStyle={true}
                   control={control}
                   errors={errors}
                   validation={{ required: 'Please enter the security group' }}
-                  showValue
+                  showLabel
                   width="auto"
+                  isSearchable
                 />
               </Grid>
 
@@ -285,6 +302,7 @@ const CreateUserForm = () => {
                   // validation={{ required: 'Please enter the status' }}
                   width="auto"
                   disabled
+                  isSearchable
                 />
               </Grid>
             </Grid>

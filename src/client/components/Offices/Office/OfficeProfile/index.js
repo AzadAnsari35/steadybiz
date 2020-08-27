@@ -74,6 +74,7 @@ const OfficeProfileForm = (props) => {
     watch,
     reset,
     getValues,
+    setValue,
   } = useForm({
     defaultValues,
   });
@@ -89,6 +90,13 @@ const OfficeProfileForm = (props) => {
   let userId = utils.getItemFromStorage('userId');
 
   const [createRes, postCreateRequest] = createEndpoint();
+
+  const userData = JSON.parse(utils.getItemFromStorage('userData'));
+  const {
+    userDto: {
+      officeDto: { countryCode: rootCountryCode, cityCode: rootCityCode },
+    },
+  } = userData;
 
   const citiesList = useSelector(
     (state) => state.masterCities?.items?.data?.data
@@ -117,6 +125,28 @@ const OfficeProfileForm = (props) => {
     dropDownParam.countriesDialCode,
     'masterCountries'
   );
+
+  useEffect(() => {
+    // const selectedCountry = isCreateOffice
+    //   ? getValues('countryCode') === ''
+    //     ? rootCountryCode
+    //     : getValues('countryCode').value
+    //   : !isCreateOffice
+    //   ? getValues('countryCode') === ''
+    //     ? rootCountryCode
+    //     : getValues('countryCode').value
+    //   : selectedItem?.countryCode;
+    const selectedCountry = getValues('countryCode');
+    console.log('selectedCountry', selectedCountry);
+    if (selectedCountry) {
+      dispatch(
+        commonAction(endpoint.master.cities, {
+          countryCode: selectedCountry.value,
+        })
+      );
+    }
+    // return dispatch(commonActionUpdate(endpoint.master.cities, null));
+  }, [getValues('countryCode')]);
 
   const setDefaultValue = () => {
     if (
@@ -171,10 +201,17 @@ const OfficeProfileForm = (props) => {
   };
 
   const setCreateOfficeDefaultValue = () => {
-    if (isCreateOffice) {
+    if (
+      isCreateOffice &&
+      objectStatusesList.dropDownItems !== null &&
+      countriesList.dropDownItems !== null &&
+      !!citiesList
+    ) {
       reset({
         status: objectStatusesList.dropDownItems[3],
         officeType: commonConstant.officeType[0],
+        countryCode: countriesList.dropDownItems.findItem(rootCountryCode),
+        cityCode: citiesList.findItem(rootCityCode),
       });
     }
   };
@@ -222,24 +259,13 @@ const OfficeProfileForm = (props) => {
 
   useEffect(() => setCreateOfficeDefaultValue(), [
     objectStatusesList.dropDownItems,
+    countriesList.dropDownItems,
+    !!citiesList,
   ]);
-
-  useEffect(() => {
-    const selectedCountry = isCreateOffice
-      ? getValues('countryCode')?.value
-      : selectedItem?.countryCode;
-    if (selectedCountry) {
-      dispatch(
-        commonAction(endpoint.master.cities, {
-          countryCode: selectedCountry,
-        })
-      );
-    }
-    return dispatch(commonActionUpdate(endpoint.master.cities, null));
-  }, [isCreateOffice ? getValues('countryCode') : selectedItem?.countryCode]);
 
   const getSettlementPlans = () => {
     dispatch(commonAction(endpoint.master.settlementPlans));
+    isCreateOffice && setValue('countryCode', rootCountryCode);
   };
 
   useEffect(() => getSettlementPlans(), []);
@@ -295,6 +321,7 @@ const OfficeProfileForm = (props) => {
                   showLabel
                   width="auto"
                   disabled
+                  isSearchable
                 />
               </Grid>
               <Grid item xs={6}>
@@ -310,6 +337,7 @@ const OfficeProfileForm = (props) => {
                   validation={{ required: 'Please enter the status' }}
                   width="auto"
                   disabled={!isUpdateOffice}
+                  isSearchable
                 />
               </Grid>
               <Grid item xs={12}>
@@ -378,6 +406,7 @@ const OfficeProfileForm = (props) => {
                   width="auto"
                   showLabel
                   disabled={isViewOffice}
+                  isSearchable
                 />
               </Grid>
 
@@ -394,6 +423,7 @@ const OfficeProfileForm = (props) => {
                   validation={{ required: 'Please enter the city' }}
                   width="auto"
                   disabled={isViewOffice}
+                  isSearchable
                 />
               </Grid>
               <Grid item xs={6}>
@@ -439,6 +469,7 @@ const OfficeProfileForm = (props) => {
                   control={control}
                   showValue
                   disabled={isViewOffice}
+                  isSearchable
                 />
               </Grid>
               <Grid item xs={12}>
@@ -480,6 +511,7 @@ const OfficeProfileForm = (props) => {
                   validation={{ required: 'Please enter the no of users' }}
                   width="auto"
                   disabled={isViewOffice}
+                  isSearchable
                 />
               </Grid>
               <Grid item xs={12}>

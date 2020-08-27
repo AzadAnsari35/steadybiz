@@ -3,7 +3,7 @@ import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker,
+  DatePicker as KeyboardDatePicker,
 } from '@material-ui/pickers';
 import moment from 'moment';
 import Text from 'Widgets/Text';
@@ -28,6 +28,7 @@ const DatePicker = (props) => {
     control,
     name,
     className,
+    useReactHookForm = true,
   } = props;
   // const [selectedDate, setSelectedDate] = React.useState(!!maxDate ? maxDate : new Date());
   //   const [selectedDate, setSelectedDate] = useState();
@@ -36,11 +37,17 @@ const DatePicker = (props) => {
   //     setSelectedDate(value);
   //   }, [value]);
 
-  //   const handleDateChange = (date) => {
-  //     const formattedDate = moment(date).format('YYYY-MM-DDTHH:MM:SS');
-  //     setSelectedDate(formattedDate);
-  //     onChange(id, formattedDate);
-  //   };
+  const [selectedDate, setSelectedDate] = useState();
+
+  useEffect(() => {
+    setSelectedDate(value);
+  }, [value]);
+
+  const handleDateChange = (date) => {
+    const formattedDate = moment(date).format('YYYY-MM-DDTHH:MM:SS');
+    setSelectedDate(formattedDate);
+    onChange(name, formattedDate);
+  };
 
   return (
     <div
@@ -55,45 +62,83 @@ const DatePicker = (props) => {
         />
       )}
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Controller
-          as={
-            <KeyboardDatePicker
-              variant="inline"
-              margin="normal"
-              format="dd-MMM-yyyy"
-              autoOk
-              disablePast={!!disablePastDates}
-              disableFuture={!!disableFutureDates}
-              minDate={
-                !!minDate
-                  ? minDate
-                  : !!disablePastDates
-                  ? new Date()
-                  : new Date('1900-01-01')
-              }
-              maxDate={
-                !!maxDate
-                  ? maxDate
-                  : !!disableFutureDates
-                  ? new Date()
-                  : new Date('2100-01-01')
-              }
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-              keyboardIcon={
-                <img
-                  className="date-icon"
-                  alt="calendar"
-                  src={!!icon ? icon : displayImage('calendar-grey.svg')}
-                />
-              }
-            />
-          }
-          rules={validation}
-          control={control}
-          name={name}
-        />
+        {useReactHookForm ? (
+          <Controller
+            as={
+              <KeyboardDatePicker
+                variant="inline"
+                margin="normal"
+                format="dd-MMM-yyyy"
+                autoOk
+                disablePast={!!disablePastDates}
+                disableFuture={!!disableFutureDates}
+                minDate={
+                  !!minDate
+                    ? minDate
+                    : !!disablePastDates
+                    ? new Date()
+                    : new Date('1900-01-01')
+                }
+                maxDate={
+                  !!maxDate
+                    ? maxDate
+                    : !!disableFutureDates
+                    ? new Date()
+                    : new Date('2100-01-01')
+                }
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+                keyboardIcon={
+                  <img
+                    className="date-icon"
+                    alt="calendar"
+                    src={!!icon ? icon : displayImage('calendar-grey.svg')}
+                  />
+                }
+              />
+            }
+            rules={validation}
+            control={control}
+            name={name}
+          />
+        ) : (
+          <KeyboardDatePicker
+            variant="inline"
+            margin="normal"
+            name={name}
+            format="dd-MMM-yyyy"
+            value={selectedDate || ''}
+            autoOk
+            disablePast={!!disablePastDates}
+            disableFuture={!!disableFutureDates}
+            minDate={
+              !!minDate
+                ? minDate
+                : !!disablePastDates
+                ? new Date()
+                : new Date('1900-01-01')
+            }
+            maxDate={
+              !!maxDate
+                ? maxDate
+                : !!disableFutureDates
+                ? new Date()
+                : new Date('2100-01-01')
+            }
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+            // keyboardIcon={
+            //   <img
+            //     className="date-icon"
+            //     alt="calendar"
+            //     src={!!icon ? icon : calendarGreyIcon}
+            //   />
+            // }
+            onChange={handleDateChange}
+          />
+        )}
       </MuiPickersUtilsProvider>
     </div>
   );

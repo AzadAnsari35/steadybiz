@@ -20,7 +20,7 @@ const CustomCheckbox = (props) => {
     disabled = false,
     useReactHookForm = true,
     onChange,
-    checkedValues = [],
+    checkedValues,
     getValues,
   } = props;
   // const [checked, setChecked] = useState(false);
@@ -28,6 +28,15 @@ const CustomCheckbox = (props) => {
   // const handleChange = (event) => {
   //   setChecked(event.target.checked);
   // };
+
+  console.log('checkedValues', checkedValues, checked);
+
+  const otherProps = {
+    ...(checked ||
+      (checkedValues && {
+        checked: checked || checkedValues.includes(value),
+      })),
+  };
 
   const handleCheck = (value) => {
     const selectedValues = getValues(name);
@@ -100,7 +109,7 @@ const CustomCheckbox = (props) => {
           }
           disableRipple
           onChange={() => onChange(value)}
-          checked={checked || checkedValues.includes(value)}
+          {...otherProps}
         />
       )}
       {!children ? (

@@ -1,35 +1,29 @@
 import Grid from '@material-ui/core/Grid';
+import CachedIcon from '@material-ui/icons/Cached';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { regex } from 'Helpers/validator';
-import React, { useState, useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
-import { showError } from 'Helpers/utils';
-import { utils } from 'Helpers/index';
-import {
-  Button,
-  MultiSelect,
-  SelectWithTextInput,
-  Text,
-  TextInput,
-  SimplePopover,
-  PrimaryTable,
-  PrimaryTableHeader,
-  IconWithBackground,
-} from 'Widgets';
-import routes from 'Constants/routes';
-import { useHistory } from 'react-router-dom';
+import { commonAction, commonActionWithoutApi } from 'Actions/';
 import endpoint from 'Config/endpoint.js';
 import endpointWithoutApi from 'Config/endpointWithoutApi';
-import {
-  commonAction,
-  commonActionWithoutApi,
-  commonActionUpdate,
-} from 'Actions/';
-import { useDispatch, useSelector } from 'react-redux';
-import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam } from 'Constants/commonConstant';
-import CachedIcon from '@material-ui/icons/Cached';
-
+import routes from 'Constants/routes';
+import { utils } from 'Helpers/index';
+import { regex } from 'Helpers/validator';
+import useDropDown from 'Hooks/useDropDown';
+import React, { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import {
+  Button,
+  IconWithBackground,
+  MultiSelect,
+  PrimaryTable,
+  PrimaryTableHeader,
+  SelectWithTextInput,
+  SimplePopover,
+  Text,
+  TextInput,
+} from 'Widgets';
 import './style.scss';
 
 const headerData = [
@@ -163,6 +157,7 @@ const SearchUser = () => {
       setOfficeLevel(1);
       setOfId(selectedItem.ofId);
     } else {
+      console.log('else....................');
       const {
         userDto: {
           officeDto: { officeName, officeLevel, ofId, officeId },
@@ -184,7 +179,7 @@ const SearchUser = () => {
 
   useEffect(() => {
     getOfficeDetail();
-  }, []);
+  }, [searchResult]);
 
   useEffect(() => {
     if (firstPageUpdate.current) {
@@ -332,6 +327,9 @@ const SearchUser = () => {
                     message: 'Please enter numbers only.',
                   },
                 }}
+                fullWidthDropdown
+                isSearchable
+
                 // selectValidation={
                 //   getValues('mobile') && {
                 //     validate: (value) =>
@@ -386,6 +384,7 @@ const SearchUser = () => {
                 errors={errors}
                 showValue
                 width="auto"
+                isSearchable
               />
             </Grid>
             <Grid item xs={9}>

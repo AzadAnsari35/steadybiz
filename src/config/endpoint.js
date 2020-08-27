@@ -95,6 +95,12 @@ export default {
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.settlementPlans,
     },
+    paymentModes: {
+      url: config.api.url + '/api/v1/master/paymentmodes',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.GET,
+      actionType: actionTypeConstant.master.paymentModes,
+    },
   },
 
   office: {

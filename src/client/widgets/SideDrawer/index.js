@@ -16,6 +16,8 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { ConstructIcon } from 'Widgets';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+
 import './styles.scss';
 
 const SideDrawer = ({ showDrawer, setShowDrawer }) => {
@@ -110,6 +112,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           clickFunc: () => {
             setItemToStorage('selectedOffice', '');
             dispatch(commonActionUpdate(endpoint.office.searchUser, null));
+            dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
           },
         },
         {
@@ -153,8 +156,10 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
   return (
     <Drawer
       open={showDrawer}
-      variant="persistent"
       classes={{ paper: 'drawer' }}
+      onClose={() => setShowDrawer(false)}
+      // variant="persistent"
+      ModalProps={{ onBackdropClick: () => setShowDrawer(false) }}
     >
       <nav className="SideDrawer">
         {drawerData.map((row, index) => (
@@ -179,6 +184,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
                   timeout="auto"
                   unmountOnExit
                   key={subrowIndex}
+                  onClick={() => setShowDrawer(false)}
                 >
                   <Link
                     to={subrow.link}
