@@ -14,6 +14,10 @@ export const dropDownParam = {
     subValue: 'countryCode',
   },
   objectStatuses: { label: 'objectStatusDesc', value: 'objectStatusId' },
+  paymentModes: {
+    label: 'creditLimitPaymentModeDesc',
+    value: 'creditLimitPaymentModeId',
+  },
 };
 
 export const titles = [

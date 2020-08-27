@@ -10,6 +10,15 @@ const routes = {
   common: {
     passengerInformation: '/Common/Passenger-Info',
   },
+
+  agency: {
+    searchDeals: '/Agency/Search-Deals',
+    createDeal: '/Agency/Create-Deal',
+    viewDeal: '/Agency/Update-Deal',
+    modifyDeal: '/Agency/Update-Deal',
+    dealHistory: '/Agency/Deal-History',
+  },
+
   office: {
     registration: '/Office/Registration',
     searchOffice: '/Office/Search-Office',

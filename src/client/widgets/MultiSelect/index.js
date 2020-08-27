@@ -76,6 +76,9 @@ const MultiSelect = (props) => {
     defaultValue = null,
     useReactHookForm = true,
     onSelectChange,
+    fullWidthDropdown,
+    isClearable = false,
+    isSearchable = false,
   } = props;
   const [selectedOption, setSelectedOption] = useState(defaultValue);
 
@@ -95,6 +98,8 @@ const MultiSelect = (props) => {
   // console.log('control', getValues(name));
   // console.log('control', control.defaultValuesRef.current[name]);
 
+  console.log('fullWidthDropdown', fullWidthDropdown);
+
   return (
     <>
       {!!label && (
@@ -105,11 +110,15 @@ const MultiSelect = (props) => {
           <Controller
             render={(props) => (
               <div
-                className={`MultiSelect ${className ? className : ''} ${
-                  changeStyle ? `MultiSelect-customStyle` : ''
-                }  ${showBorder ? `MultiSelect-showBorder` : ''} ${
-                  errors[name] ? `thin-red-border` : ''
-                } ${disabled ? 'input-disabled border-none py-10' : ''}`}
+                className={`MultiSelect 
+                ${className ? className : ''} 
+                ${changeStyle ? `MultiSelect-customStyle` : ''}  
+                ${showBorder ? `MultiSelect-showBorder` : ''} 
+                ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
+                ${errors[name] ? `thin-red-border` : ''} 
+                ${disabled ? 'input-disabled border-none py-10' : ''}
+                ${isSearchable ? 'MultiSelect-isSearchable' : ''}
+                `}
                 style={{ width: `${width}px`, ...style }}
               >
                 <Select
@@ -124,9 +133,9 @@ const MultiSelect = (props) => {
                     MultiValue: (props) => MultiValue(props, valueKey),
                   }}
                   hideSelectedOptions={false}
-                  isClearable={false}
+                  isClearable={isClearable}
                   isMulti={isMulti}
-                  isSearchable={false}
+                  isSearchable={isSearchable}
                   placeholder={placeholder}
                   getOptionLabel={(option) =>
                     `${showValue ? option[valueKey] : option[labelKey]}`

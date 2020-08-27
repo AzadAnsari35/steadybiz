@@ -1,33 +1,31 @@
-import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import ClearIcon from '@material-ui/icons/Clear';
-import SaveIcon from '@material-ui/icons/Save';
-import moment from 'moment';
+import { commonAction, commonActionWithoutApi } from 'Actions';
+import endpoint from 'Config/endpoint';
+import endpointWithoutApi from 'Config/endpointWithoutApi';
+import { routes } from 'Constants';
 import colors from 'Constants/colors';
+import { dropDownParam } from 'Constants/commonConstant';
+import { utils } from 'Helpers';
+import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
+import useDropDown from 'Hooks/useDropDown';
+import moment from 'moment';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import {
+  Button,
+  DateRangeTableHeader,
   IconWithBackground,
-  Text,
-  SecondaryAccordion,
-  TextInput,
   MultiSelect,
   PrimaryTable,
-  DateRangeTableHeader,
-  Button,
+  SecondaryAccordion,
+  Text,
+  TextInput,
 } from 'Widgets';
 import './style.scss';
-import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import { utils } from 'Helpers';
-import { useDispatch, useSelector } from 'react-redux';
-import { routes } from 'Constants';
-import { useHistory } from 'react-router-dom';
-import endpoint from 'Config/endpoint';
-import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
-import {
-  commonActionWithoutApi,
-  commonAction,
-  commonActionUpdate,
-} from 'Actions';
+import ResetPassword from 'Components/Users/Agent/ResetPassword/index';
 
 const initialState = {
   ofId: '',
@@ -89,12 +87,12 @@ const updateEndpoint = () => {
 };
 
 const OfficeCredit = () => {
-  const { register, handleSubmit, errors, control, getValues } = useForm({});
+  const { register, handleSubmit, errors, control, reset } = useForm({});
 
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [res, postData] = updateEndpoint();
+  const [updateRes, postData] = updateEndpoint();
 
   let userId = utils.getItemFromStorage('userId');
 
@@ -104,6 +102,38 @@ const OfficeCredit = () => {
     (state) => state.masterSettlementPlans?.items?.data
   );
 
+  console.log('settlementPlans', settlementPlans);
+
+  useEffect(() => {
+    if (updateRes !== null) {
+      const errMsg = utils.checkError(updateRes);
+
+      if (errMsg)
+        dispatch(
+          commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
+            toastStatus: false,
+            toastMessage: errMsg,
+            isToastVisible: true,
+          })
+        );
+      else {
+        dispatch(
+          commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
+            toastStatus: true,
+            toastMessage: `Office credit limit updated successfully`,
+            isToastVisible: true,
+          })
+        );
+      }
+    }
+  }, [updateRes]);
+
+  const paymentModes = useDropDown(
+    endpoint.master.paymentModes,
+    dropDownParam.paymentModes,
+    'masterPaymentModes'
+  );
+
   const searchResult =
     useSelector((state) => state.searchOffice?.items?.data?.data) || [];
   let selectedItem = searchResult[rowNumber] || {};
@@ -111,10 +141,11 @@ const OfficeCredit = () => {
 
   useEffect(() => {
     dispatch(commonAction(endpoint.master.settlementPlans));
+    reset({ minimumCreditLimit: minimumBalance });
   }, []);
 
   const onSubmit = (data) => {
-    const { dateFrom, dateTo, minimumCreditLimit, ...rest } = data;
+    const { dateFrom, dateTo, ...rest } = data;
     console.log('data', {
       ...rest,
       ofId: selectedItem.ofId,
@@ -138,6 +169,7 @@ const OfficeCredit = () => {
     currCode,
     creditLimitBal,
     paymentOptions,
+    minimumBalance,
   } = selectedItem;
 
   return (
@@ -212,7 +244,7 @@ const OfficeCredit = () => {
               <div className="font-primary-bold-16 ">
                 {paymentOptions &&
                   settlementPlans &&
-                  settlementPlans.findItem(paymentOptions[0]).label}
+                  settlementPlans.findItem(paymentOptions[0]).primaryLabel}
               </div>
             </Grid>
           </Grid>
@@ -236,13 +268,13 @@ const OfficeCredit = () => {
                   <MultiSelect
                     label="Payment Mode:"
                     name="paymentType"
-                    options={[{ label: 'Bank', value: 'Bank' }]}
+                    options={paymentModes.dropDownItems || []}
                     showBorder={true}
                     changeStyle={true}
                     control={control}
                     errors={errors}
-                    showValue
                     width="auto"
+                    isSearchable
                   />
                 </Grid>
                 <Grid item xs={3}>

@@ -20,6 +20,22 @@ $root: '.MultiSelect';
     }
   }
 
+  &-isSearchable {
+    .react-select__value-container {
+      height: 24px;
+    }
+    .css-b8ldur-Input {
+      padding: 0px;
+      margin: 0px;
+    }
+  }
+
+  &-fullWidthDropdown {
+    .react-select__menu {
+      width: auto !important;
+    }
+  }
+
   &-showBorder {
     border: 1px solid #00000080;
     padding: 9px 20px;

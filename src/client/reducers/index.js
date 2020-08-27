@@ -105,5 +105,9 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.office.securityGroupNameList
   ),
+  masterPaymentModes: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.master.paymentModes
+  ),
 });
 export default rootReducer;

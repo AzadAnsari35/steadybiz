@@ -318,6 +318,7 @@ const SearchOrder = () => {
                 control={control}
                 showValue
                 selectWidth="50%"
+                isSearchable
               />
             </Grid>
 
@@ -348,6 +349,7 @@ const SearchOrder = () => {
                 control={control}
                 showValue
                 label="Date:"
+                isSearchable
               />
             </Grid>
 
@@ -362,6 +364,7 @@ const SearchOrder = () => {
                 errors={errors}
                 showValue
                 width="auto"
+                isSearchable
               />
             </Grid>
 
@@ -378,6 +381,7 @@ const SearchOrder = () => {
                 control={control}
                 showValue
                 selectWidth="50%"
+                isSearchable
               />
             </Grid>
 
@@ -402,6 +406,7 @@ const SearchOrder = () => {
                 errors={errors}
                 showValue
                 width="auto"
+                isSearchable
               />
             </Grid>
 
@@ -416,6 +421,7 @@ const SearchOrder = () => {
                 errors={errors}
                 showValue
                 width="auto"
+                isSearchable
               />
             </Grid>
 

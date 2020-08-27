@@ -27,6 +27,8 @@ const SelectWithTextInput = (props) => {
     control,
     showValue,
     selectWidth = '30%',
+    fullWidthDropdown = false,
+    isSearchable,
   } = props;
 
   return (
@@ -53,6 +55,8 @@ const SelectWithTextInput = (props) => {
           initialValue={initialSelectedValue}
           showValue={showValue}
           disabled={disabled}
+          fullWidthDropdown
+          isSearchable
         />
 
         <input

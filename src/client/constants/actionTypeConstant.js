@@ -3,8 +3,8 @@ export const actionTypeConstant = {
     searchResult: 'override.searchResult',
     selectedOption: 'override.selectedOption',
   },
-  orders:{
-searchOrders:'orders.SearchOrders'
+  orders: {
+    searchOrders: 'orders.SearchOrders',
   },
   flights: {
     airportSuggestions: 'flights.airportSuggestions',
@@ -23,6 +23,7 @@ searchOrders:'orders.SearchOrders'
     airlines: 'master.airlines',
     allCities: 'master.allCities',
     settlementPlans: 'master.settlementPlans',
+    paymentModes: 'master.paymentModes',
   },
   office: {
     searchUser: 'office.searchUser',
