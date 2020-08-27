@@ -23,6 +23,8 @@ import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam } from 'Constants/commonConstant';
 import CachedIcon from '@material-ui/icons/Cached';
 import FlightIcon from '@material-ui/icons/Flight';
+import { useForm } from 'react-hook-form';
+
 import './style.scss';
 
 const response = {
@@ -80,8 +82,8 @@ const headerData = [
   'DESTINATION',
   'FROM COUNTRY',
   'TO COUNTRY',
-  'BOOK START DATE',
-  'BOOK END DATE',
+  'TICKET START DATE',
+  'TICKET END DATE',
   'STATUS',
   'ACTION',
 ];
@@ -152,6 +154,7 @@ const PopoverAction = ({ rowNumber }) => {
 };
 
 const SearchDeals = () => {
+  const { register, handleSubmit, errors, control, watch, reset } = useForm();
   const {
     userDto: {
       officeDto: { officeId, officeName, officeLevel, ofId },
@@ -196,7 +199,8 @@ const SearchDeals = () => {
               changeStyle={true}
               showValue
               width="auto"
-              useReactHookForm={false}
+              control={control}
+              errors={errors}
             />
           </Grid>
 
@@ -209,7 +213,8 @@ const SearchDeals = () => {
               changeStyle={true}
               showValue
               width="auto"
-              useReactHookForm={false}
+              control={control}
+              errors={errors}
             />
           </Grid>
 
@@ -222,34 +227,34 @@ const SearchDeals = () => {
               changeStyle={true}
               showValue
               width="auto"
-              useReactHookForm={false}
+              control={control}
+              errors={errors}
             />
           </Grid>
 
           <Grid item xs={3}>
             <TextInput
-              name="userGroupName"
-              label="Security Group Name"
-              onChange={() => console.log('value')}
-              useReactHookForm={false}
+              name="dealCode"
+              label="Deal Code:"
+              errors={errors}
+              register={register}
+              placeholder="Type Deal Code"
             />
           </Grid>
 
           <Grid item xs={3}>
             <DatePicker
-              name="bookingFromDate"
-              label="Booking From Date:"
-              onChange={() => console.log('value')}
-              useReactHookForm={false}
+              name="ticketFromDate"
+              label="Ticket From Date:"
+              control={control}
             />
           </Grid>
 
           <Grid item xs={3}>
             <DatePicker
-              name="bookingToDate"
-              label="Booking To Date:"
-              onChange={() => console.log('value')}
-              useReactHookForm={false}
+              name="ticketToDate"
+              label="Ticket To Date:"
+              control={control}
             />
           </Grid>
 
@@ -257,8 +262,7 @@ const SearchDeals = () => {
             <DatePicker
               name="travelFromDate"
               label="Travel From Date:"
-              onChange={() => console.log('value')}
-              useReactHookForm={false}
+              control={control}
             />
           </Grid>
 
@@ -266,8 +270,7 @@ const SearchDeals = () => {
             <DatePicker
               name="bookingToDate"
               label="Travel To Date:"
-              onChange={() => console.log('value')}
-              useReactHookForm={false}
+              control={control}
             />
           </Grid>
 
@@ -275,9 +278,9 @@ const SearchDeals = () => {
             <TextInput
               name="origin"
               label="Origin:"
-              onChange={() => console.log('value')}
-              useReactHookForm={false}
               placeholder="Type and select Origin"
+              errors={errors}
+              register={register}
             />
           </Grid>
 
@@ -285,9 +288,9 @@ const SearchDeals = () => {
             <TextInput
               name="destination"
               label="Destination:"
-              onChange={() => console.log('value')}
-              useReactHookForm={false}
               placeholder="Type and select Destination"
+              errors={errors}
+              register={register}
             />
           </Grid>
 
@@ -300,7 +303,8 @@ const SearchDeals = () => {
               changeStyle={true}
               showValue
               width="auto"
-              useReactHookForm={false}
+              control={control}
+              errors={errors}
             />
           </Grid>
 
@@ -313,7 +317,8 @@ const SearchDeals = () => {
               changeStyle={true}
               showValue
               width="auto"
-              useReactHookForm={false}
+              control={control}
+              errors={errors}
             />
           </Grid>
 

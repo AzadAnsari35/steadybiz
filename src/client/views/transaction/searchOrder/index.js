@@ -46,8 +46,9 @@ const PopoverAction = (props) => {
   const [showPopover, setShowPopover] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const searchResult = useSelector(
-    (state) => state[endpoint.orders.searchOrders.reducerName]?.items
+    (state) => state[endpoint.orders.searchOrders.reducerName]?.items?.data
   );
+
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -72,6 +73,10 @@ const PopoverAction = (props) => {
       })
     );
   };
+
+  const status = searchResult?.data[rowNumber]?.status;
+
+  console.log('rowNumber', status);
   //const retieveOrder = (orderNo) => {};
   const handleClick = (e) => {
     const selectedOption = e.currentTarget.getAttribute('name');
@@ -137,29 +142,33 @@ const PopoverAction = (props) => {
           horizontal: 'right',
         }}
       >
-        <div className="SearchUser-tableAction d-flex flex-direction-column">
-          <div
-            className="font-primary-regular-14 cursor-pointer"
-            onClick={handleClick}
-            name="view"
-          >
-            View PNR{' '}
+        {status === 'failed' ? (
+          <div>Failed</div>
+        ) : (
+          <div className="SearchUser-tableAction d-flex flex-direction-column">
+            <div
+              className="font-primary-regular-14 cursor-pointer"
+              onClick={handleClick}
+              name="view"
+            >
+              View PNR{' '}
+            </div>
+            <div
+              className="font-primary-regular-14 cursor-pointer"
+              onClick={handleClick}
+              name="issue"
+            >
+              Issue Ticket{' '}
+            </div>
+            <div
+              className="font-primary-regular-14 cursor-pointer"
+              onClick={handleClick}
+              name="viewBooking"
+            >
+              View Booking{' '}
+            </div>
           </div>
-          <div
-            className="font-primary-regular-14 cursor-pointer"
-            onClick={handleClick}
-            name="issue"
-          >
-            Issue Ticket{' '}
-          </div>
-          <div
-            className="font-primary-regular-14 cursor-pointer"
-            onClick={handleClick}
-            name="viewBooking"
-          >
-            View Booking{' '}
-          </div>
-        </div>
+        )}
       </SimplePopover>
     </>
   );

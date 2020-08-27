@@ -21,9 +21,16 @@ const UserCreditLimit = (props) => {
 
     dispatch(commonActionWithoutApi(endpoint.user.login, null));
     handleClose();
+    setShowDrawer(false);
   };
 
-  const { creditLimitDetails, officeDto, fullName, handleClose } = props;
+  const {
+    creditLimitDetails,
+    officeDto,
+    fullName,
+    handleClose,
+    setShowDrawer,
+  } = props;
   return (
     <div className="HeaderPopover br-6">
       <div className="HeaderPopover-head">

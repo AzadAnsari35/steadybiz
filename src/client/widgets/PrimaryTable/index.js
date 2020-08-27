@@ -32,10 +32,16 @@ const PrimaryTable = (props) => {
     count > size ? size : count
   );
 
+  console.log('page', page);
+
   useEffect(() => {
     setHighOffset(count > size ? size : count);
     setLowOffset(1);
   }, [count]);
+
+  useEffect(() => {
+    handleOffset(page);
+  }, [page]);
 
   const statusColor = (status) => {
     return `PrimaryTable-status ${status} `;
