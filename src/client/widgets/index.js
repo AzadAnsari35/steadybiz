@@ -52,6 +52,8 @@ import FormPanel from './FormPanel';
 import DatePickerMui from './DatePickerMui';
 import SelectWithDatePickers from './SelectWithDatePickers';
 import SecondaryTable from './SecondaryTable';
+import CustomDrawer from './CustomDrawer';
+import LinearLoaderSecondary from './LinearLoaderSecondary';
 
 export {
   Avatar,
@@ -108,4 +110,6 @@ export {
   DatePickerMui,
   SelectWithDatePickers,
   SecondaryTable,
+  CustomDrawer,
+  LinearLoaderSecondary,
 };

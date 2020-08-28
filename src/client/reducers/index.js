@@ -38,6 +38,10 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.flights.flightSearch
   ),
+  fareRules: createFilteredReducer(
+    reducerState,
+    (action) => action.type === actionTypeConstant.flights.fareRules
+  ),
   flightSelect: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.flights.flightSelect

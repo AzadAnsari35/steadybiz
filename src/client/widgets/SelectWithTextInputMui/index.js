@@ -34,7 +34,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const SelectWithTextInput = (props) => {
+const SelectWithTextInputMui = (props) => {
   const {
     id,
     className,
@@ -74,10 +74,10 @@ const SelectWithTextInput = (props) => {
   };
 
   return (
-    <div className="SelectWithTextInput">
+    <div className="SelectWithTextInputMui">
       {!!label && (
         <Text
-          className="SelectWithTextInput-label font-primary-medium-16"
+          className="SelectWithTextInputMui-label font-primary-medium-16"
           text={label}
         />
       )}
@@ -122,7 +122,7 @@ const SelectWithTextInput = (props) => {
         </FormControl>
         <input
           id={id}
-          className={`SelectWithTextInput-input font-primary-semibold-16 ${
+          className={`SelectWithTextInputMui-input font-primary-semibold-16 ${
             hasError ? "thin-red-border" : ""
           } ${!!className ? className : ""} ${
             !!disabled ? "input-disabled" : ""
@@ -139,4 +139,4 @@ const SelectWithTextInput = (props) => {
   );
 };
 
-export default SelectWithTextInput;
+export default SelectWithTextInputMui;

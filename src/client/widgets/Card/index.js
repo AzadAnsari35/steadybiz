@@ -11,6 +11,7 @@ const Card = (props) => {
     children,
     className,
     link,
+    linkCallback,
     title,
   } = props;
 
@@ -25,7 +26,13 @@ const Card = (props) => {
           {title}
         </div>
       )}
-      {link && <Link className="card-margin text-align-right" text={link} />}
+      {link &&
+        <Link
+          className="card-margin text-align-right"
+          text={link}
+          onClick={!!linkCallback ? linkCallback : () => {}}
+        />
+      }
       <div
         className={`card-container box-shadow-primary ${
           !!addPadding ? "padded" : ""

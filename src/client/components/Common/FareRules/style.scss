@@ -1,0 +1,24 @@
+@import "./../../../styles/variables";
+$root: ".FareRules";
+
+#{$root} {
+  &-tabs {
+    margin-bottom: 30px;
+    .tab {
+      margin: 0 38px;
+      padding-bottom: 6px;
+      color: $royalBlue;
+      &:first-child {
+        margin-left: 0;
+      }
+      &.active {
+        border-bottom: 2px solid $gray;
+      }
+    }
+  }
+  &-details {
+    &__description {
+      line-height: 20px !important;
+    }
+  }
+}
