@@ -126,6 +126,10 @@ p {
   font-family: 'Montserrat SemiBold';
 }
 
+.font-primary-italic {
+  font-family: 'Montserrat Italic';
+}
+
 .font-primary-bold {
   font-family: 'Montserrat Bold';
 }
@@ -406,6 +410,12 @@ p {
   line-height: 25px;
 }
 
+.font-primary-italic-14 {
+  @extend .font-primary-italic;
+  font-size: 14px;
+  line-height: 18px;
+}
+
 // Borders
 .border-dark-gray-thin {
   border: 1px solid $doveGray;
@@ -461,6 +471,11 @@ p {
 .py-12 {
   padding-top: 12px;
   padding-bottom: 12px;
+}
+
+.py-20 {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .py-44 {

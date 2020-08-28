@@ -22,6 +22,7 @@ const CustomCheckbox = (props) => {
     onChange,
     checkedValues,
     getValues,
+    className,
   } = props;
   // const [checked, setChecked] = useState(false);
 
@@ -53,7 +54,11 @@ const CustomCheckbox = (props) => {
   // console.log('checkedValues', checkedValues.includes(value));
 
   return (
-    <div className="CustomCheckbox d-flex align-items-center">
+    <div
+      className={`CustomCheckbox d-flex align-items-center ${
+        className ? className : ''
+      }`}
+    >
       {useReactHookForm ? (
         <Controller
           name={name}

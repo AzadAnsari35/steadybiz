@@ -52,6 +52,7 @@ const colors = {
   malachite: '#0edd4d',
   webOrange: '#FFA500',
   turbo: '#FFE600',
+  biscayLight: '#1c466c0f',
 };
 
 export default colors;

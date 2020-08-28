@@ -1,0 +1,13 @@
+@import '../../../../styles/variables';
+
+$root: '.CreateDeal';
+
+#{$root} {
+  &-head {
+    padding: 36px 100px;
+    background-color: $white;
+  }
+  &-panel {
+    padding: 80px 100px;
+  }
+}
