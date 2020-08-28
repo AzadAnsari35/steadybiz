@@ -127,7 +127,7 @@ const Header = () => {
             setShowDrawer={setShowDrawer}
           />
         </SimplePopover>
-        <LinearLoaderSecondary />
+        {/* <LinearLoaderSecondary /> */}
       </div>
       {isAuthenticated && (
         <SideDrawer showDrawer={showDrawer} setShowDrawer={setShowDrawer} />

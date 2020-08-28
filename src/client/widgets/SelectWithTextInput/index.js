@@ -26,12 +26,13 @@ const SelectWithTextInput = (props) => {
     selectValidation,
     control,
     showValue,
-    useReactHookForm = true,
+    useReactHookForm = true,    
     hasError,
     selectWidth = '30%',
     fullWidthDropdown = false,
     isSearchable,
     onSelectChange,
+    ...rest
   } = props;
 
   return (
@@ -117,6 +118,7 @@ const SelectWithTextInput = (props) => {
               style={{ paddingLeft: selectWidth }}
               onFocus={() => (!!onFocus ? handleFocus(name) : () => {})}
               onChange={(e) => onChange(name, e.target.value)}
+              {...rest}
             />
           </>
         }

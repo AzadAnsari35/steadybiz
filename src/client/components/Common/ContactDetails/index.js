@@ -101,6 +101,7 @@ const ContactDetails = (props) => {
 							data={countriesDialCodeList.dropDownItems}
 							showValue
 							useReactHookForm={false}
+							maxLength={15}
 							onChange={handleChange}
 							onSelectChange={handleSelectOption}
 						/>
