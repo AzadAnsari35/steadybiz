@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam } from 'Constants/commonConstant';
 import CachedIcon from '@material-ui/icons/Cached';
+import { securityOptionConstant } from 'Constants';
 
 import './style.scss';
 
@@ -52,6 +53,9 @@ const PopoverAction = ({ rowNumber }) => {
   const [showPopover, setShowPopover] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const dispatch = useDispatch();
+  const history = useHistory();
+
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
     setShowPopover(true);
@@ -65,11 +69,29 @@ const PopoverAction = ({ rowNumber }) => {
     const selectedOption = e.currentTarget.getAttribute('name');
     switch (selectedOption) {
       case 'view': {
+        const securityMessage = utils.checkSecurityGroup(
+          securityOptionConstant.office.viewSecurityGroup
+        );
+        if (securityMessage !== '') {
+          dispatch(utils.showErrorBox(securityMessage));
+          return;
+        }
         utils.setItemToStorage('selectedSecurityGroup', rowNumber);
+        history.push(routes.office.viewSecurityGroup);
         break;
       }
       case 'modify': {
+        const securityMessage = utils.checkSecurityGroup(
+          securityOptionConstant.office.updateSecurityGroup
+        );
+
+        if (securityMessage !== '') {
+          dispatch(utils.showErrorBox(securityMessage));
+          return;
+        }
         utils.setItemToStorage('selectedSecurityGroup', rowNumber);
+        history.push(routes.office.updateSecurityGroup);
+
         break;
       }
 
@@ -96,22 +118,20 @@ const PopoverAction = ({ rowNumber }) => {
         }}
       >
         <div className="SearchSecurityGroup-tableAction d-flex flex-direction-column">
-          <Link
-            to={routes.office.viewSecurityGroup}
+          <div
             className="font-primary-regular-14"
             onClick={handleClick}
             name="view"
           >
             View Security Group
-          </Link>
-          <Link
-            to={routes.office.updateSecurityGroup}
+          </div>
+          <div
             className="font-primary-regular-14"
             onClick={handleClick}
             name="modify"
           >
             Modify Security Group
-          </Link>
+          </div>
         </div>
       </SimplePopover>
     </>
@@ -223,9 +243,29 @@ const SearchSecurityGroup = () => {
   };
 
   const onSubmit = (data, e) => {
+    const securityMessage = utils.checkSecurityGroup(
+      securityOptionConstant.office.searchSecurityGroup
+    );
+
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
     console.log('data', data);
     setReqeustJson(data);
     setPage(1);
+  };
+
+  const handleCreate = () => {
+    const securityMessage = utils.checkSecurityGroup(
+      securityOptionConstant.office.createSecurityGroup
+    );
+
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
+    history.push(routes.office.createSecurityGroup);
   };
 
   return (
@@ -285,7 +325,7 @@ const SearchSecurityGroup = () => {
                 text="Create"
                 secondary
                 className=" px-48 mr-10"
-                onClick={() => history.push(routes.office.createSecurityGroup)}
+                onClick={() => handleCreate()}
               />
 
               <Button type="submit" text="Search" className=" px-48" />

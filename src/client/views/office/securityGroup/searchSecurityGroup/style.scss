@@ -8,7 +8,8 @@ $root: '.SearchSecurityGroup';
   }
   &-tableAction {
     padding: 12px 0px;
-    > a {
+    > a,
+    div {
       text-decoration: none;
       color: $black;
       padding: 6px 36px;

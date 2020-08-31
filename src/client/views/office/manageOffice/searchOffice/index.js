@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam } from 'Constants/commonConstant';
 import { utils } from 'Helpers';
-import { commonConstant } from 'Constants';
+import { commonConstant, securityOptionConstant } from 'Constants';
 import CachedIcon from '@material-ui/icons/Cached';
 
 import './style.scss';
@@ -68,17 +68,40 @@ const PopoverAction = (props) => {
 
     switch (selectedOption) {
       case 'view': {
+        const securityMessage = utils.checkSecurityGroup(
+          securityOptionConstant.office.viewOffice
+        );
+        if (securityMessage !== '') {
+          dispatch(utils.showErrorBox(securityMessage));
+          return;
+        }
         history.push(routes.office.viewOffice);
         utils.setItemToStorage('selectedOffice', rowNumber);
         break;
       }
       case 'modify': {
+        const securityMessage = utils.checkSecurityGroup(
+          securityOptionConstant.office.updateOffice
+        );
+
+        if (securityMessage !== '') {
+          dispatch(utils.showErrorBox(securityMessage));
+          return;
+        }
         history.push(routes.office.updateOffice);
         utils.setItemToStorage('selectedOffice', rowNumber);
         break;
       }
 
       case 'search': {
+        const securityMessage = utils.checkSecurityGroup(
+          securityOptionConstant.office.searchUser
+        );
+
+        if (securityMessage !== '') {
+          dispatch(utils.showErrorBox(securityMessage));
+          return;
+        }
         history.push(routes.office.searchOfficeUser);
         utils.setItemToStorage('selectedOffice', rowNumber);
         dispatch(commonActionUpdate(endpoint.office.searchUser, null));
@@ -286,12 +309,28 @@ const SearchOffice = () => {
   };
 
   const onSubmit = (data, e) => {
+    const securityMessage = utils.checkSecurityGroup(
+      securityOptionConstant.office.searchOffice
+    );
+
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
     console.log('data', data);
     setReqeustJson(data);
     setPage(1);
   };
 
   const handleClick = () => {
+    const securityMessage = utils.checkSecurityGroup(
+      securityOptionConstant.office.createOffice
+    );
+
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
     history.push(routes.office.createOffice);
     utils.setItemToStorage('selectedOffice', '');
   };

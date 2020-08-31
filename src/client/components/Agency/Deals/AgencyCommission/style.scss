@@ -1,18 +1,13 @@
 @import '../../../../styles/variables';
 
-$root: '.SegmentDetails';
+$root: '.Segments';
 
 #{$root} {
   &-container {
     margin-bottom: 20px;
     &-form {
-      padding: 16px 30px 40px;
+      padding: 40px 30px;
       background-color: $biscayLight;
-      &-checkbox {
-        > div:nth-child(2) {
-          justify-content: flex-start;
-        }
-      }
     }
     &-table {
       & table {
@@ -20,7 +15,8 @@ $root: '.SegmentDetails';
       }
       &-head {
         .MuiTableCell-sizeSmall {
-          padding: 16px 12px;
+          padding-top: 16px;
+          padding-bottom: 16px;
         }
       }
       & th {
@@ -37,9 +33,6 @@ $root: '.SegmentDetails';
       }
 
       &-body {
-        .MuiTableCell-sizeSmall {
-          padding: 6px 12px;
-        }
         & > tr {
           background: $mercury;
         }
