@@ -21,6 +21,7 @@ import {
   Airlines,
   Segments,
   SegmentDetails,
+  AgencyCommission,
 } from 'Components/Agency/Deals';
 import './style.scss';
 const CreateDeal = () => {
@@ -216,6 +217,7 @@ const CreateDeal = () => {
           <Airlines />
           <Segments />
           <SegmentDetails />
+          <AgencyCommission />
         </Panel>
       </div>
     </div>

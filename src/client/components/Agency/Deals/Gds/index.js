@@ -36,8 +36,7 @@ const Gds = () => {
           spacing={1}
           className="Gds-container-form"
           direction="row"
-          justify="flex-end"
-          alignItems="center"
+          alignItems="flex-end"
         >
           <Grid item xs={3}>
             <MultiSelect
@@ -67,20 +66,7 @@ const Gds = () => {
               placeholder="Select Agency Name"
             />
           </Grid>
-          <Grid item xs={3}>
-            <MultiSelect
-              name="agencyID"
-              label="Agency ID:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Agency ID"
-            />
-          </Grid>
+
           <Grid item xs={3}>
             <MultiSelect
               name="PCC:"
@@ -96,7 +82,7 @@ const Gds = () => {
             />
           </Grid>
           <Grid item xs={3}>
-            <Button text="Add GDS" className="width-100 mt-12" />
+            <Button text="Add GDS" className="width-100" />
           </Grid>
         </Grid>
 

@@ -19,7 +19,7 @@ import {
   isLogin,
 } from 'Helpers/utils';
 
-import { LinearLoaderSecondary } from 'Widgets/'
+import { LinearLoaderSecondary } from 'Widgets/';
 
 import './style.scss';
 

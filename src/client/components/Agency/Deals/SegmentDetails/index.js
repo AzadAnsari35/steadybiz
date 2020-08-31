@@ -31,6 +31,8 @@ const SegmentDetails = () => {
           container
           spacing={1}
           className="SegmentDetails-container-form"
+          direction="row"
+          justify="flex-end"
           alignItems="flex-end"
         >
           <Grid item xs={6}>
@@ -205,34 +207,165 @@ const SegmentDetails = () => {
             />
           </Grid>
 
-          {/* <Grid item xs={3}>
-            <Button text="Add Airline (s)" className="width-100 mt-12" />
-          </Grid> */}
+          <Grid item xs={12}>
+            <Text
+              showLeftBorder={true}
+              text="Fare Calculation Details"
+              className="font-primary-medium-18 my-24"
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <MultiSelect
+              name="calculatedFee"
+              label="Fare, Surcharge &amp; Fee Calculated On:"
+              // disabled={isViewSecurityGroup}
+              useReactHookForm={false}
+              onChange={(value) => console.log(value)}
+              showBorder={true}
+              changeStyle={true}
+              options={[]}
+              width="auto"
+              placeholder="Select Fare and Fee Criteria"
+            />
+          </Grid>
+
+          <Grid item xs={3}>
+            <TextInput
+              name="deal"
+              label="Deal ( % ):"
+              // disabled={isViewSecurityGroup}
+              useReactHookForm={false}
+              onChange={(value) => console.log(value)}
+              placeholder="Type Deal ( % )"
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <MultiSelect
+              name="currency"
+              label="Currency:"
+              // disabled={isViewSecurityGroup}
+              useReactHookForm={false}
+              onChange={(value) => console.log(value)}
+              showBorder={true}
+              changeStyle={true}
+              options={[]}
+              width="auto"
+              placeholder="Select Currency"
+            />
+          </Grid>
+
+          <Grid item xs={3}>
+            <TextInput
+              name="dealAmount"
+              label="Deal Amount:"
+              // disabled={isViewSecurityGroup}
+              useReactHookForm={false}
+              onChange={(value) => console.log(value)}
+              placeholder="Type Deal Amount"
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Text
+              showLeftBorder={true}
+              text="Segment Calculation Details"
+              className="font-primary-medium-18 my-24"
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <MultiSelect
+              name="calculated"
+              label="PAX &amp; Segment Calculated On:"
+              // disabled={isViewSecurityGroup}
+              useReactHookForm={false}
+              onChange={(value) => console.log(value)}
+              showBorder={true}
+              changeStyle={true}
+              options={[]}
+              width="auto"
+              placeholder="Select Pax and Segment Criteria"
+            />
+          </Grid>
+
+          <Grid item xs={3}>
+            <TextInput
+              name="segmentDiscount"
+              label="Segment Discount ( % ):"
+              // disabled={isViewSecurityGroup}
+              useReactHookForm={false}
+              onChange={(value) => console.log(value)}
+              placeholder="Type Discount %"
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <MultiSelect
+              name="currency"
+              label="Currency:"
+              // disabled={isViewSecurityGroup}
+              useReactHookForm={false}
+              onChange={(value) => console.log(value)}
+              showBorder={true}
+              changeStyle={true}
+              options={[]}
+              width="auto"
+              placeholder="Select Currency"
+            />
+          </Grid>
+
+          <Grid item xs={3}>
+            <TextInput
+              name="segmentDiscountAmount"
+              label="Segment Discount Amount:"
+              // disabled={isViewSecurityGroup}
+              useReactHookForm={false}
+              onChange={(value) => console.log(value)}
+              placeholder="Type Amount"
+            />
+          </Grid>
+
+          <Grid item xs={3}>
+            <Button text="Add Segment" className="width-100 mt-12" />
+          </Grid>
         </Grid>
 
         <TableContainer className="SegmentDetails-container-table">
           <Table aria-label="simple table" size="small">
             <TableHead className="SegmentDetails-container-table-head">
               <TableRow>
-                <TableCell align="center">EX. ORIGIN</TableCell>
-                <TableCell align="center">EX. DESTINATION</TableCell>
-                <TableCell align="center">ORIGIN</TableCell>
-                <TableCell align="center">DESTINATION</TableCell>
-                <TableCell align="center">FROM COUNTRY</TableCell>
-                <TableCell align="center">TO COUNTRY</TableCell>
+                <TableCell align="center">SEG. NO.</TableCell>
+                <TableCell align="left">DIRECTION</TableCell>
+                <TableCell align="left">PAX TYPE</TableCell>
+                <TableCell align="left">PAX COUNT</TableCell>
+                <TableCell align="center">CABIN</TableCell>
+                <TableCell align="center">RBD</TableCell>
+                <TableCell align="center">CURRENCY</TableCell>
+                <TableCell align="left">FARE CRITERIA</TableCell>
+                <TableCell align="center">DEAL ( % )</TableCell>
+                <TableCell align="center">DEAL AMT</TableCell>
+                <TableCell align="left">SEGMENT CRITERIA</TableCell>
+                <TableCell align="center">SEGMENT ( % )</TableCell>
+                <TableCell align="center">SEGMENT AMT</TableCell>
                 <TableCell align="center">ACTION</TableCell>
               </TableRow>
             </TableHead>
             <TableBody className="SegmentDetails-container-table-body">
               <TableRow>
                 <TableCell align="center" scope="row">
-                  DXB
+                  1
                 </TableCell>
-                <TableCell align="center"> </TableCell>
+                <TableCell align="left"> OW,RT,MC</TableCell>
+                <TableCell align="left">ADT, CHD, INF</TableCell>
+                <TableCell align="left">2 ADT, 1 CHD, 1 INF</TableCell>
+
+                <TableCell align="center">Y,P,J,F</TableCell>
+                <TableCell align="center">All</TableCell>
                 <TableCell align="center"></TableCell>
+                <TableCell align="left">Base Fare</TableCell>
+                <TableCell align="center">5%</TableCell>
                 <TableCell align="center"></TableCell>
-                <TableCell align="center">AE</TableCell>
-                <TableCell align="center">PK</TableCell>
+                <TableCell align="left">Per Pax Per Segment</TableCell>
+                <TableCell align="center">5%</TableCell>
+                <TableCell align="center"></TableCell>
 
                 <TableCell align="center">
                   <DeleteIcon
@@ -243,13 +376,21 @@ const SegmentDetails = () => {
               </TableRow>
               <TableRow>
                 <TableCell align="center" scope="row">
-                  DXB
+                  1
                 </TableCell>
-                <TableCell align="center"> </TableCell>
+                <TableCell align="left"> OW,RT,MC</TableCell>
+                <TableCell align="left">ADT, CHD, INF</TableCell>
+                <TableCell align="left">2 ADT, 1 CHD, 1 INF</TableCell>
+
+                <TableCell align="center">Y,P,J,F</TableCell>
+                <TableCell align="center">All</TableCell>
                 <TableCell align="center"></TableCell>
+                <TableCell align="left">Base Fare</TableCell>
+                <TableCell align="center">5%</TableCell>
                 <TableCell align="center"></TableCell>
-                <TableCell align="center">AE</TableCell>
-                <TableCell align="center">PK</TableCell>
+                <TableCell align="left">Per Pax Per Segment</TableCell>
+                <TableCell align="center">5%</TableCell>
+                <TableCell align="center"></TableCell>
 
                 <TableCell align="center">
                   <DeleteIcon

@@ -11,6 +11,7 @@ import { regex } from 'Helpers/validator';
 import useDropDown from 'Hooks/useDropDown';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { securityOptionConstant } from 'Constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
@@ -56,12 +57,28 @@ const PopoverAction = (props) => {
   };
 
   const handleViewUser = () => {
+    const securityMessage = utils.checkSecurityGroup(
+      securityOptionConstant.office.viewUser
+    );
+
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
     history.push(routes.office.viewOfficeUser);
     utils.setItemToStorage(endpoint.office.searchUser.actionType, rowNumber);
     utils.setItemToStorage('selectedUser', rowNumber);
   };
 
   const handleModifyUser = () => {
+    const securityMessage = utils.checkSecurityGroup(
+      securityOptionConstant.office.updateUser
+    );
+
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
     utils.setItemToStorage(endpoint.office.searchUser.actionType, rowNumber);
     history.push(routes.office.updateOfficeUser);
     utils.setItemToStorage('selectedUser', rowNumber);
@@ -229,11 +246,27 @@ const SearchUser = () => {
   };
 
   const handleClick = () => {
+    const securityMessage = utils.checkSecurityGroup(
+      securityOptionConstant.office.createUser
+    );
+
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
     history.push(routes.office.createOfficeUser);
     utils.setItemToStorage('selectedUser', '');
   };
 
   const onSubmit = (data, e) => {
+    const securityMessage = utils.checkSecurityGroup(
+      securityOptionConstant.office.searchUser
+    );
+
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
     setReqeustJson(data);
     setPage(1);
   };

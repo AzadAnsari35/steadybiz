@@ -7,6 +7,7 @@ import './style.scss';
 import { useHistory } from 'react-router-dom';
 import { commonAction, commonActionWithoutApi } from 'Actions/';
 import endpoint from 'Config/endpoint';
+import { securityOptionConstant } from 'Constants';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -22,6 +23,30 @@ const UserCreditLimit = (props) => {
     dispatch(commonActionWithoutApi(endpoint.user.login, null));
     handleClose();
     setShowDrawer(false);
+  };
+
+  const handleManageProfile = () => {
+    const securityMessage = utils.checkSecurityGroup(
+      securityOptionConstant.office.manageProfile
+    );
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
+
+    history.push(routes.office.manageUserProfile);
+  };
+
+  const handleChangePassword = () => {
+    const securityMessage = utils.checkSecurityGroup(
+      securityOptionConstant.office.changePassword
+    );
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
+
+    history.push(routes.office.changePassword);
   };
 
   const {
@@ -61,10 +86,10 @@ const UserCreditLimit = (props) => {
       <div className="horizontal-grey-divider"></div>
 
       <div className="HeaderPopover-foot font-primary-medium-18 d-flex flex-direction-column cursor-pointer my-6">
-        <Link className="pb-12" to={routes.office.manageUserProfile}>
+        <div className="pb-12" onClick={handleManageProfile}>
           Manage Profile
-        </Link>
-        <Link to={routes.office.changePassword}>Change Password</Link>
+        </div>
+        <div onClick={handleChangePassword}>Change Password</div>
         <Link to="/" onClick={() => signOut()}>
           Signout
         </Link>
