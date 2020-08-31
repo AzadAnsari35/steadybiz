@@ -44,7 +44,7 @@ const FareDetailsCard = (props) => {
 	const { fareBasisCode } = outboundItinerary.totalfareDetails;
 
 	const handleFareRulesClick = () => {
-		const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.fareRules.securityNumber);
+		const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.fareRules);
     if (securityMessage !== '') {
       dispatch(utils.showErrorBox(securityMessage));
       return;

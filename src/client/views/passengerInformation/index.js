@@ -250,7 +250,7 @@ const PassengerInformation = () => {
 	};
 
 	const handlePay = () => {
-    const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.issueTicket.securityNumber);
+    const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.issueTicket);
     if (securityMessage !== '') {
       dispatch(utils.showErrorBox(securityMessage));
       return;

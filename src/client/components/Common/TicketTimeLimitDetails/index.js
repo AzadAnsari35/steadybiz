@@ -60,7 +60,7 @@ const TicketTimeLimitDetails = (props) => {
 		if (btnId === "continue") {
 			handleSubmit("", btnId);
 		} else {
-			const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.createOrder.securityNumber);
+			const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.createOrder);
 			if (securityMessage !== '') {
 				dispatch(utils.showErrorBox(securityMessage));
 				return;

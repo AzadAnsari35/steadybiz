@@ -100,7 +100,7 @@ const FlightItineraryCard = props => {
   const handleTabClick = id => setActiveFlightTab(id);
 
   const handleFareRulesClick = () => {
-    const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.fareRules.securityNumber);
+    const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.fareRules);
     if (securityMessage !== '') {
       dispatch(utils.showErrorBox(securityMessage));
       return;
@@ -118,7 +118,7 @@ const FlightItineraryCard = props => {
   };
 
   const handleSelectFlight = () => {
-    const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.selectFlight.securityNumber);
+    const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.selectFlight);
     if (securityMessage !== '') {
       dispatch(utils.showErrorBox(securityMessage));
       return;

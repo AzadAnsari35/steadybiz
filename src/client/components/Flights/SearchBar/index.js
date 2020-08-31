@@ -195,7 +195,7 @@ const SearchBar = () => {
   };
 
   const onSubmit = (data, e) => {
-    const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.flightSearch.securityNumber);
+    const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.flightSearch);
     if (securityMessage !== '') {
       dispatch(utils.showErrorBox(securityMessage));
       return;
