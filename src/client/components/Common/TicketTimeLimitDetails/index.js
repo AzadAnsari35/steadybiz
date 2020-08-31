@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Grid } from "@material-ui/core";
 import moment from "moment";
 
@@ -12,12 +13,15 @@ import {
 	subtractTimeFromDateTime,
 } from "Helpers/global";
 import { getItemFromStorage } from "Helpers/utils";
+import { utils } from "Helpers";
+import securityOptionConstant from "Constants/securityOptionConstant";
 
 import { Button, DatePickerMui, ErrorMessage, Image, SelectField, Text, TextInputMui } from "Widgets";
 
 import "./style.scss";
 
 const TicketTimeLimitDetails = (props) => {
+	const dispatch = useDispatch();
 	const { className, flightItineraryValidate, primaryBtnDisabled, secondaryBtnDisabled, onCreatePNR } = props;
 	const { date, maxTicketTimeLimit, time } = flightItineraryValidate;
 	const formattedDate = formatDateFromDateTime(date, time);
@@ -56,6 +60,11 @@ const TicketTimeLimitDetails = (props) => {
 		if (btnId === "continue") {
 			handleSubmit("", btnId);
 		} else {
+			const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.createOrder.securityNumber);
+			if (securityMessage !== '') {
+				dispatch(utils.showErrorBox(securityMessage));
+				return;
+			}
 			!date.trim() && (errorObj.date = ERROR_MESSAGE.DATE_REQUIRED);
 			!time.trim() && (errorObj.time = ERROR_MESSAGE.TIME_REQUIRED);
 

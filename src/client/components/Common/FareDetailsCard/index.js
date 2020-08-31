@@ -16,6 +16,8 @@ import {
 } from "Helpers/flight.helpers";
 import { getFormattedPrice } from "Helpers/global";
 import useToggle from "Hooks/useToggle";
+import { utils } from "Helpers/index";
+import securityOptionConstant from "Constants/securityOptionConstant";
 
 import { Card, Tag, Text, CustomDrawer } from "Widgets";
 import FareRules from "./../FareRules";
@@ -42,6 +44,11 @@ const FareDetailsCard = (props) => {
 	const { fareBasisCode } = outboundItinerary.totalfareDetails;
 
 	const handleFareRulesClick = () => {
+		const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.fareRules.securityNumber);
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+		}
     setShowFareRules();
     getFareRulesData(outboundFlightSegment);
   };

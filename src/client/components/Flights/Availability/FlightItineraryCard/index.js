@@ -25,17 +25,19 @@ import {
 import { showError } from "Helpers/utils";
 import useToggle from "Hooks/useToggle";
 // import fareRules from "./fareRules.json";
-import { commonAction } from "Actions/index";
+import { commonAction } from "Actions";
 import endpoint from "Config/endpoint";
+import { utils } from "Helpers";
+import securityOptionConstant from "Constants/securityOptionConstant";
 
 import { ArrowIcon, Button, CustomDrawer, Dot, Image, Line, Tag, Text } from "Widgets";
+import FareRules from "Components/Common/FareRules";
 
 const FlightDetails = lazy(() => import('Components/Flights/Availability/FlightDetails'));
 const BaggageAllowance = lazy(() => import('Components/Flights/Availability/BaggageAllowance'));
 const FareSummaryAndPolicy = lazy(() => import('Components/Flights/Availability/FareSummaryAndPolicy'));
 
 import "./style.scss";
-import FareRules from "Components/Common/FareRules/index";
 
 const flightDetailsTabs = [
   {
@@ -98,6 +100,11 @@ const FlightItineraryCard = props => {
   const handleTabClick = id => setActiveFlightTab(id);
 
   const handleFareRulesClick = () => {
+    const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.fareRules.securityNumber);
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
     setShowTabSection();
     setShowFareRules();
     getFareRulesData(outboundFlightSegment);
@@ -111,6 +118,11 @@ const FlightItineraryCard = props => {
   };
 
   const handleSelectFlight = () => {
+    const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.selectFlight.securityNumber);
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
     try {
       dispatch(
         commonActionWithoutApi(

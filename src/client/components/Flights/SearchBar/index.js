@@ -20,6 +20,7 @@ import {
 } from 'Helpers/utils';
 import { utils } from 'Helpers';
 import endpoint from 'Config/endpoint';
+import securityOptionConstant from 'Constants/securityOptionConstant';
 
 import {
   AutoSuggest,
@@ -194,7 +195,7 @@ const SearchBar = () => {
   };
 
   const onSubmit = (data, e) => {
-    const securityMessage = utils.checkSecurityGroup(2);
+    const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.flightSearch.securityNumber);
     if (securityMessage !== '') {
       dispatch(utils.showErrorBox(securityMessage));
       return;

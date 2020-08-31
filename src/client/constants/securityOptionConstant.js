@@ -47,5 +47,22 @@ const securityOptionConstant = {
       securityNumber: 19,
     },
   },
+  flights: {
+    flightSearch: {
+      securityNumber: 2,
+    },
+    selectFlight: {
+      securityNumber: 51,
+    },
+    fareRules: {
+      securityNumber: 52,
+    },
+    createOrder: {
+      securityNumber: 6,
+    },
+    issueTicket: {
+      securityNumber: 3,
+    },
+  }
 };
 export default securityOptionConstant;

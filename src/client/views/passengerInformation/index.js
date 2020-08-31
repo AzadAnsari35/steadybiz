@@ -21,6 +21,8 @@ import endpointWithoutApi from "Config/endpointWithoutApi";
 // 	scrollToRef,
 // } from "./../../utils/helpers/common";
 import colors from "Constants/colors";
+import securityOptionConstant from "Constants/securityOptionConstant";
+import { utils } from "Helpers";
 
 import { PAYMENT_MODE, dropDownParam } from "Constants/commonConstant.js";
 import ContactDetails from "Components/Common/ContactDetails";
@@ -248,6 +250,11 @@ const PassengerInformation = () => {
 	};
 
 	const handlePay = () => {
+    const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.issueTicket.securityNumber);
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
 		const formId = "paymentInfo";
 		const formData = PAYMENT_MODE[0];
 		handleFormSubmit(formId, formData);
