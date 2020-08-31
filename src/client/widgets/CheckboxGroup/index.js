@@ -13,30 +13,46 @@ const CheckboxGroup = (props) => {
     checkedValues = [],
     getValues,
     control,
+    useReactHookForm = true,
+    handleChange,
+    className,
+    checkboxClassName,
   } = props;
 
   console.log('checkboxes', checkboxes);
 
   return (
-    <div className="CheckboxContainer">
+    <div className={`CheckboxContainer ${className ? className : ''}`}>
       <div className="CheckboxContainer-label font-primary-medium-16 pb-20">
         {label}
       </div>
 
       <div className="d-flex justify-content-between">
         {checkboxes.map(
-          (cur, index) => (
-            <CustomCheckbox
-              value={cur.value}
-              primaryLabel={cur.primaryLabel}
-              name={name}
-              key={index}
-              control={control}
-              getValues={getValues}
-              disabled={disabled}
-              checkedValues={checkedValues}
-            />
-          )
+          (cur, index) =>
+            useReactHookForm ? (
+              <CustomCheckbox
+                value={cur.value}
+                primaryLabel={cur.primaryLabel}
+                name={name}
+                key={index}
+                control={control}
+                getValues={getValues}
+                disabled={disabled}
+                checkedValues={checkedValues}
+                className={checkboxClassName}
+              />
+            ) : (
+              <CustomCheckbox
+                value={cur.value}
+                primaryLabel={cur.primaryLabel}
+                disabled={disabled}
+                onChange={handleChange}
+                useReactHookForm={false}
+                name={name}
+                className={checkboxClassName}
+              />
+            )
 
           // <FormControlLabel
           //   control={

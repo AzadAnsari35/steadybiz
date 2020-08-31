@@ -9,5 +9,11 @@ $root: '.CreateDeal';
   }
   &-panel {
     padding: 80px 100px;
+    .Panel-body > div:first-child {
+      margin-bottom: 20px;
+    }
+    .Panel-body > div {
+      margin-bottom: 32px;
+    }
   }
 }

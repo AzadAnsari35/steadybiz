@@ -22,24 +22,27 @@ import colors from 'Constants/colors';
 
 import './style.scss';
 
-const Aggregator = () => {
+const Gds = () => {
   return (
     <SecondaryAccordion
-      text="AGGREGATOR"
+      text="GDS"
       defaultOpen={true}
       // className={curData.className}
-      className="Aggregator"
+      className="Gds"
     >
-      <div className="Aggregator-container">
+      <div className="Gds-container">
         <Grid
           container
           spacing={1}
-          className="align-items-end Aggregator-container-form"
+          className="Gds-container-form"
+          direction="row"
+          justify="flex-end"
+          alignItems="center"
         >
           <Grid item xs={3}>
             <MultiSelect
-              name="aggregator"
-              label="Aggregator"
+              name="gds"
+              label="GDS:"
               // disabled={isViewSecurityGroup}
               useReactHookForm={false}
               onChange={(value) => console.log(value)}
@@ -47,13 +50,13 @@ const Aggregator = () => {
               changeStyle={true}
               options={[]}
               width="auto"
-              placeholder="Select Aggregator"
+              placeholder="Select GDS"
             />
           </Grid>
           <Grid item xs={3}>
             <MultiSelect
-              name="providerName"
-              label="Provider Name"
+              name="agencyName"
+              label="Agency Name:"
               // disabled={isViewSecurityGroup}
               useReactHookForm={false}
               onChange={(value) => console.log(value)}
@@ -61,32 +64,61 @@ const Aggregator = () => {
               changeStyle={true}
               options={[]}
               width="auto"
-              placeholder="Select Provider Name"
+              placeholder="Select Agency Name"
             />
           </Grid>
-          <Grid item xs={3}></Grid>
-
           <Grid item xs={3}>
-            <Button text="Add Aggregator" className="width-100" />
+            <MultiSelect
+              name="agencyID"
+              label="Agency ID:"
+              // disabled={isViewSecurityGroup}
+              useReactHookForm={false}
+              onChange={(value) => console.log(value)}
+              showBorder={true}
+              changeStyle={true}
+              options={[]}
+              width="auto"
+              placeholder="Select Agency ID"
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <MultiSelect
+              name="PCC:"
+              label="PCC:"
+              // disabled={isViewSecurityGroup}
+              useReactHookForm={false}
+              onChange={(value) => console.log(value)}
+              showBorder={true}
+              changeStyle={true}
+              options={[]}
+              width="auto"
+              placeholder="Select PCC"
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <Button text="Add GDS" className="width-100 mt-12" />
           </Grid>
         </Grid>
 
-        <TableContainer className="Aggregator-container-table">
+        <TableContainer className="Gds-container-table">
           <Table aria-label="simple table" size="small">
-            <TableHead className="Aggregator-container-table-head">
+            <TableHead className="Gds-container-table-head">
               <TableRow>
-                <TableCell>AGGREGATOR</TableCell>
-                <TableCell align="center">PROVIDER NAME</TableCell>
-                <TableCell align="center">PROVIDER ID</TableCell>
-                <TableCell align="right">ACTION</TableCell>
+                <TableCell>GDS</TableCell>
+                <TableCell align="left">AGENCY NAME</TableCell>
+                <TableCell align="center">AGENCY ID</TableCell>
+                <TableCell align="left">PCC</TableCell>
+                <TableCell align="center">ACTION</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody className="Aggregator-container-table-body">
+            <TableBody className="Gds-container-table-body">
               <TableRow>
-                <TableCell scope="row">HitchHiker</TableCell>
-                <TableCell align="center">OK Tour &amp; Travel </TableCell>
+                <TableCell scope="row">Sabre</TableCell>
+                <TableCell align="left">OK Tour &amp; Travel </TableCell>
                 <TableCell align="center">BOMCT0002</TableCell>
-                <TableCell align="right">
+                <TableCell align="left">75JW</TableCell>
+
+                <TableCell align="center">
                   <DeleteIcon
                     style={{ color: colors.cornflowerBlue }}
                     className="cursor-pointer"
@@ -94,10 +126,12 @@ const Aggregator = () => {
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell scope="row">HitchHiker</TableCell>
-                <TableCell align="center">OK Tour &amp; Travel </TableCell>
+                <TableCell scope="row">Sabre</TableCell>
+                <TableCell align="left">OK Tour &amp; Travel </TableCell>
                 <TableCell align="center">BOMCT0002</TableCell>
-                <TableCell align="right">
+                <TableCell align="left">75JW</TableCell>
+
+                <TableCell align="center">
                   <DeleteIcon
                     style={{ color: colors.cornflowerBlue }}
                     className="cursor-pointer"
@@ -112,4 +146,4 @@ const Aggregator = () => {
   );
 };
 
-export default Aggregator;
+export default Gds;

@@ -14,7 +14,14 @@ import {
   TextInput,
 } from 'Widgets';
 import PrimaryTableHeader from 'Widgets/TableHeaders/PrimaryTableHeader';
-import { Source, Aggregator } from 'Components/Agency/Deals';
+import {
+  Source,
+  Aggregator,
+  Gds,
+  Airlines,
+  Segments,
+  SegmentDetails,
+} from 'Components/Agency/Deals';
 import './style.scss';
 const CreateDeal = () => {
   const {
@@ -188,7 +195,7 @@ const CreateDeal = () => {
         </div>
       </div>
       <div className="CreateDeal-panel">
-        <Panel hideHeader={true} expand={true}>
+        <Panel hideHeader={true} expand={true} panelBodyClassName="px-32">
           <PrimaryTableHeader
             officeName={officeName}
             officeId={officeId}
@@ -205,6 +212,10 @@ const CreateDeal = () => {
 
           <Source />
           <Aggregator />
+          <Gds />
+          <Airlines />
+          <Segments />
+          <SegmentDetails />
         </Panel>
       </div>
     </div>
