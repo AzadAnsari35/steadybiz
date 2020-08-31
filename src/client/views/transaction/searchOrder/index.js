@@ -1,30 +1,26 @@
 import Grid from '@material-ui/core/Grid';
+import CachedIcon from '@material-ui/icons/Cached';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { regex } from 'Helpers/validator';
-import React, { useState, useEffect, useRef } from 'react';
+import { commonAction, commonActionWithoutApi } from 'Actions/';
+import endpoint from 'Config/endpoint.js';
+import routes from 'Constants/routes';
+import { utils } from 'Helpers';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import {
   Button,
-  MultiSelect,
   IconWithBackground,
-  Text,
-  TextInput,
-  SimplePopover,
+  MultiSelect,
   PrimaryTable,
   PrimaryTableHeader,
-  SelectWithTextInput,
   SelectWithDatePickers,
+  SelectWithTextInput,
+  SimplePopover,
+  Text,
+  TextInput,
 } from 'Widgets';
-import routes from 'Constants/routes';
-import { useHistory } from 'react-router-dom';
-import endpoint from 'Config/endpoint.js';
-
-import { commonAction } from 'Actions/';
-import { useDispatch, useSelector } from 'react-redux';
-import { utils } from 'Helpers';
-
-import CachedIcon from '@material-ui/icons/Cached';
-
 import './style.scss';
 
 const headerData = [
@@ -49,10 +45,9 @@ const PopoverAction = (props) => {
     (state) => state[endpoint.orders.searchOrders.reducerName]?.items?.data
   );
 
-  const history = useHistory();
   const dispatch = useDispatch();
 
-  const { rowNumber, isBooking } = props;
+  const { rowNumber } = props;
 
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -74,48 +69,32 @@ const PopoverAction = (props) => {
     );
   };
 
-  const status = searchResult?.data[rowNumber]?.status;
+  const actualStatus = searchResult?.data[rowNumber]?.actualStatus;
 
-  console.log('rowNumber', status);
+  //console.log('rowNumber', status);
   //const retieveOrder = (orderNo) => {};
   const handleClick = (e) => {
     const selectedOption = e.currentTarget.getAttribute('name');
 
     let selectedItem = searchResult.data.data[rowNumber];
-    const status = selectedItem.status.toUpperCase();
 
     let orderNo = selectedItem.orderNo;
     // orderNo = 'OKT0000000155';
     //console.log(orderNo);
     switch (selectedOption) {
       case 'view': {
-        if (status == 'HOLD' || status == 'CANCELLED')
-          viewOrder(orderNo, 'view');
-        else
-          dispatch(
-            utils.showErrorBox(
-              'you can perform this action on hold or cancelled status pnr'
-            )
-          );
+        viewOrder(orderNo, 'view');
+
         break;
       }
       case 'issue': {
-        if (status == 'HOLD') viewOrder(orderNo, 'retieve');
-        else
-          dispatch(
-            utils.showErrorBox('you can perform this action on hold status pnr')
-          );
+        viewOrder(orderNo, 'retieve');
+
         break;
       }
 
       case 'viewBooking': {
-        if (status == 'BOOKED') viewOrder(orderNo, 'view');
-        else
-          dispatch(
-            utils.showErrorBox(
-              'you can perform this action on booked status pnr'
-            )
-          );
+        viewOrder(orderNo, 'view');
 
         break;
       }
@@ -142,17 +121,19 @@ const PopoverAction = (props) => {
           horizontal: 'right',
         }}
       >
-        {status === 'failed' ? (
-          <div>Failed</div>
-        ) : (
-          <div className="SearchUser-tableAction d-flex flex-direction-column">
-            <div
-              className="font-primary-regular-14 cursor-pointer"
-              onClick={handleClick}
-              name="view"
-            >
-              View PNR{' '}
-            </div>
+        <div className="SearchUser-tableAction d-flex flex-direction-column">
+          {actualStatus === 'HOLD_PNR' ||
+            actualStatus === 'PNR_CANCELLED' ||
+            (actualStatus === 'FAILED_PNR' && (
+              <div
+                className="font-primary-regular-14 cursor-pointer"
+                onClick={handleClick}
+                name="view"
+              >
+                View PNR{' '}
+              </div>
+            ))}
+          {actualStatus === 'HOLD_PNR' && (
             <div
               className="font-primary-regular-14 cursor-pointer"
               onClick={handleClick}
@@ -160,6 +141,8 @@ const PopoverAction = (props) => {
             >
               Issue Ticket{' '}
             </div>
+          )}
+          {actualStatus === 'BOOKED' && (
             <div
               className="font-primary-regular-14 cursor-pointer"
               onClick={handleClick}
@@ -167,8 +150,8 @@ const PopoverAction = (props) => {
             >
               View Booking{' '}
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </SimplePopover>
     </>
   );
@@ -177,7 +160,7 @@ const PopoverAction = (props) => {
 const SearchOrder = () => {
   const [requestJson, setReqeustJson] = useState(null);
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
+  const [size] = useState(10);
   const firstPageUpdate = useRef(true);
   let history = useHistory();
   let dispatch = useDispatch();
@@ -190,6 +173,12 @@ const SearchOrder = () => {
   const defaultValues = {
     orderNo: '',
     pnr: '',
+    origin: '',
+    destination: '',
+    paxSearchValue: '',
+    paxInfoType: '',
+    bookingCategory: '',
+
     officeID: officeId,
   };
 
@@ -198,12 +187,14 @@ const SearchOrder = () => {
   });
 
   const ofId = utils.getItemFromStorage('officeId');
+
   const searchResult = useSelector(
     (state) => state[endpoint.orders.searchOrders.reducerName]?.items
   );
   const viewPNR = useSelector(
     (state) => state[endpoint.orders.viewOrder.reducerName]?.items
   );
+
   useEffect(() => {
     //console.log(viewPNR);
     const actionType = utils.getItemFromStorage('searchOrderActionType');
@@ -264,17 +255,14 @@ const SearchOrder = () => {
       dispatch(utils.showErrorBox(err.message));
     }
   };
-
-  const onSubmit = (data, e) => {
+  const handelPaxInfoType = (e) => {
+    alert(e);
+  };
+  const onSubmit = (data) => {
     // console.log('data', data);
     setPage(1);
     setReqeustJson(data);
     //setPage(1);
-  };
-
-  const handleClick = () => {
-    history.push(routes.office.createOffice);
-    utils.setItemToStorage('selectedOffice', '');
   };
 
   const handleReset = () => {
@@ -318,7 +306,7 @@ const SearchOrder = () => {
               <SelectWithTextInput
                 name="pnr"
                 selectInputName="sabre"
-                data={[]}
+                data={[{ value: 'Sabre', label: 'Sabre (1S)' }]}
                 label="PNR: "
                 placeholder="PNR Number"
                 selectPlaceholder="Sabre"
@@ -366,12 +354,14 @@ const SearchOrder = () => {
               <MultiSelect
                 label="Booking Category:"
                 name="bookingCategory"
-                options={[]}
+                options={[
+                  { value: 'P', label: 'PNR' },
+                  { value: 'B', label: 'Booking' },
+                ]}
                 showBorder={true}
                 changeStyle={true}
                 control={control}
                 errors={errors}
-                showValue
                 width="auto"
                 isSearchable
               />
@@ -379,16 +369,20 @@ const SearchOrder = () => {
 
             <Grid item xs={3}>
               <SelectWithTextInput
-                name="mobile"
-                selectInputName="mobileDialCode"
-                data={[]}
+                name="paxSearchValue"
+                selectInputName="paxInfoType"
+                data={[
+                  { value: 'M', label: 'Mobile' },
+                  { value: 'L', label: 'Last Name' },
+                  { value: 'E', label: 'Email ID' },
+                ]}
                 label="PAX Info:"
                 placeholder="Mobile Number"
                 selectPlaceholder="Mobile"
                 errors={errors}
                 register={register}
                 control={control}
-                showValue
+                onSelectChange={handelPaxInfoType}
                 selectWidth="50%"
                 isSearchable
               />
@@ -482,7 +476,7 @@ const SearchOrder = () => {
           ]}
           statusIndex={8}
           handlePage={handlePage}
-          hideKeys={['officeId']}
+          hideKeys={['actualStatus', 'officeId']}
         />
       )}
     </div>

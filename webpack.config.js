@@ -97,7 +97,7 @@ module.exports = (env, argv) => {
           parallel: !isWsl,
           // Enable file caching
           cache: true,
-          sourceMap: true,
+          sourceMap: isDevelopment,
         }),
       ],
       // Automatically split vendor and commons
