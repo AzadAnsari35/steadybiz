@@ -1,0 +1,11 @@
+@import '../../../../styles/variables';
+
+$root: '.Source';
+
+#{$root} {
+  &-form {
+    padding: 40px 30px;
+    background-color: $biscayLight;
+    margin-bottom: 20px;
+  }
+}

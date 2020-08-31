@@ -1,0 +1,51 @@
+@import '../../../../styles/variables';
+
+$root: '.SegmentDetails';
+
+#{$root} {
+  &-container {
+    margin-bottom: 20px;
+    &-form {
+      padding: 16px 30px 40px;
+      background-color: $biscayLight;
+      &-checkbox {
+        > div:nth-child(2) {
+          justify-content: flex-start;
+        }
+      }
+    }
+    &-table {
+      & table {
+        border: none;
+      }
+      &-head {
+        .MuiTableCell-sizeSmall {
+          padding-top: 16px;
+          padding-bottom: 16px;
+        }
+      }
+      & th {
+        font-family: 'Montserrat Regular';
+        font-size: 14px;
+        color: $mineShaft;
+        font-weight: 600;
+      }
+
+      & td {
+        font-family: 'Montserrat Regular';
+        font-size: 14px;
+        color: $mineShaft;
+      }
+
+      &-body {
+        & > tr {
+          background: $mercury;
+        }
+
+        & > tr:nth-child(2n) {
+          background-color: $white;
+        }
+      }
+    }
+  }
+}

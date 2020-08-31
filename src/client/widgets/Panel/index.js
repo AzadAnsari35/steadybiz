@@ -25,6 +25,7 @@ const Panel = (props) => {
     onClick,
     alwaysOpen = false,
     hideHeader = false,
+    panelBodyClassName = '',
   } = props;
 
   return (
@@ -82,7 +83,9 @@ const Panel = (props) => {
         <div
           className={`Panel-body ${expand ? 'd-block' : 'd-none'} ${
             !!noPadding ? 'p-0' : ''
-          }`}
+          }
+          ${panelBodyClassName ? panelBodyClassName : ''}
+          `}
         >
           {children}
         </div>

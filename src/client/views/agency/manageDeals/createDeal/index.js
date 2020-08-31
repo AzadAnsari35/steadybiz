@@ -1,34 +1,38 @@
-import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { commonAction, commonActionWithoutApi } from 'Actions/';
-import endpoint from 'Config/endpoint.js';
-import endpointWithoutApi from 'Config/endpointWithoutApi';
-import routes from 'Constants/routes';
-import { utils } from 'Helpers';
-import { Link, useHistory } from 'react-router-dom';
-import {
-  Button,
-  MultiSelect,
-  SimplePopover,
-  Text,
-  IconWithBackground,
-  TextInput,
-  DatePicker,
-  CustomCheckbox,
-} from 'Widgets';
-import PrimaryTable from 'Widgets/PrimaryTable';
-import PrimaryTableHeader from 'Widgets/TableHeaders/PrimaryTableHeader';
-import { useDispatch, useSelector } from 'react-redux';
-import useDropDown from 'Hooks/useDropDown';
-import { dropDownParam } from 'Constants/commonConstant';
 import CachedIcon from '@material-ui/icons/Cached';
 import FlightIcon from '@material-ui/icons/Flight';
+import { utils } from 'Helpers';
+import React from 'react';
+import {
+  Button,
+  CustomCheckbox,
+  DatePicker,
+  IconWithBackground,
+  MultiSelect,
+  Panel,
+  Text,
+  TextInput,
+} from 'Widgets';
+import PrimaryTableHeader from 'Widgets/TableHeaders/PrimaryTableHeader';
+import {
+  Source,
+  Aggregator,
+  Gds,
+  Airlines,
+  Segments,
+  SegmentDetails,
+} from 'Components/Agency/Deals';
 import './style.scss';
 const CreateDeal = () => {
+  const {
+    userDto: {
+      officeDto: { officeId, officeName, officeLevel, ofId },
+    },
+  } = JSON.parse(utils.getItemFromStorage('userData'));
+
   return (
-    <div>
-      <div className="SearchDeals-head">
+    <div className="CreateDeal">
+      <div className="CreateDeal-head">
         <div className="d-flex justify-content-between align-items-end pb-4">
           <div className="font-primary-semibold-24 pb-4">MANAGE DEALS</div>
           <IconWithBackground
@@ -100,8 +104,8 @@ const CreateDeal = () => {
 
           <Grid item xs={3}>
             <DatePicker
-              name="bookingFromDate"
-              label="Booking From Date:"
+              name="ticketFromDate"
+              label="Ticket From Date:"
               onChange={() => console.log('value')}
               useReactHookForm={false}
             />
@@ -109,8 +113,8 @@ const CreateDeal = () => {
 
           <Grid item xs={3}>
             <DatePicker
-              name="bookingToDate"
-              label="Booking To Date:"
+              name="ticketToDate"
+              label="Ticket To Date:"
               onChange={() => console.log('value')}
               useReactHookForm={false}
             />
@@ -144,21 +148,75 @@ const CreateDeal = () => {
             />
           </Grid>
         </Grid>
-        <div>
+        <div className="d-flex justify-content-between align-items-end">
           <div>
-            <CustomCheckbox
-              value="own"
-              onChange={() => console.log('object')}
-              useReactHookForm={false}
-              name="own"
-              primaryLabel="Own"
-            />
+            <div className="d-flex py-20">
+              <span className="font-primary-medium-14">
+                Deal Applicable for:
+              </span>
+              <CustomCheckbox
+                value="own"
+                onChange={() => console.log('object')}
+                useReactHookForm={false}
+                name="dealApplicableFor"
+                primaryLabel="Own"
+                className="pl-40"
+              />
+
+              <CustomCheckbox
+                value="branches"
+                onChange={() => console.log('object')}
+                useReactHookForm={false}
+                name="dealApplicableFor"
+                primaryLabel="Branches"
+                className="pl-40"
+              />
+
+              <CustomCheckbox
+                value="subAgency"
+                onChange={() => console.log('object')}
+                useReactHookForm={false}
+                name="dealApplicableFor"
+                primaryLabel="Sub-Agency"
+                className="pl-40"
+              />
+            </div>
+
+            <div className="font-primary-italic-14">
+              <b>Please Note:</b> The Create Deals button should only be clicked
+              after defining Deal Applicable Criteria below to this newly
+              created Deal.
+            </div>
           </div>
 
           <div className="d-flex justify-content-end pt-32">
             <Button type="submit" text="Create Deal" className=" px-48" />
           </div>
         </div>
+      </div>
+      <div className="CreateDeal-panel">
+        <Panel hideHeader={true} expand={true} panelBodyClassName="px-32">
+          <PrimaryTableHeader
+            officeName={officeName}
+            officeId={officeId}
+            officeLevel={officeLevel}
+            showServiceIcon={{
+              icon: (
+                <FlightIcon
+                  style={{ transform: 'rotate(90deg)', fontSize: 18 }}
+                />
+              ),
+              text: 'Flight',
+            }}
+          />
+
+          <Source />
+          <Aggregator />
+          <Gds />
+          <Airlines />
+          <Segments />
+          <SegmentDetails />
+        </Panel>
       </div>
     </div>
   );
