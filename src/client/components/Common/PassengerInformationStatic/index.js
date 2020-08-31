@@ -29,6 +29,7 @@ const PassengerInformationStatic = (props) => {
 								const arrivalCityCode = segmentGroup.arrivalDetails.cityCode;
 								const checkinBaggageObj = !!segmentGroup.baggageInformation && segmentGroup.baggageInformation.checkInBaggage;
 								const cabinBaggageObj = !!segmentGroup.baggageInformation && segmentGroup.baggageInformation.cabinBaggage;
+								const airlinePnr = !!segmentGroup.airlinePnr && segmentGroup.airlinePnr;
 								return (
 									<div key={index} className="PassengerInformationStatic-passenger__segment">
 										<Text
@@ -37,11 +38,11 @@ const PassengerInformationStatic = (props) => {
 											showLeftBorder
 										/>
 										<div className="PassengerInformationStatic-passenger__segment-items d-flex flex-wrap-wrap">
-											{customer.tickets && customer.tickets.airlinePnr && (
+											{!!airlinePnr && (
 												<Grid item xs={12} md={4}>
 													<div className="d-flex item-detail">
 														<Text className="font-primary-medium-14 mr-10" text="Airline PNR No.: " />
-														<Text className="font-primary-bold-14" text={customer.tickets.airlinePnr} />
+														<Text className="font-primary-bold-14" text={airlinePnr} />
 													</div>
 												</Grid>
 											)}

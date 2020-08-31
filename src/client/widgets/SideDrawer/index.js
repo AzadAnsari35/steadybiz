@@ -53,6 +53,9 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Search Order',
           link: routes.transaction.searchOrder,
+          clickFunc: () => {
+            dispatch(commonActionUpdate(endpoint.orders.searchOrders, null));
+          },
         },
       ],
     },

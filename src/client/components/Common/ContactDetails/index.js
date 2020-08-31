@@ -4,12 +4,12 @@ import { Grid } from "@material-ui/core";
 import { ERROR_MESSAGE } from "./constant";
 import { validateEmail, validateMobileNumber } from "Helpers/validations";
 
-import { Button, ErrorMessage, SelectWithTextInputMui, Text, TextInputMui } from "Widgets";
+import { Button, ErrorMessage, SelectWithTextInput, Text, TextInputMui } from "Widgets";
 
 import "./style.scss";
 
 const ContactDetails = (props) => {
-	const { countryPhoneCodesList } = props;
+	const { countriesDialCodeList } = props;
 	const [formData, setFormData] = useState({
 		countryCode: "",
 		cityCode: "",
@@ -35,6 +35,19 @@ const ContactDetails = (props) => {
 			[key]: value,
 		});
 	};
+
+	const handleSelectOption = (value, id) => {
+		if (value !== "") {
+			setErrorData({
+				...errorData,
+				[id]: "",
+			});
+		}
+		setFormData({
+			...formData,
+			[id]: value.value,
+		});
+  };
 
 	const validateForm = () => {
 		const { countryCode, phone, email } = formData;
@@ -76,17 +89,21 @@ const ContactDetails = (props) => {
 			<div className="ContactDetails-form d-flex">
 				<Grid container spacing={2}>
 					<Grid item xs={12} md={4}>
-						<SelectWithTextInputMui
-							selectInputId="countryCode"
-							id="phone"
+						<SelectWithTextInput
+							name="phone"
+							selectInputName="countryCode"
 							type="text"
 							label="Mobile Number"
 							selectPlaceholder="Dial"
 							placeholder="Mobile Number"
 							value={formData.phone}
 							hasError={!!errorData.countryCode || !!errorData.phone}
-							data={countryPhoneCodesList}
+							data={countriesDialCodeList.dropDownItems}
+							showValue
+							useReactHookForm={false}
+							maxLength={15}
 							onChange={handleChange}
+							onSelectChange={handleSelectOption}
 						/>
 						{!!errorData.phone && <ErrorMessage errorMessage={errorData.phone} />}
 						{!!errorData.countryCode && <ErrorMessage errorMessage={errorData.countryCode} />}

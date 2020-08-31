@@ -19,6 +19,8 @@ import {
   isLogin,
 } from 'Helpers/utils';
 
+import { LinearLoaderSecondary } from 'Widgets/'
+
 import './style.scss';
 
 const Header = () => {
@@ -125,6 +127,7 @@ const Header = () => {
             setShowDrawer={setShowDrawer}
           />
         </SimplePopover>
+        {/* <LinearLoaderSecondary /> */}
       </div>
       {isAuthenticated && (
         <SideDrawer showDrawer={showDrawer} setShowDrawer={setShowDrawer} />

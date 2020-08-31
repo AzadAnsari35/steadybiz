@@ -45,6 +45,13 @@ export default {
       httpVerb: commonConstant.HttpVerbsConstant.POST,
       actionType: actionTypeConstant.flights.flightSearch,
     },
+    fareRules: {
+      url: config.api.url + '/api/v1/flights/fareRules',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.flights.fareRules,
+      reducerName: 'fareRules',
+    },
   },
   user: {
     login: {

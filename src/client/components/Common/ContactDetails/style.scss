@@ -3,5 +3,17 @@ $root: '.ContactDetails';
 #{$root} {
   &-subHeading, &-form {
     margin-bottom: 22px;
+    .SelectWithTextInput {
+      &-container {
+        &-select {
+          padding: 5px 10px;
+          .react-select {
+            &__menu {
+              width: auto !important;
+            }
+          }
+        }
+      }
+    }
   }
 }

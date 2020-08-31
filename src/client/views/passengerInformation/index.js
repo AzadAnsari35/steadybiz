@@ -22,7 +22,7 @@ import endpointWithoutApi from "Config/endpointWithoutApi";
 // } from "./../../utils/helpers/common";
 import colors from "Constants/colors";
 
-import { PAYMENT_MODE } from "Constants/commonConstant.js";
+import { PAYMENT_MODE, dropDownParam } from "Constants/commonConstant.js";
 import ContactDetails from "Components/Common/ContactDetails";
 import FlightDetails from "Components/Flights/Availability/FlightDetails";
 import FlightSummary from "Components/Flights/Availability/FlightSummary";
@@ -32,6 +32,7 @@ import TicketTimeLimitDetails from "Components/Common/TicketTimeLimitDetails";
 import PaymentDetails from "Components/Common/PaymentDetails";
 import { Alert, Button, Image, Panel } from "Widgets";
 import SearchAirplaneIcon from "Widgets/Icons/SearchAirplaneIcon";
+import useDropDown from "Hooks/useDropDown";
 
 import "./style.scss";
 
@@ -80,9 +81,15 @@ const PassengerInformation = () => {
 
   const alertRef = useRef(null);
   
-	const countryPhoneCodesList = !!countriesList.data && sortList(getUniqueArrayOfObjects(getCountryPhoneCodeList(countriesList.data), "value"), "value");
+	// const countryPhoneCodesList = !!countriesList.data && sortList(getUniqueArrayOfObjects(getCountryPhoneCodeList(countriesList.data), "value"), "value");
 	const countryNamesList = !!countriesList.data && getCountryNamesList(countriesList.data);
   const modifiedAirlinesList = !!airlinesList.data && getModifiedAirlinesList(airlinesList.data);
+
+  const countryPhoneCodesList = useDropDown(
+    endpoint.master.countries,
+    dropDownParam.countriesDialCode,
+    'masterCountries'
+  );
 
   useEffect(() => {
     if (!!flightSelect) {
@@ -361,7 +368,7 @@ const PassengerInformation = () => {
                 >
                   <ContactDetails
                     formId="contactInfo"
-                    countryPhoneCodesList={countryPhoneCodesList}
+                    countriesDialCodeList={countryPhoneCodesList}
                     currentPanelId="contactDetailsPanel"
                     nextPanelId="passengerDetailsPanel"
                     visiblePanelName="isPassengerDetailsPanelVisible"

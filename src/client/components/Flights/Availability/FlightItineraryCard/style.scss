@@ -147,17 +147,6 @@ $root: ".FlightItineraryCard";
     &__tabs {
       border-top: 1px solid rgba(141, 141, 141, 0.6);
       padding: 20px 20px 0 20px;
-      .tab {
-        margin: 0 38px;
-        padding-bottom: 6px;
-        color: $royalBlue;
-        &:first-child {
-          margin-left: 0;
-        }
-        &.active {
-          border-bottom: 2px solid $gray;
-        }
-      }
     }
     &__staticDetails {
       margin-left: auto;
@@ -173,6 +162,17 @@ $root: ".FlightItineraryCard";
     }
     &__content {
       padding: 40px 20px 20px;
+    }
+  }
+  .tab {
+    margin: 0 38px;
+    padding-bottom: 6px;
+    color: $royalBlue;
+    &:first-child {
+      margin-left: 0;
+    }
+    &.active {
+      border-bottom: 2px solid $gray;
     }
   }
 }

@@ -10,6 +10,7 @@ export const actionTypeConstant = {
     airportSuggestions: 'flights.airportSuggestions',
     flightSearchInput: 'flights.flightSearchInput',
     flightSearch: 'flightSearch',
+    fareRules: 'fareRules',
     flightSelect: 'flightSelect',
     airprice: 'airprice',
   },
