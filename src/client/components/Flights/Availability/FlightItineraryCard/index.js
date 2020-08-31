@@ -11,7 +11,7 @@ import { commonActionWithoutApi } from "Actions";
 import endpointWithoutApi from 'Config/endpointWithoutApi';
 import colors from "Constants/colors";
 import routes from "Constants/routes";
-import { applyCommaToPrice, extractTime, getDataFromRedux } from "Helpers/global";
+import { applyCommaToPrice, extractTime, getDataFromRedux, getPassengerTypeName } from "Helpers/global";
 import {
   checkIsFareRefundable,
   getTotalItineraryFareAndCurrency,
@@ -61,7 +61,7 @@ const flightDetailsTabs = [
 const FlightItineraryCard = props => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { itinerary } = props;
+  const { itinerary, requestBody } = props;
   const [activeFlightTab, setActiveFlightTab] = useState("flightDetails");
   const [activeFareRulesTab, setActiveFareRulesTab] = useState(1);
   const [showTabSection, setShowTabSection] = useToggle(false);
@@ -96,6 +96,15 @@ const FlightItineraryCard = props => {
   ));
 
   const totalFlightDuration = getTotalFlightDuration(outboundFlightSegment);
+
+  const passengersType = [];
+
+  if (!!requestBody && requestBody.flightSearchRQ) {
+    const { flightSearchRQ } = requestBody;
+    flightSearchRQ.passengerList.passenger.map(item => {
+      passengersType.push(getPassengerTypeName(item.PTC));
+    });
+  }
   
   const handleTabClick = id => setActiveFlightTab(id);
 
@@ -361,12 +370,18 @@ const FlightItineraryCard = props => {
               }
               {activeFlightTab === "baggageAllowance" &&
                 <Suspense fallback={<div>Loading...</div>}>
-                  <BaggageAllowance itinerary={itinerary} />
+                  <BaggageAllowance
+                    itinerary={itinerary}
+                    passengersType={passengersType}
+                  />
                 </Suspense>
               }
               {activeFlightTab === "fareSummaryAndPolicy" &&
                 <Suspense fallback={<div>Loading...</div>}>
-                  <FareSummaryAndPolicy itinerary={itinerary} />
+                  <FareSummaryAndPolicy
+                    itinerary={itinerary}
+                    passengersType={passengersType}
+                  />
                 </Suspense>
               }
             </div>

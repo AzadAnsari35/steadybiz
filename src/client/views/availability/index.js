@@ -183,6 +183,7 @@ const handleSortDirection = ()=>{
                 </div>
                 {!!filteredItineraries && filteredItineraries.length > 0 &&
                   <FlightResults
+                    requestBody={flightSearchInputData}
                     results={filteredItineraries}
                   />
                 }

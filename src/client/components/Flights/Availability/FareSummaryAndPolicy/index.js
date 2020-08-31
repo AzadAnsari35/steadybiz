@@ -9,7 +9,7 @@ import FarePolicy from "Components/Flights/Availability/FarePolicy";
 import "./style.scss";
 
 const FareSummaryAndPolicy = props => {
-  const { itinerary } = props;
+  const { itinerary, passengersType } = props;
   return (
     <div className="FareSummaryAndPolicy d-flex">
       <Grid item xs={12} md={6}>
@@ -21,7 +21,10 @@ const FareSummaryAndPolicy = props => {
       <Grid item xs={12} md={6}>
         <div className="FareSummaryAndPolicy-farePolicy">
           <Text className="title font-primary-medium-18" text="Fare Policy" showLeftBorder />
-          <FarePolicy outboundItinerary={itinerary} />
+          <FarePolicy
+            outboundItinerary={itinerary}
+            passengersType={passengersType}
+          />
         </div>
       </Grid>
     </div>

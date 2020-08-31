@@ -6,7 +6,7 @@ import { Text } from "Widgets";
 import "./style.scss";
 
 const FarePolicy = (props) => {
-  const { outboundItinerary } = props;
+  const { outboundItinerary, passengersType } = props;
   const { penalties } = outboundItinerary.totalfareDetails.fareDetails[0];
   const exchangeBefore = penalties.find(penalty => 
     penalty.type === "Exchange" && penalty.applicability === "Before");
@@ -42,7 +42,7 @@ const FarePolicy = (props) => {
               </Grid>
             </div>
             <div className="FarePolicy-table__body">
-              {["Adult", "Child", "Infant"].map((item, index) =>
+              {passengersType.map((item, index) =>
                 <div key={index} className="data-row d-flex">
                   <Grid item xs={4}>
                     <Text className="font-primary-regular-13 text-align-left" text={item} />
@@ -77,7 +77,7 @@ const FarePolicy = (props) => {
               </Grid>
             </div>
             <div className="FarePolicy-table__body">
-              {["Adult", "Child", "Infant"].map((item, index) =>
+              {passengersType.map((item, index) =>
                 <div key={index} className="data-row d-flex">
                   <Grid item xs={4}>
                     <Text className="font-primary-regular-13 text-align-left" text={item} />

@@ -13,7 +13,7 @@ $root: '.SelectWithTextInput';
     &-select {
       position: absolute;
       padding: 10px 20px;
-
+      
       &:after {
         content: '';
         background-color: #00000080;
@@ -27,6 +27,11 @@ $root: '.SelectWithTextInput';
         transition: none;
         border-bottom: none;
       }
+      & > div {
+        &::after {
+          display: none;
+        }
+      }
     }
 
     &-input {
@@ -37,6 +42,10 @@ $root: '.SelectWithTextInput';
       border-radius: 4px;
       height: 44px;
       padding: 0 20px 0 200px;
+      &:focus {
+        outline: none;
+        border: 2px solid $gulfBlue;
+      }
       &::placeholder {
         color: #00000080;
       }

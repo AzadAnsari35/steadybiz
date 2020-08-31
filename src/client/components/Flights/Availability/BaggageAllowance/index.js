@@ -12,7 +12,7 @@ import { Chip, Image, Text } from "Widgets";
 import "./style.scss";
 
 const BaggageAllowance = props => {
-  const { itinerary } = props;
+  const { itinerary, passengersType } = props;
   const masterAirlinesResponse = useSelector(
     (state) => state[endpoint.master.airlines.reducerName]
   );
@@ -79,7 +79,7 @@ const BaggageAllowance = props => {
                     </Grid>
                   </div>
                   <div className="BaggageAllowance-segment__body">
-                    {["Adult", "Child", "Infant"].map((item, index) =>
+                    {passengersType.map((item, index) =>
                       <div key={index} className="data-row d-flex">
                         <Grid item xs={6}>
                           <Text className="font-primary-regular-12 segment d-inline" text={item} />
