@@ -420,7 +420,7 @@ const SearchOrder = () => {
                   { value: 'E', label: 'Email ID' },
                 ]}
                 label="PAX Info:"
-                placeholder={getValues('paxInfoType')?.label ?? 'Mobile Number'}
+                placeholder="Mobile Number"
                 selectPlaceholder="Mobile Number"
                 errors={errors}
                 register={register}
