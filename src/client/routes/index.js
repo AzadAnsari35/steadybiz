@@ -202,6 +202,12 @@ const Routes = () => (
 
     <PrivateRoute
       exact
+      path={routes.agency.dealHistory}
+      component={CreateDeal}
+    />
+
+    <PrivateRoute
+      exact
       path={routes.transaction.viewPNR}
       component={Transaction}
     />

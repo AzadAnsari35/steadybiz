@@ -182,9 +182,11 @@ const SearchOrder = () => {
     officeID: officeId,
   };
 
-  const { register, handleSubmit, errors, control, reset } = useForm({
-    defaultValues,
-  });
+  const { register, handleSubmit, errors, control, reset, getValues } = useForm(
+    {
+      defaultValues,
+    }
+  );
 
   const ofId = utils.getItemFromStorage('officeId');
 
@@ -377,7 +379,7 @@ const SearchOrder = () => {
                   { value: 'E', label: 'Email ID' },
                 ]}
                 label="PAX Info:"
-                placeholder="Mobile Number"
+                placeholder={getValues('paxInfoType')?.label ?? 'Mobile Number'}
                 selectPlaceholder="Mobile"
                 errors={errors}
                 register={register}

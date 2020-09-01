@@ -11,7 +11,9 @@ import React from 'react';
 import { Button, MultiSelect, SecondaryAccordion } from 'Widgets';
 import './style.scss';
 
-const Airlines = () => {
+const Airlines = ({ path }) => {
+  const { isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory } = path;
+
   return (
     <SecondaryAccordion
       text="AIRLINES"
@@ -20,59 +22,61 @@ const Airlines = () => {
       className="Airlines"
     >
       <div className="Airlines-container">
-        <Grid
-          container
-          spacing={1}
-          className="Airlines-container-form"
-          alignItems="flex-end"
-        >
-          <Grid item xs={3}>
-            <MultiSelect
-              name="validatingCarrier"
-              label="Validating Carrier:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Airline"
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <MultiSelect
-              name="marketingCarrier"
-              label="Marketing Carrier:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Airline"
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <MultiSelect
-              name="operatingCarrier"
-              label="Operating Carrier:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Airline"
-            />
-          </Grid>
+        {!(isViewDeal || isDealHistory) && (
+          <Grid
+            container
+            spacing={1}
+            className="Airlines-container-form"
+            alignItems="flex-end"
+          >
+            <Grid item xs={3}>
+              <MultiSelect
+                name="validatingCarrier"
+                label="Validating Carrier:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select Airline"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <MultiSelect
+                name="marketingCarrier"
+                label="Marketing Carrier:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select Airline"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <MultiSelect
+                name="operatingCarrier"
+                label="Operating Carrier:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select Airline"
+              />
+            </Grid>
 
-          <Grid item xs={3}>
-            <Button text="Add Airline (s)" className="width-100 mt-12" />
+            <Grid item xs={3}>
+              <Button text="Add Airline (s)" className="width-100 mt-12" />
+            </Grid>
           </Grid>
-        </Grid>
+        )}
 
         <TableContainer className="Airlines-container-table">
           <Table aria-label="simple table" size="small">

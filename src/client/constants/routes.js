@@ -14,7 +14,7 @@ const routes = {
   agency: {
     searchDeals: '/Agency/Search-Deals',
     createDeal: '/Agency/Create-Deal',
-    viewDeal: '/Agency/Update-Deal',
+    viewDeal: '/Agency/View-Deal',
     modifyDeal: '/Agency/Update-Deal',
     dealHistory: '/Agency/Deal-History',
   },

@@ -27,7 +27,7 @@ const CheckboxGroup = (props) => {
         {label}
       </div>
 
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between flex-wrap-wrap">
         {checkboxes.map(
           (cur, index) =>
             useReactHookForm ? (

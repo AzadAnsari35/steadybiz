@@ -115,7 +115,7 @@ const Segments = () => {
           <Grid item xs={3}></Grid>
 
           <Grid item xs={3}>
-            <Button text="Add Airline (s)" className="width-100 mt-12" />
+            <Button text="Add Segment" className="width-100 mt-12" />
           </Grid>
         </Grid>
 

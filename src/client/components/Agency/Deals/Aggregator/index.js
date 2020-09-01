@@ -22,7 +22,9 @@ import colors from 'Constants/colors';
 
 import './style.scss';
 
-const Aggregator = () => {
+const Aggregator = ({ path }) => {
+  const { isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory } = path;
+
   return (
     <SecondaryAccordion
       text="AGGREGATOR"
@@ -31,61 +33,63 @@ const Aggregator = () => {
       className="Aggregator"
     >
       <div className="Aggregator-container">
-        <Grid
-          container
-          spacing={1}
-          className="align-items-end Aggregator-container-form"
-        >
-          <Grid item xs={3}>
-            <MultiSelect
-              name="aggregator"
-              label="Aggregator"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Aggregator"
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <MultiSelect
-              name="providerName"
-              label="Provider Name"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Provider Name"
-            />
-          </Grid>
-          <Grid item xs={3}></Grid>
+        {!(isViewDeal || isDealHistory) && (
+          <Grid
+            container
+            spacing={1}
+            className="align-items-end Aggregator-container-form"
+          >
+            <Grid item xs={3}>
+              <MultiSelect
+                name="aggregator"
+                label="Aggregator"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select Aggregator"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <MultiSelect
+                name="providerName"
+                label="Provider Name"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select Provider Name"
+              />
+            </Grid>
+            <Grid item xs={3}></Grid>
 
-          <Grid item xs={3}>
-            <Button text="Add Aggregator" className="width-100" />
+            <Grid item xs={3}>
+              <Button text="Add Aggregator" className="width-100" />
+            </Grid>
           </Grid>
-        </Grid>
+        )}
 
         <TableContainer className="Aggregator-container-table">
           <Table aria-label="simple table" size="small">
             <TableHead className="Aggregator-container-table-head">
               <TableRow>
                 <TableCell>AGGREGATOR</TableCell>
-                <TableCell align="center">PROVIDER NAME</TableCell>
-                <TableCell align="center">PROVIDER ID</TableCell>
+                <TableCell align="left">PROVIDER NAME</TableCell>
+                <TableCell align="left">PROVIDER ID</TableCell>
                 <TableCell align="right">ACTION</TableCell>
               </TableRow>
             </TableHead>
             <TableBody className="Aggregator-container-table-body">
               <TableRow>
                 <TableCell scope="row">HitchHiker</TableCell>
-                <TableCell align="center">OK Tour &amp; Travel </TableCell>
-                <TableCell align="center">BOMCT0002</TableCell>
+                <TableCell align="left">OK Tour &amp; Travel </TableCell>
+                <TableCell align="left">BOMCT0002</TableCell>
                 <TableCell align="right">
                   <DeleteIcon
                     style={{ color: colors.cornflowerBlue }}
@@ -95,13 +99,15 @@ const Aggregator = () => {
               </TableRow>
               <TableRow>
                 <TableCell scope="row">HitchHiker</TableCell>
-                <TableCell align="center">OK Tour &amp; Travel </TableCell>
-                <TableCell align="center">BOMCT0002</TableCell>
+                <TableCell align="left">OK Tour &amp; Travel </TableCell>
+                <TableCell align="left">BOMCT0002</TableCell>
                 <TableCell align="right">
-                  <DeleteIcon
-                    style={{ color: colors.cornflowerBlue }}
-                    className="cursor-pointer"
-                  />
+                  <div>
+                    <DeleteIcon
+                      style={{ color: colors.cornflowerBlue }}
+                      className="cursor-pointer"
+                    />
+                  </div>
                 </TableCell>
               </TableRow>
             </TableBody>
