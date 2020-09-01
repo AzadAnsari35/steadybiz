@@ -5,8 +5,13 @@ export const checkSecurityGroup = (securityGroupObj) => {
   const isSecurityGroup = config.client.securityGroup;
   if (isSecurityGroup === '1') {
     let userData = JSON.parse(getItemFromStorage('userData'));
-    console.log(userData.userDto.userGroups.indexOf(securityGroupObj.securityNumber));
-    if (userData.userDto.userGroups.indexOf(securityGroupObj.securityNumber) === -1) {
+    console.log(
+      userData.userDto.userGroups.indexOf(securityGroupObj.securityNumber)
+    );
+    if (
+      userData.userDto.userGroups.indexOf(securityGroupObj.securityNumber) ===
+      -1
+    ) {
       return 'you are not aurthorised to perform this action';
     }
   }

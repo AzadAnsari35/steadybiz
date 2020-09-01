@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import CachedIcon from '@material-ui/icons/Cached';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { commonAction, commonActionWithoutApi } from 'Actions/';
+import { commonAction } from 'Actions/';
 import endpoint from 'Config/endpoint.js';
 import routes from 'Constants/routes';
 import { utils } from 'Helpers';
@@ -9,6 +9,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import {
+  PNR_STATUS,
+  PNR_TYPE,
+  BOOKING_CATEGORY,
+  SEARCH_DATE_TYPE,
+} from 'Constants/commonConstant';
+import useDropDownApi from 'Hooks/useDropDownApi';
 import {
   Button,
   IconWithBackground,
@@ -21,6 +28,7 @@ import {
   Text,
   TextInput,
 } from 'Widgets';
+import securityOptionConstant from 'Constants/securityOptionConstant';
 import './style.scss';
 
 const headerData = [
@@ -83,17 +91,38 @@ const PopoverAction = (props) => {
     //console.log(orderNo);
     switch (selectedOption) {
       case 'view': {
+        const securityMessage = utils.checkSecurityGroup(
+          securityOptionConstant.transaction.viewOrder
+        );
+        if (securityMessage !== '') {
+          dispatch(utils.showErrorBox(securityMessage));
+          return;
+        }
         viewOrder(orderNo, 'view');
 
         break;
       }
       case 'issue': {
+        const securityMessage = utils.checkSecurityGroup(
+          securityOptionConstant.flights.issueTicket
+        );
+        if (securityMessage !== '') {
+          dispatch(utils.showErrorBox(securityMessage));
+          return;
+        }
         viewOrder(orderNo, 'retieve');
 
         break;
       }
 
       case 'viewBooking': {
+        const securityMessage = utils.checkSecurityGroup(
+          securityOptionConstant.transaction.viewBooking
+        );
+        if (securityMessage !== '') {
+          dispatch(utils.showErrorBox(securityMessage));
+          return;
+        }
         viewOrder(orderNo, 'view');
 
         break;
@@ -162,6 +191,7 @@ const SearchOrder = () => {
   const [page, setPage] = useState(1);
   const [size] = useState(10);
   const firstPageUpdate = useRef(true);
+
   let history = useHistory();
   let dispatch = useDispatch();
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
@@ -178,18 +208,23 @@ const SearchOrder = () => {
     paxSearchValue: '',
     paxInfoType: '',
     bookingCategory: '',
-
+    bookingStatus: '',
+    userId: '',
     officeID: officeId,
   };
 
-  const { register, handleSubmit, errors, control, reset, getValues } = useForm(
-    {
-      defaultValues,
-    }
-  );
+  const { register, handleSubmit, errors, control, reset } = useForm({
+    defaultValues,
+  });
 
   const ofId = utils.getItemFromStorage('officeId');
-
+  const userNameList = useDropDownApi(endpoint.office.searchUserDropDown, {
+    ofid: ofId,
+    size: 1000,
+    page: 0,
+  });
+  // console.log('jj', userNameList.dropDownItems);
+  // console.log(PNR_STATUS);
   const searchResult = useSelector(
     (state) => state[endpoint.orders.searchOrders.reducerName]?.items
   );
@@ -245,6 +280,13 @@ const SearchOrder = () => {
   const callSearch = (page) => {
     //console.log('hi', requestJson);
     try {
+      const securityMessage = utils.checkSecurityGroup(
+        securityOptionConstant.transaction.searchOrder
+      );
+      if (securityMessage !== '') {
+        dispatch(utils.showErrorBox(securityMessage));
+        return;
+      }
       dispatch(
         commonAction(endpoint.orders.searchOrders, {
           ...requestJson,
@@ -308,7 +350,7 @@ const SearchOrder = () => {
               <SelectWithTextInput
                 name="pnr"
                 selectInputName="sabre"
-                data={[{ value: 'Sabre', label: 'Sabre (1S)' }]}
+                data={PNR_TYPE}
                 label="PNR: "
                 placeholder="PNR Number"
                 selectPlaceholder="Sabre"
@@ -345,8 +387,9 @@ const SearchOrder = () => {
                   datePicker1: 'dateFrom',
                   datePicker2: 'dateTo',
                 }}
+                data={SEARCH_DATE_TYPE}
                 control={control}
-                showValue
+                selectPlaceholder="Booking"
                 label="Date:"
                 isSearchable
               />
@@ -356,10 +399,7 @@ const SearchOrder = () => {
               <MultiSelect
                 label="Booking Category:"
                 name="bookingCategory"
-                options={[
-                  { value: 'P', label: 'PNR' },
-                  { value: 'B', label: 'Booking' },
-                ]}
+                options={BOOKING_CATEGORY}
                 showBorder={true}
                 changeStyle={true}
                 control={control}
@@ -374,13 +414,13 @@ const SearchOrder = () => {
                 name="paxSearchValue"
                 selectInputName="paxInfoType"
                 data={[
-                  { value: 'M', label: 'Mobile' },
+                  { value: 'M', label: 'Mobile Number' },
                   { value: 'L', label: 'Last Name' },
                   { value: 'E', label: 'Email ID' },
                 ]}
                 label="PAX Info:"
-                placeholder={getValues('paxInfoType')?.label ?? 'Mobile Number'}
-                selectPlaceholder="Mobile"
+                placeholder="Mobile Number"
+                selectPlaceholder="Mobile Number"
                 errors={errors}
                 register={register}
                 control={control}
@@ -403,13 +443,12 @@ const SearchOrder = () => {
             <Grid item xs={3}>
               <MultiSelect
                 label="User Name:"
-                name="userName"
-                options={[]}
+                name="userId"
+                options={userNameList.dropDownItems}
                 showBorder={true}
                 changeStyle={true}
                 control={control}
                 errors={errors}
-                showValue
                 width="auto"
                 isSearchable
               />
@@ -418,13 +457,12 @@ const SearchOrder = () => {
             <Grid item xs={3}>
               <MultiSelect
                 label="Status:"
-                name="status"
-                options={[]}
+                name="bookingStatus"
+                options={PNR_STATUS}
                 showBorder={true}
                 changeStyle={true}
                 control={control}
                 errors={errors}
-                showValue
                 width="auto"
                 isSearchable
               />

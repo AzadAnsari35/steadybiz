@@ -1,6 +1,4 @@
 const securityOptionConstant = {
-  
-
   office: {
     searchUser: {
       securityNumber: 20,
@@ -63,6 +61,11 @@ const securityOptionConstant = {
     issueTicket: {
       securityNumber: 3,
     },
-  }
+  },
+  transaction: {
+    searchOrder: { securityNumber: 9 },
+    viewOrder: { securityNumber: 10 },
+    viewBooking: { securityNumber: 4 },
+  },
 };
 export default securityOptionConstant;

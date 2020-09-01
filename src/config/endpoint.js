@@ -118,6 +118,11 @@ export default {
       actionType: actionTypeConstant.office.searchUser,
       actualActionType: actionTypeConstant.office.searchUser,
     },
+    searchUserDropDown: {
+      url: config.api.url + '/api/v1/offices/user/searchUserDropDown',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+    },
     createUser: {
       url: config.api.url + '/api/v1/offices/user/createUser',
       isAuth: true,

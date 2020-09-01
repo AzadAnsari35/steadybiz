@@ -119,3 +119,21 @@ export const TIME_LIMITS_LIST = [
   { label: '22:00', value: '22:00' },
   { label: '23:00', value: '23:00' },
 ];
+export const PNR_STATUS = [
+  { label: 'Hold', value: 'HOLD_PNR' },
+  { label: 'Confirmed', value: 'BOOKED' },
+  { label: 'Failed', value: 'FAILED_PNR' },
+  { label: 'Rebooked', value: 'REBOOKED' },
+  { label: 'Cancelled', value: 'PNR_CANCELLED' },
+  { label: 'Ticket Void', value: 'TICKET_VOID' },
+  { label: 'Refunded', value: 'REFUNDED' },
+];
+export const PNR_TYPE = [{ value: 'Sabre', label: 'Sabre (1S)' }];
+export const BOOKING_CATEGORY = [
+  { value: 'P', label: 'PNR' },
+  { value: 'B', label: 'Booking' },
+];
+export const SEARCH_DATE_TYPE = [
+  { value: 'T', label: 'Travel' },
+  { value: 'B', label: 'Booking' },
+];
