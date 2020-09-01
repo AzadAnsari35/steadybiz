@@ -84,8 +84,8 @@ const PopoverAction = (props) => {
   const handleClick = (e) => {
     const selectedOption = e.currentTarget.getAttribute('name');
 
-    let selectedItem = searchResult.data.data[rowNumber];
-
+    let selectedItem = searchResult.data[rowNumber];
+    //alert(selectedItem.orderNo);
     let orderNo = selectedItem.orderNo;
     // orderNo = 'OKT0000000155';
     //console.log(orderNo);
@@ -151,17 +151,16 @@ const PopoverAction = (props) => {
         }}
       >
         <div className="SearchUser-tableAction d-flex flex-direction-column">
-          {actualStatus === 'HOLD_PNR' ||
-            actualStatus === 'PNR_CANCELLED' ||
-            (actualStatus === 'FAILED_PNR' && (
-              <div
-                className="font-primary-regular-14 cursor-pointer"
-                onClick={handleClick}
-                name="view"
-              >
-                View PNR{' '}
-              </div>
-            ))}
+          {(actualStatus === 'HOLD_PNR' ||
+            actualStatus === 'PNR_CANCELLED') && (
+            <div
+              className="font-primary-regular-14 cursor-pointer"
+              onClick={handleClick}
+              name="view"
+            >
+              View PNR{' '}
+            </div>
+          )}
           {actualStatus === 'HOLD_PNR' && (
             <div
               className="font-primary-regular-14 cursor-pointer"
