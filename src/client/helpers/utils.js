@@ -3,16 +3,14 @@ import endpointWithoutApi from 'Config/endpointWithoutApi';
 import { commonActionWithoutApi } from 'Actions/';
 export const checkSecurityGroup = (securityGroupObj) => {
   const isSecurityGroup = config.client.securityGroup;
+  //alert(securityGroupObj.securityNumber);
   if (isSecurityGroup === '1') {
     let userData = JSON.parse(getItemFromStorage('userData'));
-    console.log(
-      userData.userDto.userGroups.indexOf(securityGroupObj.securityNumber)
+    const item = userData.userDto.functionGroups.find(
+      (element) => element.id === securityGroupObj.securityNumber
     );
-    if (
-      userData.userDto.userGroups.indexOf(securityGroupObj.securityNumber) ===
-      -1
-    ) {
-      return 'you are not aurthorised to perform this action';
+    if (item == null) {
+      return "You don't have the sufficient rights to access this functionality";
     }
   }
   return '';

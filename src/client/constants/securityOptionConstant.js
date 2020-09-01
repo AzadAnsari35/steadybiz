@@ -50,7 +50,7 @@ const securityOptionConstant = {
       securityNumber: 2,
     },
     selectFlight: {
-      securityNumber: 51,
+      securityNumber: 2,
     },
     fareRules: {
       securityNumber: 52,
