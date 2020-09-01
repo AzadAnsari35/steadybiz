@@ -1,6 +1,6 @@
 @import '../../../../styles/variables';
 
-$root: '.AgencyCommission';
+$root: '.DealApplicable';
 
 #{$root} {
   &-container {
@@ -15,14 +15,8 @@ $root: '.AgencyCommission';
       }
       &-head {
         .MuiTableCell-sizeSmall {
-          padding: 12px 6px;
-        }
-        .MuiTableCell-sizeSmall:last-child {
-          padding-right: 18px;
-        }
-
-        .MuiTableCell-sizeSmall:first-child {
-          padding-left: 18px;
+          padding-top: 16px;
+          padding-bottom: 16px;
         }
       }
       & th {
@@ -39,13 +33,6 @@ $root: '.AgencyCommission';
       }
 
       &-body {
-        .MuiTableCell-sizeSmall:last-child {
-          padding-right: 18px;
-        }
-
-        .MuiTableCell-sizeSmall:first-child {
-          padding-left: 18px;
-        }
         & > tr {
           background: $mercury;
         }

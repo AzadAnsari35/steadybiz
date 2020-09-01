@@ -3,7 +3,8 @@ import React from 'react';
 import { Button, MultiSelect, SecondaryAccordion } from 'Widgets';
 import './style.scss';
 
-const Source = () => {
+const Source = ({ path }) => {
+  const { isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory } = path;
   return (
     <SecondaryAccordion
       text="SOURCE"
@@ -12,7 +13,7 @@ const Source = () => {
       className="Source"
     >
       <Grid container spacing={1} className="align-items-end Source-form">
-        <Grid item xs={8}>
+        <Grid item xs={9}>
           <MultiSelect
             name="source"
             label="Source"
@@ -23,11 +24,14 @@ const Source = () => {
             changeStyle={true}
             options={[]}
             width="auto"
+            disabled={isViewDeal || isDealHistory}
           />
         </Grid>
-        <Grid item xs={4}>
-          <Button text="Select Source" className="width-100" />
-        </Grid>
+        {!(isViewDeal || isDealHistory) && (
+          <Grid item xs={3}>
+            <Button text="Select Source" className="width-100" />
+          </Grid>
+        )}
       </Grid>
     </SecondaryAccordion>
   );

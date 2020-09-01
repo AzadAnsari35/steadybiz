@@ -29,6 +29,7 @@ const DatePicker = (props) => {
     name,
     className,
     useReactHookForm = true,
+    disabled,
   } = props;
   // const [selectedDate, setSelectedDate] = React.useState(!!maxDate ? maxDate : new Date());
   //   const [selectedDate, setSelectedDate] = useState();
@@ -96,6 +97,7 @@ const DatePicker = (props) => {
                     src={!!icon ? icon : displayImage('calendar-grey.svg')}
                   />
                 }
+                disabled={disabled}
               />
             }
             rules={validation}
@@ -137,6 +139,7 @@ const DatePicker = (props) => {
             //   />
             // }
             onChange={handleDateChange}
+            disabled={disabled}
           />
         )}
       </MuiPickersUtilsProvider>

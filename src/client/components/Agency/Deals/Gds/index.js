@@ -22,7 +22,9 @@ import colors from 'Constants/colors';
 
 import './style.scss';
 
-const Gds = () => {
+const Gds = ({ path }) => {
+  const { isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory } = path;
+
   return (
     <SecondaryAccordion
       text="GDS"
@@ -31,61 +33,63 @@ const Gds = () => {
       className="Gds"
     >
       <div className="Gds-container">
-        <Grid
-          container
-          spacing={1}
-          className="Gds-container-form"
-          direction="row"
-          alignItems="flex-end"
-        >
-          <Grid item xs={3}>
-            <MultiSelect
-              name="gds"
-              label="GDS:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select GDS"
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <MultiSelect
-              name="agencyName"
-              label="Agency Name:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Agency Name"
-            />
-          </Grid>
+        {!(isViewDeal || isDealHistory) && (
+          <Grid
+            container
+            spacing={1}
+            className="Gds-container-form"
+            direction="row"
+            justify="flex-end"
+            alignItems="flex-end"
+          >
+            <Grid item xs={3}>
+              <MultiSelect
+                name="gds"
+                label="GDS:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select GDS"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <MultiSelect
+                name="agencyName"
+                label="Agency Name:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select Agency Name"
+              />
+            </Grid>
 
-          <Grid item xs={3}>
-            <MultiSelect
-              name="PCC:"
-              label="PCC:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select PCC"
-            />
+            <Grid item xs={3}>
+              <MultiSelect
+                name="PCC:"
+                label="PCC:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select PCC"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <Button text="Add GDS" className="width-100" />
+            </Grid>
           </Grid>
-          <Grid item xs={3}>
-            <Button text="Add GDS" className="width-100" />
-          </Grid>
-        </Grid>
-
+        )}
         <TableContainer className="Gds-container-table">
           <Table aria-label="simple table" size="small">
             <TableHead className="Gds-container-table-head">

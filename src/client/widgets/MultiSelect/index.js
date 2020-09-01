@@ -77,8 +77,8 @@ const MultiSelect = (props) => {
     useReactHookForm = true,
     onSelectChange,
     fullWidthDropdown,
-    isClearable = false,
-    isSearchable = false,
+    isClearable = true,
+    isSearchable = true,
   } = props;
   const [selectedOption, setSelectedOption] = useState(defaultValue);
 
@@ -98,7 +98,7 @@ const MultiSelect = (props) => {
   // console.log('control', getValues(name));
   // console.log('control', control.defaultValuesRef.current[name]);
 
-  console.log('fullWidthDropdown', fullWidthDropdown);
+  // console.log('fullWidthDropdown', fullWidthDropdown);
 
   return (
     <>
@@ -160,11 +160,15 @@ const MultiSelect = (props) => {
         </>
       ) : (
         <div
-          className={`MultiSelect ${className ? className : ''} ${
-            changeStyle ? `MultiSelect-customStyle` : ''
-          }  ${showBorder ? `MultiSelect-showBorder` : ''} ${
-            errors[name] ? `thin-red-border` : ''
-          } ${disabled ? 'input-disabled border-none py-10' : ''}`}
+          className={`MultiSelect 
+        ${className ? className : ''} 
+        ${changeStyle ? `MultiSelect-customStyle` : ''}  
+        ${showBorder ? `MultiSelect-showBorder` : ''} 
+        ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
+        ${errors[name] ? `thin-red-border` : ''} 
+        ${disabled ? 'input-disabled border-none py-10' : ''}
+        ${isSearchable ? 'MultiSelect-isSearchable' : ''}
+        `}
           style={{ width: `${width}px` }}
         >
           <Select
@@ -180,7 +184,7 @@ const MultiSelect = (props) => {
             hideSelectedOptions={false}
             isClearable={false}
             isMulti={isMulti}
-            isSearchable={false}
+            isSearchable={isSearchable}
             placeholder={placeholder}
             getOptionLabel={(option) =>
               `${showValue ? option[valueKey] : option[labelKey]}`

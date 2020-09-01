@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import CachedIcon from '@material-ui/icons/Cached';
+import CloseIcon from '@material-ui/icons/Close';
 import FlightIcon from '@material-ui/icons/Flight';
 import { utils } from 'Helpers';
 import React from 'react';
@@ -22,7 +22,11 @@ import {
   Segments,
   SegmentDetails,
   AgencyCommission,
+  DealApplicable,
 } from 'Components/Agency/Deals';
+import { useHistory, useLocation } from 'react-router-dom';
+
+import { colors, routes } from 'Constants';
 import './style.scss';
 const CreateDeal = () => {
   const {
@@ -31,23 +35,41 @@ const CreateDeal = () => {
     },
   } = JSON.parse(utils.getItemFromStorage('userData'));
 
+  const location = useLocation();
+  const history = useHistory();
+
+  const path = location.pathname;
+
+  const isCreateDeal = utils.stringComparison(path, routes.agency.createDeal);
+  const isUpdateDeal = utils.stringComparison(path, routes.agency.modifyDeal);
+  const isViewDeal = utils.stringComparison(path, routes.agency.viewDeal);
+  const isDealHistory = utils.stringComparison(path, routes.agency.dealHistory);
+
   return (
     <div className="CreateDeal">
       <div className="CreateDeal-head">
         <div className="d-flex justify-content-between align-items-end pb-4">
           <div className="font-primary-semibold-24 pb-4">MANAGE DEALS</div>
           <IconWithBackground
-            bgColor="#74D3DC33"
+            bgColor={colors.lightRed}
+            onClick={() => history.push(routes.agency.searchDeals)}
             showCursor
-            // onClick={handleReset}
           >
-            <CachedIcon style={{ color: '#74D3DC' }} />
+            <CloseIcon style={{ color: colors.red }} />
           </IconWithBackground>
         </div>
         <div className="horizontal-grey-divider"></div>
         <Text
           showLeftBorder={true}
-          text="CREATE DEALS"
+          text={`${
+            isCreateDeal
+              ? 'CREATE DEAL'
+              : isUpdateDeal
+              ? 'MODIFY DEAL'
+              : isViewDeal
+              ? 'VIEW DEAL'
+              : 'DEAL HISTORY'
+          }`}
           className="font-primary-medium-18 my-24"
         />
         <Grid container spacing={3}>
@@ -61,6 +83,7 @@ const CreateDeal = () => {
               showValue
               width="auto"
               useReactHookForm={false}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -74,6 +97,7 @@ const CreateDeal = () => {
               showValue
               width="auto"
               useReactHookForm={false}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -87,6 +111,7 @@ const CreateDeal = () => {
               showValue
               width="auto"
               useReactHookForm={false}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -100,6 +125,7 @@ const CreateDeal = () => {
               showValue
               width="auto"
               useReactHookForm={false}
+              disabled={!isUpdateDeal}
             />
           </Grid>
 
@@ -109,6 +135,7 @@ const CreateDeal = () => {
               label="Ticket From Date:"
               onChange={() => console.log('value')}
               useReactHookForm={false}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -118,6 +145,7 @@ const CreateDeal = () => {
               label="Ticket To Date:"
               onChange={() => console.log('value')}
               useReactHookForm={false}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -127,6 +155,7 @@ const CreateDeal = () => {
               label="Travel From Date:"
               onChange={() => console.log('value')}
               useReactHookForm={false}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -136,18 +165,34 @@ const CreateDeal = () => {
               label="Travel To Date:"
               onChange={() => console.log('value')}
               useReactHookForm={false}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={isDealHistory ? 9 : 12}>
             <TextInput
               name="description"
               label="Description:"
               onChange={() => console.log('value')}
               useReactHookForm={false}
               placeholder="Description"
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
+          {isDealHistory && (
+            <Grid item xs={3}>
+              <MultiSelect
+                label="Deal History Date:"
+                name="dealHistoryDate"
+                options={[]}
+                showBorder={true}
+                changeStyle={true}
+                showValue
+                width="auto"
+                useReactHookForm={false}
+              />
+            </Grid>
+          )}
         </Grid>
         <div className="d-flex justify-content-between align-items-end">
           <div>
@@ -162,6 +207,7 @@ const CreateDeal = () => {
                 name="dealApplicableFor"
                 primaryLabel="Own"
                 className="pl-40"
+                disabled={isViewDeal || isDealHistory}
               />
 
               <CustomCheckbox
@@ -171,6 +217,7 @@ const CreateDeal = () => {
                 name="dealApplicableFor"
                 primaryLabel="Branches"
                 className="pl-40"
+                disabled={isViewDeal || isDealHistory}
               />
 
               <CustomCheckbox
@@ -180,6 +227,7 @@ const CreateDeal = () => {
                 name="dealApplicableFor"
                 primaryLabel="Sub-Agency"
                 className="pl-40"
+                disabled={isViewDeal || isDealHistory}
               />
             </div>
 
@@ -190,9 +238,21 @@ const CreateDeal = () => {
             </div>
           </div>
 
-          <div className="d-flex justify-content-end pt-32">
-            <Button type="submit" text="Create Deal" className=" px-48" />
-          </div>
+          {!isViewDeal && (
+            <div className="d-flex justify-content-end pt-32">
+              <Button
+                type="submit"
+                text={`${
+                  isCreateDeal
+                    ? 'Create Deal'
+                    : isUpdateDeal
+                    ? 'MODIFY DEAL'
+                    : 'Search Deal History'
+                }`}
+                className=" px-48"
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="CreateDeal-panel">
@@ -211,13 +271,30 @@ const CreateDeal = () => {
             }}
           />
 
-          <Source />
-          <Aggregator />
-          <Gds />
-          <Airlines />
-          <Segments />
-          <SegmentDetails />
-          <AgencyCommission />
+          <Source
+            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+          />
+          <Aggregator
+            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+          />
+          <Gds
+            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+          />
+          <Airlines
+            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+          />
+          <Segments
+            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+          />
+          <SegmentDetails
+            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+          />
+          <AgencyCommission
+            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+          />
+          <DealApplicable
+            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+          />
         </Panel>
       </div>
     </div>

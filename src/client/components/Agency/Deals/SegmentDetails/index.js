@@ -148,7 +148,7 @@ const SegmentDetails = () => {
                   ]}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} className="pb-12 pt-8">
                 <CheckboxGroup
                   label="Booking Classes:"
                   name="bookingClasses"

@@ -228,7 +228,7 @@ const SearchOffice = () => {
 
   useEffect(() => {
     const selectedCountry =
-      getValues('country') === '' ? countryCode : getValues('country').value;
+      getValues('country') === '' ? countryCode : getValues('country')?.value;
     if (selectedCountry) {
       dispatch(
         commonAction(endpoint.master.cities, {

@@ -30,12 +30,17 @@ $root: '.PrimaryTableHeader';
   }
 
   &-serviceIcon {
-    border: 1px solid $biscay;
-    padding: 6px 18px;
-    color: $biscay;
-    border-radius: 2px;
-    text-transform: uppercase;
-    &:after {
+    &__content {
+      border: 1px solid $biscay;
+      padding: 6px 18px;
+      color: $biscay;
+      border-radius: 2px;
+      text-transform: uppercase;
+      background-color: $white;
+      z-index: 1;
+    }
+
+    &:before {
       position: absolute;
       left: 0;
       top: 50%;

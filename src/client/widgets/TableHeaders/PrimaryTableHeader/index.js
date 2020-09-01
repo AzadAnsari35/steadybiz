@@ -20,8 +20,8 @@ const PrimaryTableHeader = (props) => {
         </div>
       </div>
       {showServiceIcon && (
-        <div className="d-flex justify-content-center align-items-center position-relative mb-20">
-          <div className="PrimaryTableHeader-serviceIcon d-flex justify-content-center align-items-center">
+        <div className="PrimaryTableHeader-serviceIcon d-flex justify-content-center align-items-center position-relative mb-20">
+          <div className="PrimaryTableHeader-serviceIcon__content d-flex justify-content-center align-items-center">
             {showServiceIcon.icon}
             <span className="font-primary-regular-14 ml-10">
               {showServiceIcon.text}

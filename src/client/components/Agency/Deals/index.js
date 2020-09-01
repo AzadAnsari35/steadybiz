@@ -5,6 +5,7 @@ import Airlines from './Airlines';
 import Segments from './Segments';
 import SegmentDetails from './SegmentDetails';
 import AgencyCommission from './AgencyCommission';
+import DealApplicable from './DealApplicable';
 
 export {
   Source,
@@ -14,4 +15,5 @@ export {
   Segments,
   SegmentDetails,
   AgencyCommission,
+  DealApplicable,
 };
