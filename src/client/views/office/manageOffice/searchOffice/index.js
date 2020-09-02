@@ -12,6 +12,7 @@ import {
   SimplePopover,
   PrimaryTable,
   PrimaryTableHeader,
+  SelectWithTextInput,
 } from 'Widgets';
 import routes from 'Constants/routes';
 import { useHistory } from 'react-router-dom';
@@ -34,10 +35,11 @@ import './style.scss';
 const headerData = [
   'OFFICE NAME',
   'OFFICE ID',
-  'OFFICE TYPE',
+  // 'OFFICE TYPE',
   'COUNTRY',
   'CITY',
-  'CONTACT NO.',
+  'MASTER USER',
+  'MOBILE',
   'CURRENCY',
   'CREDIT LIMIT BAL.',
   'STATUS',
@@ -176,9 +178,12 @@ const defaultValues = {
   status: '',
   city: '',
   country: '',
-  officeType: '',
+  // officeType: '',
   officeName: '',
   officeId: '',
+  emailId: '',
+  mobileDialCode: '',
+  mobile: '',
 };
 
 const SearchOffice = () => {
@@ -200,6 +205,12 @@ const SearchOffice = () => {
   const countriesList = useDropDown(
     endpoint.master.countries,
     dropDownParam.countries,
+    'masterCountries'
+  );
+
+  const countriesDialCodeList = useDropDown(
+    endpoint.master.countries,
+    dropDownParam.countriesDialCode,
     'masterCountries'
   );
 
@@ -366,21 +377,6 @@ const SearchOffice = () => {
           />
           <Grid container spacing={3}>
             <Grid item xs={3}>
-              <MultiSelect
-                label="Office Type:"
-                name="officeType"
-                options={commonConstant.officeType}
-                showBorder={true}
-                changeStyle={true}
-                control={control}
-                errors={errors}
-                getValues={getValues}
-                showLabel
-                width="auto"
-                isSearchable
-              />
-            </Grid>
-            <Grid item xs={3}>
               <TextInput
                 name="officeName"
                 register={register}
@@ -394,22 +390,6 @@ const SearchOffice = () => {
                 register={register}
                 errors={errors}
                 label="Office ID:"
-              />
-            </Grid>
-
-            <Grid item xs={3}>
-              <MultiSelect
-                label="Status:"
-                name="status"
-                options={objectStatusesList.dropDownItems}
-                valueKey="label"
-                showBorder={true}
-                changeStyle={true}
-                control={control}
-                errors={errors}
-                showValue
-                width="auto"
-                isSearchable
               />
             </Grid>
             <Grid item xs={3}>
@@ -443,17 +423,88 @@ const SearchOffice = () => {
                 isSearchable
               />
             </Grid>
-            <Grid item xs={6}>
-              <div className="d-flex justify-content-end pt-32">
-                <Button
-                  text="Create"
-                  secondary
-                  className=" px-48 mr-10"
-                  onClick={() => handleClick()}
-                />
+            {/* <Grid item xs={3}>
+              <MultiSelect
+                label="Office Type:"
+                name="officeType"
+                options={commonConstant.officeType}
+                showBorder={true}
+                changeStyle={true}
+                control={control}
+                errors={errors}
+                getValues={getValues}
+                showLabel
+                width="auto"
+                isSearchable
+              />
+            </Grid> */}
+            <Grid item xs={3}>
+              <TextInput
+                name="emailId"
+                register={register}
+                errors={errors}
+                label="Email ID:"
+                validation={{
+                  pattern: {
+                    value: regex.email,
+                    message: 'Please enter valid email id.',
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <SelectWithTextInput
+                name="mobile"
+                selectInputName="mobileDialCode"
+                data={countriesDialCodeList.dropDownItems}
+                label="Mobile "
+                placeholder="Mobile No."
+                selectPlaceholder="Code"
+                errors={errors}
+                register={register}
+                control={control}
+                showValue
+                validation={{
+                  pattern: {
+                    value: regex.number,
+                    message: 'Please enter numbers only.',
+                  },
+                }}
+                fullWidthDropdown
+                maxLength={15}
+                isSearchable={false}
+              />
+            </Grid>
 
-                <Button type="submit" text="Search" className=" px-48" />
-              </div>
+            <Grid item xs={3}>
+              <MultiSelect
+                label="Status:"
+                name="status"
+                options={objectStatusesList.dropDownItems}
+                valueKey="label"
+                showBorder={true}
+                changeStyle={true}
+                control={control}
+                errors={errors}
+                showValue
+                width="auto"
+                isSearchable
+              />
+            </Grid>
+
+            <Grid
+              item
+              xs={3}
+              className="d-flex justify-content-end align-items-end"
+            >
+              <Button
+                text="Create"
+                secondary
+                className=" px-48 mr-10"
+                onClick={() => handleClick()}
+              />
+
+              <Button type="submit" text="Search" className=" px-48" />
             </Grid>
           </Grid>
         </form>
@@ -501,6 +552,9 @@ const SearchOffice = () => {
             'paymentOptions',
             'zipCode',
             'minimumBalance',
+            'users',
+            'phone',
+            'officeType',
           ]}
         />
       )}

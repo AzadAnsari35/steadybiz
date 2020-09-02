@@ -49,7 +49,8 @@ const defaultValues = {
   emailId: '',
   zipCode: '',
   noOfUserRequested: '',
-  paymentOptions: [],
+  paymentOptions: '',
+  mobileDialCode: '',
 };
 
 const OfficeProfileForm = (props) => {
@@ -169,6 +170,8 @@ const OfficeProfileForm = (props) => {
         zipCode,
         countryCode,
         status,
+        mobile,
+        users: [{ firstName, lastName, title, emailId }],
       } = selectedItem;
       console.log('selectedItem', selectedItem);
       reset({
@@ -178,11 +181,18 @@ const OfficeProfileForm = (props) => {
         paymentOptions: paymentOptions,
         officeId,
         officeName,
+        firstName,
+        lastName,
+        title: titles.findItem(title),
         phone: phone.split('-')[1],
         phoneDialCode: countriesDialCodeList.dropDownItems.findItem(
           phone.split('-')[0]
         ),
-        officeType: commonConstant.officeType.findItem(officeType, 'label'),
+        mobile: mobile.split('-')[1],
+        mobileDialCode: countriesDialCodeList.dropDownItems.findItem(
+          mobile.split('-')[0]
+        ),
+        officeType: commonConstant.officeType.findItem(officeType),
         zipCode,
         countryCode: countriesList.dropDownItems.findItem(countryCode),
         cityCode: citiesList.findItem(cityCode),
@@ -295,6 +305,25 @@ const OfficeProfileForm = (props) => {
 
   return (
     <div className="OfficeProfileForm">
+      <div className="OfficeProfileForm-imageContainer d-flex align-items-center">
+        <div className="OfficeProfileForm-imageContainer__image d-flex justify-content-center align-items-center mr-20">
+          <PersonIcon style={{ fontSize: 75, color: colors.gray }} />
+        </div>
+        {!isViewOffice && (
+          <div>
+            <div className="d-flex">
+              <Button text="Upoad New Photo" className="mb-16 mr-10" />
+              {isUpdateOffice && (
+                <Button text="Remove" secondary className="mb-16" />
+              )}
+            </div>
+
+            <div className="OfficeProfileForm-imageContainer__text font-primary-semibold-14">
+              Image should be at least 300 X 300 px in .jpg/.png or .gif format
+            </div>
+          </div>
+        )}
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container>
           <Grid item xs={6} className="OfficeProfileForm-left">
@@ -338,8 +367,8 @@ const OfficeProfileForm = (props) => {
                   isSearchable
                 />
               </Grid>
-              <Grid item xs={12}>
-                {isCreateOffice ? (
+              {isCreateOffice ? (
+                <Grid item xs={12}>
                   <TextInput
                     name="officeName"
                     register={register}
@@ -355,16 +384,37 @@ const OfficeProfileForm = (props) => {
                     }}
                     disabled={!isCreateOffice}
                   />
-                ) : (
-                  <TextWithTextInput
-                    names={{ input1: 'officeId', input2: 'officeName' }}
-                    label="Office ID | Name:"
-                    errors={errors}
-                    register={register}
-                    disabled
-                  />
-                )}
-              </Grid>
+                </Grid>
+              ) : (
+                <>
+                  <Grid item xs={6}>
+                    <TextInput
+                      name="officeName"
+                      register={register}
+                      errors={errors}
+                      label="Office Name"
+                      validation={{
+                        required: 'Please enter the office name.',
+                        pattern: {
+                          value: regex.alphanumeric,
+                          message: 'Please enter valid office name.',
+                        },
+                      }}
+                      disabled={isViewOffice}
+                    />
+                  </Grid>
+
+                  <Grid item xs={6}>
+                    <TextInput
+                      name="officeId"
+                      register={register}
+                      errors={errors}
+                      label="Office Id"
+                      disabled={!isCreateOffice}
+                    />
+                  </Grid>
+                </>
+              )}
 
               <Grid item xs={12}>
                 <TextInput
@@ -403,7 +453,7 @@ const OfficeProfileForm = (props) => {
                   validation={{ required: 'Please enter the country' }}
                   width="auto"
                   showLabel
-                  disabled={isViewOffice}
+                  disabled={!isCreateOffice}
                   isSearchable
                 />
               </Grid>
@@ -420,7 +470,7 @@ const OfficeProfileForm = (props) => {
                   errors={errors}
                   validation={{ required: 'Please enter the city' }}
                   width="auto"
-                  disabled={isViewOffice}
+                  disabled={!isCreateOffice}
                   isSearchable
                 />
               </Grid>
@@ -434,26 +484,13 @@ const OfficeProfileForm = (props) => {
                   disabled={isViewOffice}
                 />
               </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={6} className="OfficeProfileForm-right">
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Text
-                  showLeftBorder
-                  text="Contact Details"
-                  className="font-primary-semibold-18"
-                />
-              </Grid>
-
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <SelectWithTextInput
                   name="phone"
                   selectInputName="phoneDialCode"
                   data={countriesDialCodeList.dropDownItems}
-                  label="Contact Number: "
-                  placeholder="Phone Number"
+                  label="Phone: "
+                  placeholder="Phone"
                   selectPlaceholder="Code"
                   errors={errors}
                   register={register}
@@ -472,14 +509,127 @@ const OfficeProfileForm = (props) => {
                   disabled={isViewOffice}
                   maxLength={15}
                   isSearchable={false}
+                  selectWidth="50%"
                 />
               </Grid>
               <Grid item xs={12}>
+                <Text
+                  showLeftBorder
+                  text="Office User Details"
+                  className="font-primary-semibold-18"
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <MultiSelect
+                  label="Number of Users:"
+                  name="noOfUserRequested"
+                  options={commonConstant.numberOfUsers}
+                  placeholder="Select Number of Users"
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  validation={{ required: 'Please enter the no of users' }}
+                  width="auto"
+                  disabled={isViewOffice}
+                  isSearchable
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={6} className="OfficeProfileForm-right">
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Text
+                  showLeftBorder
+                  text="Master User Details"
+                  className="font-primary-semibold-18"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <SelectWithTextInput
+                  name="firstName"
+                  selectInputName="title"
+                  data={titles}
+                  label="First Name:"
+                  placeholder="First Name"
+                  selectPlaceholder="Title"
+                  errors={errors}
+                  register={register}
+                  validation={{
+                    required: 'Please enter the first name.',
+                    pattern: {
+                      value: regex.name,
+                      message: 'Please enter the alphabets only.',
+                    },
+                  }}
+                  selectValidation={{
+                    required: 'Please enter the title.',
+                  }}
+                  control={control}
+                  disabled={isViewOffice}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextInput
+                  name="lastName"
+                  register={register}
+                  errors={errors}
+                  placeholder="Last Name"
+                  label="Last Name:"
+                  validation={{
+                    required: 'Please enter the last name.',
+                    minLength: {
+                      value: 2,
+                      message: 'Please enter minimum two alphabets',
+                    },
+                    pattern: {
+                      value: regex.name,
+                      message: 'Please enter the alphabets only.',
+                    },
+                  }}
+                  disabled={isViewOffice}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <SelectWithTextInput
+                  name="mobile"
+                  selectInputName="mobileDialCode"
+                  data={countriesDialCodeList.dropDownItems}
+                  label="Mobile: "
+                  placeholder="Mobile"
+                  selectPlaceholder="Code"
+                  errors={errors}
+                  register={register}
+                  validation={{
+                    required: 'Please enter the mobile number.',
+                    pattern: {
+                      value: regex.number,
+                      message: 'Please enter valid mobile number.',
+                    },
+                  }}
+                  selectValidation={{
+                    required: 'Please enter the country code.',
+                  }}
+                  control={control}
+                  showValue
+                  disabled={isViewOffice}
+                  maxLength={15}
+                  isSearchable={false}
+                  selectWidth="50%"
+                />
+              </Grid>
+
+              <Grid item xs={6}>
                 <TextInput
                   name="emailId"
                   register={register}
                   errors={errors}
-                  label="Email"
+                  label="Email:"
                   placeholder="Email Address"
                   validation={{
                     required: 'Please enter the email address.',
@@ -491,31 +641,49 @@ const OfficeProfileForm = (props) => {
                   disabled={!isCreateOffice}
                 />
               </Grid>
+              {isCreateOffice && (
+                <>
+                  <Grid item xs={6}>
+                    <TextInput
+                      name="password"
+                      type="password"
+                      register={register}
+                      errors={errors}
+                      label="Create Password:"
+                      validation={{
+                        required: 'Please enter the password.',
+                        minLength: {
+                          value: 8,
+                          message: 'Please enter minimum eight characters',
+                        },
+                        maxLength: {
+                          value: 16,
+                          message: 'Please enter maximum sixteen characters',
+                        },
+                      }}
+                      placeholder="Type Password"
+                      disabled={isViewOffice}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextInput
+                      name="confirmPassword"
+                      type="password"
+                      register={register}
+                      errors={errors}
+                      label="Confirm Password:"
+                      validation={{
+                        validate: (value) =>
+                          value === watch('password') ||
+                          "Passwords don't match.",
+                      }}
+                      placeholder="Type Password"
+                      disabled={isViewOffice}
+                    />
+                  </Grid>
+                </>
+              )}
 
-              <Grid item xs={12}>
-                <Text
-                  showLeftBorder
-                  text="User Details"
-                  className="font-primary-semibold-18"
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <MultiSelect
-                  label="Number of Users"
-                  name="noOfUserRequested"
-                  options={commonConstant.numberOfUsers}
-                  placeholder="Select"
-                  showBorder={true}
-                  changeStyle={true}
-                  control={control}
-                  errors={errors}
-                  validation={{ required: 'Please enter the no of users' }}
-                  width="auto"
-                  disabled={isViewOffice}
-                  isSearchable
-                />
-              </Grid>
               <Grid item xs={12}>
                 <Text
                   showLeftBorder
@@ -532,6 +700,44 @@ const OfficeProfileForm = (props) => {
                   getValues={getValues}
                   disabled={isViewOffice}
                   checkboxes={settlementPlans || []}
+                />
+
+                {/* <CustomCheckbox
+                  value="a0a3d1d7-cbcf-4807-9960-c6b007b1281f"
+                  primaryLabel="Bank Guarantee"
+                  name="paymentOptions"
+                  control={control}
+                  getValues={getValues}
+                />
+
+                <CustomCheckbox
+                  value="dec4ff45-0b68-4cd0-89cf-bfb5deafb8b5"
+                  primaryLabel="Credit Card"
+                  name="paymentOptions"
+                  control={control}
+                  getValues={getValues}
+                /> */}
+              </Grid>
+
+              <Grid item xs={6}>
+                <TextInput
+                  name="gstNumber"
+                  register={register}
+                  errors={errors}
+                  placeholder="Type GST / VAT No."
+                  label="GST / VAT No.:"
+                  disabled={isViewOffice}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <TextInput
+                  name="gstNumber"
+                  register={register}
+                  errors={errors}
+                  placeholder="Type GST / VAT (%)"
+                  label="GST / VAT (%):"
+                  disabled={isViewOffice}
                 />
               </Grid>
 

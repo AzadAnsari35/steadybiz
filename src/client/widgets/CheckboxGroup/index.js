@@ -39,7 +39,6 @@ const CheckboxGroup = (props) => {
                 control={control}
                 getValues={getValues}
                 disabled={disabled}
-                checkedValues={checkedValues}
                 className={checkboxClassName}
               />
             ) : (
