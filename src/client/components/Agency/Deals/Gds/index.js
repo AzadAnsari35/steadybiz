@@ -19,6 +19,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Grid from '@material-ui/core/Grid';
 import DeleteIcon from '@material-ui/icons/Delete';
 import colors from 'Constants/colors';
+import EditIcon from '@material-ui/icons/Edit';
 
 import './style.scss';
 
@@ -96,7 +97,7 @@ const Gds = ({ path }) => {
               <TableRow>
                 <TableCell>GDS</TableCell>
                 <TableCell align="left">AGENCY NAME</TableCell>
-                <TableCell align="center">AGENCY ID</TableCell>
+                <TableCell align="left">AGENCY ID</TableCell>
                 <TableCell align="left">PCC</TableCell>
                 <TableCell align="center">ACTION</TableCell>
               </TableRow>
@@ -105,10 +106,16 @@ const Gds = ({ path }) => {
               <TableRow>
                 <TableCell scope="row">Sabre</TableCell>
                 <TableCell align="left">OK Tour &amp; Travel </TableCell>
-                <TableCell align="center">BOMCT0002</TableCell>
+                <TableCell align="left">BOMCT0002</TableCell>
                 <TableCell align="left">75JW</TableCell>
 
                 <TableCell align="center">
+                  {isUpdateDeal && (
+                    <EditIcon
+                      style={{ color: colors.cornflowerBlue }}
+                      className="cursor-pointer"
+                    />
+                  )}
                   <DeleteIcon
                     style={{ color: colors.cornflowerBlue }}
                     className="cursor-pointer"
@@ -118,10 +125,16 @@ const Gds = ({ path }) => {
               <TableRow>
                 <TableCell scope="row">Sabre</TableCell>
                 <TableCell align="left">OK Tour &amp; Travel </TableCell>
-                <TableCell align="center">BOMCT0002</TableCell>
+                <TableCell align="left">BOMCT0002</TableCell>
                 <TableCell align="left">75JW</TableCell>
 
                 <TableCell align="center">
+                  {isUpdateDeal && (
+                    <EditIcon
+                      style={{ color: colors.cornflowerBlue }}
+                      className="cursor-pointer"
+                    />
+                  )}
                   <DeleteIcon
                     style={{ color: colors.cornflowerBlue }}
                     className="cursor-pointer"

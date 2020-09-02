@@ -9,6 +9,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import colors from 'Constants/colors';
 import React from 'react';
 import { Button, MultiSelect, SecondaryAccordion } from 'Widgets';
+import EditIcon from '@material-ui/icons/Edit';
+
 import './style.scss';
 
 const Airlines = ({ path }) => {
@@ -101,6 +103,12 @@ const Airlines = ({ path }) => {
                 <TableCell align="center">AF</TableCell>
 
                 <TableCell align="center">
+                  {isUpdateDeal && (
+                    <EditIcon
+                      style={{ color: colors.cornflowerBlue }}
+                      className="cursor-pointer"
+                    />
+                  )}
                   <DeleteIcon
                     style={{ color: colors.cornflowerBlue }}
                     className="cursor-pointer"
@@ -116,6 +124,12 @@ const Airlines = ({ path }) => {
                 <TableCell align="center">AF</TableCell>
 
                 <TableCell align="center">
+                  {isUpdateDeal && (
+                    <EditIcon
+                      style={{ color: colors.cornflowerBlue }}
+                      className="cursor-pointer"
+                    />
+                  )}
                   <DeleteIcon
                     style={{ color: colors.cornflowerBlue }}
                     className="cursor-pointer"

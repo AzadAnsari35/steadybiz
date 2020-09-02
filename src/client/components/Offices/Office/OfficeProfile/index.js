@@ -431,9 +431,6 @@ const OfficeProfileForm = (props) => {
                   errors={errors}
                   placeholder="Zip Code"
                   label="Zip Code"
-                  validation={{
-                    required: 'Please enter the zip code.',
-                  }}
                   disabled={isViewOffice}
                 />
               </Grid>
@@ -473,7 +470,8 @@ const OfficeProfileForm = (props) => {
                   control={control}
                   showValue
                   disabled={isViewOffice}
-                  isSearchable
+                  maxLength={15}
+                  isSearchable={false}
                 />
               </Grid>
               <Grid item xs={12}>

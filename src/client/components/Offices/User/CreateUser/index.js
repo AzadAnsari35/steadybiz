@@ -264,7 +264,8 @@ const CreateUserForm = () => {
                   }}
                   control={control}
                   showValue
-                  isSearchable
+                  maxLength={15}
+                  isSearchable={false}
                 />
               </Grid>
 

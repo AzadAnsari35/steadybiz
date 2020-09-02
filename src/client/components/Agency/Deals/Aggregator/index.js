@@ -1,25 +1,15 @@
-import React from 'react';
-import {
-  Button,
-  CustomCheckbox,
-  MultiSelect,
-  Panel,
-  SecondaryAccordion,
-  SecondaryTable,
-  Text,
-  TextInput,
-  IconWithBackground,
-} from 'Widgets';
+import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Grid from '@material-ui/core/Grid';
 import DeleteIcon from '@material-ui/icons/Delete';
 import colors from 'Constants/colors';
-
+import React from 'react';
+import { Button, MultiSelect, SecondaryAccordion } from 'Widgets';
+import EditIcon from '@material-ui/icons/Edit';
 import './style.scss';
 
 const Aggregator = ({ path }) => {
@@ -82,7 +72,7 @@ const Aggregator = ({ path }) => {
                 <TableCell>AGGREGATOR</TableCell>
                 <TableCell align="left">PROVIDER NAME</TableCell>
                 <TableCell align="left">PROVIDER ID</TableCell>
-                <TableCell align="right">ACTION</TableCell>
+                <TableCell align="center">ACTION</TableCell>
               </TableRow>
             </TableHead>
             <TableBody className="Aggregator-container-table-body">
@@ -90,7 +80,13 @@ const Aggregator = ({ path }) => {
                 <TableCell scope="row">HitchHiker</TableCell>
                 <TableCell align="left">OK Tour &amp; Travel </TableCell>
                 <TableCell align="left">BOMCT0002</TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
+                  {isUpdateDeal && (
+                    <EditIcon
+                      style={{ color: colors.cornflowerBlue }}
+                      className="cursor-pointer"
+                    />
+                  )}
                   <DeleteIcon
                     style={{ color: colors.cornflowerBlue }}
                     className="cursor-pointer"
@@ -101,13 +97,18 @@ const Aggregator = ({ path }) => {
                 <TableCell scope="row">HitchHiker</TableCell>
                 <TableCell align="left">OK Tour &amp; Travel </TableCell>
                 <TableCell align="left">BOMCT0002</TableCell>
-                <TableCell align="right">
-                  <div>
-                    <DeleteIcon
+                <TableCell align="center">
+                  {isUpdateDeal && (
+                    <EditIcon
                       style={{ color: colors.cornflowerBlue }}
                       className="cursor-pointer"
                     />
-                  </div>
+                  )}
+
+                  <DeleteIcon
+                    style={{ color: colors.cornflowerBlue }}
+                    className="cursor-pointer"
+                  />
                 </TableCell>
               </TableRow>
             </TableBody>

@@ -361,8 +361,8 @@ const SearchUser = () => {
                   },
                 }}
                 fullWidthDropdown
-                isSearchable
-
+                maxLength={15}
+                isSearchable={false}
                 // selectValidation={
                 //   getValues('mobile') && {
                 //     validate: (value) =>

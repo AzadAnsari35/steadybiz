@@ -15,7 +15,7 @@ $root: '.AgencyCommission';
       }
       &-head {
         .MuiTableCell-sizeSmall {
-          padding: 12px 6px;
+          padding: 16px 12px;
         }
         .MuiTableCell-sizeSmall:last-child {
           padding-right: 18px;
@@ -39,6 +39,10 @@ $root: '.AgencyCommission';
       }
 
       &-body {
+        .MuiTableCell-sizeSmall {
+          padding: 6px 12px;
+        }
+
         .MuiTableCell-sizeSmall:last-child {
           padding-right: 18px;
         }

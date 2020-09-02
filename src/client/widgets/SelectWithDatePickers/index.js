@@ -59,7 +59,7 @@ const SelectWithDatePickers = (props) => {
 
         <DatePicker
           control={control}
-          name={name?.datePicker1}
+          name={name?.datePicker2}
           className="SelectWithDatePickers-container-datePicker-2"
         />
 

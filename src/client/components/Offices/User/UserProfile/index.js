@@ -360,7 +360,8 @@ const UserProfileForm = (props) => {
                   control={control}
                   showValue
                   disabled={isViewUser}
-                  isSearchable
+                  maxLength={15}
+                  isSearchable={false}
                 />
               </Grid>
             </Grid>
