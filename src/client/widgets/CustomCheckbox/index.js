@@ -66,7 +66,9 @@ const CustomCheckbox = (props) => {
           render={(props) => (
             <Checkbox
               onChange={() => props.onChange(handleCheck(value))}
-              checked={props.value && props.value.includes(value)}
+              checked={
+                Array.isArray(props.value) && props.value.includes(value)
+              }
               disableRipple
               disabled={disabled}
               icon={
