@@ -4,7 +4,7 @@ import { commonActionWithoutApi } from 'Actions/';
 export const checkSecurityGroup = (securityGroupObj) => {
   const isSecurityGroup = config.client.securityGroup;
   //alert(securityGroupObj.securityNumber);
-  if (isSecurityGroup === '1') {
+  if (1 === 1) {
     let userData = JSON.parse(getItemFromStorage('userData'));
     const item = userData.userDto.functionGroups.find(
       (element) => element.id === securityGroupObj.securityNumber

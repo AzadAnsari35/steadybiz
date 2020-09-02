@@ -221,8 +221,6 @@ const SearchOrder = () => {
   const ofId = utils.getItemFromStorage('officeId');
   const userNameList = useDropDownApi(endpoint.office.searchUserDropDown, {
     ofid: ofId,
-    size: 1000,
-    page: 0,
   });
   // console.log('jj', userNameList.dropDownItems);
   // console.log(PNR_STATUS);
