@@ -16,9 +16,13 @@ import {
   CheckboxGroup,
   TextInput,
 } from 'Widgets';
+import EditIcon from '@material-ui/icons/Edit';
+
 import './style.scss';
 
-const SegmentDetails = () => {
+const SegmentDetails = ({ path }) => {
+  const { isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory } = path;
+
   return (
     <SecondaryAccordion
       text="SEGMENTS DETAILS"
@@ -27,306 +31,308 @@ const SegmentDetails = () => {
       className="SegmentDetails"
     >
       <div className="SegmentDetails-container">
-        <Grid
-          container
-          spacing={1}
-          className="SegmentDetails-container-form"
-          direction="row"
-          justify="flex-end"
-          alignItems="flex-end"
-        >
-          <Grid item xs={6}>
-            <Grid container spacing={1} alignItems="flex-end">
-              <Grid item xs={12}>
-                <Text
-                  showLeftBorder={true}
-                  text="Segment Direction Details"
-                  className="font-primary-medium-18 my-24"
-                />
+        {!(isViewDeal || isDealHistory) && (
+          <Grid
+            container
+            spacing={1}
+            className="SegmentDetails-container-form"
+            direction="row"
+            justify="flex-end"
+            alignItems="flex-end"
+          >
+            <Grid item xs={6}>
+              <Grid container spacing={1} alignItems="flex-end">
+                <Grid item xs={12}>
+                  <Text
+                    showLeftBorder={true}
+                    text="Segment Direction Details"
+                    className="font-primary-medium-18 my-24"
+                  />
 
-                <CheckboxGroup
-                  label="Direction:"
-                  name="direction"
-                  className="SegmentDetails-container-form-checkbox"
-                  checkboxClassName="pr-20"
-                  useReactHookForm={false}
-                  handleChange={(value) => console.log(value)}
-                  checkboxes={[
-                    { primaryLabel: 'One Way', value: 'OW' },
-                    { primaryLabel: 'Return', value: 'RT' },
-                    { primaryLabel: 'Multicity', value: 'MC' },
-                  ]}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Text
-                  showLeftBorder={true}
-                  text="Pax Type Details"
-                  className="font-primary-medium-18 my-24"
-                />
+                  <CheckboxGroup
+                    label="Direction:"
+                    name="direction"
+                    className="SegmentDetails-container-form-checkbox"
+                    checkboxClassName="pr-20"
+                    useReactHookForm={false}
+                    handleChange={(value) => console.log(value)}
+                    checkboxes={[
+                      { primaryLabel: 'One Way', value: 'OW' },
+                      { primaryLabel: 'Return', value: 'RT' },
+                      { primaryLabel: 'Multicity', value: 'MC' },
+                    ]}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Text
+                    showLeftBorder={true}
+                    text="Pax Type Details"
+                    className="font-primary-medium-18 my-24"
+                  />
 
-                <CheckboxGroup
-                  label="Passengers Type:"
-                  name="passengersType"
-                  className="SegmentDetails-container-form-checkbox"
-                  checkboxClassName="pr-20"
-                  useReactHookForm={false}
-                  handleChange={(value) => console.log(value)}
-                  checkboxes={[
-                    { primaryLabel: 'Adult', value: 'ADT' },
-                    { primaryLabel: 'Child', value: 'CHD' },
-                    { primaryLabel: 'Infant', value: 'INF' },
-                  ]}
-                />
-              </Grid>
+                  <CheckboxGroup
+                    label="Passengers Type:"
+                    name="passengersType"
+                    className="SegmentDetails-container-form-checkbox"
+                    checkboxClassName="pr-20"
+                    useReactHookForm={false}
+                    handleChange={(value) => console.log(value)}
+                    checkboxes={[
+                      { primaryLabel: 'Adult', value: 'ADT' },
+                      { primaryLabel: 'Child', value: 'CHD' },
+                      { primaryLabel: 'Infant', value: 'INF' },
+                    ]}
+                  />
+                </Grid>
 
-              <Grid item xs={4}>
-                <MultiSelect
-                  name="adult"
-                  label="No. of Passengers:"
-                  // disabled={isViewSecurityGroup}
-                  useReactHookForm={false}
-                  onChange={(value) => console.log(value)}
-                  showBorder={true}
-                  changeStyle={true}
-                  options={[]}
-                  width="auto"
-                  placeholder="Select Adult"
-                />
-              </Grid>
+                <Grid item xs={4}>
+                  <MultiSelect
+                    name="adult"
+                    label="No. of Passengers:"
+                    // disabled={isViewSecurityGroup}
+                    useReactHookForm={false}
+                    onChange={(value) => console.log(value)}
+                    showBorder={true}
+                    changeStyle={true}
+                    options={[]}
+                    width="auto"
+                    placeholder="Select Adult"
+                  />
+                </Grid>
 
-              <Grid item xs={4}>
-                <MultiSelect
-                  name="child"
-                  // disabled={isViewSecurityGroup}
-                  useReactHookForm={false}
-                  onChange={(value) => console.log(value)}
-                  showBorder={true}
-                  changeStyle={true}
-                  options={[]}
-                  width="auto"
-                  placeholder="Select Child"
-                />
-              </Grid>
+                <Grid item xs={4}>
+                  <MultiSelect
+                    name="child"
+                    // disabled={isViewSecurityGroup}
+                    useReactHookForm={false}
+                    onChange={(value) => console.log(value)}
+                    showBorder={true}
+                    changeStyle={true}
+                    options={[]}
+                    width="auto"
+                    placeholder="Select Child"
+                  />
+                </Grid>
 
-              <Grid item xs={4}>
-                <MultiSelect
-                  name="infant"
-                  // disabled={isViewSecurityGroup}
-                  useReactHookForm={false}
-                  onChange={(value) => console.log(value)}
-                  showBorder={true}
-                  changeStyle={true}
-                  options={[]}
-                  width="auto"
-                  placeholder="Select Infant"
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={6}>
-            <Grid container>
-              <Grid item xs={12}>
-                <Text
-                  showLeftBorder={true}
-                  text="Classes Details"
-                  className="font-primary-medium-18 my-24"
-                />
-
-                <CheckboxGroup
-                  label="Cabin Classes:"
-                  name="cabinClasses"
-                  className="SegmentDetails-container-form-checkbox"
-                  checkboxClassName="pr-20"
-                  useReactHookForm={false}
-                  handleChange={(value) => console.log(value)}
-                  checkboxes={[
-                    { primaryLabel: 'Economy', value: 'OW' },
-                    { primaryLabel: 'Premium Economy', value: 'RT' },
-                    { primaryLabel: 'Business', value: 'MC' },
-                    { primaryLabel: 'First', value: 'MC' },
-                  ]}
-                />
-              </Grid>
-              <Grid item xs={12} className="pb-12 pt-8">
-                <CheckboxGroup
-                  label="Booking Classes:"
-                  name="bookingClasses"
-                  className="SegmentDetails-container-form-checkbox"
-                  checkboxClassName="pr-20"
-                  useReactHookForm={false}
-                  handleChange={(value) => console.log(value)}
-                  checkboxes={[
-                    { primaryLabel: 'A', value: 'A' },
-                    { primaryLabel: 'B', value: 'B' },
-                    { primaryLabel: 'C', value: 'C' },
-                    { primaryLabel: 'D', value: 'D' },
-                    { primaryLabel: 'E', value: 'E' },
-                    { primaryLabel: 'F', value: 'F' },
-                    { primaryLabel: 'G', value: 'G' },
-                    { primaryLabel: 'H', value: 'H' },
-                    { primaryLabel: 'I', value: 'I' },
-                    { primaryLabel: 'J', value: 'J' },
-                    { primaryLabel: 'K', value: 'K' },
-                    { primaryLabel: 'L', value: 'L' },
-                    { primaryLabel: 'M', value: 'M' },
-                    { primaryLabel: 'N', value: 'N' },
-                    { primaryLabel: 'O', value: 'O' },
-                    { primaryLabel: 'P', value: 'P' },
-                    { primaryLabel: 'Q', value: 'Q' },
-                    { primaryLabel: 'R', value: 'R' },
-                    { primaryLabel: 'S', value: 'S' },
-                    { primaryLabel: 'T', value: 'T' },
-                    { primaryLabel: 'U', value: 'U' },
-                    { primaryLabel: 'V', value: 'V' },
-                    { primaryLabel: 'W', value: 'W' },
-                    { primaryLabel: 'X', value: 'X' },
-                    { primaryLabel: 'Y', value: 'Y' },
-                    { primaryLabel: 'Z', value: 'Z' },
-                    { primaryLabel: '0', value: '0' },
-                    { primaryLabel: '1', value: '1' },
-                    { primaryLabel: '2', value: '2' },
-                    { primaryLabel: '3', value: '3' },
-                    { primaryLabel: '4', value: '4' },
-                    { primaryLabel: '5', value: '5' },
-                    { primaryLabel: '6', value: '6' },
-                    { primaryLabel: '7', value: '7' },
-                    { primaryLabel: '8', value: '8' },
-                    { primaryLabel: '9', value: '9' },
-                  ]}
-                />
+                <Grid item xs={4}>
+                  <MultiSelect
+                    name="infant"
+                    // disabled={isViewSecurityGroup}
+                    useReactHookForm={false}
+                    onChange={(value) => console.log(value)}
+                    showBorder={true}
+                    changeStyle={true}
+                    options={[]}
+                    width="auto"
+                    placeholder="Select Infant"
+                  />
+                </Grid>
               </Grid>
             </Grid>
-            <TextInput
-              name="otherBookingClasses"
-              label="Other Booking Classes e.g. (YQER2, ORTPL):"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              placeholder="A123B, YXCR1, NCETL"
-            />
-          </Grid>
+            <Grid item xs={6}>
+              <Grid container>
+                <Grid item xs={12}>
+                  <Text
+                    showLeftBorder={true}
+                    text="Classes Details"
+                    className="font-primary-medium-18 my-24"
+                  />
 
-          <Grid item xs={12}>
-            <Text
-              showLeftBorder={true}
-              text="Fare Calculation Details"
-              className="font-primary-medium-18 my-24"
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <MultiSelect
-              name="calculatedFee"
-              label="Fare, Surcharge &amp; Fee Calculated On:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Fare and Fee Criteria"
-            />
-          </Grid>
+                  <CheckboxGroup
+                    label="Cabin Classes:"
+                    name="cabinClasses"
+                    className="SegmentDetails-container-form-checkbox"
+                    checkboxClassName="pr-20"
+                    useReactHookForm={false}
+                    handleChange={(value) => console.log(value)}
+                    checkboxes={[
+                      { primaryLabel: 'Economy', value: 'OW' },
+                      { primaryLabel: 'Premium Economy', value: 'RT' },
+                      { primaryLabel: 'Business', value: 'MC' },
+                      { primaryLabel: 'First', value: 'MC' },
+                    ]}
+                  />
+                </Grid>
+                <Grid item xs={12} className="pb-12 pt-8">
+                  <CheckboxGroup
+                    label="Booking Classes:"
+                    name="bookingClasses"
+                    className="SegmentDetails-container-form-checkbox"
+                    checkboxClassName="pr-20"
+                    useReactHookForm={false}
+                    handleChange={(value) => console.log(value)}
+                    checkboxes={[
+                      { primaryLabel: 'A', value: 'A' },
+                      { primaryLabel: 'B', value: 'B' },
+                      { primaryLabel: 'C', value: 'C' },
+                      { primaryLabel: 'D', value: 'D' },
+                      { primaryLabel: 'E', value: 'E' },
+                      { primaryLabel: 'F', value: 'F' },
+                      { primaryLabel: 'G', value: 'G' },
+                      { primaryLabel: 'H', value: 'H' },
+                      { primaryLabel: 'I', value: 'I' },
+                      { primaryLabel: 'J', value: 'J' },
+                      { primaryLabel: 'K', value: 'K' },
+                      { primaryLabel: 'L', value: 'L' },
+                      { primaryLabel: 'M', value: 'M' },
+                      { primaryLabel: 'N', value: 'N' },
+                      { primaryLabel: 'O', value: 'O' },
+                      { primaryLabel: 'P', value: 'P' },
+                      { primaryLabel: 'Q', value: 'Q' },
+                      { primaryLabel: 'R', value: 'R' },
+                      { primaryLabel: 'S', value: 'S' },
+                      { primaryLabel: 'T', value: 'T' },
+                      { primaryLabel: 'U', value: 'U' },
+                      { primaryLabel: 'V', value: 'V' },
+                      { primaryLabel: 'W', value: 'W' },
+                      { primaryLabel: 'X', value: 'X' },
+                      { primaryLabel: 'Y', value: 'Y' },
+                      { primaryLabel: 'Z', value: 'Z' },
+                      { primaryLabel: '0', value: '0' },
+                      { primaryLabel: '1', value: '1' },
+                      { primaryLabel: '2', value: '2' },
+                      { primaryLabel: '3', value: '3' },
+                      { primaryLabel: '4', value: '4' },
+                      { primaryLabel: '5', value: '5' },
+                      { primaryLabel: '6', value: '6' },
+                      { primaryLabel: '7', value: '7' },
+                      { primaryLabel: '8', value: '8' },
+                      { primaryLabel: '9', value: '9' },
+                    ]}
+                  />
+                </Grid>
+              </Grid>
+              <TextInput
+                name="otherBookingClasses"
+                label="Other Booking Classes e.g. (YQER2, ORTPL):"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                placeholder="A123B, YXCR1, NCETL"
+              />
+            </Grid>
 
-          <Grid item xs={3}>
-            <TextInput
-              name="deal"
-              label="Deal ( % ):"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              placeholder="Type Deal ( % )"
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <MultiSelect
-              name="currency"
-              label="Currency:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Currency"
-            />
-          </Grid>
+            <Grid item xs={12}>
+              <Text
+                showLeftBorder={true}
+                text="Fare Calculation Details"
+                className="font-primary-medium-18 my-24"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <MultiSelect
+                name="calculatedFee"
+                label="Fare, Surcharge &amp; Fee Calculated On:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select Fare and Fee Criteria"
+              />
+            </Grid>
 
-          <Grid item xs={3}>
-            <TextInput
-              name="dealAmount"
-              label="Deal Amount:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              placeholder="Type Deal Amount"
-            />
-          </Grid>
+            <Grid item xs={3}>
+              <TextInput
+                name="deal"
+                label="Deal ( % ):"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                placeholder="Type Deal ( % )"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <MultiSelect
+                name="currency"
+                label="Currency:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select Currency"
+              />
+            </Grid>
 
-          <Grid item xs={12}>
-            <Text
-              showLeftBorder={true}
-              text="Segment Calculation Details"
-              className="font-primary-medium-18 my-24"
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <MultiSelect
-              name="calculated"
-              label="PAX &amp; Segment Calculated On:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Pax and Segment Criteria"
-            />
-          </Grid>
+            <Grid item xs={3}>
+              <TextInput
+                name="dealAmount"
+                label="Deal Amount:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                placeholder="Type Deal Amount"
+              />
+            </Grid>
 
-          <Grid item xs={3}>
-            <TextInput
-              name="segmentDiscount"
-              label="Segment Discount ( % ):"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              placeholder="Type Discount %"
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <MultiSelect
-              name="currency"
-              label="Currency:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Currency"
-            />
-          </Grid>
+            <Grid item xs={12}>
+              <Text
+                showLeftBorder={true}
+                text="Segment Calculation Details"
+                className="font-primary-medium-18 my-24"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <MultiSelect
+                name="calculated"
+                label="PAX &amp; Segment Calculated On:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select Pax and Segment Criteria"
+              />
+            </Grid>
 
-          <Grid item xs={3}>
-            <TextInput
-              name="segmentDiscountAmount"
-              label="Segment Discount Amount:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              placeholder="Type Amount"
-            />
-          </Grid>
+            <Grid item xs={3}>
+              <TextInput
+                name="segmentDiscount"
+                label="Segment Discount ( % ):"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                placeholder="Type Discount %"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <MultiSelect
+                name="currency"
+                label="Currency:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select Currency"
+              />
+            </Grid>
 
-          <Grid item xs={3}>
-            <Button text="Add Segment" className="width-100 mt-12" />
+            <Grid item xs={3}>
+              <TextInput
+                name="segmentDiscountAmount"
+                label="Segment Discount Amount:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                placeholder="Type Amount"
+              />
+            </Grid>
+
+            <Grid item xs={3}>
+              <Button text="Add Segment" className="width-100 mt-12" />
+            </Grid>
           </Grid>
-        </Grid>
+        )}
 
         <TableContainer className="SegmentDetails-container-table">
           <Table aria-label="simple table" size="small">
@@ -368,6 +374,12 @@ const SegmentDetails = () => {
                 <TableCell align="center"></TableCell>
 
                 <TableCell align="center">
+                  {isUpdateDeal && (
+                    <EditIcon
+                      style={{ color: colors.cornflowerBlue }}
+                      className="cursor-pointer"
+                    />
+                  )}
                   <DeleteIcon
                     style={{ color: colors.cornflowerBlue }}
                     className="cursor-pointer"
@@ -393,6 +405,12 @@ const SegmentDetails = () => {
                 <TableCell align="center"></TableCell>
 
                 <TableCell align="center">
+                  {isUpdateDeal && (
+                    <EditIcon
+                      style={{ color: colors.cornflowerBlue }}
+                      className="cursor-pointer"
+                    />
+                  )}
                   <DeleteIcon
                     style={{ color: colors.cornflowerBlue }}
                     className="cursor-pointer"

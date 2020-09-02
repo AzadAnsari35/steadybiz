@@ -3,6 +3,15 @@
 $root: '.DatePicker';
 
 #{$root} {
+  &-disabled {
+    .MuiFormControl-marginNormal {
+      background-color: $mercury1 !important;
+      border: none !important;
+    }
+    .MuiInputBase-root.Mui-disabled {
+      color: $black5 !important;
+    }
+  }
   .date-icon {
     width: 20px;
     height: 20px;

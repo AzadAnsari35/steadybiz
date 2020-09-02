@@ -52,9 +52,10 @@ const DatePicker = (props) => {
 
   return (
     <div
-      className={`DatePicker ${!!hasError ? 'has-error' : ''} ${
-        className ? className : ''
-      }`}
+      className={`DatePicker ${!!hasError ? 'has-error' : ''} 
+      ${className ? className : ''}
+      ${disabled ? 'DatePicker-disabled' : ''}
+      `}
     >
       {!!label && (
         <Text
@@ -62,6 +63,7 @@ const DatePicker = (props) => {
           text={label}
         />
       )}
+
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         {useReactHookForm ? (
           <Controller
@@ -87,9 +89,9 @@ const DatePicker = (props) => {
                     ? new Date()
                     : new Date('2100-01-01')
                 }
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
+                // KeyboardButtonProps={{
+                //   'aria-label': 'change date',
+                // }}
                 keyboardIcon={
                   <img
                     className="date-icon"
@@ -128,9 +130,9 @@ const DatePicker = (props) => {
                 ? new Date()
                 : new Date('2100-01-01')
             }
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
+            // KeyboardButtonProps={{
+            //   'aria-label': 'change date',
+            // }}
             // keyboardIcon={
             //   <img
             //     className="date-icon"

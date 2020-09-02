@@ -18,6 +18,11 @@ $root: '.Gds';
           padding-top: 16px;
           padding-bottom: 16px;
         }
+        & tr {
+          & > th {
+            width: 25%;
+          }
+        }
       }
       & th {
         font-family: 'Montserrat Regular';

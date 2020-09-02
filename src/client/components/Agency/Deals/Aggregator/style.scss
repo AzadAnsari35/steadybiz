@@ -18,6 +18,12 @@ $root: '.Aggregator';
           padding-top: 16px;
           padding-bottom: 16px;
         }
+
+        & tr {
+          & > th {
+            width: 32%;
+          }
+        }
       }
       & th {
         font-family: 'Montserrat Regular';

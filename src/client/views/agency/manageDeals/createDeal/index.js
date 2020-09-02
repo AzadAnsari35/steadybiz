@@ -102,15 +102,12 @@ const CreateDeal = () => {
           </Grid>
 
           <Grid item xs={3}>
-            <MultiSelect
+            <TextInput
               label="Deal Name:"
               name="dealName"
-              options={[]}
-              showBorder={true}
-              changeStyle={true}
-              showValue
-              width="auto"
+              onChange={() => console.log('value')}
               useReactHookForm={false}
+              placeholder="Name"
               disabled={isViewDeal || isDealHistory}
             />
           </Grid>
@@ -256,6 +253,28 @@ const CreateDeal = () => {
         </div>
       </div>
       <div className="CreateDeal-panel">
+        <div className="CreateDeal-panel-heading d-flex justify-content-between  pb-16">
+          <div className="font-primary-medium-20">
+            Deal Applicable Criteria:
+          </div>
+          {isCreateDeal && (
+            <div className="font-primary-medium-14 d-flex align-items-center">
+              Deal Template:
+              <MultiSelect
+                name="existingDeals"
+                options={[{ label: 'Existing Plans', value: 'existing plans' }]}
+                width={150}
+                defaultValue={[
+                  { label: 'Existing Plans', value: 'existing plans' },
+                ]}
+                useReactHookForm={false}
+                onSelectChange={() => console.log()}
+                className="ml-10"
+                isSearhable={false}
+              />
+            </div>
+          )}
+        </div>
         <Panel hideHeader={true} expand={true} panelBodyClassName="px-32">
           <PrimaryTableHeader
             officeName={officeName}

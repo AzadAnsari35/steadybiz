@@ -272,7 +272,9 @@ const SearchOffice = () => {
 
   useEffect(() => {
     if (countriesList.dropDownItems !== null && !!citiesList) {
-      console.log('countriesList.dropDownItems', countriesList.dropDownItems);
+      console.log('countriesList.dropDownItems', countryCode);
+      console.log('cityCode', cityCode);
+
       reset({
         country: countriesList.dropDownItems.findItem(countryCode),
         city: citiesList.findItem(cityCode),

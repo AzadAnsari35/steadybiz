@@ -26,12 +26,13 @@ const SelectWithTextInput = (props) => {
     selectValidation,
     control,
     showValue,
-    useReactHookForm = true,    
+    useReactHookForm = true,
     hasError,
     selectWidth = '30%',
     fullWidthDropdown = false,
     isSearchable,
     onSelectChange,
+    maxLength,
     ...rest
   } = props;
 
@@ -44,7 +45,7 @@ const SelectWithTextInput = (props) => {
         />
       )}
       <div className="SelectWithTextInput-container">
-        {useReactHookForm ?
+        {useReactHookForm ? (
           <>
             <MultiSelect
               className={`SelectWithTextInput-container-select  ${
@@ -62,7 +63,7 @@ const SelectWithTextInput = (props) => {
               showValue={showValue}
               disabled={disabled}
               fullWidthDropdown
-              isSearchable
+              isSearchable={isSearchable}
             />
             <input
               name={name}
@@ -74,6 +75,7 @@ const SelectWithTextInput = (props) => {
               placeholder={placeholder}
               ref={register(validation)}
               style={{ paddingLeft: selectWidth }}
+              maxlength={maxLength}
             />
             {errors[name] ? (
               <p className="error-message mt-6 font-primary-medium-16 mb-0">
@@ -87,7 +89,7 @@ const SelectWithTextInput = (props) => {
               ''
             )}
           </>
-          :
+        ) : (
           <>
             <MultiSelect
               className={`SelectWithTextInput-container-select  ${
@@ -109,7 +111,7 @@ const SelectWithTextInput = (props) => {
             <input
               name={name}
               className={`SelectWithTextInput-container-input font-primary-semibold-16 ${
-                hasError ? "thin-red-border" : ""
+                hasError ? 'thin-red-border' : ''
               }  ${disabled ? 'input-disabled border-none' : ''}  `}
               type={type}
               placeholder={placeholder}
@@ -121,7 +123,7 @@ const SelectWithTextInput = (props) => {
               {...rest}
             />
           </>
-        }
+        )}
       </div>
     </div>
   );

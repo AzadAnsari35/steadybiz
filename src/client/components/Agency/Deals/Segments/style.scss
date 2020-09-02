@@ -18,6 +18,15 @@ $root: '.Segments';
           padding-top: 16px;
           padding-bottom: 16px;
         }
+        & tr {
+          & > th:first-child {
+            width: 7.4%;
+          }
+
+          & > th:last-child {
+            width: 5%;
+          }
+        }
       }
       & th {
         font-family: 'Montserrat Regular';

@@ -9,7 +9,9 @@ import {
 } from 'Widgets';
 import './style.scss';
 
-const DealApplicable = () => {
+const DealApplicable = ({ path }) => {
+  const { isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory } = path;
+
   return (
     <SecondaryAccordion
       text={
@@ -31,95 +33,109 @@ const DealApplicable = () => {
           className="DealApplicable-container-form"
           alignItems="flex-end"
         >
-          <Grid item xs={3}>
-            <MultiSelect
-              name="region"
-              label="Region:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Region"
-            />
-          </Grid>
-          <Grid item xs={9}>
+          {!(isViewDeal || isDealHistory) && (
+            <Grid item xs={3}>
+              <MultiSelect
+                name="region"
+                label="Region:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select Region"
+              />
+            </Grid>
+          )}
+          <Grid item xs={isViewDeal || isDealHistory ? 12 : 9}>
             <TextInput
               name=""
               // disabled={isViewSecurityGroup}
+              label={isViewDeal || isDealHistory ? 'Region:' : ''}
               useReactHookForm={false}
               onChange={(value) => console.log(value)}
               placeholder="South East Asia, North India, Asia Pacific, North Africa, Europe"
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
-          <Grid item xs={3}>
-            <MultiSelect
-              name="continent"
-              label="Continent:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Continent"
-            />
-          </Grid>
-          <Grid item xs={9}>
+          {!(isViewDeal || isDealHistory) && (
+            <Grid item xs={3}>
+              <MultiSelect
+                name="continent"
+                label="Continent:"
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select Continent"
+              />
+            </Grid>
+          )}
+          <Grid item xs={isViewDeal || isDealHistory ? 12 : 9}>
             <TextInput
               name=""
-              // disabled={isViewSecurityGroup}
+              label={isViewDeal || isDealHistory ? 'Continent:' : ''}
               useReactHookForm={false}
               onChange={(value) => console.log(value)}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
-          <Grid item xs={3}>
-            <MultiSelect
-              name="country"
-              label="Country:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select Country"
-            />
-          </Grid>
-          <Grid item xs={9}>
+          {!(isViewDeal || isDealHistory) && (
+            <Grid item xs={3}>
+              <MultiSelect
+                name="country"
+                label="Country:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select Country"
+              />
+            </Grid>
+          )}
+          <Grid item xs={isViewDeal || isDealHistory ? 12 : 9}>
             <TextInput
               name=""
+              label={isViewDeal || isDealHistory ? 'Country:' : ''}
               // disabled={isViewSecurityGroup}
               useReactHookForm={false}
               onChange={(value) => console.log(value)}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
-          <Grid item xs={3}>
-            <MultiSelect
-              name="city"
-              label="City:"
-              // disabled={isViewSecurityGroup}
-              useReactHookForm={false}
-              onChange={(value) => console.log(value)}
-              showBorder={true}
-              changeStyle={true}
-              options={[]}
-              width="auto"
-              placeholder="Select City"
-            />
-          </Grid>
-          <Grid item xs={9}>
+          {!(isViewDeal || isDealHistory) && (
+            <Grid item xs={3}>
+              <MultiSelect
+                name="city"
+                label="City:"
+                // disabled={isViewSecurityGroup}
+                useReactHookForm={false}
+                onChange={(value) => console.log(value)}
+                showBorder={true}
+                changeStyle={true}
+                options={[]}
+                width="auto"
+                placeholder="Select City"
+              />
+            </Grid>
+          )}
+          <Grid item xs={isViewDeal || isDealHistory ? 12 : 9}>
             <TextInput
               name=""
+              label={isViewDeal || isDealHistory ? 'City:' : ''}
               // disabled={isViewSecurityGroup}
               useReactHookForm={false}
               onChange={(value) => console.log(value)}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -130,6 +146,7 @@ const DealApplicable = () => {
               useReactHookForm={false}
               onChange={(value) => console.log(value)}
               className="mt-20"
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
         </Grid>
