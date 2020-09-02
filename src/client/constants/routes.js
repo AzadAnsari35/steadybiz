@@ -12,6 +12,10 @@ const routes = {
   },
 
   agency: {
+    searchAgency: '/Agency/Search-Agency',
+    viewAgency: '/Agency/View-Agency',
+    createAgency: '/Agency/Create-Agency',
+    updateAgency: '/Agency/Update-Agency',
     searchDeals: '/Agency/Search-Deals',
     createDeal: '/Agency/Create-Deal',
     viewDeal: '/Agency/View-Deal',

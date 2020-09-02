@@ -93,7 +93,11 @@ const OfficeProfileForm = (props) => {
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
   const {
     userDto: {
-      officeDto: { countryCode: rootCountryCode, cityCode: rootCityCode },
+      officeDto: {
+        countryCode: rootCountryCode,
+        cityCode: rootCityCode,
+        officeLevel,
+      },
     },
   } = userData;
 
@@ -298,6 +302,7 @@ const OfficeProfileForm = (props) => {
         ...data,
         action: 'I',
         userId,
+        officeLevel,
         officeId,
       });
     }

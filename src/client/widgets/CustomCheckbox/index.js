@@ -45,11 +45,11 @@ const CustomCheckbox = (props) => {
     return newValues;
   };
 
-  console.log(
-    { name: name },
+  // console.log(
+  //   { name: name },
 
-    { value: value }
-  );
+  //   { value: value }
+  // );
   // console.log('checkedValues', checkedValues.includes(value));
 
   return (
@@ -66,9 +66,7 @@ const CustomCheckbox = (props) => {
           render={(props) => (
             <Checkbox
               onChange={() => props.onChange(handleCheck(value))}
-              checked={
-                props.value && console.log(props.value, 'props.value', value)
-              }
+              checked={props.value && props.value.includes(value)}
               disableRipple
               disabled={disabled}
               icon={
