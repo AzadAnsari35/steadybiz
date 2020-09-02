@@ -15,7 +15,7 @@ import {
   SelectWithTextInput,
 } from 'Widgets';
 import routes from 'Constants/routes';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import endpoint from 'Config/endpoint.js';
 import endpointWithoutApi from 'Config/endpointWithoutApi';
 import {
@@ -193,8 +193,21 @@ const SearchOffice = () => {
   const [size, setSize] = useState(5);
   const firstPageUpdate = useRef(true);
 
+  const location = useLocation();
   let history = useHistory();
   let dispatch = useDispatch();
+
+  const path = location.pathname;
+
+  const isSearchOffice = utils.stringComparison(
+    path,
+    routes.office.searchOffice
+  );
+
+  const isSearchAgency = utils.stringComparison(
+    path,
+    routes.agency.searchAgency
+  );
 
   const objectStatusesList = useDropDown(
     endpoint.master.objectStatuses,
@@ -314,6 +327,8 @@ const SearchOffice = () => {
           page: page - 1,
           size,
           ofid: ofId,
+          ...(isSearchAgency && { officeChannel: 'SA' }),
+          ...(isSearchAgency && { officeType: 'SA' }),
         })
       );
     } catch (err) {
@@ -356,7 +371,9 @@ const SearchOffice = () => {
     <div className="SearchOffice">
       <div className="SearchOffice-head">
         <div className="d-flex justify-content-between align-items-end pb-4">
-          <div className="font-primary-semibold-24 ">MANAGE OFFICE</div>
+          <div className="font-primary-semibold-24 ">{`MANAGE ${
+            isSearchAgency ? 'AGENCY' : 'OFFICE'
+          }`}</div>
           <IconWithBackground
             bgColor="#74D3DC33"
             showCursor
@@ -372,16 +389,16 @@ const SearchOffice = () => {
 
           <Text
             showLeftBorder={true}
-            text="SEARCH OFFICE"
+            text={`SEARCH  ${isSearchAgency ? 'AGENCY' : 'OFFICE'}`}
             className="font-primary-medium-18 my-24"
           />
           <Grid container spacing={3}>
             <Grid item xs={3}>
               <TextInput
-                name="officeName"
+                name={isSearchAgency ? ' agencyName' : 'officeName'}
                 register={register}
                 errors={errors}
-                label="Office Name:"
+                label={isSearchAgency ? 'Agency Name:' : 'Office Name:'}
               />
             </Grid>
             <Grid item xs={3}>

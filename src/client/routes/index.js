@@ -156,6 +156,30 @@ const Routes = () => (
       path={routes.office.updateOffice}
       component={OfficeProfile}
     />
+    {/* 
+    <PrivateRoute
+      exact
+      path={routes.office.searchAgency}
+      component={SearchOffice}
+    /> */}
+    {/* 
+    <PrivateRoute
+      exact
+      path={routes.office.createOffice}
+      component={OfficeProfile}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.viewOffice}
+      component={OfficeProfile}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.office.updateOffice}
+      component={OfficeProfile}
+    /> */}
 
     <PrivateRoute
       exact
