@@ -7,6 +7,7 @@ const TextInput = (props) => {
     name,
     classes = { root: '', input: '' },
     type = 'text',
+    maxLength = 500,
     label,
     placeholder = '',
     disabled,
@@ -24,6 +25,7 @@ const TextInput = (props) => {
       )}
       <input
         name={name}
+        maxLength={maxLength}
         className={`TextInput-input font-primary-semibold-16 ${
           errors[name] ? 'thin-red-border' : ''
         } ${disabled ? 'input-disabled border-none py-10' : ''}  `}

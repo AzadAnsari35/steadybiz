@@ -3,9 +3,9 @@ import endpointWithoutApi from 'Config/endpointWithoutApi';
 import { commonActionWithoutApi } from 'Actions/';
 export const checkSecurityGroup = (securityGroupObj) => {
   const isSecurityGroup = config.client.securityGroup;
-  //alert(securityGroupObj.securityNumber);
-  if (1 === 1) {
-    let userData = JSON.parse(getItemFromStorage('userData'));
+  //alert(!userData.masterUser);
+  let userData = JSON.parse(getItemFromStorage('userData'));
+  if (1 === 1 && !userData.userDto.masterUser) {
     const item = userData.userDto.functionGroups.find(
       (element) => element.id === securityGroupObj.securityNumber
     );

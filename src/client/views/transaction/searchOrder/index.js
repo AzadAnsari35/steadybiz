@@ -367,6 +367,8 @@ const SearchOrder = () => {
                 label="Origin:"
                 name="origin"
                 register={register}
+                //ref={register({ maxLength: 3 })}
+                maxLength={3}
                 errors={errors}
               />
             </Grid>
@@ -377,6 +379,7 @@ const SearchOrder = () => {
                 name="destination"
                 register={register}
                 errors={errors}
+                maxLength={3}
               />
             </Grid>
             <Grid item xs={6}>
