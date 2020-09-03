@@ -136,15 +136,6 @@ const OfficeProfileForm = (props) => {
   );
 
   useEffect(() => {
-    // const selectedCountry = isCreateOffice
-    //   ? getValues('countryCode') === ''
-    //     ? rootCountryCode
-    //     : getValues('countryCode').value
-    //   : !isCreateOffice
-    //   ? getValues('countryCode') === ''
-    //     ? rootCountryCode
-    //     : getValues('countryCode').value
-    //   : selectedItem?.countryCode;
     const selectedCountry = getValues('countryCode');
     console.log('selectedCountry', selectedCountry);
     if (selectedCountry) {
@@ -264,7 +255,10 @@ const OfficeProfileForm = (props) => {
             isToastVisible: true,
           })
         );
-        isCreateOffice && reset(defaultValues);
+        if (isCreateOffice) {
+          reset(defaultValues);
+          setPaymentOptions([]);
+        }
       }
     }
   }, [createRes]);
@@ -295,6 +289,9 @@ const OfficeProfileForm = (props) => {
     console.log('data', data);
 
     if (isUpdateOffice) {
+      const {
+        users: [{ userId }],
+      } = selectedItem;
       postCreateRequest({
         ...data,
         action: 'U',

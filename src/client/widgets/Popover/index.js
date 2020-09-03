@@ -5,6 +5,7 @@ const SimplePopover = (props) => {
   const {
     handleClose,
     anchorEl,
+    id,
     anchorOrigin = {
       vertical: 'bottom',
       horizontal: 'center',
@@ -20,6 +21,7 @@ const SimplePopover = (props) => {
 
   return (
     <Popover
+      id={id}
       open={showPopover}
       anchorEl={anchorEl}
       onClose={handleClose}
