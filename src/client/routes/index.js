@@ -1,4 +1,5 @@
 import React from 'react';
+import loadable from 'react-loadable';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import {
   Home,
@@ -18,12 +19,17 @@ import {
   PassengerInformation,
   Transaction,
   SearchOrder,
-  SearchDeals,
   CreateDeal,
 } from 'Views/';
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
 import routes from 'Constants/routes';
+import { LinearLoaderSecondary } from 'Widgets/';
+//const LoadingComponent = () => <h3>please wait...</h3>;
+const AsyncSearchDeals = loadable({
+  loader: () => import('Views/agency/manageDeals/searchDeals'),
+  loading: LinearLoaderSecondary,
+});
 
 const Routes = () => (
   <Switch>
@@ -183,7 +189,7 @@ const Routes = () => (
     <PrivateRoute
       exact
       path={routes.agency.searchDeals}
-      component={SearchDeals}
+      component={AsyncSearchDeals}
     />
 
     <PrivateRoute

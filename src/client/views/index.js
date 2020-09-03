@@ -15,7 +15,7 @@ import Transaction from './transaction';
 import SearchOrder from './transaction/searchOrder';
 import SearchSecurityGroup from './office/securityGroup/searchSecurityGroup';
 import CreateSecurityGroup from './office/securityGroup/createSecurityGroup';
-import SearchDeals from './agency/manageDeals/searchDeals';
+//import SearchDeals from './agency/manageDeals/searchDeals';
 import CreateDeal from './agency/manageDeals/createDeal';
 
 export {
@@ -36,6 +36,6 @@ export {
   PassengerInformation,
   Transaction,
   SearchOrder,
-  SearchDeals,
+  //SearchDeals,
   CreateDeal,
 };

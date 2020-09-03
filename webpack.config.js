@@ -9,9 +9,15 @@ const caseSensitivePathsPlugin = new CaseSensitivePathsPlugin();
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+//const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
-
+const BrotliPlugin = require('brotli-webpack-plugin');
+const brotliPlugin = new BrotliPlugin({
+  asset: '[path].br[query]',
+  test: /\.(js|css|html|svg)$/,
+  threshold: 10240,
+  minRatio: 0.8,
+});
 const miniCssPlugin = new MiniCssExtractPlugin({
   filename: '[name].css',
   chunkFilename: '[id].css',
@@ -22,10 +28,10 @@ const htmlPlugin = new HtmlWebpackPlugin({
   template: path.join(__dirname, 'src', 'index.html'),
 });
 
-const uglifyJsPlugin = new UglifyJsPlugin({
-  sourceMap: true,
-  test: /\.min\.js$/i,
-});
+// const uglifyJsPlugin = new UglifyJsPlugin({
+//   sourceMap: true,
+//   test: /\.min\.js$/i,
+// });
 //const terserPlugin =
 
 const optimizeCSSAssetsPlugin = new OptimizeCSSAssetsPlugin({
@@ -105,28 +111,31 @@ module.exports = (env, argv) => {
       // https://twitter.com/wSokra/status/969633336732905474
       // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
       splitChunks: {
-        chunks: 'all',
-
-        minSize: 20000,
-        // minRemainingSize: 0,
-        // maxSize: 0,
-        // minChunks: 1,
-        maxAsyncRequests: 30,
-        maxInitialRequests: 30,
-
-        //enforceSizeThreshold: 50000,
         cacheGroups: {
-          defaultVendors: {
-            test: /[\\/]node_modules[\\/]/,
-            priority: -10,
+          default: false,
+          vendors: false,
+          // vendor chunk
+          vendor: {
+            // sync + async chunks
+            name: 'vendor',
+            chunks: 'initial',
+            // import file path containing node_modules
+            test: /node_modules/,
+            // priority
+            priority: 20,
           },
-          default: {
+          common: {
+            name: 'common',
             minChunks: 2,
-            priority: -20,
+            chunks: 'async',
+            priority: 10,
             reuseExistingChunk: true,
+            enforce: true,
           },
         },
+        // common chunk
       },
+      runtimeChunk: true,
       // // Keep the runtime chunk separated to enable long term caching
       // // https://twitter.com/wSokra/status/969679223278505985
       //  runtimeChunk: true,
@@ -134,11 +143,11 @@ module.exports = (env, argv) => {
     entry: path.join(__dirname, 'src/client', 'client.js'),
     output: {
       path: path.join(__dirname, 'build'),
-      filename: 'bundle.js',
+      filename: '[name].bundle.js',
       publicPath: '/',
     },
     mode: argv.mode,
-    devtool: isDevelopment ? 'eval-source-map' : 'source-map',
+    devtool: isDevelopment ? 'eval-source-map' : '',
     devServer: {
       stats: {
         children: false,
@@ -224,6 +233,7 @@ module.exports = (env, argv) => {
       //uglifyJsPlugin,
 
       optimizeCSSAssetsPlugin,
-    ],
+      !isDevelopment ? brotliPlugin : false,
+    ].filter(Boolean),
   };
 };

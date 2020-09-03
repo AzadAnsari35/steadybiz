@@ -51,6 +51,10 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           link: routes.flight.search,
         },
         {
+          text: 'Search Deals',
+          link: routes.agency.searchDeals,
+        },
+        {
           text: 'Search Order',
           link: routes.transaction.searchOrder,
           clickFunc: () => {
