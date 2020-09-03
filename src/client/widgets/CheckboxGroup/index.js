@@ -14,7 +14,7 @@ const CheckboxGroup = (props) => {
     getValues,
     control,
     useReactHookForm = true,
-    handleChange,
+    onChange,
     className,
     checkboxClassName,
   } = props;
@@ -46,10 +46,11 @@ const CheckboxGroup = (props) => {
                 value={cur.value}
                 primaryLabel={cur.primaryLabel}
                 disabled={disabled}
-                onChange={handleChange}
+                onChange={onChange}
                 useReactHookForm={false}
                 name={name}
                 className={checkboxClassName}
+                checkedValues={checkedValues}
               />
             )
 
