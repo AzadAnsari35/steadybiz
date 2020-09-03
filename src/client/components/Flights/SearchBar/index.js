@@ -224,7 +224,7 @@ const SearchBar = () => {
       departureAirport.code === arrivalAirport.code
     ) {
       errorObj.arrivalAirport = ERROR_MESSAGE.DEPARTURE_ARRIVAL_SAME;
-    } else {
+    } else if (!!arrivalAirport) {
       errorObj.arrivalAirport = "";
     }
 
