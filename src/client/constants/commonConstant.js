@@ -128,7 +128,7 @@ export const PNR_STATUS = [
   { label: 'Ticket Void', value: 'TICKET_VOID' },
   { label: 'Refunded', value: 'REFUNDED' },
 ];
-export const PNR_TYPE = [{ value: 'Sabre', label: 'Sabre (1S)' }];
+export const PNR_TYPE = [{ value: 'AP', label: 'Airline PNR' }];
 export const BOOKING_CATEGORY = [
   { value: 'P', label: 'PNR' },
   { value: 'B', label: 'Booking' },

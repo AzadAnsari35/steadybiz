@@ -126,7 +126,7 @@ const PopoverAction = (props) => {
           dispatch(utils.showErrorBox(securityMessage));
           return;
         }
-        viewOrder(orderNo, 'view');
+        viewOrder(orderNo, 'booked');
 
         break;
       }
@@ -208,6 +208,7 @@ const SearchOrder = () => {
   } = userData;
   const defaultValues = {
     orderNo: '',
+    pnrType: '',
     pnr: '',
     origin: '',
     destination: '',
@@ -353,12 +354,13 @@ const SearchOrder = () => {
                 name="orderNo"
                 register={register}
                 errors={errors}
+                maxLength={13}
               />
             </Grid>
             <Grid item xs={3}>
               <SelectWithTextInput
                 name="pnr"
-                selectInputName="sabre"
+                selectInputName="pnrType"
                 data={PNR_TYPE}
                 label="PNR: "
                 placeholder="PNR Number"
@@ -366,9 +368,9 @@ const SearchOrder = () => {
                 errors={errors}
                 register={register}
                 control={control}
-                showValue
                 selectWidth="50%"
                 isSearchable
+                maxLength={6}
               />
             </Grid>
 
