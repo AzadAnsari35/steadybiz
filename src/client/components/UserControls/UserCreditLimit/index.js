@@ -35,6 +35,7 @@ const UserCreditLimit = (props) => {
     }
 
     history.push(routes.office.manageUserProfile);
+    handleClose();
   };
 
   const handleChangePassword = () => {
@@ -47,6 +48,7 @@ const UserCreditLimit = (props) => {
     }
 
     history.push(routes.office.changePassword);
+    handleClose();
   };
 
   const {
@@ -60,7 +62,7 @@ const UserCreditLimit = (props) => {
     <div className="HeaderPopover br-6">
       <div className="HeaderPopover-head">
         <Avatar className="font-primary-medium-32" size="60px">
-          OT
+          {utils.getShortName(fullName)}
         </Avatar>
         <div className="HeaderPopover-head__detail pl-24 d-flex flex-direction-column">
           <span className=" HeaderPopover-head__detail-name font-primary-medium-24">

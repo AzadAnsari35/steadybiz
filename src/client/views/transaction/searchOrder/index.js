@@ -9,10 +9,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { regex } from 'Helpers/validator';
+import useDropDown from 'Hooks/useDropDown';
+import { dropDownParam } from 'Constants/commonConstant';
 import {
   PNR_STATUS,
   PNR_TYPE,
-  BOOKING_CATEGORY,
+  //BOOKING_CATEGORY,
   SEARCH_DATE_TYPE,
 } from 'Constants/commonConstant';
 import useDropDownApi from 'Hooks/useDropDownApi';
@@ -123,7 +126,7 @@ const PopoverAction = (props) => {
           dispatch(utils.showErrorBox(securityMessage));
           return;
         }
-        viewOrder(orderNo, 'view');
+        viewOrder(orderNo, 'booked');
 
         break;
       }
@@ -190,7 +193,11 @@ const SearchOrder = () => {
   const [page, setPage] = useState(1);
   const [size] = useState(10);
   const firstPageUpdate = useRef(true);
-
+  const countriesDialCodeList = useDropDown(
+    endpoint.master.countries,
+    dropDownParam.countriesDialCode,
+    'masterCountries'
+  );
   let history = useHistory();
   let dispatch = useDispatch();
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
@@ -201,13 +208,17 @@ const SearchOrder = () => {
   } = userData;
   const defaultValues = {
     orderNo: '',
+    pnrType: '',
     pnr: '',
     origin: '',
     destination: '',
     paxSearchValue: '',
     paxInfoType: '',
     bookingCategory: '',
+    ticketNumber: '',
     bookingStatus: '',
+    mobileDialCode: '',
+    mobile: '',
     userId: '',
     officeID: officeId,
   };
@@ -343,12 +354,13 @@ const SearchOrder = () => {
                 name="orderNo"
                 register={register}
                 errors={errors}
+                maxLength={13}
               />
             </Grid>
             <Grid item xs={3}>
               <SelectWithTextInput
                 name="pnr"
-                selectInputName="sabre"
+                selectInputName="pnrType"
                 data={PNR_TYPE}
                 label="PNR: "
                 placeholder="PNR Number"
@@ -356,9 +368,9 @@ const SearchOrder = () => {
                 errors={errors}
                 register={register}
                 control={control}
-                showValue
                 selectWidth="50%"
                 isSearchable
+                maxLength={6}
               />
             </Grid>
 
@@ -398,40 +410,50 @@ const SearchOrder = () => {
             </Grid>
 
             <Grid item xs={3}>
-              <MultiSelect
-                label="Booking Category:"
-                name="bookingCategory"
-                options={BOOKING_CATEGORY}
-                showBorder={true}
-                changeStyle={true}
-                control={control}
+              {/* <MultiSelect
+                  label="Booking Category:"
+                  name="bookingCategory"
+                  options={BOOKING_CATEGORY}
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  width="auto"
+                  placeholder="All"
+                  isSearchable
+                /> */}
+
+              <TextInput
+                label="Ticket No:"
+                name="ticketNumber"
+                register={register}
                 errors={errors}
-                width="auto"
-                isSearchable
+                maxLength={15}
               />
             </Grid>
-
             <Grid item xs={3}>
               <SelectWithTextInput
-                name="paxSearchValue"
-                selectInputName="paxInfoType"
-                data={[
-                  { value: 'M', label: 'Mobile Number' },
-                  { value: 'L', label: 'Last Name' },
-                  { value: 'E', label: 'Email ID' },
-                ]}
-                label="PAX Info:"
-                placeholder="Mobile Number"
-                selectPlaceholder="Mobile Number"
+                name="mobile"
+                selectInputName="mobileDialCode"
+                data={countriesDialCodeList.dropDownItems}
+                label="Mobile "
+                placeholder="Mobile No."
+                selectPlaceholder="Code"
                 errors={errors}
                 register={register}
                 control={control}
-                onSelectChange={handelPaxInfoType}
-                selectWidth="50%"
-                isSearchable
+                showValue
+                validation={{
+                  pattern: {
+                    value: regex.number,
+                    message: 'Please enter numbers only.',
+                  },
+                }}
+                fullWidthDropdown
+                maxLength={15}
+                isSearchable={false}
               />
             </Grid>
-
             <Grid item xs={3}>
               <TextInput
                 label="Office ID:"
@@ -452,13 +474,33 @@ const SearchOrder = () => {
                 control={control}
                 errors={errors}
                 width="auto"
+                placeholder="All"
+                isSearchable
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <SelectWithTextInput
+                name="paxSearchValue"
+                selectInputName="paxInfoType"
+                data={[
+                  { value: 'L', label: 'Last Name' },
+                  { value: 'E', label: 'Email ID' },
+                ]}
+                label="PAX Info:"
+                placeholder=""
+                selectPlaceholder="Last Name"
+                errors={errors}
+                register={register}
+                control={control}
+                onSelectChange={handelPaxInfoType}
+                selectWidth="50%"
                 isSearchable
               />
             </Grid>
 
             <Grid item xs={3}>
               <MultiSelect
-                label="Status:"
+                label="Transaction Status:"
                 name="bookingStatus"
                 options={PNR_STATUS}
                 showBorder={true}
@@ -466,6 +508,7 @@ const SearchOrder = () => {
                 control={control}
                 errors={errors}
                 width="auto"
+                placeholder="All"
                 isSearchable
               />
             </Grid>

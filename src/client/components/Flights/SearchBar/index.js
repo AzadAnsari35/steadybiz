@@ -21,6 +21,7 @@ import {
 import { utils } from 'Helpers';
 import endpoint from 'Config/endpoint';
 import securityOptionConstant from 'Constants/securityOptionConstant';
+import { ERROR_MESSAGE } from "./constant";
 
 import {
   AutoSuggest,
@@ -31,6 +32,7 @@ import {
   MultiSelect,
   RoundedButton,
   Text,
+  ErrorMessage,
 } from 'Widgets';
 import PassengersSelectCount from './PassengersSelectCount';
 
@@ -155,6 +157,11 @@ const SearchBar = () => {
     arrivalAirport: initialArrivalAirport,
   });
 
+  const [errorData, setErrorData] = useState({
+    departureAirport: '',
+    arrivalAirport: '',
+  })
+
   const [error, setError] = useState(null);
 
   const calculateTotalPassengers = (passengers) => {
@@ -167,6 +174,12 @@ const SearchBar = () => {
   };
 
   const handleSelectSuggestion = (id, value) => {
+    if (value !== "") {
+			setErrorData({
+				...errorData,
+				[id]: "",
+			});
+		}
     setFormData({
       ...formData,
       [id]: value,
@@ -194,13 +207,37 @@ const SearchBar = () => {
     setSegmentType(value);
   };
 
-  const onSubmit = (data, e) => {
+  const validateForm = (data, e) => {
     const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.flightSearch);
     if (securityMessage !== '') {
       dispatch(utils.showErrorBox(securityMessage));
       return;
     }
+		const { departureAirport, arrivalAirport } = formData;
+		let errorObj = errorData;
 
+		!departureAirport && (errorObj.departureAirport = ERROR_MESSAGE.DEPARTURE_AIRPORT_REQUIRED);
+		!arrivalAirport && (errorObj.arrivalAirport = ERROR_MESSAGE.ARRIVAL_AIRPORT_REQUIRED);
+		if (
+      !!departureAirport &&
+      !!arrivalAirport &&
+      departureAirport.code === arrivalAirport.code
+    ) {
+      errorObj.arrivalAirport = ERROR_MESSAGE.DEPARTURE_ARRIVAL_SAME;
+    } else if (!!arrivalAirport) {
+      errorObj.arrivalAirport = "";
+    }
+
+		setErrorData({
+			...errorData,
+			...errorObj,
+		});
+		if (!!departureAirport && !errorObj.departureAirport && !!arrivalAirport && !errorObj.arrivalAirport) {
+			onSubmit(data);
+		}
+	};
+
+  const onSubmit = data => {
     const passengersData = passengers.filter(
       (passenger) => passenger.count > 0
     );
@@ -252,7 +289,7 @@ const SearchBar = () => {
   return (
     <div className="SearchBar">
       <p>{error}</p>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(validateForm)}>
         <div className="SearchBar-basicSearch d-flex">
           <MultiSelect
             name="segmentTypes"
@@ -298,6 +335,7 @@ const SearchBar = () => {
                 initialValue={initialDepartureAirport}
                 onSelectSuggestion={handleSelectSuggestion}
               />
+              {!!errorData.departureAirport && <ErrorMessage errorMessage={errorData.departureAirport} />}
             </Grid>
             {!isPassengerCountDropdownOpen && <RoundedButton />}
             <Grid item xs={12} md={4}>
@@ -314,6 +352,7 @@ const SearchBar = () => {
                 initialValue={initialArrivalAirport}
                 onSelectSuggestion={handleSelectSuggestion}
               />
+              {!!errorData.arrivalAirport && <ErrorMessage errorMessage={errorData.arrivalAirport} />}
             </Grid>
             <Grid item xs={12} md={4}>
               <DatesRangePicker

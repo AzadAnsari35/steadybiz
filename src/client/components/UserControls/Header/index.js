@@ -43,6 +43,7 @@ const Header = () => {
   const { userDto = {} } = usersSignIn || {};
 
   const handleClick = (event) => {
+    console.log('event.currentTarget', event.currentTarget);
     setAnchorEl(event.currentTarget);
   };
 
@@ -90,18 +91,33 @@ const Header = () => {
         </div>
 
         {isAuthenticated ? (
-          <div
-            className="Header-right__loggedin d-flex align-items-center cursor-pointer"
-            onClick={handleClick}
-          >
-            <Avatar>
-              {getShortName(`${userDto.firstName} ${userDto.lastName}`)}
-            </Avatar>
-            <div className="font-primary-semibold-20 pl-16">
-              {userDto.firstName} {userDto.lastName}
+          <>
+            <div
+              className="Header-right__loggedin d-flex align-items-center cursor-pointer"
+              onClick={handleClick}
+            >
+              <Avatar>
+                {getShortName(`${userDto.firstName} ${userDto.lastName}`)}
+              </Avatar>
+              <div className="font-primary-semibold-20 pl-16">
+                {userDto.firstName} {userDto.lastName}
+              </div>
+              <KeyboardArrowDownIcon />
             </div>
-            <KeyboardArrowDownIcon />
-          </div>
+            <SimplePopover
+              handleClose={handleClose}
+              anchorEl={anchorEl}
+              id="user-credit-limt"
+            >
+              <UserCreditLimit
+                creditLimitDetails={creditLimitDetails}
+                officeDto={userDto?.officeDto}
+                fullName={`${userDto.firstName} ${userDto.lastName}`}
+                handleClose={handleClose}
+                setShowDrawer={setShowDrawer}
+              />
+            </SimplePopover>
+          </>
         ) : (
           <div className="Header-right d-flex">
             <div className="d-flex align-items-center ">
@@ -118,15 +134,7 @@ const Header = () => {
             </div>
           </div>
         )}
-        <SimplePopover handleClose={handleClose} anchorEl={anchorEl}>
-          <UserCreditLimit
-            creditLimitDetails={creditLimitDetails}
-            officeDto={userDto?.officeDto}
-            fullName={`${userDto.firstName} ${userDto.lastName}`}
-            handleClose={handleClose}
-            setShowDrawer={setShowDrawer}
-          />
-        </SimplePopover>
+
         {/* <LinearLoaderSecondary /> */}
       </div>
       {isAuthenticated && (

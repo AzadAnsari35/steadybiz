@@ -61,32 +61,36 @@ const PassengerInformationStatic = (props) => {
 													<Text className="font-primary-bold-14" text="3A" />
 												</div>
 											</Grid> */}
-											<Grid item xs={12} md={4}>
-												<div className="d-flex item-detail">
-													<Text className="font-primary-medium-14 mr-10" text="Check In Baggage: " />
-													<Text
-														className="font-primary-bold-14"
-														text={`${
-															!!checkinBaggageObj && checkinBaggageObj.unit === "kg"
-																? `${!!checkinBaggageObj && checkinBaggageObj.weight} kg`
-																: `${!!checkinBaggageObj && checkinBaggageObj.noOfPieces} Pieces`
-														} / Person`}
-													/>
-												</div>
-											</Grid>
-											<Grid item xs={12} md={4}>
-												<div className="d-flex item-detail">
-													<Text className="font-primary-medium-14 mr-10" text="Cabin Baggage: " />
-													<Text
-														className="font-primary-bold-14"
-														text={`${
-															cabinBaggageObj.unit === "kg"
-																? `${cabinBaggageObj.weight} kg`
-																: `${cabinBaggageObj.noOfPieces} Pieces`
-														} / Person`}
-													/>
-												</div>
-											</Grid>
+											{!!checkinBaggageObj &&
+												<Grid item xs={12} md={4}>
+													<div className="d-flex item-detail">
+														<Text className="font-primary-medium-14 mr-10" text="Check In Baggage: " />
+														<Text
+															className="font-primary-bold-14"
+															text={`${
+																checkinBaggageObj.unit === "kg"
+																	? `${!!checkinBaggageObj && checkinBaggageObj.weight} kg`
+																	: `${!!checkinBaggageObj && checkinBaggageObj.noOfPieces} Pieces`
+															} / Person`}
+														/>
+													</div>
+												</Grid>
+											}
+											{!!cabinBaggageObj &&
+												<Grid item xs={12} md={4}>
+													<div className="d-flex item-detail">
+														<Text className="font-primary-medium-14 mr-10" text="Cabin Baggage: " />
+														<Text
+															className="font-primary-bold-14"
+															text={`${
+																cabinBaggageObj.unit === "kg"
+																	? `${cabinBaggageObj.weight} kg`
+																	: `${cabinBaggageObj.noOfPieces} Pieces`
+															} / Person`}
+														/>
+													</div>
+												</Grid>
+											}
 											{/* FOR FUTURE REFERENCE */}
 											{/* <Grid item xs={12} md={4}>
 												<div className="d-flex item-detail">

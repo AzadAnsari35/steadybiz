@@ -356,6 +356,10 @@ const UserProfileForm = (props) => {
                   validation={{ required: 'Please enter the mobile number.' }}
                   selectValidation={{
                     required: 'Please enter the country code.',
+                    pattern: {
+                      value: regex.number,
+                      message: 'Please enter valid mobile number.',
+                    },
                   }}
                   control={control}
                   showValue

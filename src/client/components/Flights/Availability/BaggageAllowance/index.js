@@ -84,29 +84,36 @@ const BaggageAllowance = props => {
                         <Grid item xs={6}>
                           <Text className="font-primary-regular-12 segment d-inline" text={item} />
                         </Grid>
-                        <Grid item xs={3}>
-                          <Text
-                            className="font-primary-regular-12 text-uppercase text-align-center"
-                            text={
-                              index < 2
-                              ? flightSegment.baggageInformation.checkInBaggage
-                                .noOfPieces
-                                ? `${flightSegment.baggageInformation.checkInBaggage.noOfPieces} Pieces`
-                                : `${flightSegment.baggageInformation.checkInBaggage.weight} KG`
-                              : "NA"
+                        {!!flightSegment.baggageInformation &&
+                          <>
+                            {!!flightSegment.baggageInformation.checkInBaggage &&
+                              <Grid item xs={3}>
+                                <Text
+                                  className="font-primary-regular-12 text-uppercase text-align-center"
+                                  text={
+                                    index < 2
+                                    ? flightSegment.baggageInformation.checkInBaggage.noOfPieces
+                                      ? `${flightSegment.baggageInformation.checkInBaggage.noOfPieces} Pieces`
+                                      : `${flightSegment.baggageInformation.checkInBaggage.weight} KG`
+                                    : "NA"
+                                  }
+                                />
+                              </Grid>
                             }
-                          />
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Text
-                            className="font-primary-regular-12 text-uppercase text-align-center"
-                            text={
-                              index < 2
-                              ? `${flightSegment.baggageInformation.cabinBaggage.weight} KG`
-                              : "NA"
+                            {!!flightSegment.baggageInformation.cabinBaggage &&
+                              <Grid item xs={3}>
+                                <Text
+                                  className="font-primary-regular-12 text-uppercase text-align-center"
+                                  text={
+                                    index < 2
+                                    ? `${flightSegment.baggageInformation.cabinBaggage.weight} KG`
+                                    : "NA"
+                                  }
+                                />
+                              </Grid>
                             }
-                          />
-                        </Grid>
+                          </>
+                        }
                       </div>
                     )}
                   </div>

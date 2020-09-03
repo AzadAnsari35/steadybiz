@@ -7,14 +7,23 @@ import { useLocation, useHistory } from 'react-router-dom';
 import routes from 'Constants/routes';
 import CloseIcon from '@material-ui/icons/Close';
 import { utils } from 'Helpers';
+import { useDispatch, useSelector } from 'react-redux';
+import { commonActionUpdate } from 'Actions';
+import endpoint from 'Config/endpoint';
 
 import './style.scss';
 
 const OfficeProfile = () => {
   const location = useLocation();
   let history = useHistory();
+  const dispatch = useDispatch();
 
   const mode = location.pathname;
+
+  const handleClose = () => {
+    history.push(routes.office.searchOffice);
+    dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
+  };
 
   return (
     <div className="OfficeProfile">
@@ -41,7 +50,7 @@ const OfficeProfile = () => {
         headerActionContent={
           <IconWithBackground
             bgColor={colors.lightRed}
-            onClick={() => history.push(routes.office.searchOffice)}
+            onClick={() => handleClose()}
             showCursor
           >
             <CloseIcon style={{ color: colors.red }} />
