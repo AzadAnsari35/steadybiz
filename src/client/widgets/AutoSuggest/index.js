@@ -19,6 +19,7 @@ const createEndpoint = () => {
   return useAsyncEndpoint((data, endpoint) => ({
     _endpoint: endpoint,
     data,
+    isHideLoader: true,
   }));
 };
 const AutoSuggest = (props) => {

@@ -24,15 +24,17 @@ const useAsyncEndpoint = (fn) => {
     const doAxios = async () => {
       //   setLoading(true);
       try {
-        dispatch(
-          commonActionWithoutApi(endpointWithoutApi.loader.loaderStatus, {
-            loaderType: loaderTypes.primary,
-            isLoaderVisible: true,
-            asyncCallInProgress: !!getDataFromRedux(loaderStatus)
-            ? getDataFromRedux(loaderStatus).asyncCallInProgress + 1
-            : 1,
-          })
-        );
+        if (req.isHideLoader == undefined) {
+          dispatch(
+            commonActionWithoutApi(endpointWithoutApi.loader.loaderStatus, {
+              loaderType: loaderTypes.primary,
+              isLoaderVisible: true,
+              asyncCallInProgress: getDataFromRedux(loaderStatus)
+                ? getDataFromRedux(loaderStatus).asyncCallInProgress + 1
+                : 1,
+            })
+          );
+        }
         const result = await apiReqeust.httpRequest(
           req._endpoint.httpVerb,
           req.data,
@@ -41,7 +43,7 @@ const useAsyncEndpoint = (fn) => {
         );
         if (!signal.aborted) {
           // console.log(res);
-          setRes( result);
+          setRes(result);
           //console.log(res);
         }
       } catch (exception) {
@@ -52,15 +54,17 @@ const useAsyncEndpoint = (fn) => {
         if (!signal.aborted) {
           //     setLoading(false);
         }
-        dispatch(
-          commonActionWithoutApi(endpointWithoutApi.loader.loaderStatus, {
-            loaderType: loaderTypes.primary,
-            isLoaderVisible: false,
-            asyncCallInProgress: !!getDataFromRedux(loaderStatus)
-              ? getDataFromRedux(loaderStatus).asyncCallInProgress - 1
-              : 0,
-          })
-        );
+        if (req.isHideLoader == undefined) {
+          dispatch(
+            commonActionWithoutApi(endpointWithoutApi.loader.loaderStatus, {
+              loaderType: loaderTypes.primary,
+              isLoaderVisible: false,
+              asyncCallInProgress: getDataFromRedux(loaderStatus)
+                ? getDataFromRedux(loaderStatus).asyncCallInProgress - 1
+                : 0,
+            })
+          );
+        }
       }
     };
     doAxios();
