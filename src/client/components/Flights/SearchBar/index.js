@@ -224,7 +224,9 @@ const SearchBar = () => {
             destinationAirport: formData.arrivalAirport,
             destinationDate:
               segmentType.value !== 'OW'
-                ? moment(flightDates.endDate).format('YYYY-MM-DD')
+                ? !!flightDates.endDate
+                  ? moment(flightDates.endDate).format('YYYY-MM-DD')
+                  : moment(flightDates.startDate).add(1, 'days').format('YYYY-MM-DD')
                 : '',
           },
         ],

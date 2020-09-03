@@ -134,8 +134,15 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       icon: <AssignmentIcon style={{ fontSize: 30 }} />,
       clickFunc: () => setShowReport(!showReport),
       show: showReport,
-      subList: [],
-      link: '#',
+      subList: [
+        {
+          text: 'Booking Report',
+          link: routes.transaction.bookingReport,
+          // clickFunc: () => {
+          //   dispatch(commonActionUpdate(endpoint.orders.searchOrders, null));
+          // },
+        },
+      ],
     },
 
     {

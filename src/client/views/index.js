@@ -17,6 +17,7 @@ import SearchSecurityGroup from './office/securityGroup/searchSecurityGroup';
 import CreateSecurityGroup from './office/securityGroup/createSecurityGroup';
 //import SearchDeals from './agency/manageDeals/searchDeals';
 import CreateDeal from './agency/manageDeals/createDeal';
+import BookingReport from './transaction/bookingReport';
 
 export {
   Home,
@@ -38,4 +39,5 @@ export {
   SearchOrder,
   //SearchDeals,
   CreateDeal,
+  BookingReport,
 };

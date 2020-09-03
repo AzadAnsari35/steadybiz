@@ -20,6 +20,7 @@ import {
   Transaction,
   SearchOrder,
   CreateDeal,
+  BookingReport,
 } from 'Views/';
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
@@ -269,6 +270,11 @@ const Routes = () => (
       exact
       path={routes.office.registration}
       component={OfficeRegistration}
+    />
+    <PrivateRoute
+      exact
+      path={routes.transaction.bookingReport}
+      component={BookingReport}
     />
   </Switch>
 );

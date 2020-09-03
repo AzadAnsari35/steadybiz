@@ -60,6 +60,7 @@ const routes = {
     issueTicket: '/Transaction/Issue-Ticket',
     viewBooking: '/Transaction/View-Booking',
     viewPNR: '/Transaction/View-PNR',
+    bookingReport: '/Transaction/Booking-Report',
   },
 };
 

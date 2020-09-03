@@ -161,14 +161,14 @@ const MultiSelect = (props) => {
       ) : (
         <div
           className={`MultiSelect 
-        ${className ? className : ''} 
-        ${changeStyle ? `MultiSelect-customStyle` : ''}  
-        ${showBorder ? `MultiSelect-showBorder` : ''} 
-        ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
-        ${errors[name] ? `thin-red-border` : ''} 
-        ${disabled ? 'input-disabled border-none py-10' : ''}
-        ${isSearchable ? 'MultiSelect-isSearchable' : ''}
-        `}
+            ${className ? className : ''} 
+            ${changeStyle ? `MultiSelect-customStyle` : ''}  
+            ${showBorder ? `MultiSelect-showBorder` : ''} 
+            ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
+            ${errors[name] ? `thin-red-border` : ''} 
+            ${disabled ? 'input-disabled border-none py-10' : ''}
+            ${isSearchable ? 'MultiSelect-isSearchable' : ''}
+          `}
           style={{ width: `${width}px` }}
         >
           <Select
