@@ -116,8 +116,13 @@ const MultiSelect = (props) => {
                 ${showBorder ? `MultiSelect-showBorder` : ''} 
                 ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
                 ${errors[name] ? `thin-red-border` : ''} 
-                ${disabled ? 'input-disabled border-none py-10' : ''}
                 ${isSearchable ? 'MultiSelect-isSearchable' : ''}
+                ${
+                  disabled
+                    ? 'MultiSelect-disabled input-disabled border-none py-10'
+                    : ''
+                }
+
                 `}
                 style={{ width: `${width}px`, ...style }}
               >
@@ -166,8 +171,9 @@ const MultiSelect = (props) => {
         ${showBorder ? `MultiSelect-showBorder` : ''} 
         ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
         ${errors[name] ? `thin-red-border` : ''} 
-        ${disabled ? 'input-disabled border-none py-10' : ''}
         ${isSearchable ? 'MultiSelect-isSearchable' : ''}
+        ${disabled ? 'MultiSelect-disabled border-none py-10' : ''}
+
         `}
           style={{ width: `${width}px` }}
         >
