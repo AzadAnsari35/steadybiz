@@ -50,13 +50,19 @@ const FarePolicy = (props) => {
                   <Grid item xs={4}>
                     <Text
                       className="font-primary-regular-13 text-align-center"
-                      text={`${exchangeBefore.currency} ${exchangeBefore.amount}`}
+                      text={!!exchangeBefore.currency && !!exchangeBefore.amount
+                        ? `${exchangeBefore.currency} ${exchangeBefore.amount}`
+                        : "N/A"
+                      }
                     />
                   </Grid>
                   <Grid item xs={4}>
                     <Text
                       className="font-primary-regular-13 text-align-center"
-                      text={`${exchangeAfter.currency} ${exchangeAfter.amount}`}
+                      text={!!exchangeAfter.currency && !!exchangeAfter.amount
+                        ? `${exchangeAfter.currency} ${exchangeAfter.amount}`
+                        : "N/A"
+                      }
                     />
                   </Grid>
                 </div>

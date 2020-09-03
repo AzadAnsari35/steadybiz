@@ -25,7 +25,11 @@ const FareRules = props => {
   const { fareBasisCode } = itinerary.totalfareDetails;
 
   useEffect(() => {
-    setFareRulesSegments([outboundFlightSegment, inboundFlightSegment]);
+    if (!!inboundFlightSegment) {
+      setFareRulesSegments([outboundFlightSegment, inboundFlightSegment]);
+    } else {
+      setFareRulesSegments([outboundFlightSegment]);
+    }
     setActiveFareRulesTab(outboundFlightSegment.flightSegments);
   }, []);
 
@@ -44,22 +48,24 @@ const FareRules = props => {
   return (
     <div className="FareRules">
       <div className="FareRules-tabs d-flex">
-        {fareRulesSegments.map((tab, index) =>
-          <div
-            key={tab.flightSegments}
-            className={`tab ${activeFareRulesTab === tab.flightSegments ? "active" : ""} cursor-pointer`}
-            onClick={() => handleFareRulesTabClick(tab)}
-          >
-            <Text
-              className="font-primary-medium-14"
-              text={`${tab.flightSegmentGroup[0].departureDetails.cityName} (${
-                tab.flightSegmentGroup[0].departureDetails.airportCode
-              }) - ${tab.flightSegmentGroup[tab.flightSegmentGroup.length - 1].arrivalDetails.cityName} (${
-                tab.flightSegmentGroup[tab.flightSegmentGroup.length - 1].arrivalDetails.airportCode
-              })`}
-            />
-          </div>
-        )}
+        {fareRulesSegments.map((tab, index) => {
+          return (
+            <div
+              key={tab.flightSegments}
+              className={`tab ${activeFareRulesTab === tab.flightSegments ? "active" : ""} cursor-pointer`}
+              onClick={() => handleFareRulesTabClick(tab)}
+            >
+              <Text
+                className="font-primary-medium-14"
+                text={`${tab.flightSegmentGroup[0].departureDetails.cityName} (${
+                  tab.flightSegmentGroup[0].departureDetails.airportCode
+                }) - ${tab.flightSegmentGroup[tab.flightSegmentGroup.length - 1].arrivalDetails.cityName} (${
+                  tab.flightSegmentGroup[tab.flightSegmentGroup.length - 1].arrivalDetails.airportCode
+                })`}
+              />
+            </div>
+          )
+        })}
       </div>
       {fareRules && !!fareRules.fareRules && fareRules.fareRules.length > 0 &&
         fareRules.fareRules.map((fareRule, index) =>
