@@ -120,7 +120,7 @@ module.exports = (env, argv) => {
             name: 'vendor',
             chunks: 'initial',
             // import file path containing node_modules
-            test: /node_modules/,
+            test: /[\\/]node_modules[\\/]/,
             // priority
             priority: 20,
           },
