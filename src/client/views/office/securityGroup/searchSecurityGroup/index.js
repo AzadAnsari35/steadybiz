@@ -266,6 +266,7 @@ const SearchSecurityGroup = () => {
       return;
     }
     history.push(routes.office.createSecurityGroup);
+    utils.setItemToStorage('selectedSecurityGroup', null);
   };
 
   return (

@@ -6,14 +6,23 @@ import colors from 'Constants/colors';
 import { useLocation, useHistory } from 'react-router-dom';
 import routes from 'Constants/routes';
 import CloseIcon from '@material-ui/icons/Close';
+import { useDispatch, useSelector } from 'react-redux';
+import { commonActionUpdate } from 'Actions';
+import endpoint from 'Config/endpoint';
 
 import './style.scss';
 
 const UserProfile = () => {
   const location = useLocation();
   let history = useHistory();
+  const dispatch = useDispatch();
 
   const mode = location.pathname;
+
+  const handleClose = () => {
+    history.push(routes.office.searchOfficeUser);
+    dispatch(commonActionUpdate(endpoint.office.searchUser, null));
+  };
 
   return (
     <div className="ViewProfile">
@@ -40,7 +49,7 @@ const UserProfile = () => {
         headerActionContent={
           <IconWithBackground
             bgColor={colors.lightRed}
-            onClick={() => history.push(routes.office.searchOfficeUser)}
+            onClick={() => handleClose()}
             showCursor
           >
             <CloseIcon style={{ color: colors.red }} />

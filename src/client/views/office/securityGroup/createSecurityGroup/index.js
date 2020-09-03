@@ -106,6 +106,7 @@ const CreateSecurityGroup = () => {
   const setCreateDefaultValues = () => {
     if (objectStatusesList.dropDownItems.length > 0 && isCreateSecurityGroup) {
       reset({ objectStatusId: objectStatusesList.dropDownItems[3] });
+      console.log('allSection', allSection);
       setAllSection([]);
     }
   };
@@ -125,10 +126,8 @@ const CreateSecurityGroup = () => {
         ),
         userGroupName,
       });
+      setAllSection(selectedItem.functionGroups);
     }
-    setAllSection(selectedItem.functionGroups);
-
-    // return setAllSection([]);
   };
 
   useEffect(() => setCreateDefaultValues(), [objectStatusesList.dropDownItems]);
