@@ -20,6 +20,8 @@ import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam, titles } from 'Constants/commonConstant';
 import { countriesDialCodeFormatter } from 'Helpers/global';
+import useCheckboxData from 'Hooks/useCheckboxData';
+
 import { useDispatch, useSelector } from 'react-redux';
 import {
   commonActionWithoutApi,
@@ -78,10 +80,14 @@ const OfficeProfileForm = (props) => {
     defaultValues,
   });
 
+  const [paymentOptions, setPaymentOptions] = useCheckboxData([]);
+
   let rowNumber = utils.getItemFromStorage('selectedOffice');
   const searchResult =
     useSelector((state) => state.searchOffice?.items?.data?.data) || [];
   let selectedItem = searchResult[rowNumber] || {};
+
+  console.log('searchResult', searchResult);
 
   console.log('selectedItem', selectedItem);
 
@@ -109,7 +115,7 @@ const OfficeProfileForm = (props) => {
     (state) => state.masterSettlementPlans?.items?.data
   );
 
-  console.log('settlementPlans', settlementPlans);
+  // console.log('settlementPlans', settlementPlans);
 
   const countriesList = useDropDown(
     endpoint.master.countries,
@@ -182,7 +188,7 @@ const OfficeProfileForm = (props) => {
         address1,
         address2,
         emailId: officeEmail,
-        paymentOptions: paymentOptions,
+        // paymentOptions: paymentOptions,
         officeId,
         officeName,
         firstName,
@@ -209,6 +215,7 @@ const OfficeProfileForm = (props) => {
           'label'
         ),
       });
+      setPaymentOptions(paymentOptions);
     }
   };
 
@@ -293,6 +300,7 @@ const OfficeProfileForm = (props) => {
         action: 'U',
         userId,
         officeId,
+        paymentOptions,
         ofId: selectedItem.ofId,
       });
     }
@@ -303,6 +311,7 @@ const OfficeProfileForm = (props) => {
         action: 'I',
         userId,
         officeLevel,
+        paymentOptions,
         officeId,
       });
     }
@@ -701,10 +710,13 @@ const OfficeProfileForm = (props) => {
                 <CheckboxGroup
                   label="Payment Option:"
                   name="paymentOptions"
-                  control={control}
-                  getValues={getValues}
+                  // control={control}
+                  // getValues={getValues}
                   disabled={isViewOffice}
                   checkboxes={settlementPlans || []}
+                  useReactHookForm={false}
+                  onChange={setPaymentOptions}
+                  checkedValues={paymentOptions}
                 />
 
                 {/* <CustomCheckbox
