@@ -17,7 +17,7 @@ const ContactDetailsStatic = (props) => {
           />
           <Text
             className="ContactDetailsStatic-category__content font-primary-semibold-16-1"
-            text={`${!!countryCode ? `+${countryCode} ` : ''} ${phone}`}
+            text={`${!!countryCode ? `${countryCode} ` : ''} ${phone}`}
           />
         </div>}
         {!!email && <div className="ContactDetailsStatic-category">
