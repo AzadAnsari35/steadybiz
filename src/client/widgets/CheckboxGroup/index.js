@@ -19,7 +19,7 @@ const CheckboxGroup = (props) => {
     checkboxClassName,
   } = props;
 
-  console.log('checkboxes', checkboxes);
+  // console.log('checkboxes', checkboxes);
 
   return (
     <div className={`CheckboxContainer ${className ? className : ''}`}>
