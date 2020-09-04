@@ -29,6 +29,7 @@ import { commonAction } from "Actions";
 import endpoint from "Config/endpoint";
 import { utils } from "Helpers";
 import securityOptionConstant from "Constants/securityOptionConstant";
+import { commonActionUpdate } from "Actions";
 
 import { ArrowIcon, Button, CustomDrawer, Dot, Image, Line, Tag, Text } from "Widgets";
 import FareRules from "Components/Common/FareRules";
@@ -124,6 +125,11 @@ const FlightItineraryCard = props => {
       flightSegments: tab,
       fareBasisCode,
     }));
+  };
+
+  const handleFareRulesCloseClick = () => {
+    dispatch(commonActionUpdate(endpoint.flights.fareRules, null));
+    setShowFareRules();
   };
 
   const handleSelectFlight = () => {
@@ -391,7 +397,7 @@ const FlightItineraryCard = props => {
       <CustomDrawer
         title="Fare Rules"
         showDrawer={showFareRules}
-        setShowDrawer={setShowFareRules}
+        onCloseClick={handleFareRulesCloseClick}
         width="868px"
       >
         <FareRules itinerary={itinerary} />

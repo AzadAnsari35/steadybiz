@@ -87,8 +87,12 @@ export const TITLES = {
   ],
   INF: [
     {
-      label: 'Inf',
-      value: 'Inf',
+      label: 'Mstr',
+      value: 'MI',
+    },
+    {
+      label: 'Miss',
+      value: 'FI',
     },
   ],
 };

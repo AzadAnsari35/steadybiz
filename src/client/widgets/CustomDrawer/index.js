@@ -9,7 +9,7 @@ import { IconWithBackground, Text } from "Widgets/";
 import "./style.scss";
 
 const CustomDrawer = props => {
-  const { children, direction = "right", showDrawer, title, setShowDrawer, width } = props;
+  const { children, direction = "right", showDrawer, title, onCloseClick, width } = props;
 
   return (
     <Drawer
@@ -23,7 +23,7 @@ const CustomDrawer = props => {
           <Text className="CustomDrawer-title font-primary-semibold-24" text={title} />
           <IconWithBackground
             bgColor={colors.lightRed}
-            onClick={setShowDrawer}
+            onClick={onCloseClick}
             showCursor
           >
             <CloseIcon style={{ color: colors.red }} />

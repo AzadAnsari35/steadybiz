@@ -166,7 +166,7 @@ const handleSortDirection = ()=>{
                     </div>
                   }
                   <div className="sort d-flex align-items-center ml-auto">
-                    <SwapVertIcon className="sort-reverse" onClick={handleSortDirection} />
+                    <SwapVertIcon className="sort-reverse cursor-pointer" onClick={handleSortDirection} />
                     <Text className="font-primary-medium-14 mr-10" text="Sort by: " />
                     <MultiSelect
                       isOptionUppercase

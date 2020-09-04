@@ -142,13 +142,10 @@ const SearchBar = () => {
     setIsPassengerCountDropdownOpen,
   ] = useToggle(false);
   const [flightDates, setFlightDates] = useState(flightInitialDates);
-  const { handleSubmit, control } = useForm({
-    defaultValues: {
-      cabinClasses: defaultCabinClass,
-    },
-  });
+  const { control } = useForm();
 
   const [segmentType, setSegmentType] = useState(defaultSegmentType);
+  const [cabinClass, setCabinClass] = useState(defaultCabinClass);
 
   const [passengers, setPassengers] = useState(passengerTypes);
 
@@ -204,10 +201,15 @@ const SearchBar = () => {
         endDate: moment(flightDates.startDate).add(1, 'days'),
       });
     }
-    setSegmentType(value);
+    if (id === "segmentType") {
+      setSegmentType(value);
+    } else {
+      setCabinClass(value);
+    }
   };
 
-  const validateForm = (data, e) => {
+  const validateForm = (e) => {
+    e.preventDefault();
     const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.flightSearch);
     if (securityMessage !== '') {
       dispatch(utils.showErrorBox(securityMessage));
@@ -233,17 +235,17 @@ const SearchBar = () => {
 			...errorObj,
 		});
 		if (!!departureAirport && !errorObj.departureAirport && !!arrivalAirport && !errorObj.arrivalAirport) {
-			onSubmit(data);
+			onSubmit();
 		}
 	};
 
-  const onSubmit = data => {
+  const onSubmit = () => {
     const passengersData = passengers.filter(
       (passenger) => passenger.count > 0
     );
     const searchRequest = {
       flightSearchRQ: {
-        cabinCode: data.cabinClasses.value,
+        cabinCode: cabinClass.value,
         passengerList: {
           passenger: passengersData.map((passenger) => {
             return {
@@ -259,12 +261,11 @@ const SearchBar = () => {
             originDate: moment(flightDates.startDate).format('YYYY-MM-DD'),
             destinationAirportCode: formData.arrivalAirport.code,
             destinationAirport: formData.arrivalAirport,
-            destinationDate:
-              segmentType.value !== 'OW'
-                ? !!flightDates.endDate
-                  ? moment(flightDates.endDate).format('YYYY-MM-DD')
-                  : moment(flightDates.startDate).add(1, 'days').format('YYYY-MM-DD')
-                : '',
+            destinationDate: segmentType.value !== 'OW'
+            ? !!flightDates.endDate
+              ? moment(flightDates.endDate).format('YYYY-MM-DD')
+              : moment(flightDates.startDate).add(1, 'days').format('YYYY-MM-DD')
+            : '',
           },
         ],
       },
@@ -289,20 +290,24 @@ const SearchBar = () => {
   return (
     <div className="SearchBar">
       <p>{error}</p>
-      <form onSubmit={handleSubmit(validateForm)}>
+      <form onSubmit={validateForm}>
         <div className="SearchBar-basicSearch d-flex">
           <MultiSelect
-            name="segmentTypes"
+            name="segmentType"
+            id="segmentType"
             options={segmentTypes}
             defaultValue={segmentType}
             useReactHookForm={false}
             onSelectChange={handleSelectOption}
           />
           <MultiSelect
-            control={control}
-            name="cabinClasses"
+            id="cabinClass"
+            name="cabinClass"
             options={cabinClasses}
             width={164}
+            defaultValue={cabinClass}
+            useReactHookForm={false}
+            onSelectChange={handleSelectOption}
           />
           <DropdownBox
             isContentVisible={isPassengerCountDropdownOpen}

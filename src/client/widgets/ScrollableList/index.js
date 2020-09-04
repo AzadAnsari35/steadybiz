@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import { useSelector } from "react-redux";
@@ -48,11 +48,14 @@ const ScrollableList = props => {
     !!getDataFromRedux(masterAirlinesResponse) &&
     getDataFromRedux(masterAirlinesResponse).data;
 
-  const {
-    airlinesData,
-  } = !!results && getFiltersData(results);
+  const { airlinesData } = !!results && getFiltersData(results);
+
+  const [value, setValue] = useState(0);
   
-  
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <div className="ScrollableList d-flex justify-content-center">
       <AppBar position="static" color="default">
@@ -62,6 +65,8 @@ const ScrollableList = props => {
           indicatorColor="primary"
           textColor="primary"
           aria-label="scrollable force tabs example"
+          value={value}
+          onChange={handleChange}
         >
           {!!airlinesData &&
             Object.keys(airlinesData).map((airline, index) => {
