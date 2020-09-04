@@ -18,6 +18,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { ConstructIcon } from 'Widgets';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
+import endpointWithoutApi from 'Config/endpointWithoutApi';
+
 import './styles.scss';
 
 const SideDrawer = ({ showDrawer, setShowDrawer }) => {
@@ -49,6 +51,9 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Flight Search',
           link: routes.flight.search,
+          clickFunc: () => {
+            dispatch(commonActionUpdate(endpointWithoutApi.flights.flightSearchInput, null));
+          },
         },
 
         {
