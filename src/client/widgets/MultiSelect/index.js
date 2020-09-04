@@ -165,17 +165,21 @@ const MultiSelect = (props) => {
         </>
       ) : (
         <div
-          className={`MultiSelect 
+        className={`MultiSelect 
         ${className ? className : ''} 
         ${changeStyle ? `MultiSelect-customStyle` : ''}  
         ${showBorder ? `MultiSelect-showBorder` : ''} 
         ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
         ${errors[name] ? `thin-red-border` : ''} 
         ${isSearchable ? 'MultiSelect-isSearchable' : ''}
-        ${disabled ? 'MultiSelect-disabled border-none py-10' : ''}
+        ${
+          disabled
+            ? 'MultiSelect-disabled input-disabled border-none py-10'
+            : ''
+        }
 
         `}
-          style={{ width: `${width}px` }}
+        style={{ width: `${width}px`, ...style }}
         >
           <Select
             className={`react-select-container`}
@@ -201,7 +205,8 @@ const MultiSelect = (props) => {
             // menuIsOpen={true}
             value={selectedOption}
             onChange={(value) => handleChange(id, value)}
-            {...props}
+
+            // {...props}
           />
         </div>
       )}
