@@ -87,9 +87,9 @@ const OfficeProfileForm = (props) => {
     useSelector((state) => state.searchOffice?.items?.data?.data) || [];
   let selectedItem = searchResult[rowNumber] || {};
 
-  console.log('searchResult', searchResult);
+  // console.log('searchResult', searchResult);
 
-  console.log('selectedItem', selectedItem);
+  // console.log('selectedItem', selectedItem);
 
   let officeId = utils.getItemFromStorage('officeId');
   let userId = utils.getItemFromStorage('userId');
@@ -135,20 +135,40 @@ const OfficeProfileForm = (props) => {
     'masterCountries'
   );
 
+  const getCitiesList = (countryCode) => {
+    dispatch(
+      commonAction(endpoint.master.cities, {
+        countryCode: countryCode,
+      })
+    );
+  }
+
   useEffect(() => {
     const selectedCountry = getValues('countryCode');
     console.log('selectedCountry', selectedCountry);
+        console.log('rootCountryCode', rootCountryCode);
+
+    if(selectedCountry && selectedCountry.value !== rootCountryCode){
+      // reset({cityCode:""})
+        //  console.log("condition")
+    }
     if (selectedCountry) {
-      dispatch(
-        commonAction(endpoint.master.cities, {
-          countryCode: selectedCountry.value,
-        })
-      );
+      getCitiesList(selectedCountry.value)
     }
     // return dispatch(commonActionUpdate(endpoint.master.cities, null));
   }, [getValues('countryCode')]);
 
+  
+  const getSettlementPlans = () => {
+    console.log("getSettlementPlans")
+    dispatch(commonAction(endpoint.master.settlementPlans));
+    isCreateOffice && getCitiesList(rootCountryCode)
+  };
+
+  useEffect(() => getSettlementPlans(), []);
+
   const setDefaultValue = () => {
+    console.log("setDefaultValue")
     if (
       countriesList.dropDownItems !== null &&
       countriesDialCodeList.dropDownItems !== null &&
@@ -156,7 +176,7 @@ const OfficeProfileForm = (props) => {
       !!settlementPlans &&
       !isCreateOffice
     ) {
-      console.log('settlementPlans', settlementPlans);
+      // console.log('settlementPlans', settlementPlans);
       const {
         address1,
         address2,
@@ -174,7 +194,7 @@ const OfficeProfileForm = (props) => {
         mobile,
         users: [{ firstName, lastName, title, emailId }],
       } = selectedItem;
-      console.log('selectedItem', selectedItem);
+      // console.log('selectedItem', selectedItem);
       reset({
         address1,
         address2,
@@ -211,6 +231,7 @@ const OfficeProfileForm = (props) => {
   };
 
   const setCreateOfficeDefaultValue = () => {
+    console.log("setCreateOfficeDefaultValue", citiesList );
     if (
       isCreateOffice &&
       objectStatusesList.dropDownItems !== null &&
@@ -276,12 +297,6 @@ const OfficeProfileForm = (props) => {
     !!citiesList,
   ]);
 
-  const getSettlementPlans = () => {
-    dispatch(commonAction(endpoint.master.settlementPlans));
-    isCreateOffice && setValue('countryCode', rootCountryCode);
-  };
-
-  useEffect(() => getSettlementPlans(), []);
 
   // useEffect(() => dispatch(commonActionUpdate(endpoint.master.cities, null)), []);
 
