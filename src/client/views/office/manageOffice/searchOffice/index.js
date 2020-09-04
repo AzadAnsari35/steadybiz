@@ -250,15 +250,20 @@ const SearchOffice = () => {
     (state) => state.masterCities?.items?.data?.data
   );
 
+  const getCitiesList = (countryCode) => {
+    dispatch(
+      commonAction(endpoint.master.cities, {
+        countryCode: countryCode,
+      })
+    );
+  }
+
   useEffect(() => {
     const selectedCountry =
-      getValues('country') === '' ? countryCode : getValues('country')?.value;
+      getValues('country')
     if (selectedCountry) {
-      dispatch(
-        commonAction(endpoint.master.cities, {
-          countryCode: selectedCountry,
-        })
-      );
+      getCitiesList(selectedCountry.value)
+
     }
     // return dispatch(commonActionUpdate(endpoint.master.cities, null));
   }, [getValues('country')]);
@@ -307,11 +312,15 @@ const SearchOffice = () => {
   }, [countriesList.dropDownItems, !!citiesList]);
 
   // useEffect(() => {
-  //   if (citiesList && citiesList.data !== null) {
   //     reset({
-  //     });
+  //       cityCode:""
+  //     })
   //   }
-  // }, [citiesList]);
+  // , [citiesList]);
+
+  useEffect(() => {
+    getCitiesList(countryCode)
+  }, [])
 
   const handlePage = (newPage) => {
     setPage(newPage);

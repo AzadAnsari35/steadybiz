@@ -50,10 +50,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           text: 'Flight Search',
           link: routes.flight.search,
         },
-        {
-          text: 'Search Deals',
-          link: routes.agency.searchDeals,
-        },
+
         {
           text: 'Search Order',
           link: routes.transaction.searchOrder,
@@ -150,7 +147,12 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       icon: <ConstructIcon />,
       clickFunc: () => setShowConfig(!showConfig),
       show: showConfig,
-      subList: [],
+      subList: [
+        {
+          text: 'Manage Deals',
+          link: routes.agency.searchDeals,
+        },
+      ],
       link: '#',
     },
 
