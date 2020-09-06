@@ -79,6 +79,7 @@ const MultiSelect = (props) => {
     fullWidthDropdown,
     isClearable = true,
     isSearchable = true,
+    hideMultiValueSelection = false,
   } = props;
   const [selectedOption, setSelectedOption] = useState(defaultValue);
 
@@ -86,6 +87,10 @@ const MultiSelect = (props) => {
     setSelectedOption(selectedOption);
     onSelectChange(selectedOption, id);
   };
+
+  useEffect(() => {
+    setSelectedOption(defaultValue);
+  }, [defaultValue]);
 
   // useEffect(() => {
   //   let selectedOption = options.find(
@@ -117,13 +122,10 @@ const MultiSelect = (props) => {
                 ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
                 ${errors[name] ? `thin-red-border` : ''} 
                 ${isSearchable ? 'MultiSelect-isSearchable' : ''}
-                ${
-                  disabled
-                    ? 'MultiSelect-disabled input-disabled border-none py-10'
-                    : ''
-                }
-
-                `}
+                ${disabled
+                  ? 'MultiSelect-disabled input-disabled border-none py-10'
+                  : ''
+                }`}
                 style={{ width: `${width}px`, ...style }}
               >
                 <Select
@@ -165,21 +167,18 @@ const MultiSelect = (props) => {
         </>
       ) : (
         <div
-        className={`MultiSelect 
-        ${className ? className : ''} 
-        ${changeStyle ? `MultiSelect-customStyle` : ''}  
-        ${showBorder ? `MultiSelect-showBorder` : ''} 
-        ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
-        ${errors[name] ? `thin-red-border` : ''} 
-        ${isSearchable ? 'MultiSelect-isSearchable' : ''}
-        ${
-          disabled
+          className={`MultiSelect 
+          ${className ? className : ''} 
+          ${changeStyle ? `MultiSelect-customStyle` : ''}  
+          ${showBorder ? `MultiSelect-showBorder` : ''} 
+          ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
+          ${errors[name] ? `thin-red-border` : ''} 
+          ${isSearchable ? 'MultiSelect-isSearchable' : ''}
+          ${disabled
             ? 'MultiSelect-disabled input-disabled border-none py-10'
             : ''
-        }
-
-        `}
-        style={{ width: `${width}px`, ...style }}
+          }`}
+          style={{ width: `${width}px`, ...style }}
         >
           <Select
             className={`react-select-container`}
@@ -189,7 +188,23 @@ const MultiSelect = (props) => {
             components={{
               DropdownIndicator,
               Option: (props) => Option(props, labelKey, isOptionUppercase),
-              MultiValue: (props) => MultiValue(props, valueKey),
+              ...!hideMultiValueSelection ? {
+                MultiValue: (props) => MultiValue(props, valueKey),
+              } : {
+                ValueContainer: ({ children, ...props }) => {
+                  let [values, input] = children;
+                  if (Array.isArray(values)) {
+                    const plural = values.length === 1 ? "" : "s";
+                    values = `${values.length} item${plural} selected`;
+                  }
+                  return (
+                    <components.ValueContainer {...props}>
+                      {values}
+                      {input}
+                    </components.ValueContainer>
+                  );
+                },
+              }
             }}
             hideSelectedOptions={false}
             isClearable={false}
@@ -205,7 +220,6 @@ const MultiSelect = (props) => {
             // menuIsOpen={true}
             value={selectedOption}
             onChange={(value) => handleChange(id, value)}
-
             // {...props}
           />
         </div>

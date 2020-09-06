@@ -4,6 +4,7 @@ import './style.scss';
 
 const TextInput = (props) => {
   const {
+    id,
     name,
     classes = { root: '', input: '' },
     type = 'text',
@@ -26,6 +27,7 @@ const TextInput = (props) => {
       )}
       <input
         name={name}
+        id={id}
         maxLength={maxLength}
         className={`TextInput-input font-primary-semibold-16 ${
           errors[name] ? 'thin-red-border' : ''
@@ -34,7 +36,7 @@ const TextInput = (props) => {
         disabled={disabled}
         placeholder={placeholder}
         ref={useReactHookForm ? register(validation) : null}
-        onChange={!useReactHookForm ? (e) => onChange(e.target.value) : null}
+        onChange={!useReactHookForm ? (e) => onChange(id, e.target.value) : null}
         {...rest}
       />
       {errors[name] && (

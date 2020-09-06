@@ -131,3 +131,15 @@ export const sortObjectArray = (objArray, key = 'label') => {
 
   return objArray;
 };
+
+export const customAddDays = (date, days) => {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
+
+export const customSubtractDays = (date, days) => {
+  var result = new Date(date);
+  result.setDate(result.getDate() - days);
+  return result;
+};

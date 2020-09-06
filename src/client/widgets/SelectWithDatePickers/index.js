@@ -18,7 +18,11 @@ const SelectWithDatePickers = (props) => {
     selectWidth = '33%',
     isSearchable = false,
     defaultValues,
-    useReactHookForm,
+    useReactHookForm = true,
+    disableFutureDatesDatePicker1,
+    disableFutureDatesDatePicker2,
+    disablePastDatesDatePicker1,
+    disablePastDatesDatePicker2,
     onSelectChange,
   } = props;
   return (
@@ -59,9 +63,10 @@ const SelectWithDatePickers = (props) => {
             ${disabled ? 'input-disabled' : ''}`}
             style={{ width: `calc(${selectWidth} - 40px)` }}
             name={name?.select}
+            id={name?.select}
             options={data}
             placeholder={selectPlaceholder}
-            // changeStyle={true}
+            changeStyle
             showBorder={false}
             initialValue={initialSelectedValue}
             showValue={showValue}
@@ -83,6 +88,9 @@ const SelectWithDatePickers = (props) => {
             name={name?.datePicker1}
             className="SelectWithDatePickers-container-datePicker-1"
             useReactHookForm={useReactHookForm}
+            value={defaultValues?.datePicker1}
+            disableFutureDates={disableFutureDatesDatePicker1}
+            disablePastDates={disablePastDatesDatePicker1}
           />
         }
 
@@ -96,6 +104,9 @@ const SelectWithDatePickers = (props) => {
             name={name?.datePicker2}
             className="SelectWithDatePickers-container-datePicker-2"
             useReactHookForm={useReactHookForm}
+            value={defaultValues?.datePicker2}
+            disableFutureDates={disableFutureDatesDatePicker2}
+            disablePastDates={disablePastDatesDatePicker2}
           />
         }
 
