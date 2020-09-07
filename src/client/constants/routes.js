@@ -16,6 +16,7 @@ const routes = {
     viewAgency: '/Agency/View-Agency',
     createAgency: '/Agency/Create-Agency',
     updateAgency: '/Agency/Update-Agency',
+    manageCreditLimit: '/Agency/Manage-Credit-Limit',
     searchDeals: '/Agency/Search-Deals',
     createDeal: '/Agency/Create-Deal',
     viewDeal: '/Agency/View-Deal',

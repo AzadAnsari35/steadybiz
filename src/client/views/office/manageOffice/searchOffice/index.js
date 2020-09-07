@@ -32,25 +32,23 @@ import CachedIcon from '@material-ui/icons/Cached';
 
 import './style.scss';
 
-const headerData = [
-  'OFFICE NAME',
-  'OFFICE ID',
-  // 'OFFICE TYPE',
-  'COUNTRY',
-  'CITY',
-  'MASTER USER',
-  'MOBILE',
-  'CURRENCY',
-  'CREDIT LIMIT BAL.',
-  'STATUS',
-  'ACTION',
-];
+
 
 const PopoverAction = (props) => {
   const [showPopover, setShowPopover] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const history = useHistory();
+    const location = useLocation();
+
+    
+
+    const isSearchAgency = utils.stringComparison(
+      location.pathname,
+      routes.agency.searchAgency
+
+    );
+
   const dispatch = useDispatch();
 
   const { rowNumber } = props;
@@ -71,27 +69,31 @@ const PopoverAction = (props) => {
     switch (selectedOption) {
       case 'view': {
         const securityMessage = utils.checkSecurityGroup(
-          securityOptionConstant.office.viewOffice
+          isSearchAgency? securityOptionConstant.agency.viewAgency: securityOptionConstant.office.viewOffice
         );
         if (securityMessage !== '') {
           dispatch(utils.showErrorBox(securityMessage));
           return;
         }
-        history.push(routes.office.viewOffice);
-        utils.setItemToStorage('selectedOffice', rowNumber);
+        history.push(isSearchAgency? routes.agency.viewAgency : routes.office.viewOffice);
+        utils.setItemToStorage(isSearchAgency?  "selectedAgency": 'selectedOffice', rowNumber);
+                utils.setItemToStorage(isSearchAgency?  "selectedOffice": 'selectedAgency', "");
+
         break;
       }
       case 'modify': {
         const securityMessage = utils.checkSecurityGroup(
-          securityOptionConstant.office.updateOffice
+          isSearchAgency? securityOptionConstant.agency.updateAgency:  securityOptionConstant.office.updateOffice
         );
 
         if (securityMessage !== '') {
           dispatch(utils.showErrorBox(securityMessage));
           return;
         }
-        history.push(routes.office.updateOffice);
-        utils.setItemToStorage('selectedOffice', rowNumber);
+        history.push(isSearchAgency? routes.agency.updateAgency : routes.office.updateOffice);
+        utils.setItemToStorage(isSearchAgency?  "selectedAgency": 'selectedOffice', rowNumber);
+        utils.setItemToStorage(isSearchAgency?  "selectedOffice": 'selectedAgency', "");
+
         break;
       }
 
@@ -105,15 +107,18 @@ const PopoverAction = (props) => {
           return;
         }
         history.push(routes.office.searchOfficeUser);
-        utils.setItemToStorage('selectedOffice', rowNumber);
-        dispatch(commonActionUpdate(endpoint.office.searchUser, null));
+        utils.setItemToStorage(isSearchAgency?  "selectedAgency": 'selectedOffice', rowNumber);
+        utils.setItemToStorage(isSearchAgency?  "selectedOffice": 'selectedAgency', "");
 
+        dispatch(commonActionUpdate(endpoint.office.searchUser, null));
         break;
       }
 
       case 'deposit': {
-        history.push(routes.office.manageCreditLimit);
-        utils.setItemToStorage('selectedOffice', rowNumber);
+        history.push(isSearchAgency? routes.agency.manageCreditLimit : routes.office.manageCreditLimit);
+        utils.setItemToStorage(isSearchAgency?  "selectedAgency": 'selectedOffice', rowNumber);
+        utils.setItemToStorage(isSearchAgency?  "selectedOffice": 'selectedAgency', "");
+
         break;
       }
 
@@ -145,20 +150,22 @@ const PopoverAction = (props) => {
             onClick={handleClick}
             name="view"
           >
-            View Office
+            {isSearchAgency? "View Agency" : "View Office"}
           </div>
           <div
             className="font-primary-regular-14 cursor-pointer"
             onClick={handleClick}
             name="modify"
           >
-            Modify Office
+            {isSearchAgency? "Modify Agency" : "Modify Office"}
+
           </div>
           <div
             className="font-primary-regular-14 cursor-pointer"
             onClick={handleClick}
             name="search"
           >
+
             Search User
           </div>
           <div
@@ -187,6 +194,7 @@ const defaultValues = {
 };
 
 const SearchOffice = () => {
+
   const [requestJson, setReqeustJson] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [page, setPage] = useState(1);
@@ -208,6 +216,23 @@ const SearchOffice = () => {
     path,
     routes.agency.searchAgency
   );
+
+  const headerData = [
+    isSearchAgency? "AGENCY NAME" : "OFFICE NAME",
+    'OFFICE ID',
+    // 'OFFICE TYPE',
+    'COUNTRY',
+    'CITY',
+    'MASTER USER',
+    'MOBILE',
+    'CURRENCY',
+    'CREDIT LIMIT BAL.',
+    'STATUS',
+    'ACTION',
+  ];
+
+  console.log("isSearchAgency", isSearchAgency)
+
 
   const objectStatusesList = useDropDown(
     endpoint.master.objectStatuses,
@@ -245,6 +270,8 @@ const SearchOffice = () => {
   } = userData;
 
   const searchOffice = useSelector((state) => state.searchOffice?.items);
+  const searchAgency = useSelector((state) => state.searchAgency?.items);
+
 
   const citiesList = useSelector(
     (state) => state.masterCities?.items?.data?.data
@@ -331,13 +358,13 @@ const SearchOffice = () => {
     try {
       setErrorMsg('');
       dispatch(
-        commonAction(endpoint.office.searchOffice, {
+        commonAction(isSearchAgency? endpoint.agency.searchAgency : endpoint.office.searchOffice, {
           ...requestJson,
           page: page - 1,
           size,
           ofid: ofId,
           ...(isSearchAgency && { officeChannel: 'SA' }),
-          ...(isSearchAgency && { officeType: 'SA' }),
+          officeType: isSearchAgency ? commonConstant.officeType[1] : commonConstant.officeType[0] ,
         })
       );
     } catch (err) {
@@ -360,6 +387,22 @@ const SearchOffice = () => {
   };
 
   const handleClick = () => {
+   if(isSearchAgency){
+    const securityMessage = utils.checkSecurityGroup(
+      securityOptionConstant.office.createOffice
+    );
+
+    if (securityMessage !== '') {
+      dispatch(utils.showErrorBox(securityMessage));
+      return;
+    }
+    history.push(routes.agency.createAgency);
+    utils.setItemToStorage('selectedAgency', '')
+   }
+   
+   
+   else { 
+     
     const securityMessage = utils.checkSecurityGroup(
       securityOptionConstant.office.createOffice
     );
@@ -369,12 +412,17 @@ const SearchOffice = () => {
       return;
     }
     history.push(routes.office.createOffice);
-    utils.setItemToStorage('selectedOffice', '');
+    utils.setItemToStorage('selectedOffice', '');}
   };
 
   const handleReset = () => {
     reset(defaultValues);
   };
+
+  const resultStatus = isSearchAgency ? searchAgency?.status : searchOffice?.status
+  console.log("resultStatus", resultStatus)
+
+  // console.log("screen status", isSearchAgency ? typeof searchAgency?.status : `Office ${searchOffice?.status}`)
 
   return (
     <div className="SearchOffice">
@@ -537,7 +585,7 @@ const SearchOffice = () => {
 
         <div></div>
       </div>
-      {searchOffice?.status && (
+      {resultStatus && (
         <PrimaryTable
           header={
             <PrimaryTableHeader
@@ -547,12 +595,12 @@ const SearchOffice = () => {
             />
           }
           headerData={headerData}
-          bodyData={searchOffice.data}
+          bodyData={isSearchAgency?searchAgency.data: searchOffice.data}
           page={page}
           AddElement={{
             last: <PopoverAction />,
           }}
-          count={searchOffice.data.count}
+          count={isSearchAgency?searchAgency.data.count : searchOffice.data.count}
           size={size}
           columnAlignments={[
             'left',
@@ -581,6 +629,7 @@ const SearchOffice = () => {
             'users',
             'phone',
             'officeType',
+            "officeChannel"
           ]}
         />
       )}

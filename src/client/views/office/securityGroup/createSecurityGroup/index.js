@@ -158,6 +158,10 @@ const CreateSecurityGroup = () => {
             isToastVisible: true,
           })
         );
+        setAllSection([])
+        reset({userGroupName:""})
+
+
       }
     }
   }, [createResponse]);

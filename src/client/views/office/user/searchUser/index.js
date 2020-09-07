@@ -158,9 +158,15 @@ const SearchUser = () => {
   console.log('searchUser', searchUser);
   const searchResult =
     useSelector((state) => state.searchOffice?.items?.data) || [];
+
+    const searchAgency =
+    useSelector((state) => state.searchAgency?.items?.data) || [];
+    
   console.log('searchResult', searchResult);
   const selectedOffice = utils.getItemFromStorage('selectedOffice') || '';
-  console.log('selectedOffice', selectedOffice);
+  const selectedAgency = utils.getItemFromStorage('selectedAgency') ?? "";
+   console.log("selectedAgency", Number.isInteger(parseInt(selectedAgency)))
+  // console.log('selectedOffice', selectedOffice);
 
   const getOfficeDetail = () => {
     if (Number.isInteger(parseInt(selectedOffice)) && searchResult.data) {
@@ -173,7 +179,20 @@ const SearchUser = () => {
       setOfficeName(selectedItem.officeName);
       setOfficeLevel(1);
       setOfId(selectedItem.ofId);
-    } else {
+    }
+    else if (Number.isInteger(parseInt(selectedAgency)) && searchAgency.data) {
+      let selectedItem = searchAgency.data[selectedAgency] || {};
+      // console.log('searchResult', searchResult);
+
+      console.log('selectedItem', selectedItem);
+
+      setOfficeId(selectedItem.officeId);
+      setOfficeName(selectedItem.officeName);
+      setOfficeLevel(1);
+      setOfId(selectedItem.ofId);
+    }
+    
+    else {
       console.log('else....................');
       const {
         userDto: {

@@ -19,7 +19,6 @@ import { routes, commonConstant, securityOptionConstant } from 'Constants';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 import useDropDown from 'Hooks/useDropDown';
 import { dropDownParam, titles } from 'Constants/commonConstant';
-import { countriesDialCodeFormatter } from 'Helpers/global';
 import useCheckboxData from 'Hooks/useCheckboxData';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -55,15 +54,16 @@ const defaultValues = {
   mobileDialCode: '',
 };
 
-const OfficeProfileForm = (props) => {
+const AgencyProfileForm = (props) => {
   const { mode } = props;
 
-  const isCreateOffice =
-    mode.toUpperCase() === routes.office.createOffice.toUpperCase();
-  const isViewOffice =
-    mode.toUpperCase() === routes.office.viewOffice.toUpperCase();
-  const isUpdateOffice =
-    mode.toUpperCase() === routes.office.updateOffice.toUpperCase();
+  const isCreateAgency =
+  utils.stringComparison(mode, routes.agency.createAgency)
+
+  const isViewAgency =
+  utils.stringComparison(mode, routes.agency.viewAgency)
+  const isUpdateAgency =
+   utils.stringComparison(mode, routes.agency.updateAgency)
 
   const dispatch = useDispatch();
 
@@ -82,14 +82,14 @@ const OfficeProfileForm = (props) => {
 
   const [paymentOptions, setPaymentOptions] = useCheckboxData([]);
 
-  let rowNumber = utils.getItemFromStorage('selectedOffice');
+  let rowNumber = utils.getItemFromStorage('selectedAgency');
   const searchResult =
-    useSelector((state) => state.searchOffice?.items?.data?.data) || [];
+    useSelector((state) => state.searchAgency?.items?.data?.data) || [];
   let selectedItem = searchResult[rowNumber] || {};
 
   // console.log('searchResult', searchResult);
 
-  // console.log('selectedItem', selectedItem);
+  console.log('selectedItem', selectedItem);
 
   let officeId = utils.getItemFromStorage('officeId');
   let userId = utils.getItemFromStorage('userId');
@@ -162,7 +162,7 @@ const OfficeProfileForm = (props) => {
   const getSettlementPlans = () => {
     console.log("getSettlementPlans")
     dispatch(commonAction(endpoint.master.settlementPlans));
-    isCreateOffice && getCitiesList(rootCountryCode)
+    isCreateAgency && getCitiesList(rootCountryCode)
   };
 
   useEffect(() => getSettlementPlans(), []);
@@ -174,7 +174,7 @@ const OfficeProfileForm = (props) => {
       countriesDialCodeList.dropDownItems !== null &&
       !!citiesList &&
       !!settlementPlans &&
-      !isCreateOffice
+      !isCreateAgency
     ) {
       // console.log('settlementPlans', settlementPlans);
       const {
@@ -187,7 +187,7 @@ const OfficeProfileForm = (props) => {
         officeName,
         officeId,
         phone,
-        officeType,
+        officeChannel,
         zipCode,
         countryCode,
         status,
@@ -213,7 +213,7 @@ const OfficeProfileForm = (props) => {
         mobileDialCode: countriesDialCodeList.dropDownItems.findItem(
           mobile.split('-')[0]
         ),
-        officeType: commonConstant.officeType.findItem(officeType),
+        officeChannel: commonConstant.officeChannel.findItem(officeChannel),
         zipCode,
         countryCode: countriesList.dropDownItems.findItem(countryCode),
         cityCode: citiesList.findItem(cityCode),
@@ -233,14 +233,14 @@ const OfficeProfileForm = (props) => {
   const setCreateOfficeDefaultValue = () => {
     console.log("setCreateOfficeDefaultValue", citiesList );
     if (
-      isCreateOffice &&
+      isCreateAgency &&
       objectStatusesList.dropDownItems !== null &&
       countriesList.dropDownItems !== null &&
       !!citiesList
     ) {
       reset({
         status: objectStatusesList.dropDownItems[3],
-        officeType: commonConstant.officeType[0],
+        officeChannel: commonConstant.officeChannel[0],
         countryCode: countriesList.dropDownItems.findItem(rootCountryCode),
         cityCode: citiesList.findItem(rootCityCode),
       });
@@ -270,13 +270,13 @@ const OfficeProfileForm = (props) => {
         dispatch(
           commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
             toastStatus: true,
-            toastMessage: `Office  ${
-              isUpdateOffice ? 'updated' : 'created'
+            toastMessage: `Agency  ${
+              isUpdateAgency ? 'updated' : 'created'
             } successfully`,
             isToastVisible: true,
           })
         );
-        if (isCreateOffice) {
+        if (isCreateAgency) {
           reset(defaultValues);
           setPaymentOptions([]);
         }
@@ -303,7 +303,7 @@ const OfficeProfileForm = (props) => {
   const onSubmit = (data, e) => {
     console.log('data', data);
 
-    if (isUpdateOffice) {
+    if (isUpdateAgency) {
       const {
         users: [{ userId }],
       } = selectedItem;
@@ -314,11 +314,14 @@ const OfficeProfileForm = (props) => {
         officeId,
         paymentOptions,
         ofId: selectedItem.ofId,
-        officeChannel: officeLevel === 0 ? 'AG' : 'SA'
+        officeChannel: 'SA',
+        officeType:commonConstant.officeType[1]
+
+
       });
     }
 
-    if (isCreateOffice) {
+    if (isCreateAgency) {
       postCreateRequest({
         ...data,
         action: 'I',
@@ -326,27 +329,29 @@ const OfficeProfileForm = (props) => {
         officeLevel,
         paymentOptions,
         officeId,
-        officeChannel: officeLevel === 0 ? 'AG' : 'SA'
+        officeChannel: 'SA',
+        officeType:commonConstant.officeType[1]
+
       });
     }
   };
 
   return (
-    <div className="OfficeProfileForm">
-      <div className="OfficeProfileForm-imageContainer d-flex align-items-center">
-        <div className="OfficeProfileForm-imageContainer__image d-flex justify-content-center align-items-center mr-20">
+    <div className="AgencyProfileForm">
+      <div className="AgencyProfileForm-imageContainer d-flex align-items-center">
+        <div className="AgencyProfileForm-imageContainer__image d-flex justify-content-center align-items-center mr-20">
           <PersonIcon style={{ fontSize: 75, color: colors.gray }} />
         </div>
-        {!isViewOffice && (
+        {!isViewAgency && (
           <div>
             <div className="d-flex">
               <Button text="Upoad New Photo" className="mb-16 mr-10" />
-              {isUpdateOffice && (
+              {isUpdateAgency && (
                 <Button text="Remove" secondary className="mb-16" />
               )}
             </div>
 
-            <div className="OfficeProfileForm-imageContainer__text font-primary-semibold-14">
+            <div className="AgencyProfileForm-imageContainer__text font-primary-semibold-14">
               Image should be at least 300 X 300 px in .jpg/.png or .gif format
             </div>
           </div>
@@ -354,21 +359,21 @@ const OfficeProfileForm = (props) => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container>
-          <Grid item xs={6} className="OfficeProfileForm-left">
+          <Grid item xs={6} className="AgencyProfileForm-left">
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Text
                   showLeftBorder
-                  text="Office Details"
+                  text="Agency Details"
                   className="font-primary-semibold-18"
                 />
               </Grid>
 
               <Grid item xs={6}>
                 <MultiSelect
-                  label="Office Type:"
-                  name="officeType"
-                  options={commonConstant.officeType}
+                  label="Office Channel:"
+                  name="officeChannel"
+                  options={commonConstant.officeChannel}
                   showBorder={true}
                   changeStyle={true}
                   control={control}
@@ -391,17 +396,17 @@ const OfficeProfileForm = (props) => {
                   errors={errors}
                   validation={{ required: 'Please enter the status' }}
                   width="auto"
-                  disabled={!isUpdateOffice}
+                  disabled={isViewAgency}
                   isSearchable
                 />
               </Grid>
-              {isCreateOffice ? (
+              {isCreateAgency ? (
                 <Grid item xs={12}>
                   <TextInput
                     name="officeName"
                     register={register}
                     errors={errors}
-                    label="Office Name"
+                    label="Agency Name"
                     placeholder="Office Name"
                     validation={{
                       required: 'Please enter the office name.',
@@ -410,7 +415,7 @@ const OfficeProfileForm = (props) => {
                         message: 'Please enter valid office name.',
                       },
                     }}
-                    disabled={!isCreateOffice}
+                    disabled={!isCreateAgency}
                   />
                 </Grid>
               ) : (
@@ -428,7 +433,7 @@ const OfficeProfileForm = (props) => {
                           message: 'Please enter valid office name.',
                         },
                       }}
-                      disabled={isViewOffice}
+                      disabled={isViewAgency}
                     />
                   </Grid>
 
@@ -438,7 +443,7 @@ const OfficeProfileForm = (props) => {
                       register={register}
                       errors={errors}
                       label="Office Id"
-                      disabled={!isCreateOffice}
+                      disabled={!isCreateAgency}
                     />
                   </Grid>
                 </>
@@ -454,7 +459,7 @@ const OfficeProfileForm = (props) => {
                   validation={{
                     required: 'Please enter the address line 1.',
                   }}
-                  disabled={isViewOffice}
+                  disabled={isViewAgency}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -464,7 +469,7 @@ const OfficeProfileForm = (props) => {
                   errors={errors}
                   placeholder="Address Line 2"
                   label="Address Line 2"
-                  disabled={isViewOffice}
+                  disabled={isViewAgency}
                 />
               </Grid>
 
@@ -481,7 +486,7 @@ const OfficeProfileForm = (props) => {
                   validation={{ required: 'Please enter the country' }}
                   width="auto"
                   showLabel
-                  disabled={!isCreateOffice}
+                  disabled={!isCreateAgency}
                   isSearchable
                 />
               </Grid>
@@ -498,7 +503,7 @@ const OfficeProfileForm = (props) => {
                   errors={errors}
                   validation={{ required: 'Please enter the city' }}
                   width="auto"
-                  disabled={!isCreateOffice}
+                  disabled={!isCreateAgency}
                   isSearchable
                 />
               </Grid>
@@ -509,7 +514,7 @@ const OfficeProfileForm = (props) => {
                   errors={errors}
                   placeholder="Zip Code"
                   label="Zip Code"
-                  disabled={isViewOffice}
+                  disabled={isViewAgency}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -534,19 +539,13 @@ const OfficeProfileForm = (props) => {
                   }}
                   control={control}
                   showValue
-                  disabled={isViewOffice}
+                  disabled={isViewAgency}
                   maxLength={15}
                   isSearchable={false}
                   selectWidth="50%"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <Text
-                  showLeftBorder
-                  text="Office User Details"
-                  className="font-primary-semibold-18"
-                />
-              </Grid>
+              
 
               <Grid item xs={12}>
                 <MultiSelect
@@ -560,14 +559,14 @@ const OfficeProfileForm = (props) => {
                   errors={errors}
                   validation={{ required: 'Please enter the no of users' }}
                   width="auto"
-                  disabled={isViewOffice}
+                  disabled={isViewAgency}
                   isSearchable
                 />
               </Grid>
             </Grid>
           </Grid>
 
-          <Grid item xs={6} className="OfficeProfileForm-right">
+          <Grid item xs={6} className="AgencyProfileForm-right">
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Text
@@ -597,7 +596,7 @@ const OfficeProfileForm = (props) => {
                     required: 'Please enter the title.',
                   }}
                   control={control}
-                  disabled={isViewOffice}
+                  disabled={isViewAgency}
                 />
               </Grid>
 
@@ -619,7 +618,7 @@ const OfficeProfileForm = (props) => {
                       message: 'Please enter the alphabets only.',
                     },
                   }}
-                  disabled={isViewOffice}
+                  disabled={isViewAgency}
                 />
               </Grid>
 
@@ -645,7 +644,7 @@ const OfficeProfileForm = (props) => {
                   }}
                   control={control}
                   showValue
-                  disabled={isViewOffice}
+                  disabled={isViewAgency}
                   maxLength={15}
                   isSearchable={false}
                   selectWidth="50%"
@@ -666,51 +665,10 @@ const OfficeProfileForm = (props) => {
                       message: 'Please enter valid email address.',
                     },
                   }}
-                  disabled={!isCreateOffice}
+                  disabled={!isCreateAgency}
                 />
               </Grid>
-              {isCreateOffice && (
-                <>
-                  <Grid item xs={6}>
-                    <TextInput
-                      name="password"
-                      type="password"
-                      register={register}
-                      errors={errors}
-                      label="Create Password:"
-                      validation={{
-                        required: 'Please enter the password.',
-                        minLength: {
-                          value: 8,
-                          message: 'Please enter minimum eight characters',
-                        },
-                        maxLength: {
-                          value: 16,
-                          message: 'Please enter maximum sixteen characters',
-                        },
-                      }}
-                      placeholder="Type Password"
-                      disabled={isViewOffice}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextInput
-                      name="confirmPassword"
-                      type="password"
-                      register={register}
-                      errors={errors}
-                      label="Confirm Password:"
-                      validation={{
-                        validate: (value) =>
-                          value === watch('password') ||
-                          "Passwords don't match.",
-                      }}
-                      placeholder="Type Password"
-                      disabled={isViewOffice}
-                    />
-                  </Grid>
-                </>
-              )}
+             
 
               <Grid item xs={12}>
                 <Text
@@ -726,7 +684,7 @@ const OfficeProfileForm = (props) => {
                   name="paymentOptions"
                   // control={control}
                   // getValues={getValues}
-                  disabled={isViewOffice}
+                  disabled={isViewAgency}
                   checkboxes={settlementPlans || []}
                   useReactHookForm={false}
                   onChange={setPaymentOptions}
@@ -757,7 +715,7 @@ const OfficeProfileForm = (props) => {
                   errors={errors}
                   placeholder="Type GST / VAT No."
                   label="GST / VAT No.:"
-                  disabled={isViewOffice}
+                  disabled={isViewAgency}
                 />
               </Grid>
 
@@ -768,15 +726,15 @@ const OfficeProfileForm = (props) => {
                   errors={errors}
                   placeholder="Type GST / VAT (%)"
                   label="GST / VAT (%):"
-                  disabled={isViewOffice}
+                  disabled={isViewAgency}
                 />
               </Grid>
 
-              {!isViewOffice && (
+              {!isViewAgency && (
                 <Grid item xs={12} className="d-flex justify-content-end">
                   <Button
                     text={`${
-                      isCreateOffice ? 'Create Office' : 'Modify Office'
+                      isCreateAgency ? 'Create Agency' : 'Modify Agency'
                     }`}
                     type="submit"
                     className="mb-30"
@@ -791,4 +749,5 @@ const OfficeProfileForm = (props) => {
   );
 };
 
-export default OfficeProfileForm;
+export default AgencyProfileForm
+;

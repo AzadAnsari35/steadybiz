@@ -71,8 +71,14 @@ const UserProfileForm = (props) => {
   const securityGroupNameList = useSelector(
     (state) => state.securityGroupNameList?.items?.data
   );
+
   let rowNumber = utils.getItemFromStorage('selectedUser');
-  console.log('rowNumber', rowNumber);
+  const selectedAgency = utils.getItemFromStorage('selectedAgency') ?? "";
+
+  // console.log('rowNumber', rowNumber);
+
+  const searchAgency =
+  useSelector((state) => state.searchAgency?.items?.data) || [];
 
   const searchResult =
     useSelector((state) => state.searchUser?.items?.data) || [];
@@ -89,6 +95,9 @@ const UserProfileForm = (props) => {
   let userId = selectedItem.userId || utils.getItemFromStorage('userId');
   let ofId = utils.getItemFromStorage('officeId');
 
+  
+
+
   const [updateRes, postUpdateRequest] = updateEndpoint();
 
   const setDefaultValue = () => {
@@ -103,7 +112,16 @@ const UserProfileForm = (props) => {
 
         officeId = selectedItem.officeId;
         officeName = selectedItem.officeName;
-      } else {
+      } 
+      else if (Number.isInteger(parseInt(selectedAgency)) && searchAgency.data) {
+
+        let selectedItem = searchAgency.data[selectedAgency] || {};
+        
+        officeId = selectedItem.officeId;
+        officeName = selectedItem.officeName;
+      }
+      
+      else {
         const {
           userDto: { officeDto },
         } = JSON.parse(utils.getItemFromStorage('userData'));
@@ -115,7 +133,8 @@ const UserProfileForm = (props) => {
 
       if (
         countriesDialCodeList.dropDownItems !== null &&
-        objectStatusesList.dropDownItems != null
+        objectStatusesList.dropDownItems != null && 
+        securityGroupNameList && securityGroupNameList.data !== null
       ) {
         const {
           firstName,
@@ -127,6 +146,7 @@ const UserProfileForm = (props) => {
           securityGroup,
         } = selectedItem;
         console.log('selectedItem', selectedItem);
+        console.log("securityGroupNameList", securityGroupNameList)
         reset({
           firstName,
           lastName,
@@ -140,7 +160,7 @@ const UserProfileForm = (props) => {
             objectStatusDesc.toUpperCase(),
             'label'
           ),
-          securityGroup: securityGroups.findItem(securityGroup),
+          securityGroup: securityGroupNameList.data.findItem(securityGroup, 'label'),
           officeId,
           officeName,
         });
@@ -152,7 +172,9 @@ const UserProfileForm = (props) => {
     if (
       isManageProfile &&
       !!countriesDialCodeList.dropDownItems &&
-      !!objectStatusesList.dropDownItems
+      !!objectStatusesList.dropDownItems &&
+      securityGroupNameList && securityGroupNameList.data !== null
+
     ) {
       const {
         userDto: {
@@ -162,7 +184,7 @@ const UserProfileForm = (props) => {
           title,
           emailId,
           objectStatusId,
-          securityGroup,
+          userGroups,
         },
       } = JSON.parse(utils.getItemFromStorage('userData'));
       reset({
@@ -178,7 +200,7 @@ const UserProfileForm = (props) => {
           objectStatusId,
           'value'
         ),
-        securityGroup: securityGroups.findItem(securityGroup || 'Admin'),
+        securityGroup: securityGroupNameList.data.findItem(userGroups[0]),
         officeId: officeDto.officeId,
         officeName: officeDto.officeName,
       });
@@ -220,11 +242,13 @@ const UserProfileForm = (props) => {
   useEffect(() => setDefaultValue(), [
     countriesDialCodeList.dropDownItems,
     objectStatusesList.dropDownItems,
+    securityGroupNameList,
   ]);
 
   useEffect(() => setManageProfileDefaultValue(), [
     countriesDialCodeList.dropDownItems,
     objectStatusesList.dropDownItems,
+    securityGroupNameList
   ]);
 
   useEffect(() => {
@@ -353,13 +377,14 @@ const UserProfileForm = (props) => {
                   selectPlaceholder="Dial Code"
                   errors={errors}
                   register={register}
-                  validation={{ required: 'Please enter the mobile number.' }}
+                  validation={{ required: 'Please enter the mobile number.', 
+                  pattern: {
+                    value: regex.number,
+                    message: 'Please enter valid mobile number.',
+                  } }}
                   selectValidation={{
                     required: 'Please enter the country code.',
-                    pattern: {
-                      value: regex.number,
-                      message: 'Please enter valid mobile number.',
-                    },
+                   
                   }}
                   control={control}
                   showValue

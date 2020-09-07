@@ -6,6 +6,7 @@ import CreateUser from './office/user/createUser';
 import ChangePassword from './office/user/changePassword';
 import SearchOffice from './office/manageOffice/searchOffice';
 import OfficeProfile from './office/manageOffice/officeProfile';
+import AgencyProfile from './agency/manageAgency/AgencyProfile'
 import OfficeCredit from './office/manageOffice/officeCredit';
 import CreditLimitBreakup from './office/manageOffice/creditLimitBreakup';
 import Search from './search';
@@ -38,4 +39,5 @@ export {
   SearchOrder,
   //SearchDeals,
   CreateDeal,
+  AgencyProfile
 };

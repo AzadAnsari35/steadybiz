@@ -14,6 +14,7 @@ import {
   ChangePassword,
   SearchOffice,
   OfficeProfile,
+  AgencyProfile,
   OfficeCredit,
   CreditLimitBreakup,
   PassengerInformation,
@@ -162,30 +163,36 @@ const Routes = () => (
       path={routes.office.updateOffice}
       component={OfficeProfile}
     />
-    {/* 
+    
     <PrivateRoute
       exact
-      path={routes.office.searchAgency}
+      path={routes.agency.searchAgency}
       component={SearchOffice}
-    /> */}
-    {/* 
+    />
+    
     <PrivateRoute
       exact
-      path={routes.office.createOffice}
-      component={OfficeProfile}
+      path={routes.agency.createAgency}
+      component={AgencyProfile}
     />
 
     <PrivateRoute
       exact
-      path={routes.office.viewOffice}
-      component={OfficeProfile}
+      path={routes.agency.viewAgency}
+      component={AgencyProfile}
     />
 
     <PrivateRoute
       exact
-      path={routes.office.updateOffice}
-      component={OfficeProfile}
-    /> */}
+      path={routes.agency.updateAgency}
+      component={AgencyProfile}
+    />
+
+<PrivateRoute
+      exact
+      path={routes.agency.manageCreditLimit}
+      component={OfficeCredit}
+    />
 
     <PrivateRoute
       exact
