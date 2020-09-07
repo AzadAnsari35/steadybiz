@@ -1,6 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import ClearIcon from '@material-ui/icons/Clear';
-import { commonAction, commonActionWithoutApi } from 'Actions';
+import { commonAction,commonActionUpdate, commonActionWithoutApi } from 'Actions';
 import endpoint from 'Config/endpoint';
 import endpointWithoutApi from 'Config/endpointWithoutApi';
 import { routes } from 'Constants';
@@ -13,7 +13,7 @@ import moment from 'moment';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory,useLocation } from 'react-router-dom';
 import {
   Button,
   DateRangeTableHeader,
@@ -66,16 +66,23 @@ const response = {
 
 const LinkAction = (props) => {
   const { rowNumber } = props;
+  const location = useLocation();
+
+  const path = location.pathname;
+
+ 
+  const isSearchAgency = utils.stringComparison(
+    path,
+    routes.agency.manageCreditLimit
+  );
 
   return (
-    <div className="link-text">
       <Link
         className="link-text text-decoration-none font-primary-semibold-14 "
-        to=""
+        to={isSearchAgency? routes.agency.creditLimitBreakup : routes.office.creditLimitBreakup}
       >
         Deposit
       </Link>
-    </div>
   );
 };
 
@@ -91,12 +98,35 @@ const OfficeCredit = () => {
 
   const history = useHistory();
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  const path = location.pathname;
+
+ 
+  const isSearchAgency = utils.stringComparison(
+    path,
+    routes.agency.manageCreditLimit
+  );
 
   const [updateRes, postData] = updateEndpoint();
 
   let userId = utils.getItemFromStorage('userId');
 
-  let rowNumber = utils.getItemFromStorage('selectedOffice');
+  
+  const selectedOffice = utils.getItemFromStorage('selectedOffice');
+  const selectedAgency = utils.getItemFromStorage('selectedAgency');
+
+let rowNumber = isSearchAgency?selectedAgency:selectedOffice
+
+const searchOffice = useSelector((state) => state.searchOffice?.items?.data?.data) || [];
+const searchAgency = useSelector((state) => state.searchAgency?.items?.data?.data) || [];
+
+const searchResult = isSearchAgency? searchAgency : searchOffice
+
+
+let selectedItem = searchResult[rowNumber] || {};
+console.log('selectedItem', selectedItem);
+
 
   const settlementPlans = useSelector(
     (state) => state.masterSettlementPlans?.items?.data
@@ -120,7 +150,7 @@ const OfficeCredit = () => {
         dispatch(
           commonActionWithoutApi(endpointWithoutApi.toast.toastStatus, {
             toastStatus: true,
-            toastMessage: `Office credit limit updated successfully`,
+            toastMessage: `${isSearchAgency? "Agency":"Office" } credit limit updated successfully`,
             isToastVisible: true,
           })
         );
@@ -134,15 +164,25 @@ const OfficeCredit = () => {
     'masterPaymentModes'
   );
 
-  const searchResult =
-    useSelector((state) => state.searchOffice?.items?.data?.data) || [];
-  let selectedItem = searchResult[rowNumber] || {};
-  console.log('selectedItem', selectedItem);
+    
+
 
   useEffect(() => {
     dispatch(commonAction(endpoint.master.settlementPlans));
     reset({ minimumCreditLimit: minimumBalance });
   }, []);
+
+  const handleClose = () => {
+    if(isSearchAgency){
+      history.push(routes.agency.searchAgency)
+      dispatch(commonActionUpdate(endpoint.agency.searchAgency, null));
+    }
+    else {
+      history.push(routes.office.searchOffice)
+      dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
+
+    }
+  }
 
   const onSubmit = (data) => {
     const { dateFrom, dateTo, ...rest } = data;
@@ -177,13 +217,13 @@ const OfficeCredit = () => {
       <div className="ManageCreditLimit">
         <div className="ManageCreditLimit-head">
           <div className="d-flex justify-content-between align-items-center pb-8">
-            <div className="font-primary-semibold-24">MANAGE OFFICE CREDIT</div>
+            <div className="font-primary-semibold-24">{isSearchAgency? "AGENCY CREDIT LIMIT" : "OFFICE CREDIT LIMIT"}</div>
 
             <div className="d-flex">
               <IconWithBackground
                 showCursor
                 bgColor={colors.red1}
-                onClick={() => history.push(routes.office.searchOffice)}
+                onClick={() =>handleClose() }
               >
                 <ClearIcon style={{ color: colors.red }} />
               </IconWithBackground>
@@ -195,12 +235,12 @@ const OfficeCredit = () => {
             <Grid item xs={12}>
               <Text
                 showLeftBorder={true}
-                text="OFFICE DETAILS"
+                text={isSearchAgency?"AGENCY DETAILS" : "OFFICE DETAILS" }
                 className="font-primary-medium-18 mt-24"
               />
             </Grid>
             <Grid item xs={3}>
-              <div className="font-primary-medium-16">Office Name: &nbsp;</div>
+              <div className="font-primary-medium-16">{isSearchAgency?"Agency Name:" : "Office Name:" }&nbsp;</div>
               <div className="font-primary-bold-16">{officeName} </div>
             </Grid>
             <Grid item xs={3}>

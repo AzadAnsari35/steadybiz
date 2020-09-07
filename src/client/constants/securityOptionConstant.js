@@ -1,4 +1,18 @@
 const securityOptionConstant = {
+  agency: {
+    searchAgency: {
+      securityNumber: -1,
+    },
+    viewAgency: {
+      securityNumber: -1,
+    },
+    createAgency: {
+      securityNumber: -1,
+    },
+    updateAgency: {
+      securityNumber: -1,
+    },
+  }, 
   office: {
     searchUser: {
       securityNumber: 20,

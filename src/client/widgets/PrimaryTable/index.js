@@ -47,7 +47,7 @@ const PrimaryTable = (props) => {
     return `PrimaryTable-status ${status} `;
   };
 
-  console.log('bodyData', bodyData);
+  console.log('Primary Table', bodyData);
 
   const handleChangePage = (event, newPage) => {
     handlePage(newPage);

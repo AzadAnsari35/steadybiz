@@ -66,6 +66,10 @@ const CreateUserForm = () => {
 
   const searchResult =
     useSelector((state) => state.searchOffice?.items?.data) || [];
+  
+    const searchAgency =
+    useSelector((state) => state.searchAgency?.items?.data) || [];
+
   const [ofId, setOfId] = useState('');
 
   const { register, handleSubmit, errors, control, watch, reset } = useForm({
@@ -77,6 +81,8 @@ const CreateUserForm = () => {
   const getOfficeDetail = () => {
     if (!!objectStatusesList.dropDownItems) {
       const selectedOffice = utils.getItemFromStorage('selectedOffice') || '';
+      const selectedAgency = utils.getItemFromStorage('selectedAgency') ?? "";
+
       console.log('selectedOffice', selectedOffice);
 
       if (Number.isInteger(parseInt(selectedOffice)) && searchResult.data) {
@@ -89,7 +95,20 @@ const CreateUserForm = () => {
           officeName: selectedItem.officeName,
           status: objectStatusesList.dropDownItems[3],
         });
-      } else {
+      }
+      
+      else if (Number.isInteger(parseInt(selectedAgency)) && searchAgency.data) {
+
+        let selectedItem = searchAgency.data[selectedAgency] || {};
+        
+        setOfId(selectedItem.ofId);
+        reset({
+          officeId: selectedItem.officeId,
+          officeName: selectedItem.officeName,
+          status: objectStatusesList.dropDownItems[3],
+        });
+      }
+      else {
         console.log('selectedSession');
 
         const {
