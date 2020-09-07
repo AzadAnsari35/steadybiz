@@ -17,6 +17,7 @@ const routes = {
     createAgency: '/Agency/Create-Agency',
     updateAgency: '/Agency/Update-Agency',
     manageCreditLimit: '/Agency/Manage-Credit-Limit',
+    creditLimitBreakup: '/Agency/Credit-Limit-Breakup',
     searchDeals: '/Agency/Search-Deals',
     createDeal: '/Agency/Create-Deal',
     viewDeal: '/Agency/View-Deal',

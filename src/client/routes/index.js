@@ -188,10 +188,17 @@ const Routes = () => (
       component={AgencyProfile}
     />
 
-<PrivateRoute
+    <PrivateRoute
       exact
       path={routes.agency.manageCreditLimit}
       component={OfficeCredit}
+    />
+
+    
+    <PrivateRoute
+      exact
+      path={routes.agency.creditLimitBreakup}
+      component={CreditLimitBreakup}
     />
 
     <PrivateRoute

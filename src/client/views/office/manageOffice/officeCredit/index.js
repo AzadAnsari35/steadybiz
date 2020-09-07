@@ -66,11 +66,20 @@ const response = {
 
 const LinkAction = (props) => {
   const { rowNumber } = props;
+  const location = useLocation();
+
+  const path = location.pathname;
+
+ 
+  const isSearchAgency = utils.stringComparison(
+    path,
+    routes.agency.manageCreditLimit
+  );
 
   return (
       <Link
         className="link-text text-decoration-none font-primary-semibold-14 "
-        to={routes.office.creditLimitBreakup}
+        to={isSearchAgency? routes.agency.creditLimitBreakup : routes.office.creditLimitBreakup}
       >
         Deposit
       </Link>
@@ -89,9 +98,9 @@ const OfficeCredit = () => {
 
   const history = useHistory();
   const dispatch = useDispatch();
-    const location = useLocation();
+  const location = useLocation();
 
-const path = location.pathname;
+  const path = location.pathname;
 
  
   const isSearchAgency = utils.stringComparison(
