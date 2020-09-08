@@ -1,14 +1,17 @@
-import React, { useState } from "react";
-import { BoxRadio, Panel } from "Widgets";
-import OfficeRegistrationForm from "Components/Offices/Office/OfficeRegistration";
-import OfficeInvitationForm from "Components/Offices/Office/OfficeInvitation";
-import Grid from "@material-ui/core/Grid";
-import PeopleIcon from "@material-ui/icons/People";
-import colors from "Constants/colors";
-import "./style.scss";
+import React, { useState } from 'react';
+import { BoxRadio, Panel } from 'Widgets';
+// import OfficeRegistrationForm from "Components/Offices/Office/OfficeRegistration";
+// import OfficeInvitationForm from "Components/Offices/Office/OfficeInvitation";
+import AgencyRegistrationForm from 'Components/Agency/AgencyRegistration';
+import AgencyInvitationForm from 'Components/Agency/AgencyInvitation';
 
-const INVITE = "Invite";
-const REGISTRATION = "Registration";
+import Grid from '@material-ui/core/Grid';
+import PeopleIcon from '@material-ui/icons/People';
+import colors from 'Constants/colors';
+import './style.scss';
+
+const INVITE = 'Invite';
+const REGISTRATION = 'Registration';
 
 const AgencyRegistration = () => {
   const [selectedTab, setSelectedTab] = useState(REGISTRATION);
@@ -19,7 +22,7 @@ const AgencyRegistration = () => {
   };
 
   return (
-    <div className="AgencyRegister">
+    <div className="AgencyRegistration">
       <div className="d-flex align-items-center  pb-32">
         <BoxRadio
           handleClick={handleTab}
@@ -47,7 +50,7 @@ const AgencyRegistration = () => {
             panelHeaderIcon={
               <PeopleIcon style={{ fontSize: 30, color: colors.white }} />
             }
-            panelIconMarginLeft={"14"}
+            panelIconMarginLeft={'14'}
             showHeaderContent
             headerContent={
               <div className="font-primary-medium-22">Registration Details</div>
@@ -57,16 +60,16 @@ const AgencyRegistration = () => {
             expand={true}
             alwaysOpen={true}
           >
-            <OfficeRegistrationForm />
+            <AgencyRegistrationForm />
           </Panel>
         ) : (
           <Panel
             id="flightDetailsPanel"
             title="Agency Invitation"
             panelHeaderIcon={
-              <PeopleIcon style={{ fontSize: 30, color: "#ffffff" }} />
+              <PeopleIcon style={{ fontSize: 30, color: '#ffffff' }} />
             }
-            panelIconMarginLeft={"14"}
+            panelIconMarginLeft={'14'}
             showHeaderContent
             headerContent={
               <div className="font-primary-medium-22">Invite Details</div>
@@ -76,7 +79,7 @@ const AgencyRegistration = () => {
             expand={true}
             alwaysOpen={true}
           >
-            <OfficeInvitationForm />
+            <AgencyInvitationForm />
           </Panel>
         )}
       </Grid>

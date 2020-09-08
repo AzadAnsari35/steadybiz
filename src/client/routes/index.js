@@ -21,6 +21,7 @@ import {
   Transaction,
   SearchOrder,
   CreateDeal,
+  AgencyRegistration,
 } from 'Views/';
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
@@ -163,13 +164,13 @@ const Routes = () => (
       path={routes.office.updateOffice}
       component={OfficeProfile}
     />
-    
+
     <PrivateRoute
       exact
       path={routes.agency.searchAgency}
       component={SearchOffice}
     />
-    
+
     <PrivateRoute
       exact
       path={routes.agency.createAgency}
@@ -190,11 +191,16 @@ const Routes = () => (
 
     <PrivateRoute
       exact
+      path={routes.agency.registration}
+      component={AgencyRegistration}
+    />
+
+    <PrivateRoute
+      exact
       path={routes.agency.manageCreditLimit}
       component={OfficeCredit}
     />
 
-    
     <PrivateRoute
       exact
       path={routes.agency.creditLimitBreakup}
