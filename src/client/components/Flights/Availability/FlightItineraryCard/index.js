@@ -22,7 +22,7 @@ import {
   getTotalFlightDuration,
   getAirlineName,
 } from "Helpers/flight.helpers";
-import { showError } from "Helpers/utils";
+import { showError, calculateRem } from "Helpers/utils";
 import useToggle from "Hooks/useToggle";
 // import fareRules from "./fareRules.json";
 import { commonAction } from "Actions";
@@ -154,7 +154,6 @@ const FlightItineraryCard = props => {
   return (
     <>
       <div className="FlightItineraryCard">
-        <p>{error}</p>
         <div className="FlightItineraryCard-content">
           <div className="FlightItineraryCard-top d-flex justify-content-between">
             <div>
@@ -192,124 +191,126 @@ const FlightItineraryCard = props => {
                         }
                       />
                     </div>
-                    <div className="departureTime d-flex flex-direction-column">
-                      <Text
-                        className="time font-primary-semibold-20"
-                        text={`${
-                          index === 0
-                            ? extractTime(outboundDepartureDetails.time)
-                            : extractTime(inboundDepartureDetails.time)
-                        } [${
-                          index === 0
-                            ? outboundDepartureDetails.airportCode
-                            : inboundDepartureDetails.airportCode
-                          }]`
-                        }
-                      />
-                      <Text
-                        className="city font-primary-medium-14"
-                        text={`${index === 0 ? outboundDepartureDetails.cityName : inboundDepartureDetails.cityName}`}
-                      />
-                    </div>
-                    <div className="stopsInfo d-flex align-items-center">
-                      <FlightIcon />
-                      <div className="d-flex flex-direction-column align-items-center width-100 height-100">
+                    <div className="d-flex mx-auto">
+                      <div className="departureTime d-flex flex-direction-column">
                         <Text
-                          className="font-primary-medium-12"
-                          text={`${totalFlightDuration} ${
+                          className="time font-primary-semibold-20"
+                          text={`${
                             index === 0
-                            ? outboundFlightSegment.stopCount > 0
-                              ? `(${outboundFlightSegment.stopCount} stop${outboundFlightSegment.stopCount > 1 ? "s" : ""})`
-                              : ""
-                            : inboundFlightSegment.stopCount > 0
-                              ? `(${inboundFlightSegment.stopCount} stop${outboundFlightSegment.stopCount > 1 ? "s" : ""})`
-                              : ""
-                          }`}
+                              ? extractTime(outboundDepartureDetails.time)
+                              : extractTime(inboundDepartureDetails.time)
+                          } [${
+                            index === 0
+                              ? outboundDepartureDetails.airportCode
+                              : inboundDepartureDetails.airportCode
+                            }]`
+                          }
                         />
-                        <div className="stops d-flex width-100 align-items-center">
-                          <Line />
-                          {index === 0
-                            ? outboundFlightSegment.stopCount > 0 &&
-                              Array(outboundFlightSegment.stopCount).fill(null).map((item, index) => (
-                              <Fragment key={index}>
-                                <Dot big />
-                                <Line />
-                              </Fragment>
-                            ))
-                            : inboundFlightSegment.stopCount > 0 &&
-                              Array(inboundFlightSegment.stopCount).fill(null).map((item, index) => (
-                              <Fragment key={index}>
-                                <Dot big />
-                                <Line />
-                              </Fragment>
-                            ))
-                          }
-                          <Dot big solid />
-                        </div>
-                        <div className="stop-names d-flex justify-content-center width-100">
-                          {index === 0 ?
-                            outboundFlightSegment.stopCount > 0 &&
-                            outboundFlightSegment.flightSegmentGroup.map((flightSegment, index) => {
-                              if (index < outboundFlightSegment.stopCount) {
-                                return (
-                                  <Text
-                                    key={index}
-                                    className="font-primary-regular-12"
-                                    text={flightSegment.arrivalDetails.airportCode}
-                                    style={{
-                                      left: outboundFlightSegment.stopCount === 1
-                                        && "-4px"
-                                    }}
-                                  />
-                                )
-                              }
-                            })
-                            : inboundFlightSegment.stopCount > 0 &&
-                              inboundFlightSegment.flightSegmentGroup.map((flightSegment, index) => {
-                              if (index < inboundFlightSegment.stopCount) {
-                                return (
-                                  <Text
-                                    key={index}
-                                    className="font-primary-regular-12"
-                                    text={flightSegment.arrivalDetails.airportCode}
-                                    style={{
-                                      left: inboundFlightSegment.stopCount === 1
-                                        && "-4px"
-                                    }}
-                                  />
-                                )
-                              }
-                            })
-                          }
+                        <Text
+                          className="city font-primary-medium-14"
+                          text={`${index === 0 ? outboundDepartureDetails.cityName : inboundDepartureDetails.cityName}`}
+                        />
+                      </div>
+                      <div className="stopsInfo d-flex align-items-center">
+                        <FlightIcon />
+                        <div className="d-flex flex-direction-column align-items-center width-100 height-100">
+                          <Text
+                            className="font-primary-medium-12"
+                            text={`${totalFlightDuration} ${
+                              index === 0
+                              ? outboundFlightSegment.stopCount > 0
+                                ? `(${outboundFlightSegment.stopCount} stop${outboundFlightSegment.stopCount > 1 ? "s" : ""})`
+                                : ""
+                              : inboundFlightSegment.stopCount > 0
+                                ? `(${inboundFlightSegment.stopCount} stop${outboundFlightSegment.stopCount > 1 ? "s" : ""})`
+                                : ""
+                            }`}
+                          />
+                          <div className="stops d-flex width-100 align-items-center">
+                            <Line />
+                            {index === 0
+                              ? outboundFlightSegment.stopCount > 0 &&
+                                Array(outboundFlightSegment.stopCount).fill(null).map((item, index) => (
+                                <Fragment key={index}>
+                                  <Dot big />
+                                  <Line />
+                                </Fragment>
+                              ))
+                              : inboundFlightSegment.stopCount > 0 &&
+                                Array(inboundFlightSegment.stopCount).fill(null).map((item, index) => (
+                                <Fragment key={index}>
+                                  <Dot big />
+                                  <Line />
+                                </Fragment>
+                              ))
+                            }
+                            <Dot big solid />
+                          </div>
+                          <div className="stop-names d-flex justify-content-center width-100">
+                            {index === 0 ?
+                              outboundFlightSegment.stopCount > 0 &&
+                              outboundFlightSegment.flightSegmentGroup.map((flightSegment, index) => {
+                                if (index < outboundFlightSegment.stopCount) {
+                                  return (
+                                    <Text
+                                      key={index}
+                                      className="font-primary-regular-12"
+                                      text={flightSegment.arrivalDetails.airportCode}
+                                      style={{
+                                        left: outboundFlightSegment.stopCount === 1
+                                          && "-4px"
+                                      }}
+                                    />
+                                  )
+                                }
+                              })
+                              : inboundFlightSegment.stopCount > 0 &&
+                                inboundFlightSegment.flightSegmentGroup.map((flightSegment, index) => {
+                                if (index < inboundFlightSegment.stopCount) {
+                                  return (
+                                    <Text
+                                      key={index}
+                                      className="font-primary-regular-12"
+                                      text={flightSegment.arrivalDetails.airportCode}
+                                      style={{
+                                        left: inboundFlightSegment.stopCount === 1
+                                          && "-4px"
+                                      }}
+                                    />
+                                  )
+                                }
+                              })
+                            }
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="arrivalTime d-flex flex-direction-column">
-                      <Text
-                        className="arrivalDate font-primary-medium-12"
-                        text={`Arrives: ${
-                          index === 0
-                          ? moment(outboundArrivalDetails.date).format("ddd, DD-MMM")
-                          : moment(inboundArrivalDetails.date).format("ddd, DD-MMM")
-                        }`}
-                      />
-                      <Text
-                        className="time font-primary-semibold-20"
-                        text={`${
-                          index === 0
-                            ? extractTime(outboundArrivalDetails.time)
-                            : extractTime(inboundArrivalDetails.time)
-                        } [${
-                          index === 0
-                            ? outboundArrivalDetails.airportCode
-                            : inboundArrivalDetails.airportCode
-                          }]`
-                        }
-                      />
-                      <Text
-                        className="city font-primary-medium-14"
-                        text={`${index === 0 ? outboundArrivalDetails.cityName : inboundArrivalDetails.cityName}`}
-                      />
+                      <div className="arrivalTime d-flex flex-direction-column">
+                        <Text
+                          className="arrivalDate font-primary-medium-12"
+                          text={`Arrives: ${
+                            index === 0
+                            ? moment(outboundArrivalDetails.date).format("ddd, DD-MMM")
+                            : moment(inboundArrivalDetails.date).format("ddd, DD-MMM")
+                          }`}
+                        />
+                        <Text
+                          className="time font-primary-semibold-20"
+                          text={`${
+                            index === 0
+                              ? extractTime(outboundArrivalDetails.time)
+                              : extractTime(inboundArrivalDetails.time)
+                          } [${
+                            index === 0
+                              ? outboundArrivalDetails.airportCode
+                              : inboundArrivalDetails.airportCode
+                            }]`
+                          }
+                        />
+                        <Text
+                          className="city font-primary-medium-14"
+                          text={`${index === 0 ? outboundArrivalDetails.cityName : inboundArrivalDetails.cityName}`}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -398,7 +399,7 @@ const FlightItineraryCard = props => {
         title="Fare Rules"
         showDrawer={showFareRules}
         onCloseClick={handleFareRulesCloseClick}
-        width="868px"
+        width={calculateRem(868)}
       >
         <FareRules itinerary={itinerary} />
       </CustomDrawer>

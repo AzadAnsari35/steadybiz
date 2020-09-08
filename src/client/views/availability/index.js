@@ -111,7 +111,7 @@ const handleSortDirection = ()=>{
 
   return (
     <div className="Availability">
-      <div className="Availability-modifySearch layout-wrapper">
+      <div className="Availability-modifySearch layout-wrapper-adjust">
         {!showSearch ? 
           <div className="d-flex justify-content-between align-items-center">
             {!!flightSearchInputData &&

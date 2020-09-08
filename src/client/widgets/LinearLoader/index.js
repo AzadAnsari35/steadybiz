@@ -26,9 +26,11 @@ const LinearLoader = props => {
   }, []);
 
   return (
-    <div className="LinearLoader layout-wrapper" style={style}>
-      {!!label && <Text className="LinearLoader-label text-primary-semibold-14" text={label} />}
-      <LinearProgress variant="determinate" value={progress} />
+    <div className="LinearLoader">
+      <div className="layout-wrapper" style={style}>
+        {!!label && <Text className="LinearLoader-label text-primary-semibold-14" text={label} />}
+        <LinearProgress variant="determinate" value={progress} />
+      </div>
     </div>
   );
 };
