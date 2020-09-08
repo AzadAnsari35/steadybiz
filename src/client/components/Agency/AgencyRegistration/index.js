@@ -14,19 +14,35 @@ import { useDispatch, useSelector } from 'react-redux';
 import { regex } from 'Helpers/validator';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 import useDropDown from 'Hooks/useDropDown';
+import { utils } from 'Helpers';
+
 // import useAPi from 'Hooks/useApi';
 // import endpoint from 'Config/endpoint';
-import './style.scss';
 import endpoint from 'Config/endpoint';
-import commonAction from 'Actions/';
-import { dropDownParam, titles } from 'Constants/commonConstant';
-import { countriesDialCodeFormatter } from 'Helpers/global';
+import { commonAction } from 'Actions/';
+import { commonConstant } from 'Constants/';
 
-const regEndpoint = () => {
+import './style.scss';
+
+const createEndpoint = () => {
   return useAsyncEndpoint((data) => ({
-    _endpoint: endpoint.user.login,
+    _endpoint: endpoint.office.createOffice,
     data,
   }));
+};
+
+const defaultValues = {
+  officeName: '',
+  title: '',
+  phoneDialCode: '',
+  securityGroup: '',
+  address1: '',
+  emailId: '',
+  zipCode: '',
+  noOfUserRequested: '',
+  mobileDialCode: '',
+  cityCode: '',
+  countryCode: '',
 };
 
 const AgencyRegistrationForm = () => {
@@ -37,35 +53,109 @@ const AgencyRegistrationForm = () => {
     control,
     setValue,
     watch,
-  } = useForm();
-  
-  const [regResponse, postRegResponse] = regEndpoint();
+    getValues,
+    reset,
+  } = useForm({ defaultValues });
+
+  const {
+    userDto: {
+      officeId,
+      userId,
+      officeDto: { officeLevel },
+    },
+  } = JSON.parse(utils.getItemFromStorage('userData'));
+
+  // console.log('user info', officeId, userId, officeLevel);
+
+  const dispatch = useDispatch();
+
+  const [createRes, postCreateRequest] = createEndpoint();
 
   const countriesList = useDropDown(
     endpoint.master.countries,
-    dropDownParam.countries,
+    commonConstant.dropDownParam.countries,
     'masterCountries'
   );
 
   const countriesDialCodeList = useDropDown(
     endpoint.master.countries,
-    dropDownParam.countriesDialCode,
-    'masterCountries',
-    countriesDialCodeFormatter
+    commonConstant.dropDownParam.countriesDialCode,
+    'masterCountries'
   );
 
+  const objectStatusesList = useDropDown(
+    endpoint.master.objectStatuses,
+    commonConstant.dropDownParam.objectStatuses,
+    'masterObjectStatuses'
+  );
+
+  const citiesList = useSelector(
+    (state) => state.masterCities?.items?.data?.data
+  );
+  const settlementPlans = useSelector(
+    (state) => state.masterSettlementPlans?.items?.data
+  );
+
+  const setDefaultValue = () => {
+    console.log('settlementPlans', settlementPlans[0].value);
+    reset({ ...defaultValues, paymentOptions: settlementPlans[0].value });
+    // setValue('paymentOptions', settlementPlans[0].value);
+  };
+
+  const getCitiesList = (countryCode) => {
+    dispatch(
+      commonAction(endpoint.master.cities, {
+        countryCode: countryCode,
+      })
+    );
+  };
+
   useEffect(() => {
-    setValue('settlementOptions', 'advanceDeposit');
+    const selectedCountry = getValues('countryCode');
+    if (selectedCountry) {
+      getCitiesList(selectedCountry.value);
+    }
+    return setValue('cityCode', '');
+  }, [getValues('countryCode')]);
+
+  useEffect(() => {
+    if (createRes != null) {
+      const errMsg = utils.checkError(createRes);
+      if (errMsg !== '') {
+        dispatch(utils.showErrorBox(errMsg));
+      } else {
+        dispatch(utils.showSuccessBox('Agency successfully registered'));
+        handleReset();
+      }
+    }
+  }, [createRes]);
+  useEffect(() => {
+    if (settlementPlans) {
+      setDefaultValue();
+    }
+  }, [settlementPlans]);
+
+  useEffect(() => {
+    dispatch(commonAction(endpoint.master.settlementPlans));
   }, []);
+
+  const handleReset = () => {
+    setDefaultValue();
+  };
 
   const onSubmit = (data, e) => {
     console.log('data', data);
-    const { ...request } = data;
-    //    const requestJson = request.data;
-    console.log('request', data);
-    postRegResponse(data);
-
-    // console.log(res);
+    postCreateRequest({
+      ...data,
+      paymentOptions: [data.paymentOptions],
+      action: 'I',
+      userId,
+      officeLevel,
+      officeId,
+      officeChannel: 'SA',
+      status: objectStatusesList.dropDownItems[0],
+      officeType: commonConstant.officeType[1],
+    });
   };
 
   return (
@@ -84,22 +174,22 @@ const AgencyRegistrationForm = () => {
             <SelectWithTextInput
               name="firstName"
               selectInputName="title"
-              data={titles}
-              label="First Name"
+              data={commonConstant.titles}
+              label="First Name:"
               placeholder="First Name"
               selectPlaceholder="Title"
               errors={errors}
               register={register}
-              // validation={{
-              //   required: 'Please enter the first name.',
-              //   pattern: {
-              //     value: regex.name,
-              //     message: 'Please enter the alphabets only.',
-              //   },
-              // }}
-              // selectValidation={{
-              //   required: 'Please enter the title.',
-              // }}
+              validation={{
+                required: 'Please enter the first name.',
+                pattern: {
+                  value: regex.name,
+                  message: 'Please enter the alphabets only.',
+                },
+              }}
+              selectValidation={{
+                required: 'Please enter the title.',
+              }}
               control={control}
             />
           </Grid>
@@ -109,19 +199,19 @@ const AgencyRegistrationForm = () => {
               register={register}
               errors={errors}
               placeholder="Last Name"
-              label="Last Name"
+              label="Last Name:"
               value="abc"
-              // validation={{
-              //   required: 'Please enter the last name.',
-              //   minLength: {
-              //     value: 2,
-              //     message: 'Please enter minimum two alphabets',
-              //   },
-              //   pattern: {
-              //     value: regex.name,
-              //     message: 'Please enter the alphabets only.',
-              //   },
-              // }}
+              validation={{
+                required: 'Please enter the last name.',
+                minLength: {
+                  value: 2,
+                  message: 'Please enter minimum two alphabets',
+                },
+                pattern: {
+                  value: regex.name,
+                  message: 'Please enter the alphabets only.',
+                },
+              }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -129,15 +219,21 @@ const AgencyRegistrationForm = () => {
               name="mobile"
               selectInputName="mobileDialCode"
               data={countriesDialCodeList.dropDownItems}
-              label="Mobile Number"
+              label="Mobile Number:"
               placeholder="Mobile Number"
               selectPlaceholder="Dial Code"
               errors={errors}
               register={register}
-              // validation={{ required: 'Please enter the first name.' }}
-              // selectValidation={{
-              //   required: 'Please enter the country code.',
-              // }}
+              validation={{
+                required: 'Please enter the mobile number.',
+                pattern: {
+                  value: regex.number,
+                  message: 'Please enter valid phone number.',
+                },
+              }}
+              selectValidation={{
+                required: 'Please enter the country code.',
+              }}
               control={control}
               showValue
             />
@@ -147,7 +243,7 @@ const AgencyRegistrationForm = () => {
               name="emailId"
               register={register}
               errors={errors}
-              label="Email"
+              label="Email:"
               placeholder="Email"
               validation={{
                 required: 'Please enter the email.',
@@ -164,7 +260,7 @@ const AgencyRegistrationForm = () => {
               type="password"
               register={register}
               errors={errors}
-              label="Password"
+              label="Create Password:"
               validation={{
                 required: 'Please enter the password.',
                 minLength: {
@@ -184,11 +280,11 @@ const AgencyRegistrationForm = () => {
               type="password"
               register={register}
               errors={errors}
-              label="Confirm Password"
-              // validation={{
-              //   validate: (value) =>
-              //     value === watch('password') || "Passwords don't match.",
-              // }}
+              label="Confirm Password:"
+              validation={{
+                validate: (value) =>
+                  value === watch('password') || "Passwords don't match.",
+              }}
             />
           </Grid>
           <Grid item xs={12}>
@@ -203,15 +299,15 @@ const AgencyRegistrationForm = () => {
               name="officeName"
               register={register}
               errors={errors}
-              label="Agency Name"
+              label="Agency Name:"
               placeholder="Agency Name"
-              // validation={{
-              //   required: 'Please enter the agency name.',
-              //   pattern: {
-              //     value: regex.alphanumeric,
-              //     message: 'Please enter valid agency name.',
-              //   },
-              // }}
+              validation={{
+                required: 'Please enter the agency name.',
+                pattern: {
+                  value: regex.alphanumeric,
+                  message: 'Please enter valid agency name.',
+                },
+              }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -220,10 +316,10 @@ const AgencyRegistrationForm = () => {
               register={register}
               errors={errors}
               placeholder="Address Line 1"
-              label="Address Line 1"
-              // validation={{
-              //   required: 'Please enter the address line 1.',
-              // }}
+              label="Address Line 1:"
+              validation={{
+                required: 'Please enter the address line 1.',
+              }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -232,15 +328,15 @@ const AgencyRegistrationForm = () => {
               register={register}
               errors={errors}
               placeholder="Address Line 2"
-              label="Address Line 2"
-              // validation={{
-              //   required: 'Please enter the address line 2.',
-              // }}
+              label="Address Line 2:"
+              validation={{
+                required: 'Please enter the address line 2.',
+              }}
             />
           </Grid>
           <Grid item xs={6}>
             <MultiSelect
-              label="Country"
+              label="Country:"
               name="countryCode"
               options={countriesList.dropDownItems}
               placeholder="Country"
@@ -248,26 +344,22 @@ const AgencyRegistrationForm = () => {
               changeStyle={true}
               control={control}
               errors={errors}
-              // validation={{ required: 'Please enter the country' }}
-              showValue
+              validation={{ required: 'Please enter the country' }}
               width="auto"
             />
           </Grid>
 
           <Grid item xs={6}>
             <MultiSelect
-              label="City"
+              label="City:"
               name="cityCode"
-              options={[
-                { label: 'New Delhi', value: 'DEL' },
-                { label: 'Mumbai', value: 'BOM' },
-              ]}
+              options={citiesList || []}
               placeholder="City"
               showBorder={true}
               changeStyle={true}
               control={control}
               errors={errors}
-              //validation={{ required: 'Please enter the city' }}
+              validation={{ required: 'Please enter the city' }}
               width="auto"
             />
           </Grid>
@@ -277,28 +369,22 @@ const AgencyRegistrationForm = () => {
               name="zipCode"
               register={register}
               errors={errors}
-              label="Zip Code"
+              label="Zip Code:"
               placeholder="Zip Code"
-              // validation={{
-              //   required: 'Please enter the address zip code.',
-              // }}
             />
           </Grid>
 
           <Grid item xs={3}>
             <MultiSelect
-              label="No of Users"
+              label="No of Users:"
               name="noOfUserRequested"
-              options={[
-                { label: '1', value: '1' },
-                { label: '2', value: '2' },
-              ]}
+              options={commonConstant.numberOfUsers}
               placeholder="No of Users"
               showBorder={true}
               changeStyle={true}
               control={control}
               errors={errors}
-              // validation={{ required: 'Please enter the no of users' }}
+              validation={{ required: 'Please enter the no of users' }}
               width="auto"
             />
           </Grid>
@@ -308,15 +394,21 @@ const AgencyRegistrationForm = () => {
               name="phone"
               selectInputName="phoneDialCode"
               data={countriesDialCodeList.dropDownItems}
-              label="Phone Number"
+              label="Phone Number:"
               placeholder="Phone Number"
               selectPlaceholder="Country Code"
               errors={errors}
               register={register}
-              // validation={{ required: 'Please enter the phone number.' }}
-              // selectValidation={{
-              //   required: 'Please enter the country code.',
-              // }}
+              validation={{
+                required: 'Please enter the phone number.',
+                pattern: {
+                  value: regex.number,
+                  message: 'Please enter valid phone number.',
+                },
+              }}
+              selectValidation={{
+                required: 'Please enter the country code.',
+              }}
               control={control}
               showValue
             />
@@ -329,43 +421,71 @@ const AgencyRegistrationForm = () => {
               className="font-primary-semibold-18 mt-32"
             />
           </Grid>
-          <Grid item xs={4}>
-            <CustomRadio
-              id="advanceDeposit"
-              name="settlementOptions"
+          <Grid item xs={6}>
+            <TextInput
+              name="Gstnumber"
               register={register}
               errors={errors}
-              value="advanceDeposit"
-              label="Advance Deposit"
-              subLabel="Safe money transfer using your bank account. Safe Payment online. Credit Card needed, Visa ,Mastero, Discover"
+              placeholder="Type GST / VAT No."
+              label="GST / VAT No.:"
             />
           </Grid>
+          <Grid item xs={6}>
+            <TextInput
+              name="Gstnumber"
+              register={register}
+              errors={errors}
+              placeholder="Type GST / VAT (%)"
+              label="GST / VAT (%):"
+            />
+          </Grid>
+          {settlementPlans && (
+            <>
+              <Grid item xs={4}>
+                <CustomRadio
+                  id="advanceDeposit"
+                  name="paymentOptions"
+                  register={register}
+                  errors={errors}
+                  value={settlementPlans[0].value}
+                  label={settlementPlans[0].primaryLabel}
+                  subLabel="Safe money transfer using your bank account. Safe Payment online. Credit Card needed, Visa ,Mastero, Discover"
+                />
+              </Grid>
 
-          <Grid item xs={4}>
-            <CustomRadio
-              id="creditCard"
-              value="creditCard"
-              name="settlementOptions"
-              register={register}
-              errors={errors}
-              label="Credit Card"
-              subLabel="Safe money transfer using your bank account. Safe Payment online. Credit Card needed, Visa ,Mastero, Discover"
-            />
-          </Grid>
+              <Grid item xs={4}>
+                <CustomRadio
+                  id="creditCard"
+                  name="paymentOptions"
+                  register={register}
+                  errors={errors}
+                  value={settlementPlans[1].value}
+                  label={settlementPlans[1].primaryLabel}
+                  subLabel="Safe money transfer using your bank account. Safe Payment online. Credit Card needed, Visa ,Mastero, Discover"
+                />
+              </Grid>
 
-          <Grid item xs={4}>
-            <CustomRadio
-              id="bankGuarantee"
-              value="bankGuarantee"
-              name="settlementOptions"
-              register={register}
-              errors={errors}
-              label="Bank Guarantee"
-              subLabel="Safe money transfer using your bank account. Safe Payment online. Credit Card needed, Visa ,Mastero, Discover"
-            />
-          </Grid>
+              <Grid item xs={4}>
+                <CustomRadio
+                  id="bankGuarantee"
+                  name="paymentOptions"
+                  register={register}
+                  errors={errors}
+                  value={settlementPlans[2].value}
+                  label={settlementPlans[2].primaryLabel}
+                  subLabel="Safe money transfer using your bank account. Safe Payment online. Credit Card needed, Visa ,Mastero, Discover"
+                />
+              </Grid>
+            </>
+          )}
         </Grid>
         <div className="d-flex justify-content-end pt-36">
+          <Button
+            secondary
+            text="Reset"
+            className="mr-16"
+            onClick={handleReset}
+          />
           <Button type="submit" text="Submit" />
         </div>
       </form>
