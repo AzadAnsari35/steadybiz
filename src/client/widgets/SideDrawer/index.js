@@ -67,12 +67,17 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       show: showSubagency,
       subList: [
         {
+          text: 'Registration',
+          link: routes.agency.registration,
+        },
+        {
           text: 'Manage Agency',
           link: routes.agency.searchAgency,
           clickFunc: () => {
             dispatch(commonActionUpdate(endpoint.agency.searchAgency, null));
           },
         },
+
         // {
         //   text: 'Registration',
         //   link: '/createAccount',
@@ -126,14 +131,15 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
             dispatch(commonActionUpdate(endpoint.office.searchUser, null));
             dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
             dispatch(commonActionUpdate(endpoint.agency.searchAgency, null));
-
           },
         },
         {
           text: 'Security Group',
           link: routes.office.searchSecurityGroup,
           clickFunc: () => {
-            dispatch(commonActionUpdate(endpoint.office.searchSecurityGroup, null));
+            dispatch(
+              commonActionUpdate(endpoint.office.searchSecurityGroup, null)
+            );
           },
         },
       ],
@@ -157,6 +163,10 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Manage Deals',
           link: routes.agency.searchDeals,
+        },
+        {
+          text: 'Manage Region',
+          link: routes.master.searchRegion,
         },
       ],
       link: '#',

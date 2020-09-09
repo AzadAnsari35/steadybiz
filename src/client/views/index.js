@@ -20,6 +20,8 @@ import SearchSecurityGroup from './office/securityGroup/searchSecurityGroup';
 import CreateSecurityGroup from './office/securityGroup/createSecurityGroup';
 //import SearchDeals from './agency/manageDeals/searchDeals';
 import CreateDeal from './agency/manageDeals/createDeal';
+import SearchRegion from './master/manageRegion/searchRegion';
+import CreateRegion from './master/manageRegion/createRegion';
 
 export {
   Home,
@@ -43,4 +45,6 @@ export {
   CreateDeal,
   AgencyProfile,
   AgencyRegistration,
+  SearchRegion,
+  CreateRegion,
 };
