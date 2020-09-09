@@ -1,10 +1,11 @@
 @import '../../styles/variables';
+@import '../../styles/functions';
 $root: '.Home';
 
 #{$root} {
   &-features {
     background-color: $white;
-    padding: 60px 140px;
+    padding: 60px 0;
     &-title {
       color: $black;
     }
@@ -15,6 +16,14 @@ $root: '.Home';
       &__para {
         color: $black;
       }
+    }
+  }
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1919px) {
+  #{$root} {
+    &-features {
+      padding: calculateRem(60px) 0;
     }
   }
 }

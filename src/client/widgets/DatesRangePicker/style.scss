@@ -1,4 +1,5 @@
 @import "./../../styles/variables";
+@import "./../../styles/functions";
 $root: ".DatesRangePicker";
 
 #{$root} {
@@ -222,7 +223,7 @@ $root: ".DatesRangePicker";
   }
   .disabled-return-date {
     position: absolute;
-    left: calc(50%);
+    left: 50%;
     top: 0;
     border: 1px solid #05164d57;
     padding: 11px 9px 11px 64px;
@@ -234,5 +235,117 @@ $root: ".DatesRangePicker";
     align-items: center;
     opacity: 0.4;
     margin-left: 4px;
+  }
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1919px) {
+  #{$root} {
+    .DateRangePicker, .SingleDatePicker {
+      .DateRangePickerInput, .SingleDatePickerInput {
+        .DateInput {
+          width: calc(50% - 4px);
+          &_input {
+            height: calculateRem(62px);
+            padding-left: calculateRem(64px);
+            font-size: calculateRem(18px);
+            line-height: calculateRem(22px);
+          }
+        }
+      }
+
+      &_picker {
+        .DayPicker {
+          width: calculateRem(955px) !important;
+          & > div > div {
+            width: calculateRem(955px) !important;
+          }
+          &_weekHeader {
+            top: calculateRem(56px);
+            left: calculateRem(42px) !important;
+            &_li {
+              width: calculateRem(60px) !important;
+              font-size: calculateRem(20px);
+              line-height: calculateRem(24px);
+            }
+            &:last-of-type {
+              left: calculateRem(492px) !important;
+            }
+          }
+          .CalendarMonthGrid {
+            padding: 0 calculateRem(24px);
+            &_month {
+              &__horizontal {
+                .CalendarMonth {
+                  padding: 0 calculateRem(12px) !important;
+                }
+              }
+            }
+          }
+          &_focusRegion {
+            .DayPickerNavigation {
+              &_button {
+                top: calculateRem(18px);
+                &:first-child {
+                  left: calculateRem(30px);
+                }
+                &:last-child {
+                  right: calculateRem(30px);
+                }
+              }
+            }
+            .CalendarMonthGrid {
+              &_month {
+                &__horizontal {
+                  .CalendarMonth {
+                    &_caption {
+                      padding-top: calculateRem(16px);
+                      font-size: calculateRem(22px);
+                      padding-bottom: calculateRem(48px);
+                    }
+                    &_table {
+                      tbody {
+                        tr {
+                          td {
+                            &.CalendarDay {
+                              font-size: calculateRem(18px);
+                              line-height: calculateRem(22px);
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          &_transitionContainer {
+            width: calculateRem(955px) !important;
+            height: calculateRem(512px) !important;
+          }
+          .RenderCalendarBottomInfo {
+            padding: calculateRem(20px) calculateRem(30px);
+            &-right {
+              .btn-link {
+                &:first-child {
+                  margin-right: calculateRem(15px);
+                }
+                &:last-child {
+                  margin-left: calculateRem(15px);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    &-arrivalIcon {
+      top: 8px;
+      padding: calculateRem(10px);
+      margin: 0 calculateRem(5px) 0 calculateRem(10px);
+    }
+    .disabled-return-date {
+      height: calculateRem(60px);
+    }
   }
 }
