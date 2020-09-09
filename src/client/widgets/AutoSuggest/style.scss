@@ -1,4 +1,5 @@
 @import "./../../styles/variables";
+@import "./../../styles/functions";
 $root: ".AutoSuggest";
 
 #{$root} {
@@ -112,3 +113,45 @@ $root: ".AutoSuggest";
   }
 }
 
+@media screen and (min-width: 1280px) and (max-width: 1919px) {
+  #{$root} {
+    .MuiAutocomplete {
+      &-root {
+        .MuiFormControl-root {
+          .MuiInputLabel {
+            &-outlined {
+              font-size: calculateRem(18px);
+              line-height: calculateRem(22px);
+            }
+          }
+        }
+      }
+      &-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input {
+        &:first-child {
+          padding-left: calculateRem(56px);
+        }
+      }
+      &-inputRoot[class*="MuiOutlinedInput-root"] {
+        padding: calculateRem(11px);
+      }
+    }
+  }
+  
+  .MuiAutocomplete-popper {
+    .MuiAutocomplete {
+      &-option {
+        padding: calculateRem(14px) calculateRem(24px);
+        .listItem {
+          &.nested {
+            padding-left: calculateRem(36px);
+          }
+          &__left {
+            &-icon {
+              margin-right: calculateRem(20px);
+            }
+          }
+        }
+      }
+    }
+  } 
+}

@@ -43,6 +43,11 @@ export const officeType = [
   { label: 'Own', value: 'O' },
 ];
 
+export const officeChannel= [
+  { label: 'Sub Agency', value: 'SA' },
+  { label: 'Agency', value: 'AG' },
+];
+
 export const securityGroups = [
   { label: 'Admin', value: 'Admin' },
   { label: 'Account', value: 'Account' },

@@ -314,6 +314,7 @@ const OfficeProfileForm = (props) => {
         officeId,
         paymentOptions,
         ofId: selectedItem.ofId,
+        officeChannel: officeLevel === 0 ? 'AG' : 'SA'
       });
     }
 
@@ -325,6 +326,7 @@ const OfficeProfileForm = (props) => {
         officeLevel,
         paymentOptions,
         officeId,
+        officeChannel: officeLevel === 0 ? 'AG' : 'SA'
       });
     }
   };

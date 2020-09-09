@@ -26,6 +26,10 @@ export const actionTypeConstant = {
     settlementPlans: 'master.settlementPlans',
     paymentModes: 'master.paymentModes',
   },
+  agency: {
+    searchAgency: 'agency.searchAgency',
+
+  },
   office: {
     searchUser: 'office.searchUser',
     updateUser: 'office.updateUser',

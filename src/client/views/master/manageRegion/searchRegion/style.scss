@@ -1,0 +1,25 @@
+@import '../../../../styles/variables';
+$root: '.SearchRegion';
+
+#{$root} {
+  &-head {
+    padding: 36px 100px;
+    background-color: $white;
+  }
+  &-tableAction {
+    padding: 12px 0px;
+    > a,
+    div {
+      text-decoration: none;
+      color: $black;
+      padding: 6px 36px;
+      &:hover {
+        color: $royalBlue;
+        border-left: 2px solid $royalBlue;
+        padding-left: 34px;
+        padding-right: 34px;
+        font-family: 'Montserrat SemiBold';
+      }
+    }
+  }
+}

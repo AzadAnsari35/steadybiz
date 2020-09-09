@@ -36,13 +36,13 @@ const RangeSlider = (props) => {
         {!isTime ? (
           <>
             <Text
-              className="text-primary-medium-14"
+              className="font-primary-medium-14"
               text={`${prefix ? prefix : ''} ${
                 !isPrice ? value[0] : applyCommaToPrice(value[0])
               } ${suffix ? suffix : ''}`}
             />
             <Text
-              className="text-primary-medium-14"
+              className="font-primary-medium-14"
               text={`${prefix ? prefix : ''} ${
                 !isPrice ? value[1] : applyCommaToPrice(value[1])
               } ${suffix ? suffix : ''}`}

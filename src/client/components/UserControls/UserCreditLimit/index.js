@@ -33,6 +33,7 @@ const UserCreditLimit = (props) => {
       dispatch(utils.showErrorBox(securityMessage));
       return;
     }
+    utils.removeItemFromStorage('selectedUser');
 
     history.push(routes.office.manageUserProfile);
     handleClose();
@@ -57,6 +58,7 @@ const UserCreditLimit = (props) => {
     fullName,
     handleClose,
     setShowDrawer,
+    emailId
   } = props;
   return (
     <div className="HeaderPopover br-6">
@@ -69,7 +71,7 @@ const UserCreditLimit = (props) => {
             {fullName}
           </span>
           <span className="HeaderPopover-head__detail-email font-primary-semibold-16">
-            {officeDto?.officeEmail}{' '}
+            {emailId}{' '}
           </span>
         </div>
       </div>

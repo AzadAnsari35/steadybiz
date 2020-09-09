@@ -80,6 +80,7 @@ const MultiSelect = (props) => {
     isClearable = true,
     isSearchable = true,
     hideMultiValueSelection = false,
+    value,
   } = props;
   const [selectedOption, setSelectedOption] = useState(defaultValue);
 
@@ -172,7 +173,7 @@ const MultiSelect = (props) => {
           ${changeStyle ? `MultiSelect-customStyle` : ''}  
           ${showBorder ? `MultiSelect-showBorder` : ''} 
           ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
-          ${errors[name] ? `thin-red-border` : ''} 
+          ${errors[name] ? `thin-red-border` : ''}
           ${isSearchable ? 'MultiSelect-isSearchable' : ''}
           ${disabled
             ? 'MultiSelect-disabled input-disabled border-none py-10'

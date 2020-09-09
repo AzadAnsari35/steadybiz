@@ -1,0 +1,27 @@
+@import '../../../styles/variables';
+
+$root: '.AgencyProfileForm';
+#{$root} {
+  padding: 32px 70px 40px;
+
+  &-left {
+    padding-right: 70px;
+    border-right: 1px solid $mercury1;
+  }
+
+  &-right {
+    padding-left: 70px;
+  }
+
+  &-imageContainer {
+    padding-bottom: 58px;
+    &__image {
+      width: 120px;
+      height: 120px;
+      background-color: $mercury1;
+    }
+    &__text {
+      color: $black7;
+    }
+  }
+}

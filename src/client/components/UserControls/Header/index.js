@@ -36,7 +36,7 @@ const Header = () => {
     (state) => state.getInstantCreditLimit?.items?.data?.data
   );
 
-  let isAuthenticated = !!usersSignIn;
+  let isAuthenticated = true;
 
   const token = getItemFromStorage('userToken');
 
@@ -115,6 +115,7 @@ const Header = () => {
                 fullName={`${userDto.firstName} ${userDto.lastName}`}
                 handleClose={handleClose}
                 setShowDrawer={setShowDrawer}
+                emailId={userDto?.emailId}
               />
             </SimplePopover>
           </>

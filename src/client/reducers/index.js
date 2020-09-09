@@ -7,12 +7,18 @@ import { reducerState, createFilteredReducer } from './commonReducer';
 //     listData: demoListReducer
 
 // });
-
-const rootReducer = combineReducers({
-  ordersSearchOrders: createFilteredReducer(
+const commonType = (actionConstant) => {
+  return createFilteredReducer(
     reducerState,
-    (action) => action.type === actionTypeConstant.orders.searchOrders
-  ),
+    (action) => action.type === actionConstant
+  );
+};
+const rootReducer = combineReducers({
+  // ordersSearchOrders: createFilteredReducer(
+  //   reducerState,
+  //   (action) => action.type === actionTypeConstant.orders.searchOrders
+  // ),
+  ordersSearchOrders: commonType(actionTypeConstant.orders.searchOrders),
 
   loaderStatus: createFilteredReducer(
     reducerState,
@@ -88,6 +94,10 @@ const rootReducer = combineReducers({
   searchOffice: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.office.searchOffice
+  ),
+  searchAgency: createFilteredReducer(
+    reducerState,
+    (action) => action.type ===actionTypeConstant.agency.searchAgency
   ),
   searchUser: createFilteredReducer(
     reducerState,

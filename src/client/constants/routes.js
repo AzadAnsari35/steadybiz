@@ -11,11 +11,21 @@ const routes = {
     passengerInformation: '/Common/Passenger-Info',
   },
 
+  master: {
+    searchRegion: '/Master/Search-Region',
+    createRegion: '/Master/Create-Region',
+    modifyRegion: '/Master/Update-Region',
+    viewRegion: '/Master/View-Region',
+  },
+
   agency: {
+    registration: '/Agency/Registration',
     searchAgency: '/Agency/Search-Agency',
     viewAgency: '/Agency/View-Agency',
     createAgency: '/Agency/Create-Agency',
     updateAgency: '/Agency/Update-Agency',
+    manageCreditLimit: '/Agency/Manage-Credit-Limit',
+    creditLimitBreakup: '/Agency/Credit-Limit-Breakup',
     searchDeals: '/Agency/Search-Deals',
     createDeal: '/Agency/Create-Deal',
     viewDeal: '/Agency/View-Deal',

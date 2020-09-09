@@ -143,3 +143,7 @@ export const customSubtractDays = (date, days) => {
   result.setDate(result.getDate() - days);
   return result;
 };
+
+export const calculateRem = size => {
+  return `${size / 16 * 1}rem`;
+};

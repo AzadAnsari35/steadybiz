@@ -1,11 +1,14 @@
 import Home from './home';
 import OfficeRegistration from './office/officeRegistration';
+
 import SearchUser from './office/user/searchUser';
 import UserProfile from './office/user/userProfile';
 import CreateUser from './office/user/createUser';
 import ChangePassword from './office/user/changePassword';
 import SearchOffice from './office/manageOffice/searchOffice';
 import OfficeProfile from './office/manageOffice/officeProfile';
+import AgencyRegistration from './agency/agencyRegistration';
+import AgencyProfile from './agency/manageAgency/AgencyProfile';
 import OfficeCredit from './office/manageOffice/officeCredit';
 import CreditLimitBreakup from './office/manageOffice/creditLimitBreakup';
 import Search from './search';
@@ -18,6 +21,8 @@ import CreateSecurityGroup from './office/securityGroup/createSecurityGroup';
 //import SearchDeals from './agency/manageDeals/searchDeals';
 import CreateDeal from './agency/manageDeals/createDeal';
 import BookingReport from './transaction/bookingReport';
+import SearchRegion from './master/manageRegion/searchRegion';
+import CreateRegion from './master/manageRegion/createRegion';
 
 export {
   Home,
@@ -40,4 +45,8 @@ export {
   //SearchDeals,
   CreateDeal,
   BookingReport,
+  AgencyProfile,
+  AgencyRegistration,
+  SearchRegion,
+  CreateRegion,
 };

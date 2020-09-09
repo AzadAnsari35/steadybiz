@@ -14,6 +14,7 @@ import {
   ChangePassword,
   SearchOffice,
   OfficeProfile,
+  AgencyProfile,
   OfficeCredit,
   CreditLimitBreakup,
   PassengerInformation,
@@ -21,6 +22,9 @@ import {
   SearchOrder,
   CreateDeal,
   BookingReport,
+  AgencyRegistration,
+  SearchRegion,
+  CreateRegion,
 } from 'Views/';
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
@@ -39,6 +43,7 @@ const Routes = () => (
     <Route exact path={routes.user.resetPassword} component={Home} />
 
     <PrivateRoute exact path={routes.flight.search} component={Search} />
+
     <PrivateRoute
       exact
       path={routes.office.searchOfficeUser}
@@ -163,30 +168,48 @@ const Routes = () => (
       path={routes.office.updateOffice}
       component={OfficeProfile}
     />
-    {/* 
+
     <PrivateRoute
       exact
-      path={routes.office.searchAgency}
+      path={routes.agency.searchAgency}
       component={SearchOffice}
-    /> */}
-    {/* 
-    <PrivateRoute
-      exact
-      path={routes.office.createOffice}
-      component={OfficeProfile}
     />
 
     <PrivateRoute
       exact
-      path={routes.office.viewOffice}
-      component={OfficeProfile}
+      path={routes.agency.createAgency}
+      component={AgencyProfile}
     />
 
     <PrivateRoute
       exact
-      path={routes.office.updateOffice}
-      component={OfficeProfile}
-    /> */}
+      path={routes.agency.viewAgency}
+      component={AgencyProfile}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.updateAgency}
+      component={AgencyProfile}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.registration}
+      component={AgencyRegistration}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.manageCreditLimit}
+      component={OfficeCredit}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.creditLimitBreakup}
+      component={CreditLimitBreakup}
+    />
 
     <PrivateRoute
       exact
@@ -258,6 +281,29 @@ const Routes = () => (
       path={routes.transaction.searchOrder}
       component={SearchOrder}
     />
+
+    <PrivateRoute
+      exact
+      path={routes.master.searchRegion}
+      component={SearchRegion}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.master.createRegion}
+      component={CreateRegion}
+    />
+    <PrivateRoute
+      exact
+      path={routes.master.updateRegion}
+      component={CreateRegion}
+    />
+    <PrivateRoute
+      exact
+      path={routes.master.viewRegion}
+      component={CreateRegion}
+    />
+
     <PrivateRoute exact path="/private" component={() => <div>private</div>} />
     <PublicRoute
       exact
