@@ -23,6 +23,8 @@ import {
   CreateDeal,
   BookingReport,
   AgencyRegistration,
+  SearchRegion,
+  CreateRegion,
 } from 'Views/';
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
@@ -41,6 +43,7 @@ const Routes = () => (
     <Route exact path={routes.user.resetPassword} component={Home} />
 
     <PrivateRoute exact path={routes.flight.search} component={Search} />
+
     <PrivateRoute
       exact
       path={routes.office.searchOfficeUser}
@@ -278,6 +281,34 @@ const Routes = () => (
       path={routes.transaction.searchOrder}
       component={SearchOrder}
     />
+    <PrivateRoute
+      exact
+      path={routes.transaction.bookingReport}
+      component={BookingReport}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.master.searchRegion}
+      component={SearchRegion}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.master.createRegion}
+      component={CreateRegion}
+    />
+    <PrivateRoute
+      exact
+      path={routes.master.updateRegion}
+      component={CreateRegion}
+    />
+    <PrivateRoute
+      exact
+      path={routes.master.viewRegion}
+      component={CreateRegion}
+    />
+
     <PrivateRoute exact path="/private" component={() => <div>private</div>} />
     <PublicRoute
       exact
@@ -290,11 +321,6 @@ const Routes = () => (
       exact
       path={routes.office.registration}
       component={OfficeRegistration}
-    />
-    <PrivateRoute
-      exact
-      path={routes.transaction.bookingReport}
-      component={BookingReport}
     />
   </Switch>
 );

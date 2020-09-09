@@ -11,6 +11,13 @@ const routes = {
     passengerInformation: '/Common/Passenger-Info',
   },
 
+  master: {
+    searchRegion: '/Master/Search-Region',
+    createRegion: '/Master/Create-Region',
+    modifyRegion: '/Master/Update-Region',
+    viewRegion: '/Master/View-Region',
+  },
+
   agency: {
     registration: '/Agency/Registration',
     searchAgency: '/Agency/Search-Agency',

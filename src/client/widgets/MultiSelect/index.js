@@ -79,6 +79,7 @@ const MultiSelect = (props) => {
     fullWidthDropdown,
     isClearable = true,
     isSearchable = true,
+    value,
   } = props;
   const [selectedOption, setSelectedOption] = useState(defaultValue);
 

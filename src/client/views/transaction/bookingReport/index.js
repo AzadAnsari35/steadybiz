@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import CachedIcon from '@material-ui/icons/Cached';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-
+import ChangeOffice from 'Components/Offices/ChangeOffice';
 import { commonAction } from 'Actions/';
 import endpoint from 'Config/endpoint.js';
 import routes from 'Constants/routes';
@@ -22,61 +22,63 @@ import {
   SimplePopover,
   Text,
   TextInput,
+  CustomDrawer,
 } from 'Widgets';
+import useToggle from 'Hooks/useToggle';
 
 import './style.scss';
 
 const headerData = [
-  { id: 'bookingDate', value: 'BOOKING DATE'},
-  { id: 'officeChannel', value: 'OFFICE CHANNEL'},
-  { id: 'officeType', value: 'OFFICE TYPE'},
-  { id: 'officeId', value: 'ORDER ID'},
-  { id: 'officeLevel', value: 'ORDER LEVEL'},
-  { id: 'userName', value: 'USER NAME'},
-  { id: 'parentOfficeId', value: 'PARENT OFFICE ID'},
-  { id: 'parentOfficeLevel', value: 'PARENT OFFICE LEVEL'},
-  { id: 'countryPos', value: 'COUNTRY POS'},
-  { id: 'cityPos', value: 'CITY POS'},
-  { id: 'orderNo', value: 'ORDER NO.'},
-  { id: 'orderStatus', value: 'ORDER STATUS'},
-  { id: 'bookingType', value: 'BOOKING TYPE'},
-  { id: 'source', value: 'SOURCE'},
-  { id: 'sourcePnr', value: 'SOURCE PNR'},
-  { id: 'airlinePnr', value: 'AIRLINE PNR'},
-  { id: 'ticketTimeLimit', value: 'TICKET TIME LIMIT'},
-  { id: 'direction', value: 'DIRECTION'},
-  { id: 'cabinClass', value: 'CABIN CLASS'},
-  { id: 'departureDate', value: 'DEPARTURE DATE'},
-  { id: 'arrivalDate', value: 'ARRIVAL DATE'},
-  { id: 'origin', value: 'ORIGIN'},
-  { id: 'destination', value: 'DESTINATION'},
-  { id: 'airline', value: 'AIRLINE'},
-  { id: 'flightNo', value: 'FLIGHT NO.'},
-  { id: 'paxCount', value: 'NO. OF PAX'},
-  { id: 'bookingClass', value: 'BOOKING CLASS'},
-  { id: 'paxName', value: 'PAX NAME'},
-  { id: 'ticketNo', value: 'TICKET NO.'},
-  { id: 'mobileNo', value: 'MOBILE NO.'},
-  { id: 'currency', value: 'CURRENCY'},
-  { id: 'baseFare', value: 'BASE FARE', alignment: 'right'},
-  { id: 'yq', value: 'YQ'},
-  { id: 'yr', value: 'YR'},
-  { id: 'airlineMiscTax', value: 'AIRLINE MISC TAX', alignment: 'right'},
-  { id: 'totalAmount', value: 'TOTAL AMOUNT', alignment: 'right'},
-  { id: 'dealAmount', value: 'DEAL AMOUNT', alignment: 'right'},
-  { id: 'segmentDiscount', value: 'SEGMENT DISCOUNT', alignment: 'right'},
-  { id: 'commission', value: 'COMMISSION', alignment: 'right'},
-  { id: 'incentive', value: 'INCENTIVE', alignment: 'right'},
-  { id: 'gdsDiscount', value: 'GDS DISCOUNT', alignment: 'right'},
-  { id: 'markup', value: 'MARKUP', alignment: 'right'},
-  { id: 'discount', value: 'DISCOUNT', alignment: 'right'},
-  { id: 'totalCommission', value: 'TOTAL COMMISSION', alignment: 'right'},
-  { id: 'paymentCharges', value: 'PAYMENT CHARGES', alignment: 'right'},
-  { id: 'vatGst', value: 'VAT/GST', alignment: 'right'},
-  { id: 'paymentMode', value: 'PAYMENT MODE'},
-  { id: 'netAmountPaid', value: 'NET AMOUNT PAID', alignment: 'right'},
-  { id: 'baseCurrency', value: 'BASE CURRENCY'},
-  { id: 'netBaseAmount', value: 'NET BASE AMOUNT', alignment: 'right'},
+  { id: 'bookingDate', value: 'BOOKING DATE' },
+  { id: 'officeChannel', value: 'OFFICE CHANNEL' },
+  { id: 'officeType', value: 'OFFICE TYPE' },
+  { id: 'officeId', value: 'ORDER ID' },
+  { id: 'officeLevel', value: 'ORDER LEVEL' },
+  { id: 'userName', value: 'USER NAME' },
+  { id: 'parentOfficeId', value: 'PARENT OFFICE ID' },
+  { id: 'parentOfficeLevel', value: 'PARENT OFFICE LEVEL' },
+  { id: 'countryPos', value: 'COUNTRY POS' },
+  { id: 'cityPos', value: 'CITY POS' },
+  { id: 'orderNo', value: 'ORDER NO.' },
+  { id: 'orderStatus', value: 'ORDER STATUS' },
+  { id: 'bookingType', value: 'BOOKING TYPE' },
+  { id: 'source', value: 'SOURCE' },
+  { id: 'sourcePnr', value: 'SOURCE PNR' },
+  { id: 'airlinePnr', value: 'AIRLINE PNR' },
+  { id: 'ticketTimeLimit', value: 'TICKET TIME LIMIT' },
+  { id: 'direction', value: 'DIRECTION' },
+  { id: 'cabinClass', value: 'CABIN CLASS' },
+  { id: 'departureDate', value: 'DEPARTURE DATE' },
+  { id: 'arrivalDate', value: 'ARRIVAL DATE' },
+  { id: 'origin', value: 'ORIGIN' },
+  { id: 'destination', value: 'DESTINATION' },
+  { id: 'airline', value: 'AIRLINE' },
+  { id: 'flightNo', value: 'FLIGHT NO.' },
+  { id: 'paxCount', value: 'NO. OF PAX' },
+  { id: 'bookingClass', value: 'BOOKING CLASS' },
+  { id: 'paxName', value: 'PAX NAME' },
+  { id: 'ticketNo', value: 'TICKET NO.' },
+  { id: 'mobileNo', value: 'MOBILE NO.' },
+  { id: 'currency', value: 'CURRENCY' },
+  { id: 'baseFare', value: 'BASE FARE', alignment: 'right' },
+  { id: 'yq', value: 'YQ' },
+  { id: 'yr', value: 'YR' },
+  { id: 'airlineMiscTax', value: 'AIRLINE MISC TAX', alignment: 'right' },
+  { id: 'totalAmount', value: 'TOTAL AMOUNT', alignment: 'right' },
+  { id: 'dealAmount', value: 'DEAL AMOUNT', alignment: 'right' },
+  { id: 'segmentDiscount', value: 'SEGMENT DISCOUNT', alignment: 'right' },
+  { id: 'commission', value: 'COMMISSION', alignment: 'right' },
+  { id: 'incentive', value: 'INCENTIVE', alignment: 'right' },
+  { id: 'gdsDiscount', value: 'GDS DISCOUNT', alignment: 'right' },
+  { id: 'markup', value: 'MARKUP', alignment: 'right' },
+  { id: 'discount', value: 'DISCOUNT', alignment: 'right' },
+  { id: 'totalCommission', value: 'TOTAL COMMISSION', alignment: 'right' },
+  { id: 'paymentCharges', value: 'PAYMENT CHARGES', alignment: 'right' },
+  { id: 'vatGst', value: 'VAT/GST', alignment: 'right' },
+  { id: 'paymentMode', value: 'PAYMENT MODE' },
+  { id: 'netAmountPaid', value: 'NET AMOUNT PAID', alignment: 'right' },
+  { id: 'baseCurrency', value: 'BASE CURRENCY' },
+  { id: 'netBaseAmount', value: 'NET BASE AMOUNT', alignment: 'right' },
   // 'BOOKING DATE',
   // 'OFFICE CHANNEL',
   // 'OFFICE TYPE',
@@ -296,6 +298,8 @@ const BookingReport = () => {
   const [page, setPage] = useState(1);
   const [size] = useState(10);
   const firstPageUpdate = useRef(true);
+  const [showChangeOffice, setShowChangeOffice] = useToggle(false);
+
   let history = useHistory();
   let dispatch = useDispatch();
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
@@ -406,31 +410,42 @@ const BookingReport = () => {
   };
 
   return (
-    <div className="BookingReport">
-      <div className="BookingReport-head">
-        <div className="d-flex justify-content-between align-items-end pb-4">
-          <div className="font-primary-semibold-24 ">BOOKING REPORT</div>
-          <IconWithBackground
-            bgColor="#74D3DC33"
-            showCursor
-            onClick={handleReset}
-          >
-            <CachedIcon style={{ color: '#74D3DC' }} />
-          </IconWithBackground>
-        </div>
-        <div className="horizontal-grey-divider"></div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <input type="hidden" name="ofid" value={ofId} ref={register}></input>
-          <input type="hidden" name="size" value={size} ref={register}></input>
+    <>
+      <div className="BookingReport">
+        <div className="BookingReport-head">
+          <div className="d-flex justify-content-between align-items-end pb-4">
+            <div className="font-primary-semibold-24 ">BOOKING REPORT</div>
+            <IconWithBackground
+              bgColor="#74D3DC33"
+              showCursor
+              onClick={handleReset}
+            >
+              <CachedIcon style={{ color: '#74D3DC' }} />
+            </IconWithBackground>
+          </div>
+          <div className="horizontal-grey-divider"></div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <input
+              type="hidden"
+              name="ofid"
+              value={ofId}
+              ref={register}
+            ></input>
+            <input
+              type="hidden"
+              name="size"
+              value={size}
+              ref={register}
+            ></input>
 
-          <Text
-            showLeftBorder={true}
-            text="SEARCH BOOKING REPORT"
-            className="font-primary-medium-18 my-24"
-          />
-          <Grid container spacing={3}>
-            <Grid item xs={6}>
-              {/* <SelectWithDatePickers
+            <Text
+              showLeftBorder={true}
+              text="SEARCH BOOKING REPORT"
+              className="font-primary-medium-18 my-24"
+            />
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                {/* <SelectWithDatePickers
                 name={{
                   select: 'booking',
                   datePicker1: 'dateFrom',
@@ -441,259 +456,267 @@ const BookingReport = () => {
                 label="Date:"
                 isSearchable
               /> */}
-              <SelectWithDatePickers
-                name={{
-                  select: 'booking',
-                  datePicker1: 'dateFrom',
-                  datePicker2: 'dateTo',
-                }}
-                data={[
-                  {
-                    value: 'booking',
-                    label: 'Booking',
-                  },
-                  {
-                    value: 'travel',
-                    label: 'Travel',
-                  }
-                ]}
-                defaultValues={
-                  {
+                <SelectWithDatePickers
+                  name={{
+                    select: 'booking',
+                    datePicker1: 'dateFrom',
+                    datePicker2: 'dateTo',
+                  }}
+                  data={[
+                    {
+                      value: 'booking',
+                      label: 'Booking',
+                    },
+                    {
+                      value: 'travel',
+                      label: 'Travel',
+                    },
+                  ]}
+                  defaultValues={{
                     select: {
                       value: 'booking',
                       label: 'Booking',
-                    }
-                  } 
-                }
-                label="Date:"
-                isSearchable
-                control={control}
-                useReactHookForm={false}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <TextInput
-                label="Origin:"
-                name="origin"
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <TextInput
-                label="Destination:"
-                name="destination"
-                register={register}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <TextInput
-                label="Order Number:"
-                placeholder="Order Number"
-                name="orderNo"
-                useReactHookForm={false}
-                maxLength={13}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <SelectWithTextInput
-                name="pnr"
-                selectInputName="sabre"
-                type="text"
-                label="PNR: "
-                selectPlaceholder="Sabre"
-                placeholder="PNR Number"
-                value={formData.pnrNumber}
-                data={[
-                  { value: 'Sabre', label: 'Sabre (1S)' },
-                  { value: 'Airline', label: 'Airline' },
-                ]}
-                showValue
-                useReactHookForm={false}
-                selectWidth="50%"
-                // onChange={handleChange}
-                // onSelectChange={handleSelectOption}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <MultiSelect
-                label="Booking Category:"
-                name="bookingCategory"
-                options={[
-                  { value: 'P', label: 'PNR' },
-                  { value: 'B', label: 'Booking' },
-                ]}
-                showBorder={true}
-                changeStyle={true}
-                control={control}
-                errors={errors}
-                width="auto"
-                isSearchable
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <MultiSelect
-                label="Office Channel:"
-                name="officeChannel"
-                options={[
-                  { value: 'P', label: 'PNR' },
-                  { value: 'B', label: 'Booking' },
-                ]}
-                showBorder={true}
-                changeStyle={true}
-                control={control}
-                errors={errors}
-                width="auto"
-                isSearchable
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <MultiSelect
-                label="Office Type:"
-                name="officeType"
-                options={[
-                  { value: 'P', label: 'PNR' },
-                  { value: 'B', label: 'Booking' },
-                ]}
-                showBorder={true}
-                changeStyle={true}
-                control={control}
-                errors={errors}
-                width="auto"
-                isSearchable
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <TextInput
-                label="Office ID:"
-                name="officeID"
-                register={register}
-                control={control}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <MultiSelect
-                label="User Name:"
-                name="userName"
-                options={[
-                  { value: 'P', label: 'PNR' },
-                  { value: 'B', label: 'Booking' },
-                ]}
-                showBorder={true}
-                changeStyle={true}
-                control={control}
-                errors={errors}
-                width="auto"
-                isSearchable
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <MultiSelect
-                label="Country POS:"
-                name="countryPos"
-                options={[
-                  { value: 'P', label: 'PNR' },
-                  { value: 'B', label: 'Booking' },
-                ]}
-                showBorder={true}
-                changeStyle={true}
-                control={control}
-                errors={errors}
-                width="auto"
-                isSearchable
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <MultiSelect
-                label="City POS:"
-                name="cityPos"
-                options={[
-                  { value: 'P', label: 'PNR' },
-                  { value: 'B', label: 'Booking' },
-                ]}
-                showBorder={true}
-                changeStyle={true}
-                control={control}
-                errors={errors}
-                width="auto"
-                isSearchable
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <MultiSelect
-                label="Transaction Status:"
-                name="transactionStatus"
-                options={[
-                  { value: 'P', label: 'PNR' },
-                  { value: 'B', label: 'Booking' },
-                ]}
-                showBorder={true}
-                changeStyle={true}
-                control={control}
-                errors={errors}
-                width="auto"
-                isSearchable
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <div className="d-flex justify-content-end pt-32">
-                <Button
-                  text="CHANGE OFFICE"
-                  secondary
-                  className=" px-48 mr-10"
-                  onClick={() => handleClick()}
+                    },
+                  }}
+                  label="Date:"
+                  isSearchable
+                  control={control}
+                  useReactHookForm={false}
                 />
+              </Grid>
+              <Grid item xs={3}>
+                <TextInput
+                  label="Origin:"
+                  name="origin"
+                  register={register}
+                  errors={errors}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextInput
+                  label="Destination:"
+                  name="destination"
+                  register={register}
+                  errors={errors}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextInput
+                  label="Order Number:"
+                  placeholder="Order Number"
+                  name="orderNo"
+                  useReactHookForm={false}
+                  maxLength={13}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <SelectWithTextInput
+                  name="pnr"
+                  selectInputName="sabre"
+                  type="text"
+                  label="PNR: "
+                  selectPlaceholder="Sabre"
+                  placeholder="PNR Number"
+                  value={formData.pnrNumber}
+                  data={[
+                    { value: 'Sabre', label: 'Sabre (1S)' },
+                    { value: 'Airline', label: 'Airline' },
+                  ]}
+                  showValue
+                  useReactHookForm={false}
+                  selectWidth="50%"
+                  // onChange={handleChange}
+                  // onSelectChange={handleSelectOption}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="Booking Category:"
+                  name="bookingCategory"
+                  options={[
+                    { value: 'P', label: 'PNR' },
+                    { value: 'B', label: 'Booking' },
+                  ]}
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  width="auto"
+                  isSearchable
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="Office Channel:"
+                  name="officeChannel"
+                  options={[
+                    { value: 'P', label: 'PNR' },
+                    { value: 'B', label: 'Booking' },
+                  ]}
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  width="auto"
+                  isSearchable
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="Office Type:"
+                  name="officeType"
+                  options={[
+                    { value: 'P', label: 'PNR' },
+                    { value: 'B', label: 'Booking' },
+                  ]}
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  width="auto"
+                  isSearchable
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextInput
+                  label="Office ID:"
+                  name="officeID"
+                  register={register}
+                  control={control}
+                  errors={errors}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="User Name:"
+                  name="userName"
+                  options={[
+                    { value: 'P', label: 'PNR' },
+                    { value: 'B', label: 'Booking' },
+                  ]}
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  width="auto"
+                  isSearchable
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="Country POS:"
+                  name="countryPos"
+                  options={[
+                    { value: 'P', label: 'PNR' },
+                    { value: 'B', label: 'Booking' },
+                  ]}
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  width="auto"
+                  isSearchable
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="City POS:"
+                  name="cityPos"
+                  options={[
+                    { value: 'P', label: 'PNR' },
+                    { value: 'B', label: 'Booking' },
+                  ]}
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  width="auto"
+                  isSearchable
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="Transaction Status:"
+                  name="transactionStatus"
+                  options={[
+                    { value: 'P', label: 'PNR' },
+                    { value: 'B', label: 'Booking' },
+                  ]}
+                  showBorder={true}
+                  changeStyle={true}
+                  control={control}
+                  errors={errors}
+                  width="auto"
+                  isSearchable
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <div className="d-flex justify-content-end pt-32">
+                  <Button
+                    text="CHANGE OFFICE"
+                    secondary
+                    className=" px-48 mr-10"
+                    onClick={() => setShowChangeOffice()}
+                  />
 
-                <Button type="submit" text="Search" className=" px-48" />
-              </div>
+                  <Button type="submit" text="Search" className=" px-48" />
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
+          </form>
 
-        <div></div>
+          <div></div>
+        </div>
+        {bookingReportData && (
+          <PrimaryTable
+            header={
+              <PrimaryTableHeader
+                officeName={officeName}
+                officeId={officeId}
+                officeLevel={officeLevel}
+              />
+            }
+            headerInArrOfObjFormat
+            headerData={headerData}
+            subHeaderData={bookingReportData.data.data.subHeaderData}
+            // bodyData={searchResult.data}
+            bodyData={bookingReportData.data.data}
+            page={page}
+            // AddElement={{
+            //   last: <PopoverAction />,
+            // }}
+            // count={searchResult.data.count}
+            count={bookingReportData.data.count}
+            size={size}
+            columnAlignments={[
+              'center',
+              'center',
+              'center',
+              'center',
+              'center',
+              'center',
+              'left',
+              'center',
+              'center',
+              'center',
+            ]}
+            statusIndex={8}
+            handlePage={handlePage}
+            // hideKeys={['actualStatus', 'officeId']}
+            hideKeys={hideKeys}
+          />
+        )}
       </div>
-      {bookingReportData && (
-        <PrimaryTable
-          header={
-            <PrimaryTableHeader
-              officeName={officeName}
-              officeId={officeId}
-              officeLevel={officeLevel}
-            />
-          }
-          headerInArrOfObjFormat
-          headerData={headerData}
-          subHeaderData={bookingReportData.data.data.subHeaderData}
-          // bodyData={searchResult.data}
-          bodyData={bookingReportData.data.data}
-          page={page}
-          // AddElement={{
-          //   last: <PopoverAction />,
-          // }}
-          // count={searchResult.data.count}
-          count={bookingReportData.data.count}
-          size={size}
-          columnAlignments={[
-            'center',
-            'center',
-            'center',
-            'center',
-            'center',
-            'center',
-            'left',
-            'center',
-            'center',
-            'center',
-          ]}
-          statusIndex={8}
-          handlePage={handlePage}
-          // hideKeys={['actualStatus', 'officeId']}
-          hideKeys={hideKeys}
-        />
-      )}
-    </div>
+      <CustomDrawer
+        title="CHANGE OFFICE"
+        showDrawer={showChangeOffice}
+        onCloseClick={setShowChangeOffice}
+        width={1150}
+        className="BookingReport-CustomDrawer"
+      >
+        <ChangeOffice />
+      </CustomDrawer>
+    </>
   );
 };
 
