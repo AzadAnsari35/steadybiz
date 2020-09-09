@@ -79,6 +79,7 @@ const MultiSelect = (props) => {
     fullWidthDropdown,
     isClearable = true,
     isSearchable = true,
+    value,
   } = props;
   const [selectedOption, setSelectedOption] = useState(defaultValue);
 
@@ -172,7 +173,11 @@ const MultiSelect = (props) => {
         ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
         ${errors[name] ? `thin-red-border` : ''} 
         ${isSearchable ? 'MultiSelect-isSearchable' : ''}
-        ${disabled ? 'MultiSelect-disabled border-none py-10' : ''}
+        ${
+          disabled
+            ? 'MultiSelect-disabled input-disabled border-none py-10'
+            : ''
+        }
 
         `}
           style={{ width: `${width}px` }}
