@@ -1,38 +1,30 @@
-import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import ClearIcon from '@material-ui/icons/Clear';
-import SaveIcon from '@material-ui/icons/Save';
-import moment from 'moment';
 import colors from 'Constants/colors';
+import { utils } from 'Helpers';
+import { displayImage } from 'Helpers/utils';
+import moment from 'moment';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useLocation } from 'react-router-dom';
+import { routes } from 'Constants';
 import {
   IconWithBackground,
-  Text,
-  SecondaryAccordion,
-  TextInput,
-  MultiSelect,
+
+
+
+
   PrimaryTable,
-  DateRangeTableHeader,
+
   SearchTableHeader,
-  SimplePopover,
+  SimplePopover, Text
 } from 'Widgets';
 import './style.scss';
-import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import ParentGroupIcon from 'Widgets/Icons/ParentGroupIcon';
-import { displayImage } from 'Helpers/utils';
 
-const headerData = [
-  'PARENT',
-  'TIME',
-  'OFFICE NAME',
-  'LEVEL',
-  'USER NAME',
-  'DEPOSIT TYPE',
-  ['NATIVE CURRENCY', 'CURRENCY', 'DEPOSIT AMT', 'TXN. AMT'],
-  ['EQUIVALENT CURRENCY', 'CURRENCY', 'DEPOSIT AMT', 'TXN. AMT'],
 
-  'BALANCE AMT',
-];
+
+
+
 
 const response = {
   status: 'OK',
@@ -144,13 +136,37 @@ const PopoverAction = (props) => {
 const CreditLimitBreakup = () => {
   const { register, handleSubmit, errors, control, getValues } = useForm({});
 
+  const location = useLocation();
+
+  const path = location.pathname;
+
+ 
+  const isSearchAgency = utils.stringComparison(
+    path,
+    routes.agency.creditLimitBreakup
+  );
+
+  const headerData = [
+    'PARENT',
+    'TIME',
+     isSearchAgency? "AGENCY NAME" : "OFFICE NAME",
+    'LEVEL',
+    'USER NAME',
+    'DEPOSIT TYPE',
+    ['NATIVE CURRENCY', 'CURRENCY', 'DEPOSIT AMT', 'TXN. AMT'],
+    ['EQUIVALENT CURRENCY', 'CURRENCY', 'DEPOSIT AMT', 'TXN. AMT'],
+  
+    'BALANCE AMT',
+  ];
+
+
   return (
     <>
       <div className="ManageCreditLimit">
         <div className="ManageCreditLimit-head">
           <div className="d-flex justify-content-between align-items-center pb-8">
             <div className="font-primary-semibold-24">
-              OFFICE CREDIT LIMIT BREAKUP
+              {isSearchAgency? "AGENCY": "OFFICE"} CREDIT LIMIT BREAKUP
             </div>
 
             <div className="d-flex">
@@ -168,12 +184,12 @@ const CreditLimitBreakup = () => {
             <Grid item xs={12}>
               <Text
                 showLeftBorder={true}
-                text="OFFICE DETAILS"
+                text= {isSearchAgency? "AGENCY DETAILS": "OFFICE DETAILS"} 
                 className="font-primary-medium-18 mt-24"
               />
             </Grid>
             <Grid item xs={3}>
-              <div className="font-primary-medium-16">Office Name: &nbsp;</div>
+              <div className="font-primary-medium-16">{isSearchAgency? "Agency": "Office"} Name: &nbsp;</div>
               <div className="font-primary-bold-16">Axis Tours & Travels </div>
             </Grid>
             <Grid item xs={3}>
@@ -227,10 +243,10 @@ const CreditLimitBreakup = () => {
           columnAlignments={[
             'center',
             'center',
-            'right',
             'left',
-            'right',
             'center',
+            'left',
+            'left',
             'center',
             'center',
             'center',

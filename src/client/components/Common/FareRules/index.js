@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { commonAction } from 'Actions/index';
+import { commonAction, commonActionUpdate } from 'Actions';
 import endpoint from 'Config/endpoint';
 import { getDataFromRedux } from 'Helpers/global';
 import { getFlightSegmentByType } from 'Helpers/flight.helpers';
@@ -34,8 +34,13 @@ const FareRules = props => {
   }, []);
 
   const handleFareRulesTabClick = tab => {
-    getFareRulesData(tab);
-    setActiveFareRulesTab(tab.flightSegments);
+    if (activeFareRulesTab === tab.flightSegments) {
+      return;
+    } else {
+      dispatch(commonActionUpdate(endpoint.flights.fareRules, null));
+      getFareRulesData(tab);
+      setActiveFareRulesTab(tab.flightSegments);
+    }
   };
 
   const getFareRulesData = tab => {

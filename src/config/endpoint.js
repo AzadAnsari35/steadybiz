@@ -109,6 +109,16 @@ export default {
       actionType: actionTypeConstant.master.paymentModes,
     },
   },
+  
+  agency: {
+    searchAgency: {
+      url: config.api.url + '/api/v1/offices/searchOffice',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.agency.searchAgency,
+    },
+  },
+
 
   office: {
     searchUser: {

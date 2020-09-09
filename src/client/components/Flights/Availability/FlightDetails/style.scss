@@ -1,35 +1,16 @@
 @import "./../../../../styles/variables";
+@import "./../../../../styles/functions";
 
 $root: ".FlightDetails";
 
 #{$root} {
   padding-top: 32px;
   margin-bottom: 24px;
-  &-segment {
-    background: $mystic;
-    padding: 8px 24px;
-    align-items: center;
-    border-radius: 6px;
-    width: auto;
-    svg {
-      margin: 0 8px;
-    }
-  }
-  &-content {
-    width: 100%;
-    &__date {
-      margin: 24px 0px 24px 144px;
-    }
-    &__segmentGroup {
-      display: inline-block;
-      margin-left: 52px;
-    }
-  }
   // Flight Segment
   .FlightSegment {
     height: 100%;
     &-segment {
-      margin-left: 144px;
+      margin-left: calculateRem(144px);
       margin-bottom: 24px;
     }
     &-content {
@@ -37,7 +18,7 @@ $root: ".FlightDetails";
       height: 100%;
       &__date {
         display: flex;
-        margin-left: 144px;
+        margin-left: calculateRem(144px);
         &:first-of-type {
           margin-bottom: 24px;
         }
@@ -47,7 +28,7 @@ $root: ".FlightDetails";
       }
       &__segmentGroup {
         display: inline-block;
-        margin-left: 52px;
+        margin-left: calculateRem(52px);
       }
     }
   }

@@ -1,6 +1,6 @@
-@import "../../styles/variables.scss";
+@import '../../styles/variables.scss';
 
-$root: ".BoxRadio";
+$root: '.BoxRadio';
 
 #{$root} {
   &-label {
@@ -12,19 +12,19 @@ $root: ".BoxRadio";
     justify-content: center;
     align-items: center;
     position: relative;
-    border: 1px solid $gulfBlue;
+    border: 1px solid $biscay;
   }
 
   &-selected {
     color: $white;
-    background-color: $gulfBlue;
+    background-color: $biscay;
     &:before {
-      content: "";
+      content: '';
       display: block;
       border-left: 10px solid transparent;
       border-right: 10px solid transparent;
       border-top: 10px solid;
-      color: $gulfBlue;
+      color: $biscay;
       position: absolute;
       left: 50%;
       top: 39px;
@@ -33,7 +33,7 @@ $root: ".BoxRadio";
 
     &.radio-selected {
       color: $white;
-      background-color: $gulfBlue;
+      background-color: $biscay;
     }
   }
   &-default-radio {

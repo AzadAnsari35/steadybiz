@@ -16,7 +16,8 @@ import {
 } from "Helpers/flight.helpers";
 import { getFormattedPrice } from "Helpers/global";
 import useToggle from "Hooks/useToggle";
-import { utils } from "Helpers/index";
+import { calculateRem } from "Helpers/utils";
+import { utils } from "Helpers";
 import securityOptionConstant from "Constants/securityOptionConstant";
 
 import { Card, Tag, Text, CustomDrawer } from "Widgets";
@@ -159,7 +160,7 @@ const FareDetailsCard = (props) => {
 				title="Fare Rules"
 				showDrawer={showFareRules}
 				setShowDrawer={setShowFareRules}
-				width="868px"
+				width={calculateRem(868)}
 			>
 				<FareRules itinerary={outboundItinerary} />
 			</CustomDrawer>

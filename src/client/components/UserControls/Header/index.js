@@ -115,6 +115,7 @@ const Header = () => {
                 fullName={`${userDto.firstName} ${userDto.lastName}`}
                 handleClose={handleClose}
                 setShowDrawer={setShowDrawer}
+                emailId={userDto?.emailId}
               />
             </SimplePopover>
           </>

@@ -89,6 +89,10 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.office.searchOffice
   ),
+  searchAgency: createFilteredReducer(
+    reducerState,
+    (action) => action.type ===actionTypeConstant.agency.searchAgency
+  ),
   searchUser: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.office.searchUser

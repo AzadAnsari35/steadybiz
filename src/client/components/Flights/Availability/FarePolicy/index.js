@@ -35,10 +35,10 @@ const FarePolicy = (props) => {
                 <Text className="font-primary-medium-13 text-uppercase text-align-left" text="Pax type" />
               </Grid>
               <Grid item xs={4}>
-                <Text className="font-primary-medium-13 text-uppercase text-align-center" text="Before Departure" />
+                <Text className="font-primary-medium-13 text-uppercase text-align-center" text="Before Depart" />
               </Grid>
               <Grid item xs={4}>
-                <Text className="font-primary-medium-13 text-uppercase text-align-center" text="After Departure" />
+                <Text className="font-primary-medium-13 text-uppercase text-align-center" text="After Depart" />
               </Grid>
             </div>
             <div className="FarePolicy-table__body">
@@ -76,10 +76,10 @@ const FarePolicy = (props) => {
                 <Text className="font-primary-medium-13 text-uppercase text-align-left" text="Pax type" />
               </Grid>
               <Grid item xs={4}>
-                <Text className="font-primary-medium-13 text-uppercase text-align-center" text="Before Departure" />
+                <Text className="font-primary-medium-13 text-uppercase text-align-center" text="Before Depart" />
               </Grid>
               <Grid item xs={4}>
-                <Text className="font-primary-medium-13 text-uppercase text-align-center" text="After Departure" />
+                <Text className="font-primary-medium-13 text-uppercase text-align-center" text="After Depart" />
               </Grid>
             </div>
             <div className="FarePolicy-table__body">

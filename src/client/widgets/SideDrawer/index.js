@@ -18,6 +18,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { ConstructIcon } from 'Widgets';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
+import endpointWithoutApi from 'Config/endpointWithoutApi';
+
 import './styles.scss';
 
 const SideDrawer = ({ showDrawer, setShowDrawer }) => {
@@ -49,6 +51,9 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Flight Search',
           link: routes.flight.search,
+          clickFunc: () => {
+            dispatch(commonActionUpdate(endpointWithoutApi.flights.flightSearchInput, null));
+          },
         },
 
         {
@@ -66,6 +71,13 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       clickFunc: () => setShowSubagency(!showSubagency),
       show: showSubagency,
       subList: [
+        {
+          text: 'Manage Agency',
+          link: routes.agency.searchAgency,
+          clickFunc: () => {
+            dispatch(commonActionUpdate(endpoint.agency.searchAgency, null));
+          },
+        },
         // {
         //   text: 'Registration',
         //   link: '/createAccount',
@@ -115,13 +127,19 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           link: routes.office.searchOfficeUser,
           clickFunc: () => {
             setItemToStorage('selectedOffice', '');
+            setItemToStorage('selectedAgency', '');
             dispatch(commonActionUpdate(endpoint.office.searchUser, null));
             dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
+            dispatch(commonActionUpdate(endpoint.agency.searchAgency, null));
+
           },
         },
         {
           text: 'Security Group',
           link: routes.office.searchSecurityGroup,
+          clickFunc: () => {
+            dispatch(commonActionUpdate(endpoint.office.searchSecurityGroup, null));
+          },
         },
       ],
     },

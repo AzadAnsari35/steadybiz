@@ -60,10 +60,12 @@ const Transaction = () => {
   const { pathname } = history.location;
   const isIssueTicket =
     pathname.toUpperCase() === routes.transaction.issueTicket.toUpperCase();
+  const isBooking =
+    pathname.toUpperCase() === routes.transaction.viewBooking.toUpperCase();
 
   useEffect(() => {
     try {
-      if (isIssueTicket) {
+      if (isIssueTicket || isBooking) {
         dispatch(
           commonAction(endpoint.creditLimit.getInstantCreditlimit, {
             ofid: utils.getItemFromStorage('officeId'),

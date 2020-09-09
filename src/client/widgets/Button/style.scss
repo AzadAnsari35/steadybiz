@@ -1,15 +1,16 @@
-@import '../../styles/variables.scss';
+@import './../../styles/variables';
+@import './../../styles/functions';
 
 $root: '.btn';
 
 #{$root} {
   text-transform: uppercase;
-  padding: 0 24px;
-  min-width: 94px;
+  padding: 0 calculateRem(24px);
+  min-width: calculateRem(90px);
   height: 44px;
   border-radius: 6px;
-  font-size: 14px;
-  line-height: 24px;
+  font-size: calculateRem(14px);
+  line-height: calculateRem(24px);
   font-family: 'Montserrat SemiBold';
   cursor: pointer;
   &:focus {
@@ -34,8 +35,8 @@ $root: '.btn';
     &__primary,
     &__secondary {
       font-family: 'Montserrat Medium';
-      font-size: 16px;
-      line-height: 19px;
+      font-size: calculateRem(16px);
+      line-height: calculateRem(19px);
       border: none;
       background: none;
     }
@@ -48,7 +49,7 @@ $root: '.btn';
   }
   &-text {
     &.add-margin {
-      margin-right: 14px;
+      margin-right: calculateRem(14px);
     }
   }
 }

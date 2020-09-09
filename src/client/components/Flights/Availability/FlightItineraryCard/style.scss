@@ -1,4 +1,6 @@
 @import "./../../../../styles/variables";
+@import "./../../../../styles/functions";
+
 $root: ".FlightItineraryCard";
 
 #{$root} {
@@ -75,6 +77,7 @@ $root: ".FlightItineraryCard";
             height: 24px;
             width: 24px;
             margin-right: 2px;
+            margin-bottom: 1px;
           }
           .stops {
             margin: 5px 0;
@@ -173,6 +176,66 @@ $root: ".FlightItineraryCard";
     }
     &.active {
       border-bottom: 2px solid $gray;
+    }
+  }
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1919px) {
+  #{$root} {
+    &-top {
+      & > div:first-child {
+        width: calc(100% - 140px);
+      }
+      &__leftSection {
+        width: 100%;
+        .segmentDetail {
+          .airline {
+            padding: calculateRem(14px) calculateRem(20px) calculateRem(14px) 0;
+            margin-right: 3%;
+            &-icon {
+              margin-right: calculateRem(10px);
+              width: calculateRem(40px);
+              height: calculateRem(40px);
+            }
+            &-name {
+              width: calculateRem(80px);
+            }
+          }
+          .departureTime, .arrivalTime {
+            width: calculateRem(130px);
+          }
+          .stopsInfo {
+            width: calculateRem(292px);
+            margin: 0 calculateRem(32px);
+          }
+        }
+      }
+      &__rightSection {
+        &-seatsFareInfo {
+          .Text {
+            margin-right: calculateRem(16px);
+          }
+        }
+        &-priceSelectFlight {
+          padding: calculateRem(40px) 0 calculateRem(12px) 0;
+          .price {
+            .MuiSvgIcon-root {
+              margin-right: calculateRem(12px);
+            }
+          }
+        }
+      }
+    }
+    &-flightDetails {
+      &__tabs {
+        padding: calculateRem(20px) calculateRem(20px) 0 calculateRem(20px);
+      }
+      &__content {
+        padding: calculateRem(40px) calculateRem(20px) calculateRem(20px);
+      }
+    }
+    .tab {
+      margin: 0 calculateRem(38px);
     }
   }
 }
