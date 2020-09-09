@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import './style.scss';
+import { useLocation } from 'react-router-dom';
+
+import { routes } from 'Constants';
+import { utils } from 'Helpers';
 import SignInForm from 'Components/Users/Agent/SignIn';
 import ForgotPasswordForm from 'Components/Users/Agent/ForgotPassword';
 import ResetPasswordForm from 'Components/Users/Agent/ResetPassword';
 
-import { useLocation } from 'react-router-dom';
-import { routes } from 'Constants';
-import { utils } from 'Helpers';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import './style.scss';
 
 const Carousel = () => {
   const [selectedForm, setSelectedForm] = useState('SignInForm');

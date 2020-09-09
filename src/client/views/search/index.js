@@ -1,17 +1,18 @@
 import React from 'react';
+import Grid from '@material-ui/core/Grid';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-
-import SearchBar from 'Components/Flights/SearchBar/index';
 import InfoIcon from '@material-ui/icons/Info';
 import HotelIcon from '@material-ui/icons/Hotel';
 import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive';
-import colors from 'Constants/colors';
-import Grid from '@material-ui/core/Grid';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { utils } from 'Helpers';
-import './style.scss';
 import MailIcon from '@material-ui/icons/Mail';
+
+import SearchBar from 'Components/Flights/SearchBar/index';
+import colors from 'Constants/colors';
+import { utils } from 'Helpers';
+
+import './style.scss';
 
 const Search = () => {
   return (
@@ -22,13 +23,13 @@ const Search = () => {
         situation. Check the instructions if you have a booking between 16 March
         2020–31 March 2021.{' '}
         <span
-          className="font-primary-medium-12 "
+          className="font-primary-medium-12"
           style={{ color: colors.royalBlue }}
         >
           Read Here
         </span>
       </div>
-      <div className="Search-banner">
+      <div className="Search-banner layout-wrapper-adjust">
         <div className="Search-banner-panel">
           <div className="Search-banner-panel__icon Search-banner-panel__icon-active">
             <AirplanemodeActiveIcon
@@ -42,11 +43,10 @@ const Search = () => {
           <div className="Search-banner-panel__icon left-136">
             <HotelIcon style={{ fontSize: 32, color: colors.royalBlue }} />
           </div>
-
           <SearchBar />
         </div>
       </div>
-      <div className="Search-recentSearches">
+      <div className="Search-recentSearches layout-wrapper-adjust">
         <div className="font-primary-bold-18 mb-20 mt-40">Recent Searches</div>
         <Grid container spacing={2}>
           <Grid item xs={4}>
@@ -146,7 +146,7 @@ const Search = () => {
           </Grid>
         </Grid>
       </div>
-      <div className="Search-deals">
+      <div className="Search-deals layout-wrapper-adjust">
         <div className="font-primary-bold-18 mb-20 mt-40">Exculisive Deals</div>
         <div className="font-primary-bold-16 mb-32 pb-8 Search-deals-flights">
           Flights
@@ -176,7 +176,9 @@ const Search = () => {
 
         <Grid container spacing={2} className="Search-deals-slider">
           <Grid item xs={4}>
-            <img src={utils.displayImage('amman.png')} />
+            <div className="Search-deals-slider-img">
+              <img src={utils.displayImage('amman.png')} />
+            </div>
             <div className="Search-deals-slider-single">
               <div className="font-primary-medium-14">Dubai</div>
               <div
@@ -195,7 +197,9 @@ const Search = () => {
           </Grid>
 
           <Grid item xs={4}>
-            <img src={utils.displayImage('bahrain.png')} />
+            <div className="Search-deals-slider-img">
+              <img src={utils.displayImage('bahrain.png')} />
+            </div>
             <div className="Search-deals-slider-single">
               <div className="font-primary-medium-14">Dubai</div>
               <div
@@ -214,7 +218,9 @@ const Search = () => {
           </Grid>
 
           <Grid item xs={4}>
-            <img src={utils.displayImage('beirut.png')} />
+            <div className="Search-deals-slider-img">
+              <img src={utils.displayImage('beirut.png')} />
+            </div>
             <div className="Search-deals-slider-single">
               <div className="font-primary-medium-14">Dubai</div>
               <div

@@ -165,10 +165,13 @@ const PrimaryTable = (props) => {
                                 index === imageIndex ? { paddingLeft: 72 } : {}
                               }
                               align={
-                                headerData.find((item) => item.id === key)
-                                  .alignment || 'center'
+                                !!headerData.find((item) => item.id === key) &&
+                                !!headerData.find((item) => item.id === key)
+                                  .alignment
+                                  ? headerData.find((item) => item.id === key)
+                                      .alignment
+                                  : 'center'
                               }
-                              // align={setAlignment(index)}
                               style={applyStyle(index)}
                             >
                               {subHeaderData[key]}

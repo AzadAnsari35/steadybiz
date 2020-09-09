@@ -149,3 +149,7 @@ export const SEARCH_DATE_TYPE = [
   { value: 'T', label: 'Travel' },
   { value: 'B', label: 'Booking' },
 ];
+export const OFFICE_CHANNEL = [
+  { value: 'AG', label: 'Agency' },
+  { value: 'SA', label: 'Sub Agency' },
+];

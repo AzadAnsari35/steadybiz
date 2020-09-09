@@ -1,3 +1,4 @@
+@import './../../../styles/functions';
 $root: '.Carousel';
 
 #{$root} {
@@ -13,12 +14,25 @@ $root: '.Carousel';
     &-right {
       width: 350px;
       padding: 32px 50px;
-
       background-color: white;
     }
   }
   &-form {
     position: absolute;
     right: 144px;
+  }
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1919px) {
+  #{$root} {
+    &-getStarted {
+      &-right {
+        width: calculateRem(350px);
+        padding: calculateRem(32px) calculateRem(32px);
+      }
+    }
+    &-form {
+      right: calculateRem(80px);
+    }
   }
 }

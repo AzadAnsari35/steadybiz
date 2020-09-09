@@ -97,6 +97,7 @@ module.exports = (env, argv) => {
               ascii_only: true,
             },
           },
+          extractComments: false,
           // Use multi-process parallel running to improve the build speed
           // Default number of concurrent runs: os.cpus().length - 1
           // Disabled on WSL (Windows Subsystem for Linux) due to an issue with Terser

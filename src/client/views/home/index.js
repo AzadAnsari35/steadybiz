@@ -9,12 +9,12 @@ import './style.scss';
 
 const Home = () => {
   return (
-    <div className="Home ">
+    <div className="Home">
       <div>
         <Carousel />
       </div>
 
-      <div className="Home-features">
+      <div className="Home-features layout-wrapper-adjust">
         <div className="Home-features-title font-primary-semibold-30">
           B2B Travel Services &minus; Technology approach for best travel
           content &amp; fares to book &amp; earn…
