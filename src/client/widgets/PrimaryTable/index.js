@@ -63,6 +63,12 @@ const PrimaryTable = (props) => {
   };
 
   const setAlignment = (index) => {
+    // const itemIndex =
+    //   hideKeys?.length > 0
+    //     ? hideKeys.length > index
+    //       ? hideKeys.length - index - 1
+    //       : index - hideKeys.length - 1
+    //     : index;
     return columnAlignments[index];
   };
 
@@ -78,59 +84,62 @@ const PrimaryTable = (props) => {
   return (
     <Fragment>
       {/* <TableContainer> */}
-        <div className="PrimaryTable">
-          {header}
-          {count ? (
-            <div>
-              <TableContainer>
-                <Table aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      {!headerInArrOfObjFormat ? headerData.map((header, index, arr) =>
-                        Array.isArray(header) ? (
-                          <TableCell
-                            className="PrimaryTable-head-cell PrimaryTable-nestedHead-cell"
-                            colSpan={3}
-                            padding="none"
-                            align="center"
-                          >
-                            {header[0]}
-                            <div
-                              className={`d-flex justify-content-between PrimaryTable-nestedHead-cell__subHead ${
-                                Array.isArray(arr[index + 1])
-                                  ? 'border-right-gray-thin'
-                                  : ''
-                              } `}
+      <div className="PrimaryTable">
+        {header}
+        {count ? (
+          <div>
+            <TableContainer>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    {!headerInArrOfObjFormat
+                      ? headerData.map((header, index, arr) =>
+                          Array.isArray(header) ? (
+                            <TableCell
+                              className="PrimaryTable-head-cell PrimaryTable-nestedHead-cell"
+                              colSpan={3}
+                              padding="none"
+                              align="center"
                             >
-                              {header.slice(1).map((cur) => (
-                                <div className=" PrimaryTable-head-cell">
-                                  {cur}
-                                </div>
-                              ))}
-                            </div>
-                          </TableCell>
-                        ) : (
-                          <TableCell
-                            key={`head-${index}`}
-                            className="PrimaryTable-head-cell "
-                            style={
-                              index === imageIndex ? { paddingLeft: 72 } : {}
-                            }
-                            align={setAlignment(index)}
-                            style={applyStyle(index)}
-                          >
-                            {header}
-                          </TableCell>
+                              {header[0]}
+                              <div
+                                className={`d-flex justify-content-between PrimaryTable-nestedHead-cell__subHead ${
+                                  Array.isArray(arr[index + 1])
+                                    ? 'border-right-gray-thin'
+                                    : ''
+                                } `}
+                              >
+                                {header.slice(1).map((cur) => (
+                                  <div className=" PrimaryTable-head-cell">
+                                    {cur}
+                                  </div>
+                                ))}
+                              </div>
+                            </TableCell>
+                          ) : (
+                            <TableCell
+                              key={`head-${index}`}
+                              className="PrimaryTable-head-cell "
+                              style={
+                                index === imageIndex ? { paddingLeft: 72 } : {}
+                              }
+                              align={setAlignment(index)}
+                              style={applyStyle(index)}
+                            >
+                              {header}
+                            </TableCell>
+                          )
                         )
-                      ) :
-                        headerData.map((header, index, arr) => {
+                      : headerData.map((header, index, arr) => {
                           if (showEntries(header.id)) {
-                            return  (
+                            return (
                               <TableCell
                                 key={`head-${index}`}
                                 className="PrimaryTable-head-cell "
                                 style={
-                                  index === imageIndex ? { paddingLeft: 72 } : {}
+                                  index === imageIndex
+                                    ? { paddingLeft: 72 }
+                                    : {}
                                 }
                                 // align={setAlignment(index)}
                                 align={header.alignment}
@@ -138,15 +147,15 @@ const PrimaryTable = (props) => {
                               >
                                 {header.value}
                               </TableCell>
-                            )
+                            );
                           }
-                        })
-                      }
-                    </TableRow>
-                  </TableHead>
-                  <TableHead>
-                    <TableRow>
-                      {Object.keys(subHeaderData).map(
+                        })}
+                  </TableRow>
+                </TableHead>
+                <TableHead>
+                  <TableRow>
+                    {subHeaderData &&
+                      Object.keys(subHeaderData).map(
                         (key, index) =>
                           showEntries(key) && (
                             <TableCell
@@ -156,10 +165,12 @@ const PrimaryTable = (props) => {
                                 index === imageIndex ? { paddingLeft: 72 } : {}
                               }
                               align={
-                                !!headerData.find(item => item.id === key) &&
-                                !!headerData.find(item => item.id === key).alignment
-                                ? headerData.find(item => item.id === key).alignment
-                                : "center"
+                                !!headerData.find((item) => item.id === key) &&
+                                !!headerData.find((item) => item.id === key)
+                                  .alignment
+                                  ? headerData.find((item) => item.id === key)
+                                      .alignment
+                                  : 'center'
                               }
                               style={applyStyle(index)}
                             >
@@ -167,92 +178,95 @@ const PrimaryTable = (props) => {
                             </TableCell>
                           )
                       )}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody className="PrimaryTable-body">
-                    {bodyData.data.length > 0 &&
-                      bodyData.data.map((body, ind) => (
-                        <TableRow key={ind}>
-                          {AddElement?.first && (
-                            <TableCell component="td" scope="row" align="center">
-                              {React.cloneElement(AddElement.first, {
-                                rowNumber: ind + 1,
-                              })}
-                            </TableCell>
-                          )}
-                          {Object.keys(body).map(
-                            (key, index) =>
-                              showEntries(key) && (
-                                <TableCell
-                                  component="td"
-                                  scope="row"
-                                  key={`body-${index}`}
-                                  // align={setAlignment(index - hideKeys.length)}
-                                  align={headerData.find(item => item.id === key).alignment || 'center'}
-                                  style={
-                                    index === imageIndex
-                                      ? { paddingLeft: 72 }
-                                      : {}
-                                  }
-                                  style={applyStyle(index - hideKeys.length)}
-                                  className={`PrimaryTable-body-cell position-relative ${
-                                    index === statusIndex + hideKeys.length
-                                      ? statusColor(body[key])
-                                      : ''
-                                  }`}
-                                >
-                                  {index === imageIndex && (
-                                    <Avatar
-                                      className="font-primary-medium-16 PrimaryTable-body-imageCell"
-                                      size="18px"
-                                    ></Avatar>
-                                  )}
-                                  {body[key]}
-                                </TableCell>
-                              )
-                          )}
-                          {AddElement?.last && (
-                            <TableCell component="td" scope="row" align="center">
-                              {React.cloneElement(AddElement.last, {
-                                rowNumber: ind,
-                              })}
-                            </TableCell>
-                          )}
-                        </TableRow>
-                      ))}
-                    {children}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <div className="PrimaryTable-footer">
-                {
-                  <div className="PrimaryTable-footer-records">
-                    Showing{' '}
-                    <span>
-                      {lowOffset} - {highOffset}{' '}
-                    </span>
-                    of {count} Records
-                  </div>
-                }
-
-                <div>
-                  {count > size ? (
-                    <Pagination
-                      count={Math.ceil(count / size)}
-                      page={page}
-                      total={count}
-                      onChange={handleChangePage}
-                      variant="outlined"
-                      shape="rounded"
-                    />
-                  ) : null}
+                  </TableRow>
+                </TableHead>
+                <TableBody className="PrimaryTable-body">
+                  {bodyData.data.length > 0 &&
+                    bodyData.data.map((body, ind) => (
+                      <TableRow key={ind}>
+                        {AddElement?.first && (
+                          <TableCell component="td" scope="row" align="center">
+                            {React.cloneElement(AddElement.first, {
+                              rowNumber: ind + 1,
+                            })}
+                          </TableCell>
+                        )}
+                        {Object.keys(body).map(
+                          (key, index) =>
+                            showEntries(key) && (
+                              <TableCell
+                                component="td"
+                                scope="row"
+                                key={`body-${index}`}
+                                // align={setAlignment(index - hideKeys.length)}
+                                align={
+                                  headerData.find((item) => item.id === key)
+                                    ?.alignment || 'center'
+                                }
+                                style={
+                                  index === imageIndex
+                                    ? { paddingLeft: 72 }
+                                    : {}
+                                }
+                                style={applyStyle(index - hideKeys.length)}
+                                className={`PrimaryTable-body-cell position-relative ${
+                                  index === statusIndex + hideKeys.length
+                                    ? statusColor(body[key])
+                                    : ''
+                                }`}
+                              >
+                                {index === imageIndex && (
+                                  <Avatar
+                                    className="font-primary-medium-16 PrimaryTable-body-imageCell"
+                                    size="18px"
+                                  ></Avatar>
+                                )}
+                                {body[key]}
+                              </TableCell>
+                            )
+                        )}
+                        {AddElement?.last && (
+                          <TableCell component="td" scope="row" align="center">
+                            {React.cloneElement(AddElement.last, {
+                              rowNumber: ind,
+                            })}
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    ))}
+                  {children}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <div className="PrimaryTable-footer">
+              {
+                <div className="PrimaryTable-footer-records">
+                  Showing{' '}
+                  <span>
+                    {lowOffset} - {highOffset}{' '}
+                  </span>
+                  of {count} Records
                 </div>
+              }
+
+              <div>
+                {count > size ? (
+                  <Pagination
+                    count={Math.ceil(count / size)}
+                    page={page}
+                    total={count}
+                    onChange={handleChangePage}
+                    variant="outlined"
+                    shape="rounded"
+                  />
+                ) : null}
               </div>
             </div>
-          ) : (
-            'No Record Found'
-          )}
-        </div>
+          </div>
+        ) : (
+          'No Record Found'
+        )}
+      </div>
       {/* </TableContainer> */}
     </Fragment>
   );

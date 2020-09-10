@@ -36,7 +36,9 @@ const TextInput = (props) => {
         disabled={disabled}
         placeholder={placeholder}
         ref={useReactHookForm ? register(validation) : null}
-        onChange={!useReactHookForm ? (e) => onChange(id, e.target.value) : null}
+        onChange={
+          !useReactHookForm ? (e) => onChange(id, e.target.value) : null
+        }
         {...rest}
       />
       {errors[name] && (

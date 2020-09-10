@@ -21,7 +21,7 @@ import {
 import { utils } from 'Helpers';
 import endpoint from 'Config/endpoint';
 import securityOptionConstant from 'Constants/securityOptionConstant';
-import { ERROR_MESSAGE } from "./constant";
+import { ERROR_MESSAGE } from './constant';
 
 import {
   AutoSuggest,
@@ -157,7 +157,7 @@ const SearchBar = () => {
   const [errorData, setErrorData] = useState({
     departureAirport: '',
     arrivalAirport: '',
-  })
+  });
 
   const [error, setError] = useState(null);
 
@@ -171,12 +171,12 @@ const SearchBar = () => {
   };
 
   const handleSelectSuggestion = (id, value) => {
-    if (value !== "") {
-			setErrorData({
-				...errorData,
-				[id]: "",
-			});
-		}
+    if (value !== '') {
+      setErrorData({
+        ...errorData,
+        [id]: '',
+      });
+    }
     setFormData({
       ...formData,
       [id]: value,
@@ -201,7 +201,7 @@ const SearchBar = () => {
         endDate: moment(flightDates.startDate).add(1, 'days'),
       });
     }
-    if (id === "segmentType") {
+    if (id === 'segmentType') {
       setSegmentType(value);
     } else {
       setCabinClass(value);
@@ -210,34 +210,43 @@ const SearchBar = () => {
 
   const validateForm = (e) => {
     e.preventDefault();
-    const securityMessage = utils.checkSecurityGroup(securityOptionConstant.flights.flightSearch);
+    const securityMessage = utils.checkSecurityGroup(
+      securityOptionConstant.flights.flightSearch
+    );
     if (securityMessage !== '') {
       dispatch(utils.showErrorBox(securityMessage));
       return;
     }
-		const { departureAirport, arrivalAirport } = formData;
-		let errorObj = errorData;
+    const { departureAirport, arrivalAirport } = formData;
+    let errorObj = errorData;
 
-		!departureAirport && (errorObj.departureAirport = ERROR_MESSAGE.DEPARTURE_AIRPORT_REQUIRED);
-		!arrivalAirport && (errorObj.arrivalAirport = ERROR_MESSAGE.ARRIVAL_AIRPORT_REQUIRED);
-		if (
+    !departureAirport &&
+      (errorObj.departureAirport = ERROR_MESSAGE.DEPARTURE_AIRPORT_REQUIRED);
+    !arrivalAirport &&
+      (errorObj.arrivalAirport = ERROR_MESSAGE.ARRIVAL_AIRPORT_REQUIRED);
+    if (
       !!departureAirport &&
       !!arrivalAirport &&
       departureAirport.code === arrivalAirport.code
     ) {
       errorObj.arrivalAirport = ERROR_MESSAGE.DEPARTURE_ARRIVAL_SAME;
     } else if (!!arrivalAirport) {
-      errorObj.arrivalAirport = "";
+      errorObj.arrivalAirport = '';
     }
 
-		setErrorData({
-			...errorData,
-			...errorObj,
-		});
-		if (!!departureAirport && !errorObj.departureAirport && !!arrivalAirport && !errorObj.arrivalAirport) {
-			onSubmit();
-		}
-	};
+    setErrorData({
+      ...errorData,
+      ...errorObj,
+    });
+    if (
+      !!departureAirport &&
+      !errorObj.departureAirport &&
+      !!arrivalAirport &&
+      !errorObj.arrivalAirport
+    ) {
+      onSubmit();
+    }
+  };
 
   const onSubmit = () => {
     const passengersData = passengers.filter(
@@ -261,11 +270,14 @@ const SearchBar = () => {
             originDate: moment(flightDates.startDate).format('YYYY-MM-DD'),
             destinationAirportCode: formData.arrivalAirport.code,
             destinationAirport: formData.arrivalAirport,
-            destinationDate: segmentType.value !== 'OW'
-            ? !!flightDates.endDate
-              ? moment(flightDates.endDate).format('YYYY-MM-DD')
-              : moment(flightDates.startDate).add(1, 'days').format('YYYY-MM-DD')
-            : '',
+            destinationDate:
+              segmentType.value !== 'OW'
+                ? !!flightDates.endDate
+                  ? moment(flightDates.endDate).format('YYYY-MM-DD')
+                  : moment(flightDates.startDate)
+                      .add(1, 'days')
+                      .format('YYYY-MM-DD')
+                : '',
           },
         ],
       },
@@ -340,7 +352,9 @@ const SearchBar = () => {
                 initialValue={initialDepartureAirport}
                 onSelectSuggestion={handleSelectSuggestion}
               />
-              {!!errorData.departureAirport && <ErrorMessage errorMessage={errorData.departureAirport} />}
+              {!!errorData.departureAirport && (
+                <ErrorMessage errorMessage={errorData.departureAirport} />
+              )}
             </Grid>
             {!isPassengerCountDropdownOpen && <RoundedButton />}
             <Grid item xs={12} md={4}>
@@ -357,7 +371,9 @@ const SearchBar = () => {
                 initialValue={initialArrivalAirport}
                 onSelectSuggestion={handleSelectSuggestion}
               />
-              {!!errorData.arrivalAirport && <ErrorMessage errorMessage={errorData.arrivalAirport} />}
+              {!!errorData.arrivalAirport && (
+                <ErrorMessage errorMessage={errorData.arrivalAirport} />
+              )}
             </Grid>
             <Grid item xs={12} md={4}>
               <DatesRangePicker

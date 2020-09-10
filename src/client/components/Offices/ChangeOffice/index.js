@@ -33,177 +33,16 @@ import endpointWithoutApi from 'Config/endpointWithoutApi';
 import { commonConstant } from 'Constants';
 import './style.scss';
 
-const PopoverAction = (props) => {
-  const [showPopover, setShowPopover] = useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const history = useHistory();
-
-  const dispatch = useDispatch();
-
+const LinkAction = (props) => {
   const { rowNumber } = props;
 
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-    setShowPopover(true);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-    setShowPopover(false);
-  };
-
-  const handleClick = (e) => {
-    const selectedOption = e.currentTarget.getAttribute('name');
-
-    switch (selectedOption) {
-      case 'view': {
-        const securityMessage = utils.checkSecurityGroup(
-          isSearchAgency
-            ? securityOptionConstant.agency.viewAgency
-            : securityOptionConstant.office.viewOffice
-        );
-        if (securityMessage !== '') {
-          dispatch(utils.showErrorBox(securityMessage));
-          return;
-        }
-        history.push(
-          isSearchAgency ? routes.agency.viewAgency : routes.office.viewOffice
-        );
-        utils.setItemToStorage(
-          isSearchAgency ? 'selectedAgency' : 'selectedOffice',
-          rowNumber
-        );
-        utils.setItemToStorage(
-          isSearchAgency ? 'selectedOffice' : 'selectedAgency',
-          ''
-        );
-
-        break;
-      }
-      case 'modify': {
-        const securityMessage = utils.checkSecurityGroup(
-          isSearchAgency
-            ? securityOptionConstant.agency.updateAgency
-            : securityOptionConstant.office.updateOffice
-        );
-
-        if (securityMessage !== '') {
-          dispatch(utils.showErrorBox(securityMessage));
-          return;
-        }
-        history.push(
-          isSearchAgency
-            ? routes.agency.updateAgency
-            : routes.office.updateOffice
-        );
-        utils.setItemToStorage(
-          isSearchAgency ? 'selectedAgency' : 'selectedOffice',
-          rowNumber
-        );
-        utils.setItemToStorage(
-          isSearchAgency ? 'selectedOffice' : 'selectedAgency',
-          ''
-        );
-
-        break;
-      }
-
-      case 'search': {
-        const securityMessage = utils.checkSecurityGroup(
-          securityOptionConstant.office.searchUser
-        );
-
-        if (securityMessage !== '') {
-          dispatch(utils.showErrorBox(securityMessage));
-          return;
-        }
-        history.push(routes.office.searchOfficeUser);
-        utils.setItemToStorage(
-          isSearchAgency ? 'selectedAgency' : 'selectedOffice',
-          rowNumber
-        );
-        utils.setItemToStorage(
-          isSearchAgency ? 'selectedOffice' : 'selectedAgency',
-          ''
-        );
-
-        dispatch(commonActionUpdate(endpoint.office.searchUser, null));
-        break;
-      }
-
-      case 'deposit': {
-        history.push(
-          isSearchAgency
-            ? routes.agency.manageCreditLimit
-            : routes.office.manageCreditLimit
-        );
-        utils.setItemToStorage(
-          isSearchAgency ? 'selectedAgency' : 'selectedOffice',
-          rowNumber
-        );
-        utils.setItemToStorage(
-          isSearchAgency ? 'selectedOffice' : 'selectedAgency',
-          ''
-        );
-
-        break;
-      }
-
-      default: {
-        return;
-      }
-    }
-  };
-
   return (
-    <>
-      <MoreVertIcon className="cursor-pointer" onClick={handlePopoverOpen} />
-      <SimplePopover
-        open={showPopover}
-        handleClose={handlePopoverClose}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-      >
-        <div className="SearchUser-tableAction d-flex flex-direction-column">
-          <div
-            className="font-primary-regular-14 cursor-pointer"
-            onClick={handleClick}
-            name="view"
-          >
-            {isSearchAgency ? 'View Agency' : 'View Office'}
-          </div>
-          <div
-            className="font-primary-regular-14 cursor-pointer"
-            onClick={handleClick}
-            name="modify"
-          >
-            {isSearchAgency ? 'Modify Agency' : 'Modify Office'}
-          </div>
-          <div
-            className="font-primary-regular-14 cursor-pointer"
-            onClick={handleClick}
-            name="search"
-          >
-            Search User
-          </div>
-          <div
-            className="font-primary-regular-14 cursor-pointer"
-            onClick={handleClick}
-            name="deposit"
-          >
-            Deposit
-          </div>
-        </div>
-      </SimplePopover>
-    </>
+    <div
+      className="link-text text-decoration-none font-primary-semibold-14 "
+      to=""
+    >
+      Select
+    </div>
   );
 };
 
@@ -217,7 +56,7 @@ const defaultValues = {
 
 const headerData = ['OFFICE NAME', 'OFFICE ID', 'COUNTRY', 'CITY', 'ACTION'];
 
-const SearchOffice = () => {
+const ChangeOffice = () => {
   const [requestJson, setReqeustJson] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [page, setPage] = useState(1);
@@ -254,6 +93,8 @@ const SearchOffice = () => {
     control,
     getValues,
     reset,
+    setValue,
+    watch,
   } = useForm({ defaultValues });
 
   const ofId = utils.getItemFromStorage('officeId');
@@ -283,6 +124,21 @@ const SearchOffice = () => {
     }
     // return dispatch(commonActionUpdate(endpoint.master.cities, null));
   }, [getValues('country')]);
+
+  useEffect(() => {
+    const selectedChannel = getValues('officeChannel');
+
+    if (selectedChannel) {
+      if (selectedChannel.value === commonConstant.officeChannel[0].value) {
+        setValue('officeType', null);
+      } else if (
+        selectedChannel.value === commonConstant.officeChannel[1].value
+      ) {
+        setValue('officeType', commonConstant.officeType[0]);
+      }
+    }
+    // return dispatch(commonActionUpdate(endpoint.master.cities, null));
+  }, [getValues('officeChannel')]);
 
   useEffect(() => {
     if (requestJson !== null) {
@@ -327,7 +183,6 @@ const SearchOffice = () => {
           page: page - 1,
           size,
           ofid: ofId,
-          officeType: commonConstant.officeType[0],
         })
       );
     } catch (err) {
@@ -354,19 +209,9 @@ const SearchOffice = () => {
   const handleClick = () => {};
 
   return (
-    <div className="SearchOffice">
-      <div className="SearchOffice-head">
-        <div className="d-flex justify-content-between align-items-end pb-4">
-          <div className="font-primary-semibold-24 ">{`CHANGE OFFICE`}</div>
-          <IconWithBackground
-            bgColor={colors.lightRed}
-            onClick={() => handleClose()}
-            showCursor
-          >
-            <CloseIcon style={{ color: colors.red }} />
-          </IconWithBackground>
-        </div>
-        <div className="horizontal-grey-divider"></div>
+    <div className="ChangeOffice">
+      <div className="ChangeOffice-head">
+        {/* <div className="horizontal-grey-divider"></div> */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <input type="hidden" name="ofid" value={ofId} ref={register}></input>
           <input type="hidden" name="size" value={size} ref={register}></input>
@@ -377,7 +222,7 @@ const SearchOffice = () => {
             className="font-primary-medium-18 my-24"
           />
           <Grid container spacing={3}>
-            <Grid item xs={3}>
+            <Grid item xs={6}>
               <MultiSelect
                 label="Country"
                 name="country"
@@ -392,7 +237,7 @@ const SearchOffice = () => {
               />
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={6}>
               <MultiSelect
                 label="City"
                 name="city"
@@ -409,7 +254,7 @@ const SearchOffice = () => {
               />
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={6}>
               <MultiSelect
                 label="Office Channel:"
                 name="officeChannel"
@@ -424,7 +269,7 @@ const SearchOffice = () => {
               />
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={6}>
               <MultiSelect
                 label="Office Type:"
                 name="officeType"
@@ -436,10 +281,11 @@ const SearchOffice = () => {
                 getValues={getValues}
                 showLabel
                 width="auto"
+                disabled={watch('officeChannel')}
               />
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={6}>
               <TextInput
                 name="officeName"
                 register={register}
@@ -451,48 +297,59 @@ const SearchOffice = () => {
 
             <Grid
               item
-              xs={3}
+              xs={6}
               className="d-flex justify-content-end align-items-end"
             >
-              <Button
-                text="Create"
-                secondary
-                className=" px-48 mr-10"
-                onClick={() => handleClick()}
-              />
-
               <Button type="submit" text="Search" className=" px-48" />
             </Grid>
           </Grid>
         </form>
-
-        <div></div>
       </div>
-      {searchOffice.status && (
-        <PrimaryTable
-          header={
-            <PrimaryTableHeader
-              officeName={officeName}
-              officeId={officeId}
-              officeLevel={officeLevel}
-            />
-          }
-          headerData={headerData}
-          bodyData={searchOffice.data}
-          page={page}
-          AddElement={{
-            last: <PopoverAction />,
-          }}
-          count={searchOffice.data.count}
-          size={size}
-          columnAlignments={['left', 'center', 'center', 'left', 'center']}
-          statusIndex={8}
-          handlePage={handlePage}
-          hideKeys={[]}
-        />
+      {searchOffice?.status && (
+        <div className="ChangeOffice-table">
+          <PrimaryTable
+            header={
+              <PrimaryTableHeader
+                officeName={officeName}
+                officeId={officeId}
+                officeLevel={officeLevel}
+              />
+            }
+            headerData={headerData}
+            bodyData={searchOffice.data}
+            page={page}
+            AddElement={{
+              last: <LinkAction />,
+            }}
+            count={searchOffice.data.count}
+            size={size}
+            columnAlignments={['left', 'center', 'center', 'left', 'center']}
+            handlePage={handlePage}
+            hideKeys={[
+              'ofId',
+              'address1',
+              'address2',
+              'cityCode',
+              'officeEmail',
+              'noOfUserRequested',
+              'paymentOptions',
+              'zipCode',
+              'minimumBalance',
+              'users',
+              'phone',
+              'officeType',
+              'officeChannel',
+              'masterUser',
+              'mobile',
+              'currCode',
+              'creditLimitBal',
+              'status',
+            ]}
+          />
+        </div>
       )}
     </div>
   );
 };
 
-export default SearchOffice;
+export default ChangeOffice;
