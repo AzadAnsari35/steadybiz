@@ -1,3 +1,4 @@
+@import './../../../styles/variables';
 @import './../../../styles/functions';
 $root: '.Carousel';
 
@@ -10,6 +11,7 @@ $root: '.Carousel';
     height: 495px;
     position: relative;
     background-image: url('../../../../../public/assets/images/home-banner.png');
+    background-size: cover;
 
     &-right {
       width: 350px;
@@ -17,9 +19,21 @@ $root: '.Carousel';
       background-color: white;
     }
   }
-  &-form {
+  &-content {
     position: absolute;
-    right: 144px;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
+    &__left {
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: calculateRem(25px) calculateRem(40px);
+      max-width: 540px;
+      color: $white;
+      .title {
+        margin-bottom: 8px;
+      }
+    }
   }
 }
 
@@ -30,9 +44,6 @@ $root: '.Carousel';
         width: calculateRem(350px);
         padding: calculateRem(32px) calculateRem(32px);
       }
-    }
-    &-form {
-      right: calculateRem(80px);
     }
   }
 }

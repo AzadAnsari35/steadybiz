@@ -404,7 +404,7 @@ p {
 .font-primary-bold-26 {
   @extend .font-primary-bold;
   font-size: calculateRem(26px);
-  line-height: calculateRem(25px);
+  line-height: calculateRem(30px);
 }
 
 .font-primary-italic-14 {
