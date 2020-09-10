@@ -16,6 +16,10 @@ const routes = {
     createRegion: '/Master/Create-Region',
     modifyRegion: '/Master/Update-Region',
     viewRegion: '/Master/View-Region',
+    searchMultiPcc: '/Master/Search-MultiPcc',
+    createMultiPcc: '/Master/Create-MultiPcc',
+    modifyMultiPcc: '/Master/Update-MultiPcc',
+    viewMultiPcc: '/Master/View-MultiPcc',
   },
 
   agency: {

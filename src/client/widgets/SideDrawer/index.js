@@ -168,6 +168,10 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           text: 'Manage Region',
           link: routes.master.searchRegion,
         },
+        {
+          text: 'Manage Multi PCC',
+          link: routes.master.searchMultiPcc,
+        },
       ],
       link: '#',
     },

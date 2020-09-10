@@ -24,6 +24,7 @@ import {
   AgencyRegistration,
   SearchRegion,
   CreateRegion,
+  SearchMultiPcc,
 } from 'Views/';
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
@@ -32,6 +33,11 @@ import { LinearLoaderSecondary } from 'Widgets/';
 //const LoadingComponent = () => <h3>please wait...</h3>;
 const AsyncSearchDeals = loadable({
   loader: () => import('Views/agency/manageDeals/searchDeals'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncCreatePcc = loadable({
+  loader: () => import('Views/config/manageMultiPcc/createPcc'),
   loading: LinearLoaderSecondary,
 });
 
@@ -281,7 +287,7 @@ const Routes = () => (
       component={SearchOrder}
     />
 
-    <PrivateRoute
+    {/* <PrivateRoute
       exact
       path={routes.master.searchRegion}
       component={SearchRegion}
@@ -301,6 +307,30 @@ const Routes = () => (
       exact
       path={routes.master.viewRegion}
       component={CreateRegion}
+    /> */}
+
+    <PrivateRoute
+      exact
+      path={routes.master.searchMultiPcc}
+      component={SearchMultiPcc}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.master.createMultiPcc}
+      component={AsyncCreatePcc}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.master.modifyMultiPcc}
+      component={AsyncCreatePcc}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.master.viewMultiPcc}
+      component={AsyncCreatePcc}
     />
 
     <PrivateRoute exact path="/private" component={() => <div>private</div>} />
