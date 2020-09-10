@@ -72,6 +72,10 @@ const routes = {
     viewPNR: '/Transaction/View-PNR',
     bookingReport: '/Transaction/Booking-Report',
   },
+  reports: {
+    bookingReport: '/Reports/Booking-Report',
+    totalSalesReport: '/Reports/Total-Sales-Report',
+  },
 };
 
 export default routes;

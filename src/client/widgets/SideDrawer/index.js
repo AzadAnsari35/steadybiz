@@ -158,10 +158,11 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       subList: [
         {
           text: 'Booking Report',
-          link: routes.transaction.bookingReport,
-          // clickFunc: () => {
-          //   dispatch(commonActionUpdate(endpoint.orders.searchOrders, null));
-          // },
+          link: routes.reports.bookingReport,
+        },
+        {
+          text: 'Total Sales Report',
+          link: routes.reports.totalSalesReport,
         },
       ],
     },

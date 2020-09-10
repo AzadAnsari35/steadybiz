@@ -22,6 +22,7 @@ import {
   SearchOrder,
   CreateDeal,
   BookingReport,
+  TotalSalesReport,
   AgencyRegistration,
   SearchRegion,
   CreateRegion,
@@ -282,7 +283,7 @@ const Routes = () => (
       component={SearchOrder}
     />
 
-    <PrivateRoute
+    {/* <PrivateRoute
       exact
       path={routes.master.searchRegion}
       component={SearchRegion}
@@ -302,7 +303,7 @@ const Routes = () => (
       exact
       path={routes.master.viewRegion}
       component={CreateRegion}
-    />
+    /> */}
 
     <PrivateRoute exact path="/private" component={() => <div>private</div>} />
     <PublicRoute
@@ -319,8 +320,13 @@ const Routes = () => (
     />
     <PrivateRoute
       exact
-      path={routes.transaction.bookingReport}
+      path={routes.reports.bookingReport}
       component={BookingReport}
+    />
+    <PrivateRoute
+      exact
+      path={routes.reports.totalSalesReport}
+      component={TotalSalesReport}
     />
   </Switch>
 );
