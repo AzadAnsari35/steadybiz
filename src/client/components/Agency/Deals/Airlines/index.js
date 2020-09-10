@@ -14,7 +14,13 @@ import EditIcon from '@material-ui/icons/Edit';
 import './style.scss';
 
 const Airlines = ({ path }) => {
-  const { isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory } = path;
+  const {
+    isCreateDeal,
+    isUpdateDeal,
+    isViewDeal,
+    isDealHistory,
+    airlineList,
+  } = path;
 
   return (
     <SecondaryAccordion
@@ -37,10 +43,9 @@ const Airlines = ({ path }) => {
                 label="Validating Carrier:"
                 // disabled={isViewSecurityGroup}
                 useReactHookForm={false}
-                onChange={(value) => console.log(value)}
                 showBorder={true}
                 changeStyle={true}
-                options={[]}
+                options={airlineList.dropDownItems}
                 width="auto"
                 placeholder="Select Airline"
               />
@@ -54,7 +59,7 @@ const Airlines = ({ path }) => {
                 onChange={(value) => console.log(value)}
                 showBorder={true}
                 changeStyle={true}
-                options={[]}
+                options={airlineList.dropDownItems}
                 width="auto"
                 placeholder="Select Airline"
               />
@@ -68,7 +73,7 @@ const Airlines = ({ path }) => {
                 onChange={(value) => console.log(value)}
                 showBorder={true}
                 changeStyle={true}
-                options={[]}
+                options={airlineList.dropDownItems}
                 width="auto"
                 placeholder="Select Airline"
               />

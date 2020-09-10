@@ -10,7 +10,13 @@ import {
 import './style.scss';
 
 const DealApplicable = ({ path }) => {
-  const { isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory } = path;
+  const {
+    isCreateDeal,
+    isUpdateDeal,
+    isViewDeal,
+    isDealHistory,
+    countriesList,
+  } = path;
 
   return (
     <SecondaryAccordion
@@ -95,7 +101,7 @@ const DealApplicable = ({ path }) => {
                 onChange={(value) => console.log(value)}
                 showBorder={true}
                 changeStyle={true}
-                options={[]}
+                options={countriesList.dropDownItems}
                 width="auto"
                 placeholder="Select Country"
               />
