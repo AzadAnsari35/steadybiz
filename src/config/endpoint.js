@@ -68,6 +68,7 @@ export default {
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.countries,
       reducerName: 'masterCountries',
+      isCache: true,
     },
     cities: {
       url: config.api.url + '/api/v1/master/cities',
@@ -88,6 +89,8 @@ export default {
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.objectStatuses,
+      reducerName: 'masterObjectStatuses',
+      isCache: true,
     },
     airlines: {
       url: config.api.url + '/api/v1/master/airlines',
@@ -95,6 +98,7 @@ export default {
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.airlines,
       reducerName: 'masterAirlines',
+      isCache: true,
     },
     settlementPlans: {
       url: config.api.url + '/api/v1/master/settlementplans',
@@ -109,7 +113,7 @@ export default {
       actionType: actionTypeConstant.master.paymentModes,
     },
   },
-  
+
   agency: {
     searchAgency: {
       url: config.api.url + '/api/v1/offices/searchOffice',
@@ -118,7 +122,6 @@ export default {
       actionType: actionTypeConstant.agency.searchAgency,
     },
   },
-
 
   office: {
     searchUser: {

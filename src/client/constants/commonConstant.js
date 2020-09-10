@@ -13,6 +13,7 @@ export const dropDownParam = {
     value: 'countryIsdCode',
     subValue: 'countryCode',
   },
+  airlines: { label: 'airlineName', value: 'airlineCode' },
   objectStatuses: { label: 'objectStatusDesc', value: 'objectStatusId' },
   paymentModes: {
     label: 'creditLimitPaymentModeDesc',
@@ -43,7 +44,7 @@ export const officeType = [
   { label: 'Own', value: 'O' },
 ];
 
-export const officeChannel= [
+export const officeChannel = [
   { label: 'Sub Agency', value: 'SA' },
   { label: 'Agency', value: 'AG' },
 ];
@@ -152,4 +153,14 @@ export const SEARCH_DATE_TYPE = [
 export const OFFICE_CHANNEL = [
   { value: 'AG', label: 'Agency' },
   { value: 'SA', label: 'Sub Agency' },
+];
+export const SERVICE_TYPE = [{ value: 'FL', label: 'Flight' }];
+export const DEALS_SOURCE = [
+  { value: 'EA-1-0', label: 'only Aggregator' },
+  { value: 'EG-0-1', label: 'only GDS' },
+  { value: 'EA-1-1', label: 'both Aggregator & GDS' },
+];
+export const STATUS_LIST = [
+  { value: '1', label: 'Active' },
+  { value: '0', label: 'In-Active' },
 ];

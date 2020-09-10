@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,14 +9,42 @@ import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import colors from 'Constants/colors';
 import React from 'react';
-import { Button, MultiSelect, SecondaryAccordion } from 'Widgets';
+import { AutoSuggest, Button, MultiSelect, SecondaryAccordion } from 'Widgets';
 import EditIcon from '@material-ui/icons/Edit';
+import { displayImage } from 'Helpers/utils';
 
 import './style.scss';
 
 const Segments = ({ path }) => {
-  const { isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory } = path;
-
+  const {
+    isCreateDeal,
+    isUpdateDeal,
+    isViewDeal,
+    isDealHistory,
+    countriesList,
+  } = path;
+  let initialexOrigin = null,
+    initialexDestination = null,
+    initialOrigin = null,
+    initialDestination = null;
+  const [errorData, setErrorData] = useState({
+    exOrigin: '',
+    exDestination: '',
+    Origin: '',
+    Destination: '',
+  });
+  const handleSelectSuggestion = (id, value) => {
+    if (value !== '') {
+      setErrorData({
+        ...errorData,
+        [id]: '',
+      });
+    }
+    // setFormData({
+    //   ...formData,
+    //   [id]: value,
+    // });
+  };
   return (
     <SecondaryAccordion
       text="SEGMENTS"
@@ -32,7 +61,22 @@ const Segments = ({ path }) => {
             alignItems="flex-end"
           >
             <Grid item xs={3}>
-              <MultiSelect
+              <AutoSuggest
+                icon={
+                  <img
+                    alt="departure"
+                    src={displayImage('departure.svg')}
+                    className="SearchBar-inputs__autoSuggestIcon"
+                  />
+                }
+                id="exOrigin"
+                name="exOrigin"
+                label="Ex. Origin:"
+                initialValue={initialexOrigin}
+                onSelectSuggestion={handleSelectSuggestion}
+              />
+
+              {/* <MultiSelect
                 name="exOrigin"
                 label="Ex. Origin:"
                 // disabled={isViewSecurityGroup}
@@ -43,48 +87,54 @@ const Segments = ({ path }) => {
                 options={[]}
                 width="auto"
                 placeholder="Select Origin"
-              />
+              /> */}
             </Grid>
             <Grid item xs={3}>
-              <MultiSelect
+              <AutoSuggest
+                icon={
+                  <img
+                    alt="arrival"
+                    src={displayImage('arrival.svg')}
+                    className="SearchBar-inputs__autoSuggestIcon"
+                  />
+                }
+                id="exDestination"
                 name="exDestination"
                 label="Ex. Destination:"
-                // disabled={isViewSecurityGroup}
-                useReactHookForm={false}
-                onChange={(value) => console.log(value)}
-                showBorder={true}
-                changeStyle={true}
-                options={[]}
-                width="auto"
-                placeholder="Select Destination"
+                initialValue={initialexDestination}
+                onSelectSuggestion={handleSelectSuggestion}
               />
             </Grid>
             <Grid item xs={3}>
-              <MultiSelect
-                name="origin"
+              <AutoSuggest
+                icon={
+                  <img
+                    alt="departure"
+                    src={displayImage('departure.svg')}
+                    className="SearchBar-inputs__autoSuggestIcon"
+                  />
+                }
+                id="Origin"
+                name="Origin"
                 label="Origin:"
-                // disabled={isViewSecurityGroup}
-                useReactHookForm={false}
-                onChange={(value) => console.log(value)}
-                showBorder={true}
-                changeStyle={true}
-                options={[]}
-                width="auto"
-                placeholder="Select Origin"
+                initialValue={initialOrigin}
+                onSelectSuggestion={handleSelectSuggestion}
               />
             </Grid>
             <Grid item xs={3}>
-              <MultiSelect
-                name="destination"
+              <AutoSuggest
+                icon={
+                  <img
+                    alt="arrival"
+                    src={displayImage('arrival.svg')}
+                    className="SearchBar-inputs__autoSuggestIcon"
+                  />
+                }
+                id="Destination"
+                name="Destination"
                 label="Destination:"
-                // disabled={isViewSecurityGroup}
-                useReactHookForm={false}
-                onChange={(value) => console.log(value)}
-                showBorder={true}
-                changeStyle={true}
-                options={[]}
-                width="auto"
-                placeholder="Select Destination"
+                initialValue={initialDestination}
+                onSelectSuggestion={handleSelectSuggestion}
               />
             </Grid>
 
@@ -97,7 +147,7 @@ const Segments = ({ path }) => {
                 onChange={(value) => console.log(value)}
                 showBorder={true}
                 changeStyle={true}
-                options={[]}
+                options={countriesList.dropDownItems}
                 width="auto"
                 placeholder="Select Country"
               />
@@ -112,7 +162,7 @@ const Segments = ({ path }) => {
                 onChange={(value) => console.log(value)}
                 showBorder={true}
                 changeStyle={true}
-                options={[]}
+                options={countriesList.dropDownItems}
                 width="auto"
                 placeholder="Select Country"
               />
