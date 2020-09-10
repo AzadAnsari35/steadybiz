@@ -93,6 +93,8 @@ const ChangeOffice = () => {
     control,
     getValues,
     reset,
+    setValue,
+    watch,
   } = useForm({ defaultValues });
 
   const ofId = utils.getItemFromStorage('officeId');
@@ -122,6 +124,21 @@ const ChangeOffice = () => {
     }
     // return dispatch(commonActionUpdate(endpoint.master.cities, null));
   }, [getValues('country')]);
+
+  useEffect(() => {
+    const selectedChannel = getValues('officeChannel');
+
+    if (selectedChannel) {
+      if (selectedChannel.value === commonConstant.officeChannel[0].value) {
+        setValue('officeType', null);
+      } else if (
+        selectedChannel.value === commonConstant.officeChannel[1].value
+      ) {
+        setValue('officeType', commonConstant.officeType[0]);
+      }
+    }
+    // return dispatch(commonActionUpdate(endpoint.master.cities, null));
+  }, [getValues('officeChannel')]);
 
   useEffect(() => {
     if (requestJson !== null) {
@@ -166,7 +183,6 @@ const ChangeOffice = () => {
           page: page - 1,
           size,
           ofid: ofId,
-          officeType: commonConstant.officeType[0],
         })
       );
     } catch (err) {
@@ -265,6 +281,7 @@ const ChangeOffice = () => {
                 getValues={getValues}
                 showLabel
                 width="auto"
+                disabled={watch('officeChannel')}
               />
             </Grid>
 
