@@ -1,5 +1,28 @@
 @import './variables.scss';
 @import './_fonts.scss';
+@import './functions.scss';
+
+html {
+  font-size: 16px;
+}
+
+@media screen and (max-width: 1280px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1920px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  html {
+    font-size: 16px;
+  }
+}
 
 body {
   background-color: $athensGray;
@@ -138,282 +161,256 @@ p {
 
 .font-primary-regular-12 {
   @extend .font-primary-regular;
-  font-size: 12px;
-  line-height: 15px;
+  font-size: calculateRem(12px);
+  line-height: calculateRem(15px);
 }
 
 .font-primary-regular-13 {
   @extend .font-primary-regular;
-  font-size: 13px;
-  line-height: 16px;
+  font-size: calculateRem(13px);
+  line-height: calculateRem(16px);
 }
 
 .font-primary-regular-12 {
   @extend .font-primary-regular;
-  font-size: 12px;
-  line-height: 15px;
+  font-size: calculateRem(12px);
+  line-height: calculateRem(15px);
 }
 
 .font-primary-regular-14 {
   @extend .font-primary-regular;
-  font-size: 14px;
-  line-height: 18px;
+  font-size: calculateRem(14px);
+  line-height: calculateRem(18px);
 }
 
 .font-primary-regular-16 {
   @extend .font-primary-regular;
-  font-size: 16px;
-  line-height: 25px;
+  font-size: calculateRem(16px);
+  line-height: calculateRem(25px);
 }
 
 .font-primary-regular-18 {
   @extend .font-primary-regular;
-  font-size: 18px;
-  line-height: 25px;
+  font-size: calculateRem(18px);
+  line-height: calculateRem(25px);
 }
 
 .font-primary-regular-20 {
   @extend .font-primary-regular;
-  font-size: 20px;
-  line-height: 24px;
+  font-size: calculateRem(20px);
+  line-height: calculateRem(24px);
 }
 
 .font-primary-regular-22 {
   @extend .font-primary-regular;
-  font-size: 22px;
-  line-height: 24px;
+  font-size: calculateRem(22px);
+  line-height: calculateRem(24px);
 }
 
 .font-primary-medium-12 {
   @extend .font-primary-medium;
-  font-size: 12px;
-  line-height: 14px;
+  font-size: calculateRem(12px);
+  line-height: calculateRem(14px);
 }
 
 .font-primary-medium-13 {
   @extend .font-primary-medium;
-  font-size: 13px;
-  line-height: 16px;
+  font-size: calculateRem(13px);
+  line-height: calculateRem(16px);
 }
 
 .font-primary-medium-14 {
   @extend .font-primary-medium;
-  font-size: 14px;
-  line-height: 18px;
+  font-size: calculateRem(14px);
+  line-height: calculateRem(18px);
 }
 
 .font-primary-medium-16 {
   @extend .font-primary-medium;
-  font-size: 16px;
-  line-height: 19px;
+  font-size: calculateRem(16px);
+  line-height: calculateRem(19px);
 }
 
 .font-primary-medium-16-1 {
   @extend .font-primary-medium;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: calculateRem(16px);
+  line-height: calculateRem(20px);
 }
 
 .font-primary-medium-18 {
   @extend .font-primary-medium;
-  font-size: 18px;
-  line-height: 22px;
+  font-size: calculateRem(18px);
+  line-height: calculateRem(22px);
 }
 
 .font-primary-medium-18_1 {
   @extend .font-primary-medium;
-  font-size: 18px;
-  line-height: 30px;
+  font-size: calculateRem(18px);
+  line-height: calculateRem(30px);
 }
 
 .font-primary-medium-20 {
   @extend .font-primary-medium;
-  font-size: 20px;
-  line-height: 19px;
+  font-size: calculateRem(20px);
+  line-height: calculateRem(19px);
 }
 
 .font-primary-medium-22 {
   @extend .font-primary-medium;
-  font-size: 22px;
+  font-size: calculateRem(22px);
   line-height: 27px;
 }
 
 .font-primary-medium-24 {
   @extend .font-primary-medium;
-  font-size: 24px;
-  line-height: 29px;
+  font-size: calculateRem(24px);
+  line-height: calculateRem(29px);
 }
 
 .font-primary-medium-30 {
   @extend .font-primary-medium;
-  font-size: 30px;
-  line-height: 32px;
+  font-size: calculateRem(30px);
+  line-height: calculateRem(32px);
 }
 
 .font-primary-medium-36 {
   @extend .font-primary-medium;
-  font-size: 36px;
-  line-height: 32px;
+  font-size: calculateRem(36px);
+  line-height: calculateRem(32px);
 }
 
 .font-primary-medium-32 {
   @extend .font-primary-medium;
-  font-size: 32px;
-  line-height: 34px;
+  font-size: calculateRem(32px);
+  line-height: calculateRem(34px);
 }
 
 .font-primary-medium-42 {
   @extend .font-primary-medium;
-  font-size: 42px;
-  line-height: 34px;
+  font-size: calculateRem(42px);
+  line-height: calculateRem(34px);
 }
 
 .font-primary-semibold-13 {
   @extend .font-primary-semibold;
-  font-size: 13px;
-  line-height: 16px;
+  font-size: calculateRem(13px);
+  line-height: calculateRem(16px);
 }
 
 .font-primary-semibold-10 {
   @extend .font-primary-semibold;
-  font-size: 10px;
-  line-height: 14px;
+  font-size: calculateRem(10px);
+  line-height: calculateRem(14px);
 }
 
 .font-primary-semibold-12 {
   @extend .font-primary-semibold;
-  font-size: 12px;
-  line-height: 15px;
+  font-size: calculateRem(12px);
+  line-height: calculateRem(15px);
 }
 
 .font-primary-semibold-14 {
   @extend .font-primary-semibold;
-  font-size: 14px;
-  line-height: 18px;
+  font-size: calculateRem(14px);
+  line-height: calculateRem(18px);
 }
 
 .font-primary-semibold-16 {
   @extend .font-primary-semibold;
-  font-size: 16px;
-  line-height: 25px;
+  font-size: calculateRem(16px);
+  line-height: calculateRem(25px);
 }
 
 .font-primary-semibold-16-1 {
   @extend .font-primary-semibold;
-  font-size: 16px;
-  line-height: 19px;
-}
-
-.font-primary-semibold-16-1 {
-  @extend .font-primary-semibold;
-  font-size: 16px;
-  line-height: 19px;
+  font-size: calculateRem(16px);
+  line-height: calculateRem(19px);
 }
 
 .font-primary-semibold-18 {
   @extend .font-primary-semibold;
-  font-size: 18px;
-  line-height: 25px;
+  font-size: calculateRem(18px);
+  line-height: calculateRem(25px);
 }
 
 .font-primary-semibold-20 {
   @extend .font-primary-semibold;
-  font-size: 20px;
-  line-height: 25px;
+  font-size: calculateRem(20px);
+  line-height: calculateRem(25px);
 }
 
 .font-primary-semibold-22 {
   @extend .font-primary-semibold;
-  font-size: 22px;
-  line-height: 25px;
+  font-size: calculateRem(22px);
+  line-height: calculateRem(25px);
 }
 
-.font-primary-semibold-30 {
-  @extend .font-primary-semibold;
-  font-size: 30px;
-  line-height: 55px;
-}
-
-.font-primary-semibold-35 {
-  @extend .font-primary-semibold;
-  font-size: 35px;
-  line-height: 55px;
-}
-.font-primary-semibold-30 {
-  @extend .font-primary-semibold;
-  font-size: 30px;
-  line-height: 55px;
-}
-
-.font-primary-semibold-35 {
-  @extend .font-primary-semibold;
-  font-size: 35px;
-  line-height: 55px;
-}
-
-.font-primary-bold-14 {
-  @extend .font-primary-bold;
-  font-size: 14px;
-  line-height: 18px;
-}
-
-.font-primary-bold-16 {
-  @extend .font-primary-bold;
-  font-size: 16px;
-  line-height: 19px;
-}
-
-.font-primary-bold-24 {
-  @extend .font-primary-bold;
-  font-size: 24px;
-  line-height: 25px;
-}
 .font-primary-semibold-24 {
   @extend .font-primary-semibold;
   font-size: 24px;
   line-height: 25px;
 }
 
+.font-primary-semibold-30 {
+  @extend .font-primary-semibold;
+  font-size: calculateRem(30px);
+  line-height: calculateRem(55px);
+}
+
+.font-primary-semibold-35 {
+  @extend .font-primary-semibold;
+  font-size: calculateRem(35px);
+  line-height: calculateRem(55px);
+}
+
 .font-primary-bold-14 {
   @extend .font-primary-bold;
-  font-size: 14px;
-  line-height: 18px;
+  font-size: calculateRem(14px);
+  line-height: calculateRem(18px);
 }
 
 .font-primary-bold-16 {
   @extend .font-primary-bold;
-  font-size: 16px;
-  line-height: 19px;
+  font-size: calculateRem(16px);
+  line-height: calculateRem(19px);
 }
 
 .font-primary-bold-18 {
   @extend .font-primary-bold;
-  font-size: 18px;
-  line-height: 22px;
+  font-size: calculateRem(18px);
+  line-height: calculateRem(22px);
 }
 
 .font-primary-bold-20 {
   @extend .font-primary-bold;
-  font-size: 20px;
-  line-height: 25px;
+  // font-size: 20px;
+  // line-height: 25px;
+  font-size: calculateRem(20px);
+  line-height: calculateRem(25px);
 }
 
 .font-primary-bold-22 {
   @extend .font-primary-bold;
-  font-size: 22px;
-  line-height: 27px;
+  font-size: calculateRem(22px);
+  line-height: calculateRem(27px);
+}
+
+.font-primary-bold-24 {
+  @extend .font-primary-bold;
+  font-size: calculateRem(24px);
+  line-height: calculateRem(25px);
 }
 
 .font-primary-bold-26 {
   @extend .font-primary-bold;
-  font-size: 26px;
-  line-height: 25px;
+  font-size: calculateRem(26px);
+  line-height: calculateRem(30px);
 }
 
 .font-primary-italic-14 {
   @extend .font-primary-italic;
-  font-size: 14px;
-  line-height: 18px;
+  font-size: calculateRem(14px);
+  line-height: calculateRem(18px);
 }
 
 // Borders
@@ -687,6 +684,11 @@ p {
 
 /*Margins*/
 
+// Margin Auto
+.mx-auto {
+  margin: 0 auto;
+}
+
 //Margin Vertical
 
 .my-4 {
@@ -859,19 +861,6 @@ p {
   margin-right: 200px;
 }
 
-// Margin Left
-.ml-auto {
-  margin-left: auto;
-}
-
-.ml-14 {
-  margin-left: 14px;
-}
-
-.ml-15 {
-  margin-left: 15px;
-}
-
 .thin-red-border {
   border: 1px solid $red;
 }
@@ -940,8 +929,32 @@ p {
 }
 
 .layout-wrapper {
-  padding-left: 140px;
-  padding-right: 140px;
+  // padding-left: 140px;
+  // padding-right: 140px;
+  // padding-left: 3.125%;
+  // padding-right: 3.125%;
+  margin: 0 3.125%;
+}
+
+.layout-wrapper-adjust {
+  padding-left: 3.125%;
+  padding-right: 3.125%;
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1919px) {
+  .layout-wrapper-adjust {
+    padding-left: 3.125% !important;
+    padding-right: 3.125% !important;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  .layout-wrapper {
+    // padding-left: 7.29%;
+    // padding-right: 7.29%;
+    max-width: 1640px;
+    margin: 0 auto;
+  }
 }
 
 // Loader Styles

@@ -8,8 +8,8 @@ import { validateFirstName, validateLastName } from "Helpers/validations";
 import { checkAllEmptyProperties } from "Helpers/global";
 
 import { Button, FormPanel, Text } from "Widgets";
-import PassengerPrimaryInformation from "./../PassengerPrimaryInformation/index";
-import PassengerPassportInformation from "./../PassengerPassportInformation/index";
+import PassengerPrimaryInformation from "./../PassengerPrimaryInformation";
+import PassengerPassportInformation from "./../PassengerPassportInformation";
 
 import "./style.scss";
 

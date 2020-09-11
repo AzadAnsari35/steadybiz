@@ -1,0 +1,33 @@
+@import './../../../styles/variables';
+
+$root: '.BookingReportsTableHeader';
+
+#{$root} {
+  &-officeDetail {
+    &__officeName {
+      max-width: 180px;
+      height: 22px;
+      text-align: center;
+    }
+
+    &__officeDisplayId {
+      max-width: 100px;
+      height: 20px;
+      text-align: left;
+      color: $black4;
+      opacity: 1;
+      margin-left: 8px;
+    }
+
+    &__right {
+      max-height: 22px;
+      text-align: right;
+      letter-spacing: 0px;
+      color: $gulfBlue;
+      opacity: 1;
+      .MultiSelect {
+        min-width: 232px;
+      }
+    }
+  }
+}

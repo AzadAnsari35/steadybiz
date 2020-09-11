@@ -11,7 +11,9 @@ const useDropDown = (
   _data = null
 ) => {
   const [dropDownItems, setDropDownItems] = useState([]);
-  const stateList = useSelector((state) => state[stateName]);
+  const stateList = useSelector(
+    (state) => state[_endpoint.reducerName ? _endpoint.reducerName : stateName]
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,7 +25,7 @@ const useDropDown = (
 
   useEffect(() => {
     if (stateList.items !== undefined && stateList.items.status) {
-      //console.log(dropDownParam);
+      console.log(stateList.items);
       if (customDropdownFunction) {
         setDropDownItems(customDropdownFunction(stateList.items.data.data));
       } else {

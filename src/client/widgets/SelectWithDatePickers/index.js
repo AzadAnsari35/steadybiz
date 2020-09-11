@@ -17,6 +17,13 @@ const SelectWithDatePickers = (props) => {
     showValue,
     selectWidth = '33%',
     isSearchable = false,
+    defaultValues,
+    useReactHookForm = true,
+    disableFutureDatesDatePicker1,
+    disableFutureDatesDatePicker2,
+    disablePastDatesDatePicker1,
+    disablePastDatesDatePicker2,
+    onSelectChange,
   } = props;
   return (
     <div className="SelectWithDatePickers">
@@ -34,34 +41,74 @@ const SelectWithDatePickers = (props) => {
           borderRadius: 4,
         }}
       >
-        <MultiSelect
-          className={`SelectWithDatePickers-container-select  pl-20 pr-20
-          ${disabled ? 'input-disabled' : ''}`}
-          style={{ width: `calc(${selectWidth} - 40px)` }}
-          name={name?.select}
-          options={data}
-          placeholder={selectPlaceholder}
-          changeStyle={true}
-          control={control}
-          validation={selectValidation}
-          showBorder={false}
-          initialValue={initialSelectedValue}
-          showValue={showValue}
-          disabled={disabled}
-          isSearchable
-        />
+        {useReactHookForm ?
+          <MultiSelect
+            className={`SelectWithDatePickers-container-select pl-20 pr-20
+            ${disabled ? 'input-disabled' : ''}`}
+            style={{ width: `calc(${selectWidth} - 40px)` }}
+            name={name?.select}
+            options={data}
+            placeholder={selectPlaceholder}
+            changeStyle={true}
+            control={control}
+            validation={selectValidation}
+            showBorder={false}
+            initialValue={initialSelectedValue}
+            showValue={showValue}
+            disabled={disabled}
+            isSearchable
+          /> :
+          <MultiSelect
+            className={`SelectWithDatePickers-container-select
+            ${disabled ? 'input-disabled' : ''}`}
+            style={{ width: `calc(${selectWidth} - 40px)` }}
+            name={name?.select}
+            id={name?.select}
+            options={data}
+            placeholder={selectPlaceholder}
+            changeStyle
+            showBorder={false}
+            initialValue={initialSelectedValue}
+            showValue={showValue}
+            disabled={disabled}
+            isSearchable={isSearchable}
+            defaultValue={defaultValues?.select}
+            useReactHookForm={useReactHookForm}
+            onSelectChange={onSelectChange}
+          />
+        }
 
-        <DatePicker
-          control={control}
-          name={name?.datePicker1}
-          className="SelectWithDatePickers-container-datePicker-1"
-        />
+        {useReactHookForm ?
+          <DatePicker
+            control={control}
+            name={name?.datePicker1}
+            className="SelectWithDatePickers-container-datePicker-1"
+          /> :
+          <DatePicker
+            name={name?.datePicker1}
+            className="SelectWithDatePickers-container-datePicker-1"
+            useReactHookForm={useReactHookForm}
+            value={defaultValues?.datePicker1}
+            disableFutureDates={disableFutureDatesDatePicker1}
+            disablePastDates={disablePastDatesDatePicker1}
+          />
+        }
 
-        <DatePicker
-          control={control}
-          name={name?.datePicker2}
-          className="SelectWithDatePickers-container-datePicker-2"
-        />
+        {useReactHookForm ?
+          <DatePicker
+            control={control}
+            name={name?.datePicker2}
+            className="SelectWithDatePickers-container-datePicker-2"
+          /> :
+          <DatePicker
+            name={name?.datePicker2}
+            className="SelectWithDatePickers-container-datePicker-2"
+            useReactHookForm={useReactHookForm}
+            value={defaultValues?.datePicker2}
+            disableFutureDates={disableFutureDatesDatePicker2}
+            disablePastDates={disablePastDatesDatePicker2}
+          />
+        }
 
         {/* {errors[name] ? (
           <p className="error-message mt-6 font-primary-medium-16 mb-0">

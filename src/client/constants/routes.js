@@ -79,6 +79,11 @@ const routes = {
     issueTicket: '/Transaction/Issue-Ticket',
     viewBooking: '/Transaction/View-Booking',
     viewPNR: '/Transaction/View-PNR',
+    bookingReport: '/Transaction/Booking-Report',
+  },
+  reports: {
+    bookingReport: '/Reports/Booking-Report',
+    totalSalesReport: '/Reports/Total-Sales-Report',
   },
 };
 

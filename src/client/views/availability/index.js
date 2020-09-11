@@ -111,24 +111,26 @@ const handleSortDirection = ()=>{
 
   return (
     <div className="Availability">
-      <div className="Availability-modifySearch layout-wrapper">
-        {!showSearch ? 
-          <div className="d-flex justify-content-between align-items-center">
-            {!!flightSearchInputData &&
-              <FlightSummary requestBody={flightSearchInputData} />
-            }
-            <Button className="ml-auto" secondary text="Modify Search" onClick={setShowSearch} />
-          </div> :
-          <div className="Availability-modifySearch__searchSection">
-            <div className="d-flex justify-content-between">
-              <Text className="modify-text font-primary-bold-20 text-uppercase" text="Modify Search" />
-              <IconWithBackground showCursor bgColor={colors.red1} onClick={setShowSearch}>
-                <ClearIcon style={{ color: colors.red }} />
-              </IconWithBackground>
+      <div className="Availability-modifySearch">
+        <div className="layout-wrapper">
+          {!showSearch ? 
+            <div className="d-flex justify-content-between align-items-center">
+              {!!flightSearchInputData &&
+                <FlightSummary requestBody={flightSearchInputData} />
+              }
+              <Button className="ml-auto" secondary text="Modify Search" onClick={setShowSearch} />
+            </div> :
+            <div className="Availability-modifySearch__searchSection">
+              <div className="d-flex justify-content-between">
+                <Text className="modify-text font-primary-bold-20 text-uppercase" text="Modify Search" />
+                <IconWithBackground showCursor bgColor={colors.red1} onClick={setShowSearch}>
+                  <ClearIcon style={{ color: colors.red }} />
+                </IconWithBackground>
+              </div>
+              <SearchBar />
             </div>
-            <SearchBar />
-          </div>
-        }
+          }
+        </div>
       </div>
       <div className={`Availability-mainSection layout-wrapper ${
           loaderStatus.items && !loaderStatus.items.data.isLoaderVisible ? "adjust-padding" : ""
@@ -166,7 +168,7 @@ const handleSortDirection = ()=>{
                     </div>
                   }
                   <div className="sort d-flex align-items-center ml-auto">
-                    <SwapVertIcon className="sort-reverse" onClick={handleSortDirection} />
+                    <SwapVertIcon className="sort-reverse cursor-pointer" onClick={handleSortDirection} />
                     <Text className="font-primary-medium-14 mr-10" text="Sort by: " />
                     <MultiSelect
                       isOptionUppercase

@@ -21,6 +21,8 @@ import {
   Transaction,
   SearchOrder,
   CreateDeal,
+  BookingReport,
+  TotalSalesReport,
   AgencyRegistration,
   SearchRegion,
   CreateRegion,
@@ -385,6 +387,16 @@ const Routes = () => (
       exact
       path={routes.office.registration}
       component={OfficeRegistration}
+    />
+    <PrivateRoute
+      exact
+      path={routes.reports.bookingReport}
+      component={BookingReport}
+    />
+    <PrivateRoute
+      exact
+      path={routes.reports.totalSalesReport}
+      component={TotalSalesReport}
     />
   </Switch>
 );

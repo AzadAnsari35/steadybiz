@@ -23,6 +23,8 @@ import CreateDeal from './agency/manageDeals/createDeal';
 import SearchRegion from './config/manageRegion/searchRegion';
 import CreateRegion from './config/manageRegion/createRegion';
 import SearchMultiPcc from './config/manageMultiPcc/searchMultiPcc';
+import BookingReport from './reports/bookingReport';
+import TotalSalesReport from './reports/totalSalesReport';
 
 export {
   Home,
@@ -44,6 +46,8 @@ export {
   SearchOrder,
   //SearchDeals,
   CreateDeal,
+  BookingReport,
+  TotalSalesReport,
   AgencyProfile,
   AgencyRegistration,
   SearchRegion,

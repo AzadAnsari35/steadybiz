@@ -1,4 +1,5 @@
 @import "./../../../styles/variables";
+@import "./../../../styles/functions";
 $root: ".SearchBar";
 
 #{$root} {
@@ -58,6 +59,50 @@ $root: ".SearchBar";
       padding: 0 24px;
       &.btn {
         font-size: 16px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1919px) {
+  #{$root} {
+    &-basicSearch {
+      margin-bottom: calculateRem(16px);
+      .MultiSelect {
+        padding-right: calculateRem(22px);
+        &:nth-child(2), &:nth-child(3) {
+          margin-left: calculateRem(22px);
+        }
+      }
+      .DropdownBox {
+        margin-left: calculateRem(22px);
+      }
+    }
+    &-inputs {
+      margin-bottom: calculateRem(12px);
+      &__autoSuggestIcon {
+        top: calculateRem(18px);
+        left: calculateRem(20px);
+        width: calculateRem(24px);
+        height: calculateRem(24px);
+      }
+      .RoundedButton {
+        top: calculateRem(16px);
+      }
+    }
+    &-advanceSearch {
+      .MultiSelect {
+        padding-right: calculateRem(22px);
+        &:nth-child(2), &:nth-child(3) {
+          margin-left: calculateRem(22px);
+        }
+      }
+      &__searchFlight {
+        height: calculateRem(60px);
+        padding: 0 calculateRem(16px);
+        &.btn {
+          font-size: calculateRem(16px);
+        }
       }
     }
   }

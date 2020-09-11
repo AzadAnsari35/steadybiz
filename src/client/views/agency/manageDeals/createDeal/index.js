@@ -1,8 +1,22 @@
+import { useState, useSelector } from 'react';
 import Grid from '@material-ui/core/Grid';
 import CloseIcon from '@material-ui/icons/Close';
 import FlightIcon from '@material-ui/icons/Flight';
+import {
+  AgencyCommission,
+  Aggregator,
+  Airlines,
+  DealApplicable,
+  Gds,
+  SegmentDetails,
+  Segments,
+  Source,
+} from 'Components/Agency/Deals';
+import { colors, routes } from 'Constants';
+import { SERVICE_TYPE, STATUS_LIST } from 'Constants/commonConstant';
 import { utils } from 'Helpers';
 import React from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   Button,
   CustomCheckbox,
@@ -14,27 +28,29 @@ import {
   TextInput,
 } from 'Widgets';
 import PrimaryTableHeader from 'Widgets/TableHeaders/PrimaryTableHeader';
-import {
-  Source,
-  Aggregator,
-  Gds,
-  Airlines,
-  Segments,
-  SegmentDetails,
-  AgencyCommission,
-  DealApplicable,
-} from 'Components/Agency/Deals';
-import { useHistory, useLocation } from 'react-router-dom';
-
-import { colors, routes } from 'Constants';
 import './style.scss';
+import useDropDown from 'Hooks/useDropDown';
+import { dropDownParam } from 'Constants/commonConstant';
+import endpoint from 'Config/endpoint.js';
+
 const CreateDeal = () => {
+  const airlineList = useDropDown(
+    endpoint.master.airlines,
+    dropDownParam.airlines
+  );
+  const countriesList = useDropDown(
+    endpoint.master.countries,
+    dropDownParam.countries
+  );
+
   const {
     userDto: {
       officeDto: { officeId, officeName, officeLevel, ofId },
     },
   } = JSON.parse(utils.getItemFromStorage('userData'));
-
+  // const airlineData = useSelector(
+  //   (state) => state[endpoint.master.airlines.reducerName]
+  // );
   const location = useLocation();
   const history = useHistory();
 
@@ -44,7 +60,13 @@ const CreateDeal = () => {
   const isUpdateDeal = utils.stringComparison(path, routes.agency.modifyDeal);
   const isViewDeal = utils.stringComparison(path, routes.agency.viewDeal);
   const isDealHistory = utils.stringComparison(path, routes.agency.dealHistory);
-
+  const [isSourceAggregator, setIsSourceAggregator] = useState(false);
+  const [isSourceGds, setIsSourceGds] = useState(false);
+  const handleSourceChange = () => {
+    //alert('hi');
+    setIsSourceAggregator(true);
+    setIsSourceGds(true);
+  };
   return (
     <div className="CreateDeal">
       <div className="CreateDeal-head">
@@ -77,10 +99,9 @@ const CreateDeal = () => {
             <MultiSelect
               label="Service:"
               name="service"
-              options={[]}
+              options={SERVICE_TYPE}
               showBorder={true}
               changeStyle={true}
-              showValue
               width="auto"
               useReactHookForm={false}
               disabled={isViewDeal || isDealHistory}
@@ -88,15 +109,13 @@ const CreateDeal = () => {
           </Grid>
 
           <Grid item xs={3}>
-            <MultiSelect
+            <TextInput
               label="Deal Code:"
               name="dealCode"
-              options={[]}
-              showBorder={true}
-              changeStyle={true}
-              showValue
-              width="auto"
+              maxLength={10}
+              onChange={() => console.log('value')}
               useReactHookForm={false}
+              placeholder="Code"
               disabled={isViewDeal || isDealHistory}
             />
           </Grid>
@@ -108,6 +127,7 @@ const CreateDeal = () => {
               onChange={() => console.log('value')}
               useReactHookForm={false}
               placeholder="Name"
+              maxLength={50}
               disabled={isViewDeal || isDealHistory}
             />
           </Grid>
@@ -116,13 +136,12 @@ const CreateDeal = () => {
             <MultiSelect
               label="Status:"
               name="status"
-              options={[]}
               showBorder={true}
               changeStyle={true}
-              showValue
+              options={STATUS_LIST}
               width="auto"
               useReactHookForm={false}
-              disabled={!isUpdateDeal}
+              //        disabled={!isUpdateDeal}
             />
           </Grid>
 
@@ -291,19 +310,41 @@ const CreateDeal = () => {
           />
 
           <Source
-            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+            path={{
+              isCreateDeal,
+              isUpdateDeal,
+              isViewDeal,
+              isDealHistory,
+              handleSourceChange,
+            }}
           />
-          <Aggregator
-            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
-          />
-          <Gds
-            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
-          />
+          {!!isSourceAggregator && (
+            <Aggregator
+              path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+            />
+          )}
+          {!!isSourceGds && (
+            <Gds
+              path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+            />
+          )}
           <Airlines
-            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+            path={{
+              isCreateDeal,
+              isUpdateDeal,
+              isViewDeal,
+              isDealHistory,
+              airlineList,
+            }}
           />
           <Segments
-            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+            path={{
+              isCreateDeal,
+              isUpdateDeal,
+              isViewDeal,
+              isDealHistory,
+              countriesList,
+            }}
           />
           <SegmentDetails
             path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
@@ -312,7 +353,13 @@ const CreateDeal = () => {
             path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
           />
           <DealApplicable
-            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+            path={{
+              isCreateDeal,
+              isUpdateDeal,
+              isViewDeal,
+              isDealHistory,
+              countriesList,
+            }}
           />
         </Panel>
       </div>
