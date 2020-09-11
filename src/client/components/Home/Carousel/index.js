@@ -41,11 +41,11 @@ const Carousel = () => {
         <div className="d-flex justify-content-between align-items-center height-100">
           <div className="Carousel-content__left">
             <Text
-              className="title font-primary-bold-26"
+              className="title font-primary-semibold-18"
               text="Leading B2B travel portal"
             />
             <Text
-              className="description"
+              className="description font-primary-regular-16"
               text="OK Travel & Tourism is UAE's largest B2B travel portal. OK Travel is providing Global B2B booking system powering global travel solution to travel partners to serve their customers efficiently, with the right pricing and inventory."
             />
           </div>

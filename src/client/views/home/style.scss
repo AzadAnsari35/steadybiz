@@ -10,6 +10,11 @@ $root: '.Home';
       color: $black;
     }
     &-single {
+      &__title {
+        padding-left: 14px !important;
+        margin-left: -18px;
+        line-height: 20px !important;
+      }
       &__icon {
         height: 48.5px;
       }
@@ -24,6 +29,19 @@ $root: '.Home';
   #{$root} {
     &-features {
       padding: calculateRem(60px) 0;
+      .layout-wrapper {
+        margin-left: 76px;
+        margin-right: 76px;
+      }
+      &-single {
+        &__title {
+          font-size: 12px !important;
+        }
+        &__para {
+          font-size: 11px !important;
+          line-height: 18px !important;
+        }
+      }
     }
   }
 }
