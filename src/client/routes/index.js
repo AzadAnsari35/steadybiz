@@ -26,6 +26,7 @@ import {
   AgencyRegistration,
   SearchRegion,
   CreateRegion,
+  SearchMultiPcc,
 } from 'Views/';
 import PrivateRoute from './privateRoute';
 import PublicRoute from './publicRoute';
@@ -34,6 +35,21 @@ import { LinearLoaderSecondary } from 'Widgets/';
 //const LoadingComponent = () => <h3>please wait...</h3>;
 const AsyncSearchDeals = loadable({
   loader: () => import('Views/agency/manageDeals/searchDeals'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncCreatePcc = loadable({
+  loader: () => import('Views/config/manageMultiPcc/createPcc'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncSearchAgencyGroup = loadable({
+  loader: () => import('Views/agency/manageAgencyGroup/searchAgencyGroup'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncCreateAgencyGroup = loadable({
+  loader: () => import('Views/agency/manageAgencyGroup/createAgencyGroup'),
   loading: LinearLoaderSecondary,
 });
 
@@ -304,6 +320,60 @@ const Routes = () => (
       path={routes.master.viewRegion}
       component={CreateRegion}
     /> */}
+
+    <PrivateRoute
+      exact
+      path={routes.master.searchMultiPcc}
+      component={SearchMultiPcc}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.master.createMultiPcc}
+      component={AsyncCreatePcc}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.master.modifyMultiPcc}
+      component={AsyncCreatePcc}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.master.viewMultiPcc}
+      component={AsyncCreatePcc}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.searchAgencyGroup}
+      component={AsyncSearchAgencyGroup}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.createAgencyGroup}
+      component={AsyncCreateAgencyGroup}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.modifyAgencyGroup}
+      component={AsyncCreateAgencyGroup}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.viewAgencyGroup}
+      component={AsyncCreateAgencyGroup}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.agencyGroupHistory}
+      component={AsyncCreateAgencyGroup}
+    />
 
     <PrivateRoute exact path="/private" component={() => <div>private</div>} />
     <PublicRoute

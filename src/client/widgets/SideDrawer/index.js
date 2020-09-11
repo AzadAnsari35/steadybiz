@@ -82,6 +82,10 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
             dispatch(commonActionUpdate(endpoint.agency.searchAgency, null));
           },
         },
+        {
+          text: 'Manage Agency Group',
+          link: routes.agency.searchAgencyGroup,
+        },
 
         // {
         //   text: 'Registration',
@@ -180,6 +184,10 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Manage Region',
           link: routes.master.searchRegion,
+        },
+        {
+          text: 'Manage Multi PCC',
+          link: routes.master.searchMultiPcc,
         },
       ],
       link: '#',

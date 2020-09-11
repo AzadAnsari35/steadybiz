@@ -15,7 +15,7 @@ import {
   TextInput,
 } from 'Widgets';
 import PrimaryTableHeader from 'Widgets/TableHeaders/PrimaryTableHeader';
-import RegionCriteria from 'Components/Masters/RegionCriteria';
+import RegionCriteria from 'Components/Config/RegionCriteria';
 import endpoint from 'Config/endpoint';
 import { commonConstant } from 'Constants/';
 import useDropDown from 'Hooks/useDropDown';
