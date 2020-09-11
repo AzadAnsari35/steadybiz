@@ -8,7 +8,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { utils } from 'Helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import { commonActionUpdate } from 'Actions';
-import CreatePccForm from 'Components/Masters/CreatePcc';
+import CreatePccForm from 'Components/Config/CreatePcc';
 import endpoint from 'Config/endpoint';
 
 import './style.scss';

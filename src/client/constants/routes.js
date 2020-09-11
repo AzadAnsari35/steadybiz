@@ -12,14 +12,14 @@ const routes = {
   },
 
   master: {
-    searchRegion: '/Master/Search-Region',
-    createRegion: '/Master/Create-Region',
-    modifyRegion: '/Master/Update-Region',
-    viewRegion: '/Master/View-Region',
-    searchMultiPcc: '/Master/Search-MultiPcc',
-    createMultiPcc: '/Master/Create-MultiPcc',
-    modifyMultiPcc: '/Master/Update-MultiPcc',
-    viewMultiPcc: '/Master/View-MultiPcc',
+    searchRegion: '/Config/Search-Region',
+    createRegion: '/Config/Create-Region',
+    modifyRegion: '/Config/Update-Region',
+    viewRegion: '/Config/View-Region',
+    searchMultiPcc: '/Config/Search-MultiPcc',
+    createMultiPcc: '/Config/Create-MultiPcc',
+    modifyMultiPcc: '/Config/Update-MultiPcc',
+    viewMultiPcc: '/Config/View-MultiPcc',
   },
 
   agency: {
@@ -35,6 +35,11 @@ const routes = {
     viewDeal: '/Agency/View-Deal',
     modifyDeal: '/Agency/Update-Deal',
     dealHistory: '/Agency/Deal-History',
+    searchAgencyGroup: '/Agency/Search-Agency-Group',
+    createAgencyGroup: '/Agency/Create-Agency-Group',
+    modifyAgencyGroup: '/Agency/Update-Agency-Group',
+    viewAgencyGroup: '/Agency/View-Agency-Group',
+    agencyGroupHistory: '/Agency/Agency-Group-History',
   },
 
   office: {

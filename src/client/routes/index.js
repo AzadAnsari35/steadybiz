@@ -41,6 +41,16 @@ const AsyncCreatePcc = loadable({
   loading: LinearLoaderSecondary,
 });
 
+const AsyncSearchAgencyGroup = loadable({
+  loader: () => import('Views/agency/manageAgencyGroup/searchAgencyGroup'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncCreateAgencyGroup = loadable({
+  loader: () => import('Views/agency/manageAgencyGroup/createAgencyGroup'),
+  loading: LinearLoaderSecondary,
+});
+
 const Routes = () => (
   <Switch>
     <Route exact path="/" component={Home} />
@@ -331,6 +341,36 @@ const Routes = () => (
       exact
       path={routes.master.viewMultiPcc}
       component={AsyncCreatePcc}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.searchAgencyGroup}
+      component={AsyncSearchAgencyGroup}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.createAgencyGroup}
+      component={AsyncCreateAgencyGroup}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.modifyAgencyGroup}
+      component={AsyncCreateAgencyGroup}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.viewAgencyGroup}
+      component={AsyncCreateAgencyGroup}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.agencyGroupHistory}
+      component={AsyncCreateAgencyGroup}
     />
 
     <PrivateRoute exact path="/private" component={() => <div>private</div>} />

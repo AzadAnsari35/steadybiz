@@ -77,6 +77,10 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
             dispatch(commonActionUpdate(endpoint.agency.searchAgency, null));
           },
         },
+        {
+          text: 'Manage Agency Group',
+          link: routes.agency.searchAgencyGroup,
+        },
 
         // {
         //   text: 'Registration',
