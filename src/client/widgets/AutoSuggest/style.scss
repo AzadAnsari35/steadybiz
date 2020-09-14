@@ -71,6 +71,78 @@ $root: ".AutoSuggest";
       padding: 11px;
     }
   }
+  &.no-search-bar {
+    .MuiAutocomplete {
+      &-root {
+        &:focus {
+          outline: none;
+        }
+        .MuiFormControl-root {
+          &:focus {
+            outline: none;
+          }
+          .MuiInputBase-root {
+            &:focus {
+              outline: none;
+            }
+          }
+          .MuiInputLabel {
+            &-outlined {
+              transform: translate(66px, 20px) scale(1);
+              font-family: "Montserrat Medium";
+              font-size: 18px;
+              line-height: 22px;
+              color: inherit;
+              z-index: initial;
+            }
+            &-shrink {
+              display: none;
+            }
+          }
+        }
+        .MuiOutlinedInput {
+          &-root {
+            &:hover {
+              .MuiOutlinedInput-notchedOutline {
+                // border-color: $gulfBlue1;
+                border-color: rgba($black, 0.5);
+              }
+            }
+            &.Mui-focused {
+              .MuiOutlinedInput-notchedOutline {
+                // border-color: $gulfBlue1;
+                border-color: rgba($black, 0.5);
+                border-width: 1px;
+              }
+            }
+          }
+          &-notchedOutline {
+            // border-color: $gulfBlue1;
+            border-color: rgba($black, 0.5);
+            top: 0;
+            &:focus {
+              outline: none;
+            }
+            legend {
+              display: none;
+            }
+          }
+        }
+      }
+      &-endAdornment {
+        display: none;
+      }
+      &-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input {
+        &:first-child {
+          padding: 0 20px;
+          height: 45px;
+        }
+      }
+      &-inputRoot[class*="MuiOutlinedInput-root"] {
+        padding: 0;
+      }
+    }
+  }
 }
 
 .MuiAutocomplete-popper {

@@ -24,7 +24,7 @@ const createEndpoint = () => {
 };
 const AutoSuggest = (props) => {
   const dispatch = useDispatch();
-  const { icon, id, label, initialValue, onSelectSuggestion } = props;
+  const { icon, id, label, initialValue, isSearchBar = true, onSelectSuggestion } = props;
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [value, setValue] = useState(null);
@@ -113,79 +113,83 @@ const AutoSuggest = (props) => {
 
   return (
     <>
-      <div className="AutoSuggest">
-        {icon}
-        <Autocomplete
-          inputValue={inputValue}
-          loading={loading}
-          open={open}
-          options={options}
-          value={value}
-          getOptionSelected={(option, value) => option.name === value.name}
-          getOptionLabel={(option) => option.title}
-          onChange={handleSelect}
-          onClose={() => {
-            setOpen(false);
-          }}
-          onOpen={() => {
-            setOpen(true);
-          }}
-          onInputChange={handleChange}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label={label}
-              variant="outlined"
-              InputProps={{
-                ...params.InputProps,
-                endAdornment: (
-                  <Fragment>
-                    {loading ? (
-                      <CircularProgress color="inherit" size={20} />
-                    ) : null}
-                    {params.InputProps.endAdornment}
-                  </Fragment>
-                ),
-              }}
-            />
-          )}
-          renderOption={(option) => (
-            <Fragment>
-              <div
-                className={`listItem d-flex justify-content-between align-items-center ${
-                  option.level === 1 ? 'nested' : ''
-                }`}
-              >
-                <div className="listItem__left d-flex align-items-center">
-                  {option.level === 1 ? (
-                    <FlightOutlinedIcon
-                      className="listItem__left-icon"
-                      style={{
-                        color: colors.silverChalice1,
-                        transform: 'rotate(45deg)',
-                      }}
-                    />
-                  ) : (
-                    <LocationOnOutlinedIcon
-                      className="listItem__left-icon"
-                      style={{ color: colors.silverChalice1 }}
-                    />
-                  )}
-                  <div>
-                    <Text
-                      className="top-text font-primary-medium-16"
-                      text={option.title}
-                    />
-                    {/* <Text className="bottom-text font-primary-medium-14" text={option.subTitle} /> */}
+      <div className={`AutoSuggest ${!isSearchBar ? "no-search-bar" : ""}`}>
+        <>
+          {!!icon && icon}
+          {!isSearchBar && <Text className="font-primary-medium-16 mb-8" text={label} />}
+          <Autocomplete
+            inputValue={inputValue}
+            loading={loading}
+            open={open}
+            options={options}
+            value={value}
+            getOptionSelected={(option, value) => option.name === value.name}
+            getOptionLabel={(option) => option.title}
+            onChange={handleSelect}
+            onClose={() => {
+              setOpen(false);
+            }}
+            onOpen={() => {
+              setOpen(true);
+            }}
+            onInputChange={handleChange}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                // label={label}
+                variant="outlined"
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <Fragment>
+                      {loading ? (
+                        <CircularProgress color="inherit" size={20} />
+                      ) : null}
+                      {params.InputProps.endAdornment}
+                    </Fragment>
+                  ),
+                }}
+                {...(isSearchBar ? {label: label} : {})}
+              />
+            )}
+            renderOption={(option) => (
+              <Fragment>
+                <div
+                  className={`listItem d-flex justify-content-between align-items-center ${
+                    option.level === 1 ? 'nested' : ''
+                  }`}
+                >
+                  <div className="listItem__left d-flex align-items-center">
+                    {option.level === 1 ? (
+                      <FlightOutlinedIcon
+                        className="listItem__left-icon"
+                        style={{
+                          color: colors.silverChalice1,
+                          transform: 'rotate(45deg)',
+                        }}
+                      />
+                    ) : (
+                      <LocationOnOutlinedIcon
+                        className="listItem__left-icon"
+                        style={{ color: colors.silverChalice1 }}
+                      />
+                    )}
+                    <div>
+                      <Text
+                        className="top-text font-primary-medium-16"
+                        text={option.title}
+                      />
+                      {/* <Text className="bottom-text font-primary-medium-14" text={option.subTitle} /> */}
+                    </div>
                   </div>
+                  {/* <div className="listItem__right">
+                    <Text className="font-primary-medium-14" text={option.code} />
+                  </div> */}
                 </div>
-                {/* <div className="listItem__right">
-                  <Text className="font-primary-medium-14" text={option.code} />
-                </div> */}
-              </div>
-            </Fragment>
-          )}
-        />
+              </Fragment>
+            )}
+          />
+        </>
       </div>
     </>
   );

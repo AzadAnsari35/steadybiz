@@ -34,12 +34,12 @@ import { commonConstant } from 'Constants';
 import './style.scss';
 
 const LinkAction = (props) => {
-  const { rowNumber } = props;
+  const { id, rowNumber, onOfficeClick } = props;
 
   return (
     <div
-      className="link-text text-decoration-none font-primary-semibold-14 "
-      to=""
+      className="link-text text-decoration-none font-primary-semibold-14"
+      onClick={() => onOfficeClick(id)}
     >
       Select
     </div>
@@ -56,7 +56,8 @@ const defaultValues = {
 
 const headerData = ['OFFICE NAME', 'OFFICE ID', 'COUNTRY', 'CITY', 'ACTION'];
 
-const ChangeOffice = () => {
+const ChangeOffice = props => {
+  const { onOfficeClick } = props;
   const [requestJson, setReqeustJson] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [page, setPage] = useState(1);
@@ -319,7 +320,7 @@ const ChangeOffice = () => {
             bodyData={searchOffice.data}
             page={page}
             AddElement={{
-              last: <LinkAction />,
+              last: <LinkAction id={officeId} onOfficeClick={onOfficeClick} />,
             }}
             count={searchOffice.data.count}
             size={size}

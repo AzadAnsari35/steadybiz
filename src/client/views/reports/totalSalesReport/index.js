@@ -41,194 +41,33 @@ import BookingReportsTableHeader from 'Components/Common/BookingReportsTableHead
 import useDropDownApi from 'Hooks/useDropDownApi';
 
 const BOOKING_REPORT_FILED_SELECTION_OPTIONS = [
-  { value: 'bookingDate', label: 'BOOKING DATE'},
-  { value: 'officeChannel', label: 'OFFICE CHANNEL'},
-  { value: 'officeType', label: 'OFFICE TYPE'},
-  { value: 'officeId', label: 'ORDER ID'},
-  { value: 'officeLevel', label: 'ORDER LEVEL'},
-  { value: 'userName', label: 'USER NAME'},
-  { value: 'parentOfficeId', label: 'PARENT OFFICE ID'},
-  { value: 'parentOfficeLevel', label: 'PARENT OFFICE LEVEL'},
-  { value: 'countryPos', label: 'COUNTRY POS'},
-  { value: 'cityPos', label: 'CITY POS'},
-  { value: 'orderNo', label: 'ORDER NO.'},
-  { value: 'orderStatus', label: 'ORDER STATUS'},
-  { value: 'bookingType', label: 'BOOKING TYPE'},
-  { value: 'source', label: 'SOURCE'},
-  { value: 'sourcePnr', label: 'SOURCE PNR'},
-  { value: 'airlinePnr', label: 'AIRLINE PNR'},
-  { value: 'ticketTimeLimit', label: 'TICKET TIME LIMIT'},
-  { value: 'direction', label: 'DIRECTION'},
-  { value: 'cabinClass', label: 'CABIN CLASS'},
-  { value: 'departureDate', label: 'DEPARTURE DATE'},
-  { value: 'arrivalDate', label: 'ARRIVAL DATE'},
-  { value: 'origin', label: 'ORIGIN'},
-  { value: 'destination', label: 'DESTINATION'},
-  { value: 'airline', label: 'AIRLINE'},
-  { value: 'flightNo', label: 'FLIGHT NO.'},
-  { value: 'paxCount', label: 'NO. OF PAX'},
-  { value: 'bookingClass', label: 'BOOKING CLASS'},
-  { value: 'paxName', label: 'PAX NAME'},
-  { value: 'ticketNo', label: 'TICKET NO.'},
-  { value: 'mobileNo', label: 'MOBILE NO.'},
-  { value: 'currency', label: 'CURRENCY'},
-  { value: 'baseFare', label: 'BASE FARE' },
-  { value: 'yq', label: 'YQ'},
-  { value: 'yr', label: 'YR'},
-  { value: 'airlineMiscTax', label: 'AIRLINE MISC TAX' },
-  { value: 'totalAmount', label: 'TOTAL AMOUNT' },
-  { value: 'dealAmount', label: 'DEAL AMOUNT' },
-  { value: 'segmentDiscount', label: 'SEGMENT DISCOUNT' },
-  { value: 'commission', label: 'COMMISSION' },
-  { value: 'incentive', label: 'INCENTIVE' },
-  { value: 'gdsDiscount', label: 'GDS DISCOUNT' },
-  { value: 'markup', label: 'MARKUP' },
-  { value: 'discount', label: 'DISCOUNT' },
+  { value: 'ordersBooked', label: 'ORDERS BOOKED' },
+  { value: 'ordersCancelled', label: 'ORDERS CANCELLED' },
+  { value: 'ordersRebooked', label: 'ORDERS REBOOKED' },
+  { value: 'netOrders', label: 'NET ORDERS' },
+  { value: 'baseCurrency', label: 'BASE CURRENCY' },
+  { value: 'totalTxnAmount', label: 'TOTAL TXN. AMT' },
+  { value: 'refundAmount', label: 'REFUND AMT' },
+  { value: 'rebookedAmount', label: 'REBOOKED AMT' },
   { value: 'totalCommission', label: 'TOTAL COMMISSION' },
-  { value: 'paymentCharges', label: 'PAYMENT CHARGES' },
-  { value: 'vatGst', label: 'VAT/GST' },
-  { value: 'paymentMode', label: 'PAYMENT MODE'},
-  { value: 'netAmountPaid', label: 'NET AMOUNT PAID' },
-  { value: 'baseCurrency', label: 'BASE CURRENCY'},
-  { value: 'netBaseAmount', label: 'NET BASE AMOUNT' },
+  { value: 'netAmountPaid', label: 'NET AMT PAID' },
 ];
 
 const headerData = [
-  { id: 'title', value: 'PARENT', alignment: 'center' },
-  { id: 'bookingDate', value: 'BOOKING DATE', alignment: 'center'},
-  { id: 'officeChannel', value: 'OFFICE CHANNEL', alignment: 'center'},
-  { id: 'officeType', value: 'OFFICE TYPE', alignment: 'center'},
-  { id: 'officeId', value: 'ORDER ID', alignment: 'center'},
-  { id: 'officeLevel', value: 'ORDER LEVEL', alignment: 'center'},
-  { id: 'userName', value: 'USER NAME', alignment: 'center'},
-  { id: 'parentOfficeId', value: 'PARENT OFFICE ID', alignment: 'center'},
-  { id: 'parentOfficeLevel', value: 'PARENT OFFICE LEVEL', alignment: 'center'},
-  { id: 'countryPos', value: 'COUNTRY POS', alignment: 'center'},
-  { id: 'cityPos', value: 'CITY POS', alignment: 'center'},
-  { id: 'orderNo', value: 'ORDER NO.', alignment: 'center'},
-  { id: 'orderStatus', value: 'ORDER STATUS', alignment: 'center'},
-  { id: 'bookingType', value: 'BOOKING TYPE', alignment: 'center'},
-  { id: 'source', value: 'SOURCE', alignment: 'center'},
-  { id: 'sourcePnr', value: 'SOURCE PNR', alignment: 'center'},
-  { id: 'airlinePnr', value: 'AIRLINE PNR', alignment: 'center'},
-  { id: 'ticketTimeLimit', value: 'TICKET TIME LIMIT', alignment: 'center'},
-  { id: 'direction', value: 'DIRECTION', alignment: 'center'},
-  { id: 'cabinClass', value: 'CABIN CLASS', alignment: 'center'},
-  { id: 'departureDate', value: 'DEPARTURE DATE', alignment: 'center'},
-  { id: 'arrivalDate', value: 'ARRIVAL DATE', alignment: 'center'},
-  { id: 'origin', value: 'ORIGIN', alignment: 'center'},
-  { id: 'destination', value: 'DESTINATION', alignment: 'center'},
-  { id: 'airline', value: 'AIRLINE', alignment: 'center'},
-  { id: 'flightNo', value: 'FLIGHT NO.', alignment: 'center'},
-  { id: 'paxCount', value: 'NO. OF PAX', alignment: 'center'},
-  { id: 'bookingClass', value: 'BOOKING CLASS', alignment: 'center'},
-  { id: 'paxName', value: 'PAX NAME', alignment: 'center'},
-  { id: 'ticketNo', value: 'TICKET NO.', alignment: 'center'},
-  { id: 'mobileNo', value: 'MOBILE NO.', alignment: 'center'},
-  { id: 'currency', value: 'CURRENCY', alignment: 'center'},
-  { id: 'baseFare', value: 'BASE FARE', alignment: 'right'},
-  { id: 'yq', value: 'YQ', alignment: 'center'},
-  { id: 'yr', value: 'YR', alignment: 'center'},
-  { id: 'airlineMiscTax', value: 'AIRLINE MISC TAX', alignment: 'right'},
-  { id: 'totalAmount', value: 'TOTAL AMOUNT', alignment: 'right'},
-  { id: 'dealAmount', value: 'DEAL AMOUNT', alignment: 'right'},
-  { id: 'segmentDiscount', value: 'SEGMENT DISCOUNT', alignment: 'right'},
-  { id: 'commission', value: 'COMMISSION', alignment: 'right'},
-  { id: 'incentive', value: 'INCENTIVE', alignment: 'right'},
-  { id: 'gdsDiscount', value: 'GDS DISCOUNT', alignment: 'right'},
-  { id: 'markup', value: 'MARKUP', alignment: 'right'},
-  { id: 'discount', value: 'DISCOUNT', alignment: 'right'},
-  { id: 'totalCommission', value: 'TOTAL COMMISSION', alignment: 'right'},
-  { id: 'paymentCharges', value: 'PAYMENT CHARGES', alignment: 'right'},
-  { id: 'vatGst', value: 'VAT/GST', alignment: 'right'},
-  { id: 'paymentMode', value: 'PAYMENT MODE', alignment: 'center'},
-  { id: 'netAmountPaid', value: 'NET AMOUNT PAID', alignment: 'right'},
+  { id: 'date', value: 'DATE', alignment: 'center'},
+  { id: 'ordersBooked', value: 'ORDERS BOOKED', alignment: 'right'},
+  { id: 'ordersCancelled', value: 'ORDERS CANCELLED', alignment: 'right'},
+  { id: 'ordersRebooked', value: 'ORDERS REBOOKED', alignment: 'right'},
+  { id: 'netOrders', value: 'NET ORDERS', alignment: 'right'},
   { id: 'baseCurrency', value: 'BASE CURRENCY', alignment: 'center'},
-  { id: 'netBaseAmount', value: 'NET BASE AMOUNT', alignment: 'right'},
+  { id: 'totalTxnAmount', value: 'TOTAL TXN. AMT', alignment: 'right'},
+  { id: 'refundAmount', value: 'REFUND AMT', alignment: 'right'},
+  { id: 'rebookedAmount', value: 'REBOOKED AMT', alignment: 'right'},
+  { id: 'totalCommission', value: 'TOTAL COMMISSION', alignment: 'right'},
+  { id: 'netAmountPaid', value: 'NET AMT PAID', alignment: 'right'},
 ];
 
-const hideKeys = [
-  'officeChannel',
-  'officeType',
-  'officeLevel',
-  'userName',
-  'parentOfficeId',
-  'parentOfficeLevel',
-  'countryPos',
-  'cityPos',
-  'orderStatus',
-  'bookingType',
-  'source',
-  'airlinePnr',
-  'ticketTimeLimit',
-  'direction',
-  'cabinClass',
-  'departureDate',
-  'arrivalDate',
-  'origin',
-  'destination',
-  'airline',
-  'flightNo',
-  'paxCount',
-  'bookingClass',
-  'paxName',
-  'ticketNo',
-  'mobileNo',
-  'baseFare',
-  'yq',
-  'yr',
-  'airlineMiscTax',
-  'dealAmount',
-  'segmentDiscount',
-  'commission',
-  'incentive',
-  'gdsDiscount',
-  'markup',
-  'discount',
-  'paymentCharges',
-  'vatGst',
-  'paymentMode',
-];
-
-const PopoverAction = (props) => {
-  const [showPopover, setShowPopover] = useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-    setShowPopover(true);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-    setShowPopover(false);
-  };
-
-  return (
-    <>
-      <img
-        src={displayImage('ParentGroupIcon.svg')}
-        className="cursor-pointer"
-        onClick={handlePopoverOpen}
-      />
-      <SimplePopover
-        open={showPopover}
-        handleClose={handlePopoverClose}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-      >
-        <div>Popover</div>
-      </SimplePopover>
-    </>
-  );
-};
+const hideKeys = [];
 
 const TotalSalesReport = () => {
   const [requestJson, setReqeustJson] = useState(null);
@@ -400,16 +239,6 @@ const TotalSalesReport = () => {
         getCitiesList(value.value);
       }
     }
-		// if (value !== "") {
-		// 	setErrorData({
-		// 		...errorData,
-		// 		[id]: "",
-		// 	});
-		// }
-		// setFormData({
-		// 	...formData,
-		// 	[id]: value.value,
-		// });
   };
 
   const handleInputChange = (id, value) => {
@@ -420,7 +249,6 @@ const TotalSalesReport = () => {
   }
 
   const callSearch = (page) => {
-    //console.log('hi', requestJson);
     try {
       dispatch(
         commonAction(endpoint.orders.searchOrders, {
@@ -435,10 +263,8 @@ const TotalSalesReport = () => {
     }
   };
   const onSubmit = (data) => {
-    // console.log('data', data);
     setPage(1);
     setReqeustJson(data);
-    //setPage(1);
   };
 
   const handleReset = () => {
@@ -449,7 +275,7 @@ const TotalSalesReport = () => {
     <div className="TotalSalesReport">
       <div className="TotalSalesReport-head">
         <div className="d-flex justify-content-between align-items-end pb-4">
-          <div className="font-primary-semibold-24 ">BOOKING REPORT</div>
+          <div className="font-primary-semibold-24 ">SALES REPORT</div>
           <IconWithBackground
             bgColor="#74D3DC33"
             showCursor
@@ -465,7 +291,7 @@ const TotalSalesReport = () => {
 
           <Text
             showLeftBorder={true}
-            text="SEARCH BOOKING REPORT"
+            text="SEARCH SALES REPORT"
             className="font-primary-medium-18 my-24"
           />
           <Grid container spacing={3}>
@@ -509,51 +335,6 @@ const TotalSalesReport = () => {
                 name="destination"
                 useReactHookForm={false}
                 onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <TextInput
-                label="Order Number:"
-                placeholder="Order Number"
-                id="orderNo"
-                name="orderNo"
-                maxLength={13}
-                useReactHookForm={false}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <SelectWithTextInput
-                name="pnrNumber"
-                selectInputName="sabre"
-                type="text"
-                label="PNR: "
-                selectPlaceholder="Sabre"
-                placeholder="PNR Number"
-                value={formData.pnrNumber}
-                data={[
-                  { value: 'Sabre', label: 'Sabre (1S)' },
-                  { value: 'Airline', label: 'Airline' },
-                ]}
-                showValue
-                useReactHookForm={false}
-                selectWidth="50%"
-                onChange={handleInputChange}
-                onSelectChange={handleSelectOption}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <MultiSelect
-                label="Booking Category:"
-                id="bookingCategory"
-                name="bookingCategory"
-                options={BOOKING_CATEGORY}
-                showBorder
-                changeStyle
-                width="auto"
-                isSearchable
-                useReactHookForm={false}
-                onSelectChange={handleSelectOption}
               />
             </Grid>
             <Grid item xs={3}>
@@ -609,7 +390,7 @@ const TotalSalesReport = () => {
             </Grid>
             <Grid item xs={3}>
               <MultiSelect
-                label="Country POS:"
+                label="Country:"
                 id="countryPos"
                 name="countryPos"
                 options={countriesList.dropDownItems}
@@ -628,7 +409,7 @@ const TotalSalesReport = () => {
             </Grid>
             <Grid item xs={3}>
               <MultiSelect
-                label="City POS:"
+                label="City:"
                 id="cityPos"
                 name="cityPos"
                 options={
@@ -647,21 +428,7 @@ const TotalSalesReport = () => {
                 onSelectChange={handleSelectOption}
               />
             </Grid>
-            <Grid item xs={3}>
-              <MultiSelect
-                label="Transaction Status:"
-                id="transactionStatus"
-                name="transactionStatus"
-                options={PNR_STATUS}
-                showBorder
-                changeStyle
-                width="auto"
-                isSearchable
-                useReactHookForm={false}
-                onSelectChange={handleSelectOption}
-              />
-            </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <div className="d-flex justify-content-end pt-32">
                 <Button
                   text="CHANGE OFFICE"
@@ -693,14 +460,10 @@ const TotalSalesReport = () => {
           headerInArrOfObjFormat
           headerData={headerData}
           subHeaderData={{
-            parent: "Title",
             ...bookingReportData.data.data.subHeaderData,
           }}
           bodyData={bookingReportData.data.data}
           page={page}
-          AddElement={{
-            first: <PopoverAction />,
-          }}
           count={bookingReportData.data.count}
           size={size}
           handlePage={handlePage}

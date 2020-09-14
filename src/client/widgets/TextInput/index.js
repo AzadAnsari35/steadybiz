@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './style.scss';
 
@@ -17,9 +17,14 @@ const TextInput = (props) => {
     validation,
     useReactHookForm = true,
     onChange,
-    value,
+    value = '',
     ...rest
   } = props;
+  const [inputValue, setInputValue] = useState(value);
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
   return (
     <div className={`TextInput ${classes.root ? classes.root : ''} `}>
       {!!label && (
@@ -36,6 +41,7 @@ const TextInput = (props) => {
         disabled={disabled}
         placeholder={placeholder}
         ref={useReactHookForm ? register(validation) : null}
+        {...(!!value ? {value: inputValue} : {})}
         onChange={
           !useReactHookForm ? (e) => onChange(id, e.target.value) : null
         }
