@@ -188,7 +188,7 @@ const CreditLimitBreakup = () => {
   const callSearch = (page) => {
     try {
       dispatch(
-        commonAction(endpoint.office.creditLimitHistory, {
+        commonAction(endpoint.office.creditLimitBreakup, {
           ...requestJson,
           page: page - 1,
           size,

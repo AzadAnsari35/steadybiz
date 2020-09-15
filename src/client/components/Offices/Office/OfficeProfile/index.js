@@ -150,10 +150,12 @@ const OfficeProfileForm = (props) => {
     if (selectedCountry && selectedCountry.value !== rootCountryCode) {
       // reset({cityCode:""})
       //  console.log("condition")
+      setValue('cityCode', '');
     }
     if (selectedCountry) {
       getCitiesList(selectedCountry.value);
     }
+
     // return dispatch(commonActionUpdate(endpoint.master.cities, null));
   }, [getValues('countryCode')]);
 

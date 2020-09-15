@@ -9,6 +9,9 @@ import moment from 'moment';
 import Text from 'Widgets/Text';
 import { displayImage } from 'Helpers/utils';
 import { Controller } from 'react-hook-form';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import { Image } from 'Widgets';
 
 import './style.scss';
 
@@ -99,6 +102,17 @@ const DatePicker = (props) => {
                     src={!!icon ? icon : displayImage('calendar-grey.svg')}
                   />
                 }
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Image
+                        altText="calendar"
+                        className="date-icon"
+                        imgName="calendar-grey.svg"
+                      />
+                    </InputAdornment>
+                  ),
+                }}
                 disabled={disabled}
               />
             }
