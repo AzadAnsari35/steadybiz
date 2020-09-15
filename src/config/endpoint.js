@@ -182,6 +182,13 @@ export default {
       httpVerb: commonConstant.HttpVerbsConstant.POST,
       actionType: actionTypeConstant.office.creditLimitHistory,
     },
+    creditLimitBreakup: {
+      url: config.api.url + '/api/v1/offices/creditLimitBreakup',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.office.creditLimitBreakup,
+    },
+
     changePassword: {
       url: config.api.url + '/api/v1/offices/user/changePassword',
       isAuth: true,

@@ -99,6 +99,8 @@ const rootReducer = combineReducers({
 
   creditLimitHistory: commonType(actionTypeConstant.office.creditLimitHistory),
 
+  creditLimitBreakup: commonType(actionTypeConstant.office.creditLimitBreakup),
+
   searchAgency: createFilteredReducer(
     reducerState,
     (action) => action.type === actionTypeConstant.agency.searchAgency

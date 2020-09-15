@@ -35,6 +35,7 @@ export const actionTypeConstant = {
     viewUser: 'office.viewUser',
     searchOffice: 'office.searchOffice',
     creditLimitHistory: 'office.creditLimitHistory',
+    creditLimitBreakup: 'office.creditLimitBreakup',
     functionalGroups: 'office.functionalGroups',
     searchSecurityGroup: 'office.searchSecurityGroup',
     securityGroupNameList: 'office.securityGroupNameList',
