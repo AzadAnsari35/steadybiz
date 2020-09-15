@@ -18,6 +18,7 @@ const rootReducer = combineReducers({
   //   reducerState,
   //   (action) => action.type === actionTypeConstant.orders.searchOrders
   // ),
+
   ordersSearchOrders: commonType(actionTypeConstant.orders.searchOrders),
 
   loaderStatus: createFilteredReducer(
@@ -95,9 +96,12 @@ const rootReducer = combineReducers({
     reducerState,
     (action) => action.type === actionTypeConstant.office.searchOffice
   ),
+
+  creditLimitHistory: commonType(actionTypeConstant.office.creditLimitHistory),
+
   searchAgency: createFilteredReducer(
     reducerState,
-    (action) => action.type ===actionTypeConstant.agency.searchAgency
+    (action) => action.type === actionTypeConstant.agency.searchAgency
   ),
   searchUser: createFilteredReducer(
     reducerState,

@@ -76,6 +76,7 @@ const SelectWithTextInput = (props) => {
               ref={register(validation)}
               style={{ paddingLeft: selectWidth }}
               maxlength={maxLength}
+              autoComplete="chrome-off"
             />
             {errors[name] ? (
               <p className="error-message mt-6 font-primary-medium-16 mb-0">

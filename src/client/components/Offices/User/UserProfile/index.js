@@ -48,6 +48,8 @@ const UserProfileForm = (props) => {
   const { mode } = props;
   const dispatch = useDispatch();
 
+  // const [userId, setUserId] = useState('');
+
   const isViewUser = mode === routes.office.viewOfficeUser;
   const isManageProfile = mode === routes.office.manageUserProfile;
   const isUpdateUser = mode === routes.office.updateOfficeUser;
@@ -73,12 +75,12 @@ const UserProfileForm = (props) => {
   );
 
   let rowNumber = utils.getItemFromStorage('selectedUser');
-  const selectedAgency = utils.getItemFromStorage('selectedAgency') ?? "";
+  const selectedAgency = utils.getItemFromStorage('selectedAgency') ?? '';
 
   // console.log('rowNumber', rowNumber);
 
   const searchAgency =
-  useSelector((state) => state.searchAgency?.items?.data) || [];
+    useSelector((state) => state.searchAgency?.items?.data) || [];
 
   const searchResult =
     useSelector((state) => state.searchUser?.items?.data) || [];
@@ -92,11 +94,9 @@ const UserProfileForm = (props) => {
     {};
   console.log('selectedItem', selectedItem);
 
-  let userId = selectedItem.userId || utils.getItemFromStorage('userId');
+  let userId = selectedItem?.userId || '';
+
   let ofId = utils.getItemFromStorage('officeId');
-
-  
-
 
   const [updateRes, postUpdateRequest] = updateEndpoint();
 
@@ -112,16 +112,15 @@ const UserProfileForm = (props) => {
 
         officeId = selectedItem.officeId;
         officeName = selectedItem.officeName;
-      } 
-      else if (Number.isInteger(parseInt(selectedAgency)) && searchAgency.data) {
-
+      } else if (
+        Number.isInteger(parseInt(selectedAgency)) &&
+        searchAgency.data
+      ) {
         let selectedItem = searchAgency.data[selectedAgency] || {};
-        
+
         officeId = selectedItem.officeId;
         officeName = selectedItem.officeName;
-      }
-      
-      else {
+      } else {
         const {
           userDto: { officeDto },
         } = JSON.parse(utils.getItemFromStorage('userData'));
@@ -133,8 +132,9 @@ const UserProfileForm = (props) => {
 
       if (
         countriesDialCodeList.dropDownItems !== null &&
-        objectStatusesList.dropDownItems != null && 
-        securityGroupNameList && securityGroupNameList.data !== null
+        objectStatusesList.dropDownItems != null &&
+        securityGroupNameList &&
+        securityGroupNameList.data !== null
       ) {
         const {
           firstName,
@@ -146,7 +146,7 @@ const UserProfileForm = (props) => {
           securityGroup,
         } = selectedItem;
         console.log('selectedItem', selectedItem);
-        console.log("securityGroupNameList", securityGroupNameList)
+        console.log('securityGroupNameList', securityGroupNameList);
         reset({
           firstName,
           lastName,
@@ -160,7 +160,10 @@ const UserProfileForm = (props) => {
             objectStatusDesc.toUpperCase(),
             'label'
           ),
-          securityGroup: securityGroupNameList.data.findItem(securityGroup, 'label'),
+          securityGroup: securityGroupNameList.data.findItem(
+            securityGroup,
+            'label'
+          ),
           officeId,
           officeName,
         });
@@ -173,8 +176,8 @@ const UserProfileForm = (props) => {
       isManageProfile &&
       !!countriesDialCodeList.dropDownItems &&
       !!objectStatusesList.dropDownItems &&
-      securityGroupNameList && securityGroupNameList.data !== null
-
+      securityGroupNameList &&
+      securityGroupNameList.data !== null
     ) {
       const {
         userDto: {
@@ -248,7 +251,7 @@ const UserProfileForm = (props) => {
   useEffect(() => setManageProfileDefaultValue(), [
     countriesDialCodeList.dropDownItems,
     objectStatusesList.dropDownItems,
-    securityGroupNameList
+    securityGroupNameList,
   ]);
 
   useEffect(() => {
@@ -377,14 +380,15 @@ const UserProfileForm = (props) => {
                   selectPlaceholder="Dial Code"
                   errors={errors}
                   register={register}
-                  validation={{ required: 'Please enter the mobile number.', 
-                  pattern: {
-                    value: regex.number,
-                    message: 'Please enter valid mobile number.',
-                  } }}
+                  validation={{
+                    required: 'Please enter the mobile number.',
+                    pattern: {
+                      value: regex.number,
+                      message: 'Please enter valid mobile number.',
+                    },
+                  }}
                   selectValidation={{
                     required: 'Please enter the country code.',
-                   
                   }}
                   control={control}
                   showValue

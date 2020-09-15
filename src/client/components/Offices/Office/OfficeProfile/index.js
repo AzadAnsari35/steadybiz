@@ -45,14 +45,12 @@ const createEndpoint = () => {
 const defaultValues = {
   officeName: '',
   title: '',
-  phoneDialCode: '',
   securityGroup: '',
   address1: '',
   emailId: '',
   zipCode: '',
   noOfUserRequested: '',
   paymentOptions: '',
-  mobileDialCode: '',
 };
 
 const OfficeProfileForm = (props) => {
@@ -76,6 +74,7 @@ const OfficeProfileForm = (props) => {
     reset,
     getValues,
     setValue,
+    trigger,
   } = useForm({
     defaultValues,
   });
@@ -141,34 +140,33 @@ const OfficeProfileForm = (props) => {
         countryCode: countryCode,
       })
     );
-  }
+  };
 
   useEffect(() => {
     const selectedCountry = getValues('countryCode');
     console.log('selectedCountry', selectedCountry);
-        console.log('rootCountryCode', rootCountryCode);
+    console.log('rootCountryCode', rootCountryCode);
 
-    if(selectedCountry && selectedCountry.value !== rootCountryCode){
+    if (selectedCountry && selectedCountry.value !== rootCountryCode) {
       // reset({cityCode:""})
-        //  console.log("condition")
+      //  console.log("condition")
     }
     if (selectedCountry) {
-      getCitiesList(selectedCountry.value)
+      getCitiesList(selectedCountry.value);
     }
     // return dispatch(commonActionUpdate(endpoint.master.cities, null));
   }, [getValues('countryCode')]);
 
-  
   const getSettlementPlans = () => {
-    console.log("getSettlementPlans")
+    console.log('getSettlementPlans');
     dispatch(commonAction(endpoint.master.settlementPlans));
-    isCreateOffice && getCitiesList(rootCountryCode)
+    isCreateOffice && getCitiesList(rootCountryCode);
   };
 
   useEffect(() => getSettlementPlans(), []);
 
   const setDefaultValue = () => {
-    console.log("setDefaultValue")
+    console.log('setDefaultValue');
     if (
       countriesList.dropDownItems !== null &&
       countriesDialCodeList.dropDownItems !== null &&
@@ -217,7 +215,6 @@ const OfficeProfileForm = (props) => {
         zipCode,
         countryCode: countriesList.dropDownItems.findItem(countryCode),
         cityCode: citiesList.findItem(cityCode),
-
         noOfUserRequested: commonConstant.numberOfUsers.findItem(
           noOfUserRequested
         ),
@@ -231,18 +228,32 @@ const OfficeProfileForm = (props) => {
   };
 
   const setCreateOfficeDefaultValue = () => {
-    console.log("setCreateOfficeDefaultValue", citiesList );
     if (
       isCreateOffice &&
-      objectStatusesList.dropDownItems !== null &&
-      countriesList.dropDownItems !== null &&
-      !!citiesList
+      objectStatusesList?.dropDownItems.length > 0 &&
+      countriesList?.dropDownItems.length !== null &&
+      !!citiesList &&
+      countriesDialCodeList.dropDownItems !== null
     ) {
+      console.log('countriesDialCodeList', countriesList.dropDownItems);
+
+      let countryObj = countriesList.dropDownItems.findItem(rootCountryCode);
+      console.log('countryObj', countryObj);
+      console.log('countriesDialCodeList', countriesDialCodeList.dropDownItems);
+
       reset({
         status: objectStatusesList.dropDownItems[3],
         officeType: commonConstant.officeType[0],
-        countryCode: countriesList.dropDownItems.findItem(rootCountryCode),
+        countryCode: countryObj,
         cityCode: citiesList.findItem(rootCityCode),
+        mobileDialCode: countriesDialCodeList.dropDownItems.findItem(
+          countryObj.label,
+          'label'
+        ),
+        phoneDialCode: countriesDialCodeList.dropDownItems.findItem(
+          countryObj.label,
+          'label'
+        ),
       });
     }
   };
@@ -295,8 +306,8 @@ const OfficeProfileForm = (props) => {
     objectStatusesList.dropDownItems,
     countriesList.dropDownItems,
     !!citiesList,
+    countriesDialCodeList.dropDownItems,
   ]);
-
 
   // useEffect(() => dispatch(commonActionUpdate(endpoint.master.cities, null)), []);
 
@@ -314,7 +325,7 @@ const OfficeProfileForm = (props) => {
         officeId,
         paymentOptions,
         ofId: selectedItem.ofId,
-        officeChannel: officeLevel === 0 ? 'AG' : 'SA'
+        officeChannel: officeLevel === 0 ? 'AG' : 'SA',
       });
     }
 
@@ -326,7 +337,7 @@ const OfficeProfileForm = (props) => {
         officeLevel,
         paymentOptions,
         officeId,
-        officeChannel: officeLevel === 0 ? 'AG' : 'SA'
+        officeChannel: officeLevel === 0 ? 'AG' : 'SA',
       });
     }
   };
@@ -702,7 +713,7 @@ const OfficeProfileForm = (props) => {
                       label="Confirm Password:"
                       validation={{
                         validate: (value) =>
-                          value === watch('password') ||
+                          value === getValues('password') ||
                           "Passwords don't match.",
                       }}
                       placeholder="Type Password"
