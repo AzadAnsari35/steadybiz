@@ -36,7 +36,7 @@ const Header = () => {
     (state) => state.getInstantCreditLimit?.items?.data?.data
   );
 
-  let isAuthenticated = true;
+  let isAuthenticated = !!usersSignIn;
 
   const token = getItemFromStorage('userToken');
 
