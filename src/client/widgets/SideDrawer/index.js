@@ -52,7 +52,12 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           text: 'Flight Search',
           link: routes.flight.search,
           clickFunc: () => {
-            dispatch(commonActionUpdate(endpointWithoutApi.flights.flightSearchInput, null));
+            dispatch(
+              commonActionUpdate(
+                endpointWithoutApi.flights.flightSearchInput,
+                null
+              )
+            );
           },
         },
 
@@ -71,22 +76,21 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       clickFunc: () => setShowSubagency(!showSubagency),
       show: showSubagency,
       subList: [
-        {
-          text: 'Registration',
-          link: routes.agency.registration,
-        },
-        {
-          text: 'Manage Agency',
-          link: routes.agency.searchAgency,
-          clickFunc: () => {
-            dispatch(commonActionUpdate(endpoint.agency.searchAgency, null));
-          },
-        },
-        {
-          text: 'Manage Agency Group',
-          link: routes.agency.searchAgencyGroup,
-        },
-
+        // {
+        //   text: 'Registration',
+        //   link: routes.agency.registration,
+        // },
+        // {
+        //   text: 'Manage Agency',
+        //   link: routes.agency.searchAgency,
+        //   clickFunc: () => {
+        //     dispatch(commonActionUpdate(endpoint.agency.searchAgency, null));
+        //   },
+        // },
+        // {
+        //   text: 'Manage Agency Group',
+        //   link: routes.agency.searchAgencyGroup,
+        // },
         // {
         //   text: 'Registration',
         //   link: '/createAccount',
@@ -160,14 +164,14 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       clickFunc: () => setShowReport(!showReport),
       show: showReport,
       subList: [
-        {
-          text: 'Booking Report',
-          link: routes.reports.bookingReport,
-        },
-        {
-          text: 'Total Sales Report',
-          link: routes.reports.totalSalesReport,
-        },
+        // {
+        //   text: 'Booking Report',
+        //   link: routes.reports.bookingReport,
+        // },
+        // {
+        //   text: 'Total Sales Report',
+        //   link: routes.reports.totalSalesReport,
+        // },
       ],
     },
 
@@ -177,18 +181,18 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       clickFunc: () => setShowConfig(!showConfig),
       show: showConfig,
       subList: [
-        {
-          text: 'Manage Deals',
-          link: routes.agency.searchDeals,
-        },
-        {
-          text: 'Manage Region',
-          link: routes.master.searchRegion,
-        },
-        {
-          text: 'Manage Multi PCC',
-          link: routes.master.searchMultiPcc,
-        },
+        // {
+        //   text: 'Manage Deals',
+        //   link: routes.agency.searchDeals,
+        // },
+        // {
+        //   text: 'Manage Region',
+        //   link: routes.master.searchRegion,
+        // },
+        // {
+        //   text: 'Manage Multi PCC',
+        //   link: routes.master.searchMultiPcc,
+        // },
       ],
       link: '#',
     },
