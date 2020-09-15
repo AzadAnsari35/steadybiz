@@ -136,7 +136,7 @@ module.exports = (env, argv) => {
         },
         // common chunk
       },
-      runtimeChunk: true,
+      // runtimeChunk: true,
       // // Keep the runtime chunk separated to enable long term caching
       // // https://twitter.com/wSokra/status/969679223278505985
       //  runtimeChunk: true,
