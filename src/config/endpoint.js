@@ -176,6 +176,12 @@ export default {
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.PUT,
     },
+    creditLimitHistory: {
+      url: config.api.url + '/api/v1/offices/creditLimitHistory',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.office.creditLimitHistory,
+    },
     changePassword: {
       url: config.api.url + '/api/v1/offices/user/changePassword',
       isAuth: true,

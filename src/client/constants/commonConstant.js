@@ -24,6 +24,7 @@ export const dropDownParam = {
 export const titles = [
   { label: 'Mr', value: 'Mr' },
   { label: 'Mrs', value: 'Mrs' },
+  { label: 'Ms', value: 'Ms' },
 ];
 
 export const numberOfUsers = [

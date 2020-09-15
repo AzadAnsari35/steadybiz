@@ -28,13 +28,13 @@ export const actionTypeConstant = {
   },
   agency: {
     searchAgency: 'agency.searchAgency',
-
   },
   office: {
     searchUser: 'office.searchUser',
     updateUser: 'office.updateUser',
     viewUser: 'office.viewUser',
     searchOffice: 'office.searchOffice',
+    creditLimitHistory: 'office.creditLimitHistory',
     functionalGroups: 'office.functionalGroups',
     searchSecurityGroup: 'office.searchSecurityGroup',
     securityGroupNameList: 'office.securityGroupNameList',

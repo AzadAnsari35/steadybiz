@@ -39,6 +39,7 @@ const TextInput = (props) => {
         onChange={
           !useReactHookForm ? (e) => onChange(id, e.target.value) : null
         }
+        autoComplete="off"
         {...rest}
       />
       {errors[name] && (

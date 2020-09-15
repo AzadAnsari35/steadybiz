@@ -4,27 +4,23 @@ import colors from 'Constants/colors';
 import { utils } from 'Helpers';
 import { displayImage } from 'Helpers/utils';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 import { routes } from 'Constants';
+import { commonAction } from 'Actions';
+import endpoint from 'Config/endpoint';
+
 import {
   IconWithBackground,
-
-
-
-
   PrimaryTable,
-
   SearchTableHeader,
-  SimplePopover, Text
+  SimplePopover,
+  Text,
 } from 'Widgets';
+import { useDispatch, useSelector } from 'react-redux';
+
 import './style.scss';
-
-
-
-
-
 
 const response = {
   status: 'OK',
@@ -137,10 +133,9 @@ const CreditLimitBreakup = () => {
   const { register, handleSubmit, errors, control, getValues } = useForm({});
 
   const location = useLocation();
-
+  const dispatch = useDispatch();
   const path = location.pathname;
 
- 
   const isSearchAgency = utils.stringComparison(
     path,
     routes.agency.creditLimitBreakup
@@ -149,16 +144,61 @@ const CreditLimitBreakup = () => {
   const headerData = [
     'PARENT',
     'TIME',
-     isSearchAgency? "AGENCY NAME" : "OFFICE NAME",
+    isSearchAgency ? 'AGENCY NAME' : 'OFFICE NAME',
     'LEVEL',
     'USER NAME',
     'DEPOSIT TYPE',
     ['NATIVE CURRENCY', 'CURRENCY', 'DEPOSIT AMT', 'TXN. AMT'],
     ['EQUIVALENT CURRENCY', 'CURRENCY', 'DEPOSIT AMT', 'TXN. AMT'],
-  
+
     'BALANCE AMT',
   ];
 
+  const [requestJson, setReqeustJson] = useState(null);
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(5);
+
+  const selectedOffice = utils.getItemFromStorage('selectedOffice');
+  const selectedAgency = utils.getItemFromStorage('selectedAgency');
+
+  let rowNumber = isSearchAgency ? selectedAgency : selectedOffice;
+
+  const searchOffice =
+    useSelector((state) => state.searchOffice?.items?.data?.data) || [];
+  const searchAgency =
+    useSelector((state) => state.searchAgency?.items?.data?.data) || [];
+
+  const searchResult = isSearchAgency ? searchAgency : searchOffice;
+
+  let selectedItem = searchResult[rowNumber] || {};
+  console.log('selectedItem', selectedItem);
+
+  useEffect(() => {
+    if (requestJson !== null) {
+      callSearch(page);
+    }
+
+    // return dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
+  }, [requestJson]);
+
+  useEffect(() => {
+    callSearch(page);
+  }, [page]);
+
+  const callSearch = (page) => {
+    try {
+      dispatch(
+        commonAction(endpoint.office.creditLimitHistory, {
+          ...requestJson,
+          page: page - 1,
+          size,
+          ofId: selectedItem.ofId,
+        })
+      );
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
 
   return (
     <>
@@ -166,7 +206,7 @@ const CreditLimitBreakup = () => {
         <div className="ManageCreditLimit-head">
           <div className="d-flex justify-content-between align-items-center pb-8">
             <div className="font-primary-semibold-24">
-              {isSearchAgency? "AGENCY": "OFFICE"} CREDIT LIMIT BREAKUP
+              {isSearchAgency ? 'AGENCY' : 'OFFICE'} CREDIT LIMIT BREAKUP
             </div>
 
             <div className="d-flex">
@@ -184,12 +224,14 @@ const CreditLimitBreakup = () => {
             <Grid item xs={12}>
               <Text
                 showLeftBorder={true}
-                text= {isSearchAgency? "AGENCY DETAILS": "OFFICE DETAILS"} 
+                text={isSearchAgency ? 'AGENCY DETAILS' : 'OFFICE DETAILS'}
                 className="font-primary-medium-18 mt-24"
               />
             </Grid>
             <Grid item xs={3}>
-              <div className="font-primary-medium-16">{isSearchAgency? "Agency": "Office"} Name: &nbsp;</div>
+              <div className="font-primary-medium-16">
+                {isSearchAgency ? 'Agency' : 'Office'} Name: &nbsp;
+              </div>
               <div className="font-primary-bold-16">Axis Tours & Travels </div>
             </Grid>
             <Grid item xs={3}>

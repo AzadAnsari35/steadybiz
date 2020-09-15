@@ -34,7 +34,7 @@ const PrimaryTable = (props) => {
     count > size ? size : count
   );
 
-  console.log('page', page);
+  // console.log('page', page);
 
   useEffect(() => {
     setHighOffset(count > size ? size : count);
@@ -49,7 +49,7 @@ const PrimaryTable = (props) => {
     return `PrimaryTable-status ${status} `;
   };
 
-  console.log('Primary Table', bodyData);
+  // console.log('Primary Table', bodyData);
 
   const handleChangePage = (event, newPage) => {
     handlePage(newPage);
@@ -200,8 +200,10 @@ const PrimaryTable = (props) => {
                                 key={`body-${index}`}
                                 // align={setAlignment(index - hideKeys.length)}
                                 align={
-                                  headerData.find((item) => item.id === key)
-                                    ?.alignment || 'center'
+                                  headerInArrOfObjFormat
+                                    ? headerData.find((item) => item.id === key)
+                                        ?.alignment
+                                    : setAlignment(index - hideKeys.length)
                                 }
                                 style={
                                   index === imageIndex
