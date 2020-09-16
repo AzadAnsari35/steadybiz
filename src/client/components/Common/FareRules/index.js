@@ -10,22 +10,24 @@ import { Text } from 'Widgets';
 
 import './style.scss';
 
-const FareRules = props => {
+const FareRules = (props) => {
   const { itinerary } = props;
   const dispatch = useDispatch();
-  const fareRulesResponse = useSelector(state => state[endpoint.flights.fareRules.reducerName]);
+  const fareRulesResponse = useSelector(
+    (state) => state[endpoint.flights.fareRules.reducerName]
+  );
   const fareRules = getDataFromRedux(fareRulesResponse);
-  
+
   const [fareRulesSegments, setFareRulesSegments] = useState([]);
   const [activeFareRulesTab, setActiveFareRulesTab] = useState(1);
 
-  const outboundFlightSegment = getFlightSegmentByType(itinerary, "Outbound");
-  const inboundFlightSegment = getFlightSegmentByType(itinerary, "Inbound");
+  const outboundFlightSegment = getFlightSegmentByType(itinerary, 'Outbound');
+  const inboundFlightSegment = getFlightSegmentByType(itinerary, 'Inbound');
 
   const { fareBasisCode } = itinerary.totalfareDetails;
 
   useEffect(() => {
-    if (!!inboundFlightSegment) {
+    if (inboundFlightSegment) {
       setFareRulesSegments([outboundFlightSegment, inboundFlightSegment]);
     } else {
       setFareRulesSegments([outboundFlightSegment]);
@@ -33,21 +35,27 @@ const FareRules = props => {
     setActiveFareRulesTab(outboundFlightSegment.flightSegments);
   }, []);
 
-  const handleFareRulesTabClick = tab => {
+  const handleFareRulesTabClick = (tab) => {
     if (activeFareRulesTab === tab.flightSegments) {
       return;
     } else {
-      dispatch(commonActionUpdate(endpoint.flights.fareRules, null));
-      getFareRulesData(tab);
-      setActiveFareRulesTab(tab.flightSegments);
+      if (tab.flightSegments.flightSegmentDirection === 'Outbound') {
+        dispatch(commonActionUpdate(endpoint.flights.fareRules, null));
+        getFareRulesData(tab);
+        setActiveFareRulesTab(tab.flightSegments);
+      } else {
+        setActiveFareRulesTab(tab.flightSegments);
+      }
     }
   };
 
-  const getFareRulesData = tab => {
-    dispatch(commonAction(endpoint.flights.fareRules, {
-      flightSegments: tab,
-      fareBasisCode,
-    }));
+  const getFareRulesData = (tab) => {
+    dispatch(
+      commonAction(endpoint.flights.fareRules, {
+        flightSegments: tab,
+        fareBasisCode,
+      })
+    );
   };
 
   return (
@@ -57,36 +65,47 @@ const FareRules = props => {
           return (
             <div
               key={tab.flightSegments}
-              className={`tab ${activeFareRulesTab === tab.flightSegments ? "active" : ""} cursor-pointer`}
+              className={`tab ${
+                activeFareRulesTab === tab.flightSegments ? 'active' : ''
+              } cursor-pointer`}
               onClick={() => handleFareRulesTabClick(tab)}
             >
               <Text
                 className="font-primary-medium-14"
-                text={`${tab.flightSegmentGroup[0].departureDetails.cityName} (${
+                text={`${
+                  tab.flightSegmentGroup[0].departureDetails.cityName
+                } (${
                   tab.flightSegmentGroup[0].departureDetails.airportCode
-                }) - ${tab.flightSegmentGroup[tab.flightSegmentGroup.length - 1].arrivalDetails.cityName} (${
-                  tab.flightSegmentGroup[tab.flightSegmentGroup.length - 1].arrivalDetails.airportCode
+                }) - ${
+                  tab.flightSegmentGroup[tab.flightSegmentGroup.length - 1]
+                    .arrivalDetails.cityName
+                } (${
+                  tab.flightSegmentGroup[tab.flightSegmentGroup.length - 1]
+                    .arrivalDetails.airportCode
                 })`}
               />
             </div>
-          )
+          );
         })}
       </div>
-      {fareRules && !!fareRules.fareRules && fareRules.fareRules.length > 0 &&
-        fareRules.fareRules.map((fareRule, index) =>
+      {fareRules &&
+        !!fareRules.fareRules &&
+        fareRules.fareRules.length > 0 &&
+        fareRules.fareRules.map((fareRule, index) => (
           <div className="FareRules-details">
-            <div className="FareRules-details__title font-primary-semibold-12 mb-16">{fareRule.fareRuleName}</div>
+            <div className="FareRules-details__title font-primary-semibold-12 mb-16">
+              {fareRule.fareRuleName}
+            </div>
             <div
               className="FareRules-details__description font-primary-medium-12 mb-16"
               dangerouslySetInnerHTML={{
-                __html: fareRule.fareRuleDesc.replace(/\n/g, "<br />")
+                __html: fareRule.fareRuleDesc.replace(/\n/g, '<br />'),
               }}
             />
           </div>
-        )
-      }
+        ))}
     </div>
-  )
+  );
 };
 
 export default FareRules;

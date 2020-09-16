@@ -332,7 +332,7 @@ const Filters = (props) => {
     const oStops = returnFilterArray(stops, 'outbound').map((el) =>
       parseInt(el)
     );
-
+    console.log(stops);
     filterData = returnFilterData(oStops, filterData, 'oStops');
     // console.log('hi', filterData);
     if (isReturn) {
@@ -586,6 +586,7 @@ const Filters = (props) => {
             />
             {flightSegmentType === 'RT' && (
               <StopsHtml
+                setStops={setStops}
                 stopsData={stopsData}
                 activeTab={activeTab.stops}
                 segmentType={'return'}
