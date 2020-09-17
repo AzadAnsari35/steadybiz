@@ -138,6 +138,7 @@ export const PNR_STATUS = [
   { label: 'Cancelled', value: 'PNR_CANCELLED' },
   { label: 'Ticket Void', value: 'TICKET_VOID' },
   { label: 'Refunded', value: 'REFUNDED' },
+  { label: 'Waiting', value: 'SEGMENT_UNCONFIRMED' },
 ];
 export const PNR_TYPE = [
   { value: '', label: 'Sabre' },

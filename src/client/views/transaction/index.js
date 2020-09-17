@@ -43,6 +43,7 @@ const Transaction = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [issueTicketResponse, createIssueTicketResponse] = createEndpoint();
+  const [retrieveOrder, setRetrieveOrder] = createEndpoint();
   const [showAlert, setShowAlert] = useState(true);
 
   // let transaction = {};
@@ -62,7 +63,15 @@ const Transaction = () => {
     pathname.toUpperCase() === routes.transaction.issueTicket.toUpperCase();
   const isBooking =
     pathname.toUpperCase() === routes.transaction.viewBooking.toUpperCase();
-
+  const refreshOrder = (orderNumber) => {
+    setRetrieveOrder(
+      {
+        orderNumber: orderNumber,
+        type: 'retieve',
+      },
+      endpoint.orders.viewOrder
+    );
+  };
   useEffect(() => {
     try {
       if (isIssueTicket || isBooking) {
@@ -144,23 +153,20 @@ const Transaction = () => {
   };
   useEffect(() => {
     //console.log(issueTicketResponse);
-    if (issueTicketResponse) {
-      const error = utils.checkError(issueTicketResponse);
+    const result = issueTicketResponse ? issueTicketResponse : retrieveOrder;
+    if (result) {
+      const error = utils.checkError(result);
       if (error != '') {
-        alert(issueTicketResponse.error.message);
+        //alert(issueTicketResponse.error.message);
         dispatch(utils.showErrorBox(error));
       } else {
         dispatch(
-          commonActionWithoutApi(
-            endpoint.transaction.airprice,
-            issueTicketResponse.data
-          )
+          commonActionWithoutApi(endpoint.transaction.airprice, result.data)
         );
-
-        history.push(routes.transaction.viewBooking);
+        if (issueTicketResponse) history.push(routes.transaction.viewBooking);
       }
     }
-  }, [issueTicketResponse]);
+  }, [issueTicketResponse || retrieveOrder]);
 
   const renderFlightBookingActions = () => (
     <div className="d-flex">
@@ -255,7 +261,9 @@ const Transaction = () => {
               }
               isTicketing={transactionData.isTicketing}
               pnrStatus={transactionData.PNR_STATUS}
+              actualStatus={transactionData.bookingStatus}
               ticketTimeLimit={transactionData.ticketTimeLimit}
+              refreshOrder={refreshOrder}
             />
           </Panel>
         </Grid>

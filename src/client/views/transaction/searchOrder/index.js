@@ -69,9 +69,9 @@ const PopoverAction = (props) => {
     setAnchorEl(null);
     setShowPopover(false);
   };
-  const viewOrder = (orderNumber, type) => {
+  const viewOrder = (orderNumber, type, routeUrl) => {
     dispatch(utils.HideAlertBox());
-    utils.setItemToStorage('searchOrderActionType', type);
+    utils.setItemToStorage('searchOrderRedirectRouteURL', routeUrl);
     dispatch(
       commonAction(endpoint.orders.viewOrder, {
         orderNumber: orderNumber,
@@ -101,7 +101,10 @@ const PopoverAction = (props) => {
           dispatch(utils.showErrorBox(securityMessage));
           return;
         }
-        viewOrder(orderNo, 'view');
+        const actualStatus = e.currentTarget.getAttribute('actualStatus');
+        if (actualStatus === 'PNR_CANCELLED')
+          viewOrder(orderNo, 'view', routes.transaction.viewPNR);
+        else viewOrder(orderNo, 'retieve', routes.transaction.viewPNR);
 
         break;
       }
@@ -113,7 +116,7 @@ const PopoverAction = (props) => {
           dispatch(utils.showErrorBox(securityMessage));
           return;
         }
-        viewOrder(orderNo, 'retieve');
+        viewOrder(orderNo, 'retieve', routes.transaction.issueTicket);
 
         break;
       }
@@ -126,7 +129,7 @@ const PopoverAction = (props) => {
           dispatch(utils.showErrorBox(securityMessage));
           return;
         }
-        viewOrder(orderNo, 'booked');
+        viewOrder(orderNo, 'view', routes.transaction.viewBooking);
 
         break;
       }
@@ -155,11 +158,13 @@ const PopoverAction = (props) => {
       >
         <div className="SearchUser-tableAction d-flex flex-direction-column">
           {(actualStatus === 'HOLD_PNR' ||
-            actualStatus === 'PNR_CANCELLED') && (
+            actualStatus === 'PNR_CANCELLED' ||
+            actualStatus === 'SEGMENT_UNCONFIRMED') && (
             <div
               className="font-primary-regular-14 cursor-pointer"
               onClick={handleClick}
               name="view"
+              actualStatus={actualStatus}
             >
               View PNR{' '}
             </div>
@@ -221,6 +226,9 @@ const SearchOrder = () => {
     mobile: '',
     userId: '',
     officeID: officeId,
+    DateType: '',
+    dateFrom: '',
+    dateTo: '',
   };
 
   const { register, handleSubmit, errors, control, reset, getValues } = useForm(
@@ -244,17 +252,14 @@ const SearchOrder = () => {
 
   useEffect(() => {
     //console.log(viewPNR);
-    const actionType = utils.getItemFromStorage('searchOrderActionType');
+    const routeUrl = utils.getItemFromStorage('searchOrderRedirectRouteURL');
     // console.log(actionType);
     // alert(actionType);
-    if (viewPNR != null && actionType != '') {
+    if (viewPNR != null && routeUrl != '') {
       const error = utils.checkError(viewPNR);
       if (error == '') {
-        utils.setItemToStorage('searchOrderActionType', '');
-        if (actionType == 'view') history.push(routes.transaction.viewPNR);
-        else if (actionType == 'retieve')
-          history.push(routes.transaction.issueTicket);
-        else history.push(routes.transaction.viewBooking);
+        utils.setItemToStorage('searchOrderRedirectRouteURL', '');
+        history.push(routeUrl);
       } else dispatch(utils.showErrorBox(error));
     }
   }, [viewPNR]);
@@ -397,15 +402,31 @@ const SearchOrder = () => {
             <Grid item xs={6}>
               <SelectWithDatePickers
                 name={{
-                  select: 'booking',
+                  select: 'DateType',
                   datePicker1: 'dateFrom',
                   datePicker2: 'dateTo',
                 }}
                 data={SEARCH_DATE_TYPE}
+                defaultValues={{
+                  //select: SEARCH_DATE_TYPE[1],
+                  datePicker1: new Date(),
+                  datePicker2: new Date(),
+                }}
                 control={control}
+                register={register}
                 selectPlaceholder="Booking"
                 label="Date:"
                 isSearchable
+                defaultValues={{
+                  datePicker1: '',
+                  datePicker2: '',
+                }}
+                disableFutureDatesDatePicker1={
+                  getValues('DateType') === '' || getValues('DateType') === 'B'
+                }
+                disableFutureDatesDatePicker2={
+                  getValues('DateType') === '' || getValues('DateType') === 'B'
+                }
               />
             </Grid>
 
@@ -509,6 +530,7 @@ const SearchOrder = () => {
                 errors={errors}
                 width="auto"
                 placeholder="All"
+                isMulti
                 isSearchable
               />
             </Grid>

@@ -20,7 +20,7 @@ const Option = (props, label, isUppercase) => (
     )}
     <Text
       className={`font-primary-medium-14 ${
-        !!isUppercase ? 'text-uppercase' : ''
+        isUppercase ? 'text-uppercase' : ''
       }`}
       text={props.data[label]}
     />
@@ -123,9 +123,10 @@ const MultiSelect = (props) => {
                 ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
                 ${errors[name] ? `thin-red-border` : ''} 
                 ${isSearchable ? 'MultiSelect-isSearchable' : ''}
-                ${disabled
-                  ? 'MultiSelect-disabled input-disabled border-none py-10'
-                  : ''
+                ${
+                  disabled
+                    ? 'MultiSelect-disabled input-disabled border-none py-10'
+                    : ''
                 }`}
                 style={{ width: `${width}px`, ...style }}
               >
@@ -138,7 +139,10 @@ const MultiSelect = (props) => {
                     DropdownIndicator,
                     Option: (props) =>
                       Option(props, labelKey, isOptionUppercase),
-                    MultiValue: (props) => MultiValue(props, valueKey),
+                    MultiValue: (props) =>
+                      showValue
+                        ? MultiValue(props, valueKey)
+                        : MultiValue(props, labelKey),
                   }}
                   hideSelectedOptions={false}
                   isClearable={isClearable}
@@ -175,9 +179,10 @@ const MultiSelect = (props) => {
           ${fullWidthDropdown ? 'MultiSelect-fullWidthDropdown' : ''}
           ${errors[name] ? `thin-red-border` : ''}
           ${isSearchable ? 'MultiSelect-isSearchable' : ''}
-          ${disabled
-            ? 'MultiSelect-disabled input-disabled border-none py-10'
-            : ''
+          ${
+            disabled
+              ? 'MultiSelect-disabled input-disabled border-none py-10'
+              : ''
           }`}
           style={{ width: `${width}px`, ...style }}
         >
@@ -189,23 +194,25 @@ const MultiSelect = (props) => {
             components={{
               DropdownIndicator,
               Option: (props) => Option(props, labelKey, isOptionUppercase),
-              ...!hideMultiValueSelection ? {
-                MultiValue: (props) => MultiValue(props, valueKey),
-              } : {
-                ValueContainer: ({ children, ...props }) => {
-                  let [values, input] = children;
-                  if (Array.isArray(values)) {
-                    const plural = values.length === 1 ? "" : "s";
-                    values = `${values.length} item${plural} selected`;
+              ...(!hideMultiValueSelection
+                ? {
+                    MultiValue: (props) => MultiValue(props, valueKey),
                   }
-                  return (
-                    <components.ValueContainer {...props}>
-                      {values}
-                      {input}
-                    </components.ValueContainer>
-                  );
-                },
-              }
+                : {
+                    ValueContainer: ({ children, ...props }) => {
+                      let [values, input] = children;
+                      if (Array.isArray(values)) {
+                        const plural = values.length === 1 ? '' : 's';
+                        values = `${values.length} item${plural} selected`;
+                      }
+                      return (
+                        <components.ValueContainer {...props}>
+                          {values}
+                          {input}
+                        </components.ValueContainer>
+                      );
+                    },
+                  }),
             }}
             hideSelectedOptions={false}
             isClearable={false}
