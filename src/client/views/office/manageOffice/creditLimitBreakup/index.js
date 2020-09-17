@@ -6,7 +6,7 @@ import { displayImage } from 'Helpers/utils';
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { routes } from 'Constants';
 import { commonAction } from 'Actions';
 import endpoint from 'Config/endpoint';
@@ -134,6 +134,7 @@ const CreditLimitBreakup = () => {
 
   const location = useLocation();
   const dispatch = useDispatch();
+  const history = useHistory();
   const path = location.pathname;
 
   const isSearchAgency = utils.stringComparison(
@@ -168,10 +169,25 @@ const CreditLimitBreakup = () => {
   const searchAgency =
     useSelector((state) => state.searchAgency?.items?.data?.data) || [];
 
+  const creditLimitBreakup = useSelector(
+    (state) => state.creditLimitBreakup?.items
+  );
   const searchResult = isSearchAgency ? searchAgency : searchOffice;
 
   let selectedItem = searchResult[rowNumber] || {};
   console.log('selectedItem', selectedItem);
+
+  const creditLimitHistory = useSelector(
+    (state) => state.creditLimitHistory?.items?.data?.data || []
+  );
+
+  const selectedCreditHistoryNumber = utils.getItemFromStorage(
+    'selectedCreditHistory'
+  );
+
+  let selectedCreditHistory =
+    creditLimitHistory[selectedCreditHistoryNumber] || {};
+  console.log('selectedCreditHistory', selectedCreditHistory);
 
   useEffect(() => {
     if (requestJson !== null) {
@@ -200,6 +216,16 @@ const CreditLimitBreakup = () => {
     }
   };
 
+  const {
+    officeName,
+    officeId,
+    cityName,
+    countryCode,
+    currCode,
+  } = selectedItem;
+
+  const { openingBalance, closingBalance, date } = selectedCreditHistory;
+
   return (
     <>
       <div className="ManageCreditLimit">
@@ -213,7 +239,13 @@ const CreditLimitBreakup = () => {
               <IconWithBackground showCursor bgColor={colors.red1}>
                 <ClearIcon
                   style={{ color: colors.red }}
-                  onClick={() => history.goBack()}
+                  onClick={() =>
+                    history.push(
+                      isSearchAgency
+                        ? routes.agency.manageCreditLimit
+                        : routes.office.manageCreditLimit
+                    )
+                  }
                 />
               </IconWithBackground>
             </div>
@@ -232,21 +264,19 @@ const CreditLimitBreakup = () => {
               <div className="font-primary-medium-16">
                 {isSearchAgency ? 'Agency' : 'Office'} Name: &nbsp;
               </div>
-              <div className="font-primary-bold-16">Axis Tours & Travels </div>
+              <div className="font-primary-bold-16">{officeName}</div>
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">Office ID:&nbsp; </div>
-              <div className="font-primary-bold-16 ">
-                Office ID: OKT000000055 | Level - 0
-              </div>
+              <div className="font-primary-bold-16 ">{officeId}</div>
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">City:&nbsp; </div>
-              <div className="font-primary-bold-16 ">Westchester </div>
+              <div className="font-primary-bold-16 ">{cityName} </div>
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">Country:&nbsp; </div>
-              <div className="font-primary-bold-16 ">United Kingdom </div>
+              <div className="font-primary-bold-16 ">{countryCode} </div>
             </Grid>
 
             <Grid item xs={12}>
@@ -258,57 +288,57 @@ const CreditLimitBreakup = () => {
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">Date:&nbsp; </div>
-              <div className="font-primary-bold-16 ">
-                {moment().format('DD-MMM-YYYY')}
-              </div>
+              <div className="font-primary-bold-16 ">{date}</div>
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">Currency:&nbsp;</div>
-              <div className="font-primary-bold-16 ">AED</div>
+              <div className="font-primary-bold-16 ">{currCode}</div>
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">Opening Bal:&nbsp;</div>
-              <div className="font-primary-bold-16 ">64424.00</div>
+              <div className="font-primary-bold-16 ">{openingBalance}</div>
             </Grid>
             <Grid item xs={3}>
               <div className="font-primary-medium-16">Closing Bal:&nbsp;</div>
-              <div className="font-primary-bold-16 ">1354031.53</div>
+              <div className="font-primary-bold-16 ">{closingBalance}</div>
             </Grid>
           </Grid>
         </div>
-        <PrimaryTable
-          header={<SearchTableHeader register={register} />}
-          headerData={headerData}
-          bodyData={response}
-          count={20}
-          size={5}
-          columnAlignments={[
-            'center',
-            'center',
-            'left',
-            'center',
-            'left',
-            'left',
-            'center',
-            'center',
-            'center',
-            'center',
-            'center',
-            'right',
-          ]}
-          statusIndex={6}
-          AddElement={{ first: <PopoverAction /> }}
-          tableStyling={[
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            { borderRight: `1px solid ${colors.mercury}` },
-          ]}
-        />
+        {creditLimitBreakup?.status && (
+          <PrimaryTable
+            header={<SearchTableHeader register={register} />}
+            headerData={headerData}
+            bodyData={creditLimitBreakup.data}
+            count={creditLimitBreakup.data.count}
+            size={5}
+            columnAlignments={[
+              'center',
+              'center',
+              'left',
+              'center',
+              'left',
+              'left',
+              'center',
+              'center',
+              'center',
+              'center',
+              'center',
+              'right',
+            ]}
+            statusIndex={6}
+            AddElement={{ first: <PopoverAction /> }}
+            tableStyling={[
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              { borderRight: `1px solid ${colors.mercury}` },
+            ]}
+          />
+        )}
       </div>
     </>
   );

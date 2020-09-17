@@ -43,7 +43,6 @@ const headerData = [
   'DATE',
   'CURRENCY',
   'OPENING BAL',
-  'DEPOSIT TYPE',
   'DEPOSIT AMT',
   'TXN. AMT',
   'CLOSING BAL',
@@ -86,6 +85,7 @@ const LinkAction = (props) => {
           ? routes.agency.creditLimitBreakup
           : routes.office.creditLimitBreakup
       }
+      onClick={utils.setItemToStorage('selectedCreditHistory', rowNumber)}
     >
       Details
     </Link>
@@ -228,10 +228,13 @@ const OfficeCredit = () => {
   };
 
   const onSubmit = (data) => {
-    const { dateFrom, dateTo, ...rest } = data;
+    let { dateFrom, dateTo, amountUpdated, ...rest } = data;
+
+    // amountUpdated = parseInt(amountUpdated.toFixed(2));
 
     postData({
       ...rest,
+      amountUpdated: parseInt(amountUpdated),
       ofId: selectedItem.ofId,
       currencyCode: selectedItem.currCode,
       updatedByUserId: userId,
@@ -376,6 +379,7 @@ const OfficeCredit = () => {
                   register={register}
                   errors={errors}
                   label="Deposit Amount:"
+                  type="number"
                 />
               </Grid>
               <Grid item xs={3}>
@@ -410,7 +414,6 @@ const OfficeCredit = () => {
             'center',
             'right',
             'left',
-            'right',
             'right',
             'right',
             'center',

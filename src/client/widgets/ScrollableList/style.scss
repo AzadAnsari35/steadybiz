@@ -1,5 +1,5 @@
-@import "./../../styles/variables";
-$root: ".ScrollableList";
+@import './../../styles/variables';
+$root: '.ScrollableList';
 
 #{$root} {
   .MuiAppBar-root {
@@ -45,6 +45,10 @@ $root: ".ScrollableList";
     &:last-child {
       padding-right: 0;
     }
+  }
+
+  .PrivateTabIndicator-root-14 {
+    height: 0;
   }
 }
 // athensGray

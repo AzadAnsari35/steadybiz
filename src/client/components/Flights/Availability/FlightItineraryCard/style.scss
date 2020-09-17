@@ -1,7 +1,7 @@
-@import "./../../../../styles/variables";
-@import "./../../../../styles/functions";
+@import './../../../../styles/variables';
+@import './../../../../styles/functions';
 
-$root: ".FlightItineraryCard";
+$root: '.FlightItineraryCard';
 
 #{$root} {
   background-color: $white;
@@ -10,6 +10,15 @@ $root: ".FlightItineraryCard";
   position: relative;
   &-content {
     padding: 12px 20px;
+  }
+  &-deals {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    padding: 6px 12px;
+    background: #fca2061a 0% 0% no-repeat padding-box;
+    border-radius: 0px 0px 4px 4px;
   }
   &-top {
     margin-bottom: 2px;
@@ -59,7 +68,8 @@ $root: ".FlightItineraryCard";
             width: 80px;
           }
         }
-        .departureTime, .arrivalTime {
+        .departureTime,
+        .arrivalTime {
           width: 130px;
         }
         .arrivalTime {
@@ -122,7 +132,8 @@ $root: ".FlightItineraryCard";
     }
   }
   &-bottom {
-    &__leftAction, &__rightAction {
+    &__leftAction,
+    &__rightAction {
       .MuiSvgIcon-root {
         color: $gray;
         margin-right: 6px;
@@ -201,7 +212,8 @@ $root: ".FlightItineraryCard";
               width: calculateRem(80px);
             }
           }
-          .departureTime, .arrivalTime {
+          .departureTime,
+          .arrivalTime {
             width: calculateRem(130px);
           }
           .stopsInfo {

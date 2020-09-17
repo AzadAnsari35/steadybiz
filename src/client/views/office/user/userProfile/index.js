@@ -20,8 +20,12 @@ const UserProfile = () => {
   const mode = location.pathname;
 
   const handleClose = () => {
-    history.push(routes.office.searchOfficeUser);
-    dispatch(commonActionUpdate(endpoint.office.searchUser, null));
+    if (mode === routes.office.manageUserProfile) {
+      history.push(routes.flight.search);
+    } else {
+      history.push(routes.office.searchOfficeUser);
+      dispatch(commonActionUpdate(endpoint.office.searchUser, null));
+    }
   };
 
   return (
