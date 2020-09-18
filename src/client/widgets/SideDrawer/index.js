@@ -76,49 +76,49 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       clickFunc: () => setShowSubagency(!showSubagency),
       show: showSubagency,
       subList: [
-        // {
-        //   text: 'Registration',
-        //   link: routes.agency.registration,
-        // },
-        // {
-        //   text: 'Manage Agency',
-        //   link: routes.agency.searchAgency,
-        //   clickFunc: () => {
-        //     dispatch(commonActionUpdate(endpoint.agency.searchAgency, null));
-        //   },
-        // },
-        // {
-        //   text: 'Manage Agency Group',
-        //   link: routes.agency.searchAgencyGroup,
-        // },
-        // {
-        //   text: 'Registration',
-        //   link: '/createAccount',
-        // },
-        // {
-        //   text: 'Profile & Credit Limit',
-        //   link: '/agency/subAgent',
-        // },
-        // {
-        //   text: 'Deal & Commission',
-        //   link: '#',
-        // },
-        // {
-        //   text: 'Markup & Discount',
-        //   link: '#',
-        // },
-        // {
-        //   text: 'Productivity Group',
-        //   link: '#',
-        // },
-        // {
-        //   text: 'Invoice Details',
-        //   link: '#',
-        // },
-        // {
-        //   text: 'Account Statement',
-        //   link: '#',
-        // },
+        {
+          text: 'Registration',
+          link: routes.agency.registration,
+        },
+        {
+          text: 'Manage Agency',
+          link: routes.agency.searchAgency,
+          clickFunc: () => {
+            dispatch(commonActionUpdate(endpoint.agency.searchAgency, null));
+          },
+        },
+        {
+          text: 'Manage Agency Group',
+          link: routes.agency.searchAgencyGroup,
+        },
+        {
+          text: 'Registration',
+          link: '/createAccount',
+        },
+        {
+          text: 'Profile & Credit Limit',
+          link: '/agency/subAgent',
+        },
+        {
+          text: 'Deal & Commission',
+          link: '#',
+        },
+        {
+          text: 'Markup & Discount',
+          link: '#',
+        },
+        {
+          text: 'Productivity Group',
+          link: '#',
+        },
+        {
+          text: 'Invoice Details',
+          link: '#',
+        },
+        {
+          text: 'Account Statement',
+          link: '#',
+        },
       ],
     },
 
@@ -164,14 +164,14 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       clickFunc: () => setShowReport(!showReport),
       show: showReport,
       subList: [
-        // {
-        //   text: 'Booking Report',
-        //   link: routes.reports.bookingReport,
-        // },
-        // {
-        //   text: 'Total Sales Report',
-        //   link: routes.reports.totalSalesReport,
-        // },
+        {
+          text: 'Booking Report',
+          link: routes.reports.bookingReport,
+        },
+        {
+          text: 'Total Sales Report',
+          link: routes.reports.totalSalesReport,
+        },
       ],
     },
 

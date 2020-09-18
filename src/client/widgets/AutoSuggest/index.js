@@ -24,7 +24,17 @@ const createEndpoint = () => {
 };
 const AutoSuggest = (props) => {
   const dispatch = useDispatch();
-  const { icon, id, label, initialValue, isSearchBar = true, onSelectSuggestion } = props;
+  const {
+    icon,
+    id,
+    label,
+    initialValue,
+    isSearchBar = true,
+    onSelectSuggestion,
+    stateKey = true,
+    stateValue = '',
+  } = props;
+  console.log(stateKey);
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [value, setValue] = useState(null);
@@ -37,7 +47,9 @@ const AutoSuggest = (props) => {
     (state) => state[endpoint.flights.airportSuggestions.reducerName]
   );
   const airportSuggestions = getDataFromRedux(airportSuggestionsData);
-
+  useEffect(() => {
+    setValue({ title: '', name: '', value: '' });
+  }, [stateKey]);
   useEffect(() => {
     if (initialValue) {
       setValue(initialValue);
@@ -113,10 +125,12 @@ const AutoSuggest = (props) => {
 
   return (
     <>
-      <div className={`AutoSuggest ${!isSearchBar ? "no-search-bar" : ""}`}>
+      <div className={`AutoSuggest ${!isSearchBar ? 'no-search-bar' : ''}`}>
         <>
           {!!icon && icon}
-          {!isSearchBar && <Text className="font-primary-medium-16 mb-8" text={label} />}
+          {!isSearchBar && (
+            <Text className="font-primary-medium-16 mb-8" text={label} />
+          )}
           <Autocomplete
             inputValue={inputValue}
             loading={loading}
@@ -149,7 +163,7 @@ const AutoSuggest = (props) => {
                     </Fragment>
                   ),
                 }}
-                {...(isSearchBar ? {label: label} : {})}
+                {...(isSearchBar ? { label: label } : {})}
               />
             )}
             renderOption={(option) => (

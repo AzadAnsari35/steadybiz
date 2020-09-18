@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { regex } from 'Helpers/validator';
 import useDropDown from 'Hooks/useDropDown';
+import moment from 'moment';
 import { dropDownParam } from 'Constants/commonConstant';
 import {
   PNR_STATUS,
@@ -30,6 +31,7 @@ import {
   SimplePopover,
   Text,
   TextInput,
+  AutoSuggest,
 } from 'Widgets';
 import securityOptionConstant from 'Constants/securityOptionConstant';
 import './style.scss';
@@ -195,6 +197,7 @@ const PopoverAction = (props) => {
 
 const SearchOrder = () => {
   const [requestJson, setReqeustJson] = useState(null);
+  const [stateKey, setStateKey] = useState(true);
   const [page, setPage] = useState(1);
   const [size] = useState(10);
   const firstPageUpdate = useRef(true);
@@ -211,12 +214,16 @@ const SearchOrder = () => {
       officeDto: { officeId, officeName, officeLevel },
     },
   } = userData;
+
+  const [formData, setFormData] = useState({
+    origin: '',
+    destination: '',
+  });
   const defaultValues = {
     orderNo: '',
     pnrType: '',
     pnr: '',
-    origin: '',
-    destination: '',
+
     paxSearchValue: '',
     paxInfoType: '',
     bookingCategory: '',
@@ -227,8 +234,8 @@ const SearchOrder = () => {
     userId: '',
     officeID: officeId,
     DateType: '',
-    dateFrom: '',
-    dateTo: '',
+    dateFrom: moment(new Date()),
+    dateTo: moment(new Date()),
   };
 
   const { register, handleSubmit, errors, control, reset, getValues } = useForm(
@@ -317,15 +324,45 @@ const SearchOrder = () => {
   const handelPaxInfoType = (e) => {
     alert(e);
   };
+  const handleInputChange = (id, value) => {
+    setFormData({
+      ...formData,
+      [id]: value,
+    });
+  };
+
   const onSubmit = (data) => {
     // console.log('data', data);
     setPage(1);
-    setReqeustJson(data);
+    //alert(formData.origin);
+    const originCode = formData.origin?.code ? formData.origin.code : '';
+    const destinationCode = formData.destination?.code
+      ? formData.destination.code
+      : '';
+
+    if (originCode != '' || destinationCode != '') {
+      if (originCode == destinationCode) {
+        dispatch(utils.showErrorBox('origin and destination can not be same'));
+        return;
+      }
+      if (originCode == '' || destinationCode == '') {
+        dispatch(utils.showErrorBox('please enter origin and destination'));
+        return;
+      }
+    }
+    setReqeustJson({
+      ...data,
+      origin: originCode,
+      destination: destinationCode,
+    });
     //setPage(1);
   };
 
   const handleReset = () => {
     reset(defaultValues);
+    setStateKey(!stateKey);
+    //this.refs[`autocomplete`].setState({ searchText: '' });
+    setFormData({ origin: '', destination: '' });
   };
 
   return (
@@ -380,24 +417,41 @@ const SearchOrder = () => {
             </Grid>
 
             <Grid item xs={3}>
-              <TextInput
+              <AutoSuggest
+                id="origin"
+                name="origin"
+                label="Origin:"
+                isSearchBar={false}
+                onSelectSuggestion={handleInputChange}
+                stateKey={stateKey}
+                // initialValue={initialDepartureAirport}
+              />
+              {/* <TextInput
                 label="Origin:"
                 name="origin"
                 register={register}
                 //ref={register({ maxLength: 3 })}
                 maxLength={3}
                 errors={errors}
-              />
+              /> */}
             </Grid>
 
             <Grid item xs={3}>
-              <TextInput
+              <AutoSuggest
+                id="destination"
+                label="Destination:"
+                isSearchBar={false}
+                // initialValue={initialDepartureAirport}
+                onSelectSuggestion={handleInputChange}
+                stateKey={stateKey}
+              />
+              {/* <TextInput
                 label="Destination:"
                 name="destination"
                 register={register}
                 errors={errors}
                 maxLength={3}
-              />
+              /> */}
             </Grid>
             <Grid item xs={6}>
               <SelectWithDatePickers
