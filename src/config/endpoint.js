@@ -59,6 +59,7 @@ export default {
       isAuth: false,
       httpVerb: commonConstant.HttpVerbsConstant.POST,
       actionType: actionTypeConstant.users.signIn,
+      reducerName: 'usersSignIn',
     },
   },
   master: {
@@ -105,12 +106,14 @@ export default {
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.settlementPlans,
+      isCache: true,
     },
     paymentModes: {
       url: config.api.url + '/api/v1/master/paymentmodes',
       isAuth: true,
       httpVerb: commonConstant.HttpVerbsConstant.GET,
       actionType: actionTypeConstant.master.paymentModes,
+      isCache: true,
     },
   },
 

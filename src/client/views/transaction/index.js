@@ -53,6 +53,7 @@ const Transaction = () => {
   const transaction = useSelector(
     (state) => state[endpoint.transaction.airprice.reducerName]
   );
+
   const flightSearchInput = useSelector(
     (state) => state[endpointWithoutApi.flights.flightSearchInput.reducerName]
   );
