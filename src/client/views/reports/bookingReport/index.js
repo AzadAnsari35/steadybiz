@@ -35,6 +35,7 @@ import {
   Text,
   TextInput,
   CustomDrawer,
+  AutoSuggest,
 } from 'Widgets';
 import useToggle from 'Hooks/useToggle';
 
@@ -303,9 +304,10 @@ const BookingReport = () => {
 
   const [cityList, setCityList] = useState(citiesList);
 
-  const userNameList = useDropDownApi(endpoint.office.searchUserDropDown, {
-    ofid: ofId,
+  const userNames = useDropDownApi(endpoint.office.searchUserDropDown, {
+    ofid: officeId,
   });
+  const [userNameList, setUserNameList] = useState(userNames);
   const [hiddenKeys, setHiddenKeys] = useState(hideKeys);
 
   const defaultTableFieldsSelection = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
@@ -317,6 +319,7 @@ const BookingReport = () => {
 
   useEffect(() => {
     getCitiesList(countryCode);
+    // getUserNameList(officeId);
   }, []);
 
   useEffect(() => {
@@ -375,12 +378,24 @@ const BookingReport = () => {
     callSearch(page);
   }, [page]);
 
+  useEffect(() => {
+    console.log('formData.officeId::: ', formData.officeId);
+    // getUserNameList(formData.officeId);
+  }, [formData.officeId]);
+
   const getCitiesList = (countryCode) => {
     dispatch(
       commonAction(endpoint.master.cities, {
         countryCode,
       })
     );
+  };
+
+  const getUserNameList = (officeId) => {
+    const userNames = useDropDownApi(endpoint.office.searchUserDropDown, {
+      ofid: officeId,
+    });
+    setUserNameList(userNames);
   };
 
   const handlePage = (newPage) => {
@@ -427,6 +442,28 @@ const BookingReport = () => {
     setFormData({
       ...formData,
       [id]: value,
+    });
+  };
+
+  const handleSelectSuggestion = (id, value) => {
+    if (value !== '') {
+      setErrorData({
+        ...errorData,
+        [id]: '',
+      });
+    }
+    setFormData({
+      ...formData,
+      [id]: value,
+    });
+  };
+
+  const handleChangeOfficeClick = (officeId) => {
+    console.log('officeId::: ', officeId);
+    setShowChangeOffice();
+    setFormData({
+      ...formData,
+      officeId,
     });
   };
 
@@ -526,21 +563,35 @@ const BookingReport = () => {
                 />
               </Grid>
               <Grid item xs={3}>
-                <TextInput
+                {/* <TextInput
                   label="Origin:"
                   id="origin"
                   name="origin"
                   useReactHookForm={false}
                   onChange={handleInputChange}
+                /> */}
+                <AutoSuggest
+                  id="origin"
+                  label="Origin:"
+                  isSearchBar={false}
+                  // initialValue={initialDepartureAirport}
+                  onSelectSuggestion={handleInputChange}
                 />
               </Grid>
               <Grid item xs={3}>
-                <TextInput
+                {/* <TextInput
                   label="Destination:"
                   id="destination"
                   name="destination"
                   useReactHookForm={false}
                   onChange={handleInputChange}
+                /> */}
+                <AutoSuggest
+                  id="destination"
+                  label="Destination:"
+                  isSearchBar={false}
+                  // initialValue={initialDepartureAirport}
+                  onSelectSuggestion={handleInputChange}
                 />
               </Grid>
               <Grid item xs={3}>
@@ -636,11 +687,13 @@ const BookingReport = () => {
                 />
               </Grid>
 
+              {console.log('formData::: ', formData)}
               <Grid item xs={3}>
                 <TextInput
                   label="Office ID:"
                   id="officeId"
                   name="officeId"
+                  value={formData.officeId}
                   useReactHookForm={false}
                   onChange={handleInputChange}
                 />
@@ -709,181 +762,6 @@ const BookingReport = () => {
                   onSelectChange={handleSelectOption}
                 />
               </Grid>
-              {/* <Grid item xs={12}>
-                <div className="d-flex justify-content-end pt-32">
-                  <Button
-                    text="CHANGE OFFICE"
-                    secondary
-                    className=" px-48 mr-10"
-                    onClick={() => handleClick()}
-                  />
-                  <Grid item xs={3}>
-                    <TextInput
-                      label="Origin:"
-                      name="origin"
-                      register={register}
-                      errors={errors}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <TextInput
-                      label="Destination:"
-                      name="destination"
-                      register={register}
-                      errors={errors}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <TextInput
-                      label="Order Number:"
-                      placeholder="Order Number"
-                      name="orderNo"
-                      useReactHookForm={false}
-                      maxLength={13}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <SelectWithTextInput
-                      name="pnr"
-                      selectInputName="sabre"
-                      type="text"
-                      label="PNR: "
-                      selectPlaceholder="Sabre"
-                      placeholder="PNR Number"
-                      value={formData.pnrNumber}
-                      data={[
-                        { value: 'Sabre', label: 'Sabre (1S)' },
-                        { value: 'Airline', label: 'Airline' },
-                      ]}
-                      showValue
-                      useReactHookForm={false}
-                      selectWidth="50%"
-                      // onChange={handleChange}
-                      // onSelectChange={handleSelectOption}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <MultiSelect
-                      label="Booking Category:"
-                      name="bookingCategory"
-                      options={[
-                        { value: 'P', label: 'PNR' },
-                        { value: 'B', label: 'Booking' },
-                      ]}
-                      showBorder={true}
-                      changeStyle={true}
-                      control={control}
-                      errors={errors}
-                      width="auto"
-                      isSearchable
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <MultiSelect
-                      label="Office Channel:"
-                      name="officeChannel"
-                      options={[
-                        { value: 'P', label: 'PNR' },
-                        { value: 'B', label: 'Booking' },
-                      ]}
-                      showBorder={true}
-                      changeStyle={true}
-                      control={control}
-                      errors={errors}
-                      width="auto"
-                      isSearchable
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <MultiSelect
-                      label="Office Type:"
-                      name="officeType"
-                      options={[
-                        { value: 'P', label: 'PNR' },
-                        { value: 'B', label: 'Booking' },
-                      ]}
-                      showBorder={true}
-                      changeStyle={true}
-                      control={control}
-                      errors={errors}
-                      width="auto"
-                      isSearchable
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <TextInput
-                      label="Office ID:"
-                      name="officeID"
-                      register={register}
-                      control={control}
-                      errors={errors}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <MultiSelect
-                      label="User Name:"
-                      name="userName"
-                      options={[
-                        { value: 'P', label: 'PNR' },
-                        { value: 'B', label: 'Booking' },
-                      ]}
-                      showBorder={true}
-                      changeStyle={true}
-                      control={control}
-                      errors={errors}
-                      width="auto"
-                      isSearchable
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <MultiSelect
-                      label="Country POS:"
-                      name="countryPos"
-                      options={[
-                        { value: 'P', label: 'PNR' },
-                        { value: 'B', label: 'Booking' },
-                      ]}
-                      showBorder={true}
-                      changeStyle={true}
-                      control={control}
-                      errors={errors}
-                      width="auto"
-                      isSearchable
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <MultiSelect
-                      label="City POS:"
-                      name="cityPos"
-                      options={[
-                        { value: 'P', label: 'PNR' },
-                        { value: 'B', label: 'Booking' },
-                      ]}
-                      showBorder={true}
-                      changeStyle={true}
-                      control={control}
-                      errors={errors}
-                      width="auto"
-                      isSearchable
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <MultiSelect
-                      label="Transaction Status:"
-                      name="transactionStatus"
-                      options={[
-                        { value: 'P', label: 'PNR' },
-                        { value: 'B', label: 'Booking' },
-                      ]}
-                      showBorder={true}
-                      changeStyle={true}
-                      control={control}
-                      errors={errors}
-                      width="auto"
-                      isSearchable
-                    />
-                  </Grid> */}
-
               {/* </div>
               </Grid> */}
               <Grid item xs={12}>
@@ -938,7 +816,7 @@ const BookingReport = () => {
         width={1150}
         className="BookingReport-CustomDrawer"
       >
-        <ChangeOffice />
+        <ChangeOffice onOfficeClick={handleChangeOfficeClick} />
       </CustomDrawer>
     </>
   );

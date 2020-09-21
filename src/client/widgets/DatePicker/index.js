@@ -55,7 +55,7 @@ const DatePicker = (props) => {
 
   return (
     <div
-      className={`DatePicker ${!!hasError ? 'has-error' : ''} 
+      className={`DatePicker ${hasError ? 'has-error' : ''} 
       ${className ? className : ''}
       ${disabled ? 'DatePicker-disabled' : ''}
       `}
@@ -79,16 +79,16 @@ const DatePicker = (props) => {
                 disablePast={!!disablePastDates}
                 disableFuture={!!disableFutureDates}
                 minDate={
-                  !!minDate
+                  minDate
                     ? minDate
-                    : !!disablePastDates
+                    : disablePastDates
                     ? new Date()
                     : new Date('1900-01-01')
                 }
                 maxDate={
-                  !!maxDate
+                  maxDate
                     ? maxDate
-                    : !!disableFutureDates
+                    : disableFutureDates
                     ? new Date()
                     : new Date('2100-01-01')
                 }
@@ -99,7 +99,7 @@ const DatePicker = (props) => {
                   <img
                     className="date-icon"
                     alt="calendar"
-                    src={!!icon ? icon : displayImage('calendar-grey.svg')}
+                    src={icon ? icon : displayImage('calendar-grey.svg')}
                   />
                 }
                 InputProps={{
@@ -131,16 +131,16 @@ const DatePicker = (props) => {
             disablePast={!!disablePastDates}
             disableFuture={!!disableFutureDates}
             minDate={
-              !!minDate
+              minDate
                 ? minDate
-                : !!disablePastDates
+                : disablePastDates
                 ? new Date()
                 : new Date('1900-01-01')
             }
             maxDate={
-              !!maxDate
+              maxDate
                 ? maxDate
-                : !!disableFutureDates
+                : disableFutureDates
                 ? new Date()
                 : new Date('2100-01-01')
             }

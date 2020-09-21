@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { regex } from 'Helpers/validator';
 import useDropDown from 'Hooks/useDropDown';
+import moment from 'moment';
 import { dropDownParam } from 'Constants/commonConstant';
 import {
   PNR_STATUS,
@@ -30,6 +31,7 @@ import {
   SimplePopover,
   Text,
   TextInput,
+  AutoSuggest,
 } from 'Widgets';
 import securityOptionConstant from 'Constants/securityOptionConstant';
 import './style.scss';
@@ -69,9 +71,9 @@ const PopoverAction = (props) => {
     setAnchorEl(null);
     setShowPopover(false);
   };
-  const viewOrder = (orderNumber, type) => {
+  const viewOrder = (orderNumber, type, routeUrl) => {
     dispatch(utils.HideAlertBox());
-    utils.setItemToStorage('searchOrderActionType', type);
+    utils.setItemToStorage('searchOrderRedirectRouteURL', routeUrl);
     dispatch(
       commonAction(endpoint.orders.viewOrder, {
         orderNumber: orderNumber,
@@ -101,7 +103,10 @@ const PopoverAction = (props) => {
           dispatch(utils.showErrorBox(securityMessage));
           return;
         }
-        viewOrder(orderNo, 'view');
+        const actualStatus = e.currentTarget.getAttribute('actualStatus');
+        if (actualStatus === 'PNR_CANCELLED')
+          viewOrder(orderNo, 'view', routes.transaction.viewPNR);
+        else viewOrder(orderNo, 'retieve', routes.transaction.viewPNR);
 
         break;
       }
@@ -113,7 +118,7 @@ const PopoverAction = (props) => {
           dispatch(utils.showErrorBox(securityMessage));
           return;
         }
-        viewOrder(orderNo, 'retieve');
+        viewOrder(orderNo, 'retieve', routes.transaction.issueTicket);
 
         break;
       }
@@ -126,7 +131,7 @@ const PopoverAction = (props) => {
           dispatch(utils.showErrorBox(securityMessage));
           return;
         }
-        viewOrder(orderNo, 'booked');
+        viewOrder(orderNo, 'view', routes.transaction.viewBooking);
 
         break;
       }
@@ -155,11 +160,13 @@ const PopoverAction = (props) => {
       >
         <div className="SearchUser-tableAction d-flex flex-direction-column">
           {(actualStatus === 'HOLD_PNR' ||
-            actualStatus === 'PNR_CANCELLED') && (
+            actualStatus === 'PNR_CANCELLED' ||
+            actualStatus === 'SEGMENT_UNCONFIRMED') && (
             <div
               className="font-primary-regular-14 cursor-pointer"
               onClick={handleClick}
               name="view"
+              actualStatus={actualStatus}
             >
               View PNR{' '}
             </div>
@@ -190,6 +197,7 @@ const PopoverAction = (props) => {
 
 const SearchOrder = () => {
   const [requestJson, setReqeustJson] = useState(null);
+  const [stateKey, setStateKey] = useState(true);
   const [page, setPage] = useState(1);
   const [size] = useState(10);
   const firstPageUpdate = useRef(true);
@@ -206,12 +214,16 @@ const SearchOrder = () => {
       officeDto: { officeId, officeName, officeLevel },
     },
   } = userData;
+
+  const [formData, setFormData] = useState({
+    origin: '',
+    destination: '',
+  });
   const defaultValues = {
     orderNo: '',
     pnrType: '',
     pnr: '',
-    origin: '',
-    destination: '',
+
     paxSearchValue: '',
     paxInfoType: '',
     bookingCategory: '',
@@ -221,6 +233,9 @@ const SearchOrder = () => {
     mobile: '',
     userId: '',
     officeID: officeId,
+    DateType: '',
+    dateFrom: moment(new Date()),
+    dateTo: moment(new Date()),
   };
 
   const { register, handleSubmit, errors, control, reset, getValues } = useForm(
@@ -244,17 +259,14 @@ const SearchOrder = () => {
 
   useEffect(() => {
     //console.log(viewPNR);
-    const actionType = utils.getItemFromStorage('searchOrderActionType');
+    const routeUrl = utils.getItemFromStorage('searchOrderRedirectRouteURL');
     // console.log(actionType);
     // alert(actionType);
-    if (viewPNR != null && actionType != '') {
+    if (viewPNR != null && routeUrl != '') {
       const error = utils.checkError(viewPNR);
       if (error == '') {
-        utils.setItemToStorage('searchOrderActionType', '');
-        if (actionType == 'view') history.push(routes.transaction.viewPNR);
-        else if (actionType == 'retieve')
-          history.push(routes.transaction.issueTicket);
-        else history.push(routes.transaction.viewBooking);
+        utils.setItemToStorage('searchOrderRedirectRouteURL', '');
+        history.push(routeUrl);
       } else dispatch(utils.showErrorBox(error));
     }
   }, [viewPNR]);
@@ -312,15 +324,45 @@ const SearchOrder = () => {
   const handelPaxInfoType = (e) => {
     alert(e);
   };
+  const handleInputChange = (id, value) => {
+    setFormData({
+      ...formData,
+      [id]: value,
+    });
+  };
+
   const onSubmit = (data) => {
     // console.log('data', data);
     setPage(1);
-    setReqeustJson(data);
+    //alert(formData.origin);
+    const originCode = formData.origin?.code ? formData.origin.code : '';
+    const destinationCode = formData.destination?.code
+      ? formData.destination.code
+      : '';
+
+    if (originCode != '' || destinationCode != '') {
+      if (originCode == destinationCode) {
+        dispatch(utils.showErrorBox('origin and destination can not be same'));
+        return;
+      }
+      if (originCode == '' || destinationCode == '') {
+        dispatch(utils.showErrorBox('please enter origin and destination'));
+        return;
+      }
+    }
+    setReqeustJson({
+      ...data,
+      origin: originCode,
+      destination: destinationCode,
+    });
     //setPage(1);
   };
 
   const handleReset = () => {
     reset(defaultValues);
+    setStateKey(!stateKey);
+    //this.refs[`autocomplete`].setState({ searchText: '' });
+    setFormData({ origin: '', destination: '' });
   };
 
   return (
@@ -375,37 +417,70 @@ const SearchOrder = () => {
             </Grid>
 
             <Grid item xs={3}>
-              <TextInput
+              <AutoSuggest
+                id="origin"
+                name="origin"
+                label="Origin:"
+                isSearchBar={false}
+                onSelectSuggestion={handleInputChange}
+                stateKey={stateKey}
+                // initialValue={initialDepartureAirport}
+              />
+              {/* <TextInput
                 label="Origin:"
                 name="origin"
                 register={register}
                 //ref={register({ maxLength: 3 })}
                 maxLength={3}
                 errors={errors}
-              />
+              /> */}
             </Grid>
 
             <Grid item xs={3}>
-              <TextInput
+              <AutoSuggest
+                id="destination"
+                label="Destination:"
+                isSearchBar={false}
+                // initialValue={initialDepartureAirport}
+                onSelectSuggestion={handleInputChange}
+                stateKey={stateKey}
+              />
+              {/* <TextInput
                 label="Destination:"
                 name="destination"
                 register={register}
                 errors={errors}
                 maxLength={3}
-              />
+              /> */}
             </Grid>
             <Grid item xs={6}>
               <SelectWithDatePickers
                 name={{
-                  select: 'booking',
+                  select: 'DateType',
                   datePicker1: 'dateFrom',
                   datePicker2: 'dateTo',
                 }}
                 data={SEARCH_DATE_TYPE}
+                defaultValues={{
+                  //select: SEARCH_DATE_TYPE[1],
+                  datePicker1: new Date(),
+                  datePicker2: new Date(),
+                }}
                 control={control}
+                register={register}
                 selectPlaceholder="Booking"
                 label="Date:"
                 isSearchable
+                defaultValues={{
+                  datePicker1: '',
+                  datePicker2: '',
+                }}
+                disableFutureDatesDatePicker1={
+                  getValues('DateType') === '' || getValues('DateType') === 'B'
+                }
+                disableFutureDatesDatePicker2={
+                  getValues('DateType') === '' || getValues('DateType') === 'B'
+                }
               />
             </Grid>
 
@@ -509,6 +584,7 @@ const SearchOrder = () => {
                 errors={errors}
                 width="auto"
                 placeholder="All"
+                isMulti
                 isSearchable
               />
             </Grid>

@@ -41,7 +41,7 @@ const SelectWithDatePickers = (props) => {
           borderRadius: 4,
         }}
       >
-        {useReactHookForm ?
+        {useReactHookForm ? (
           <MultiSelect
             className={`SelectWithDatePickers-container-select pl-20 pr-20
             ${disabled ? 'input-disabled' : ''}`}
@@ -57,7 +57,8 @@ const SelectWithDatePickers = (props) => {
             showValue={showValue}
             disabled={disabled}
             isSearchable
-          /> :
+          />
+        ) : (
           <MultiSelect
             className={`SelectWithDatePickers-container-select
             ${disabled ? 'input-disabled' : ''}`}
@@ -76,14 +77,17 @@ const SelectWithDatePickers = (props) => {
             useReactHookForm={useReactHookForm}
             onSelectChange={onSelectChange}
           />
-        }
+        )}
 
-        {useReactHookForm ?
+        {useReactHookForm ? (
           <DatePicker
             control={control}
             name={name?.datePicker1}
             className="SelectWithDatePickers-container-datePicker-1"
-          /> :
+            disableFutureDates={disableFutureDatesDatePicker1}
+            disablePastDates={disablePastDatesDatePicker1}
+          />
+        ) : (
           <DatePicker
             name={name?.datePicker1}
             className="SelectWithDatePickers-container-datePicker-1"
@@ -92,14 +96,17 @@ const SelectWithDatePickers = (props) => {
             disableFutureDates={disableFutureDatesDatePicker1}
             disablePastDates={disablePastDatesDatePicker1}
           />
-        }
+        )}
 
-        {useReactHookForm ?
+        {useReactHookForm ? (
           <DatePicker
             control={control}
             name={name?.datePicker2}
             className="SelectWithDatePickers-container-datePicker-2"
-          /> :
+            disableFutureDates={disableFutureDatesDatePicker2}
+            disablePastDates={disablePastDatesDatePicker2}
+          />
+        ) : (
           <DatePicker
             name={name?.datePicker2}
             className="SelectWithDatePickers-container-datePicker-2"
@@ -108,7 +115,7 @@ const SelectWithDatePickers = (props) => {
             disableFutureDates={disableFutureDatesDatePicker2}
             disablePastDates={disablePastDatesDatePicker2}
           />
-        }
+        )}
 
         {/* {errors[name] ? (
           <p className="error-message mt-6 font-primary-medium-16 mb-0">

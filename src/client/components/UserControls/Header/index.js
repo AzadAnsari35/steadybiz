@@ -1,3 +1,4 @@
+import { useHistory } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import MenuIcon from '@material-ui/icons/Menu';
 import FlightIcon from '@material-ui/icons/Flight';
@@ -10,7 +11,7 @@ import UserCreditLimit from 'Components/UserControls/UserCreditLimit';
 import Avatar from 'Widgets/Avatar';
 import colors from 'Constants/colors';
 import { useDispatch, useSelector } from 'react-redux';
-import { commonAction } from 'Actions/index';
+import { commonAction, commonActionWithoutApi } from 'Actions/index';
 import endpoint from 'Config/endpoint';
 import {
   getItemFromStorage,
@@ -22,14 +23,17 @@ import {
 import { LinearLoaderSecondary } from 'Widgets/';
 
 import './style.scss';
+import { utils } from 'Helpers/index';
 
 const Header = () => {
   const [showDrawer, setShowDrawer] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const history = useHistory();
   const dispatch = useDispatch();
 
-  const usersSignIn = useSelector((state) => state.usersSignIn?.items?.data);
+  const usersSignIn = useSelector(
+    (state) => state[endpoint.user.login.reducerName]?.items?.data
+  );
   // console.log('usersSignIn', usersSignIn);
 
   const creditLimitDetails = useSelector(
@@ -43,14 +47,24 @@ const Header = () => {
   const { userDto = {} } = usersSignIn || {};
 
   const handleClick = (event) => {
-    console.log('event.currentTarget', event.currentTarget);
+    //console.log('event.currentTarget', event.currentTarget);
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {
+    dispatch(
+      commonActionWithoutApi(
+        endpoint.user.login,
+        JSON.parse(utils.getItemFromStorage('userData'))
+      )
+    );
 
+    // const refershUrl = refreshRoutes(location.pathname);
+    // if (refershUrl != '') history.push(refershUrl);
+  }, [isAuthenticated && usersSignIn.items === undefined]);
   useEffect(() => {
     if (token && !!usersSignIn?.userDto?.officeId) {
       console.log(
