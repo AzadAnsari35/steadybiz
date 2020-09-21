@@ -31,12 +31,9 @@ import {
 import './style.scss';
 
 const initialState = {
-  ofId: '',
-  currencyCode: '',
   amountUpdated: '',
   paymentType: '',
   paymentDetailDesc: '',
-  updatedByUserId: '',
 };
 
 const headerData = [
@@ -107,14 +104,9 @@ const updateEndpoint = () => {
 };
 
 const OfficeCredit = () => {
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    reset,
-    setValue,
-  } = useForm();
+  const { register, handleSubmit, errors, control, reset, setValue } = useForm({
+    initialState,
+  });
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -135,7 +127,6 @@ const OfficeCredit = () => {
   });
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(5);
-  const firstPageUpdate = useRef(true);
 
   let userId = utils.getItemFromStorage('userId');
 
@@ -186,6 +177,7 @@ const OfficeCredit = () => {
             isToastVisible: true,
           })
         );
+        reset(initialState);
       }
     }
   }, [updateRes]);

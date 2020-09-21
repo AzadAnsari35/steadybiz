@@ -390,8 +390,8 @@ const BookingReport = () => {
       })
     );
   };
-  
-  const getUserNameList = officeId => {
+
+  const getUserNameList = (officeId) => {
     const userNames = useDropDownApi(endpoint.office.searchUserDropDown, {
       ofid: officeId,
     });
@@ -458,14 +458,14 @@ const BookingReport = () => {
     });
   };
 
-  const handleChangeOfficeClick = officeId => {
+  const handleChangeOfficeClick = (officeId) => {
     console.log('officeId::: ', officeId);
     setShowChangeOffice();
     setFormData({
       ...formData,
       officeId,
     });
-  }
+  };
 
   const callSearch = (page) => {
     //console.log('hi', requestJson);
@@ -626,6 +626,15 @@ const BookingReport = () => {
                 />
               </Grid>
               <Grid item xs={3}>
+                <TextInput
+                  label="Ticket No.:"
+                  id="ticketNo"
+                  name="officeId"
+                  useReactHookForm={false}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid item xs={3}>
                 <MultiSelect
                   label="Booking Category:"
                   id="bookingCategory"
@@ -667,6 +676,17 @@ const BookingReport = () => {
                   onSelectChange={handleSelectOption}
                 />
               </Grid>
+
+              <Grid item xs={3}>
+                <TextInput
+                  label="Office Name:"
+                  id="officeName"
+                  name="officeName"
+                  useReactHookForm={false}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+
               {console.log('formData::: ', formData)}
               <Grid item xs={3}>
                 <TextInput
@@ -796,9 +816,7 @@ const BookingReport = () => {
         width={1150}
         className="BookingReport-CustomDrawer"
       >
-        <ChangeOffice
-          onOfficeClick={handleChangeOfficeClick}
-        />
+        <ChangeOffice onOfficeClick={handleChangeOfficeClick} />
       </CustomDrawer>
     </>
   );

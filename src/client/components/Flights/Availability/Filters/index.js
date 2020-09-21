@@ -27,6 +27,8 @@ import {
   SwitchTab,
   Text,
 } from 'Widgets';
+import AgencyInformation from 'Components/Common/AgencyInformation';
+import RunTimeMarkup from 'Components/Common/RunTimeMarkup';
 
 import './style.scss';
 
@@ -527,8 +529,8 @@ const Filters = (props) => {
         {/* <span onClick={handleResetAll}>reset all</span> */}
       </div>
       <div className="Filters-section d-flex justify-content-between">
-        <PrimaryAccordion text="Agency">
-          <div>Agency</div>
+        <PrimaryAccordion text="Agency Information">
+          <AgencyInformation />
         </PrimaryAccordion>
       </div>
 
@@ -853,6 +855,11 @@ const Filters = (props) => {
           </PrimaryAccordion>
         </div>
       )}
+      <div className="Filters-section d-flex justify-content-between">
+        <PrimaryAccordion text="Run Time Markup">
+          <RunTimeMarkup />
+        </PrimaryAccordion>
+      </div>
     </div>
   );
 };

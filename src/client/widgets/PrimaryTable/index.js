@@ -72,7 +72,7 @@ const PrimaryTable = (props) => {
     //       ? hideKeys.length - index - 1
     //       : index - hideKeys.length - 1
     //     : index;
-    return columnAlignments[index];
+    return columnAlignments && columnAlignments[index];
   };
 
   const applyStyle = (index) => {
@@ -188,11 +188,7 @@ const PrimaryTable = (props) => {
                     bodyData.data.map((body, ind) => (
                       <TableRow key={ind}>
                         {AddElement?.first && (
-                          <TableCell
-                            component="td"
-                            scope="row"
-                            align={setAlignment(0)}
-                          >
+                          <TableCell component="td" scope="row" align="center">
                             {React.cloneElement(AddElement.first, {
                               rowNumber: ind + 1,
                             })}
