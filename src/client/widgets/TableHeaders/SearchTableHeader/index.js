@@ -12,7 +12,7 @@ const SearchTableHeader = (props) => {
       <div className="font-primary-semibold-18">
         CREDIT LIMIT BREAKUP DETAILS
       </div>
-      <div className="d-flex align-items-center">
+      {/* <div className="d-flex align-items-center">
         <div className="d-flex align-items-center pr-30">
           <span className="font-primary-medium-14 pr-12">Search:</span>
           <TextInput
@@ -24,7 +24,7 @@ const SearchTableHeader = (props) => {
         <IconWithBackground className="px-6" bgColor={colors.gulfBlue}>
           <SearchIcon style={{ color: colors.white }} />
         </IconWithBackground>
-      </div>
+      </div> */}
     </div>
   );
 };

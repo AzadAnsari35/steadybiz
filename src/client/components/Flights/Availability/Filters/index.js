@@ -526,6 +526,12 @@ const Filters = (props) => {
         <Link className="ml-auto" text="Reset All" />
         {/* <span onClick={handleResetAll}>reset all</span> */}
       </div>
+      <div className="Filters-section d-flex justify-content-between">
+        <PrimaryAccordion text="Agency">
+          <div>Agency</div>
+        </PrimaryAccordion>
+      </div>
+
       {!!priceRange && (
         <div className="Filters-section d-flex justify-content-between">
           <PrimaryAccordion text="Price" defaultOpen>

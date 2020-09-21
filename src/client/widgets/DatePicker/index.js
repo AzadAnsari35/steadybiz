@@ -41,15 +41,15 @@ const DatePicker = (props) => {
   //     setSelectedDate(value);
   //   }, [value]);
 
-  const [selectedDate, setSelectedDate] = useState();
+  // const [selectedDate, setSelectedDate] = useState();
 
-  useEffect(() => {
-    setSelectedDate(value);
-  }, [value]);
+  // useEffect(() => {
+  //   setSelectedDate(value);
+  // }, [value]);
 
   const handleDateChange = (date) => {
     const formattedDate = moment(date).format('YYYY-MM-DDTHH:MM:SS');
-    setSelectedDate(formattedDate);
+    // setSelectedDate(formattedDate);
     onChange(name, formattedDate);
   };
 
@@ -126,7 +126,7 @@ const DatePicker = (props) => {
             margin="normal"
             name={name}
             format="dd-MMM-yyyy"
-            value={selectedDate || ''}
+            value={value || ''}
             autoOk
             disablePast={!!disablePastDates}
             disableFuture={!!disableFutureDates}

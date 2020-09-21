@@ -151,7 +151,7 @@ const PopoverAction = (props) => {
           isSearchAgency ? 'selectedOffice' : 'selectedAgency',
           ''
         );
-
+        dispatch(commonActionUpdate(endpoint.office.creditLimitHistory, null));
         break;
       }
 
