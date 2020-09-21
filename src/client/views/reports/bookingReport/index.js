@@ -575,6 +575,15 @@ const BookingReport = () => {
                 />
               </Grid>
               <Grid item xs={3}>
+                <TextInput
+                  label="Ticket No.:"
+                  id="ticketNo"
+                  name="officeId"
+                  useReactHookForm={false}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid item xs={3}>
                 <MultiSelect
                   label="Booking Category:"
                   id="bookingCategory"
@@ -616,6 +625,17 @@ const BookingReport = () => {
                   onSelectChange={handleSelectOption}
                 />
               </Grid>
+
+              <Grid item xs={3}>
+                <TextInput
+                  label="Office Name:"
+                  id="officeName"
+                  name="officeName"
+                  useReactHookForm={false}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+
               <Grid item xs={3}>
                 <TextInput
                   label="Office ID:"
