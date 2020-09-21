@@ -430,7 +430,10 @@ const FlightItineraryCard = (props) => {
               </div>
             </div>
           </div>
-          {/* <div className="FlightItineraryCard-deals">Deals</div> */}
+          <div className="FlightItineraryCard-deals">
+            <img src={utils.displayImage('crown.svg')} />
+            <span className="font-primary-semibold-14">DEAL</span>
+          </div>
           <div className="FlightItineraryCard-bottom d-flex justify-content-between">
             <div className="FlightItineraryCard-bottom__leftAction d-flex align-items-center cursor-pointer">
               <AccountBalanceWalletIcon />

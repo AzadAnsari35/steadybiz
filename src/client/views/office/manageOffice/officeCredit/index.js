@@ -68,7 +68,9 @@ const response = {
 
 const LinkAction = (props) => {
   const { rowNumber } = props;
+
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const path = location.pathname;
 
@@ -76,6 +78,11 @@ const LinkAction = (props) => {
     path,
     routes.agency.manageCreditLimit
   );
+
+  const handleClick = () => {
+    utils.setItemToStorage('selectedCreditHistory', rowNumber);
+    dispatch(commonActionUpdate(endpoint.office.creditLimitBreakup, null));
+  };
 
   return (
     <Link
@@ -85,7 +92,7 @@ const LinkAction = (props) => {
           ? routes.agency.creditLimitBreakup
           : routes.office.creditLimitBreakup
       }
-      onClick={utils.setItemToStorage('selectedCreditHistory', rowNumber)}
+      onClick={() => handleClick()}
     >
       Details
     </Link>
@@ -100,9 +107,14 @@ const updateEndpoint = () => {
 };
 
 const OfficeCredit = () => {
-  const { register, handleSubmit, errors, control, reset, setValue } = useForm(
-    {}
-  );
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    reset,
+    setValue,
+  } = useForm();
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -117,7 +129,10 @@ const OfficeCredit = () => {
 
   const [updateRes, postData] = updateEndpoint();
 
-  const [requestJson, setReqeustJson] = useState(null);
+  const [dates, setDates] = useState({
+    dateFrom: moment().subtract(1, 'months'),
+    dateTo: moment().subtract(1, 'days'),
+  });
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(5);
   const firstPageUpdate = useRef(true);
@@ -185,8 +200,6 @@ const OfficeCredit = () => {
     dispatch(commonAction(endpoint.master.settlementPlans));
     reset({
       minimumCreditLimit: minimumBalance,
-      dateFrom: moment().subtract(1, 'months'),
-      dateTo: moment().subtract(1, 'days'),
     });
   }, []);
 
@@ -201,14 +214,6 @@ const OfficeCredit = () => {
   };
 
   useEffect(() => {
-    if (requestJson !== null) {
-      callSearch(page);
-    }
-
-    // return dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
-  }, [requestJson]);
-
-  useEffect(() => {
     callSearch(page);
   }, [page]);
 
@@ -216,7 +221,7 @@ const OfficeCredit = () => {
     try {
       dispatch(
         commonAction(endpoint.office.creditLimitHistory, {
-          ...requestJson,
+          ...dates,
           page: page - 1,
           size,
           ofId: selectedItem.ofId,
@@ -227,6 +232,11 @@ const OfficeCredit = () => {
     }
   };
 
+  const handleDateChange = (name, value) => {
+    console.log('name', name, value);
+    setDates({ ...dates, [name]: value });
+  };
+
   const onSubmit = (data) => {
     let { dateFrom, dateTo, amountUpdated, ...rest } = data;
 
@@ -234,17 +244,17 @@ const OfficeCredit = () => {
 
     postData({
       ...rest,
-      amountUpdated: parseInt(amountUpdated),
+      amountUpdated: parseFloat(amountUpdated),
       ofId: selectedItem.ofId,
       currencyCode: selectedItem.currCode,
       updatedByUserId: userId,
     });
   };
 
-  const handleSearch = (data) => {
-    const { dateFrom, dateTo } = data;
-    setReqeustJson({ dateFrom, dateTo });
+  const handleSearch = () => {
+    const { dateFrom, dateTo } = dates;
     setPage(1);
+    callSearch(page);
 
     console.log('dates', dateFrom, dateTo);
   };
@@ -338,7 +348,7 @@ const OfficeCredit = () => {
                 paymentOptions.map(
                   (c, i, arr) =>
                     `${settlementPlans.findItem(c).primaryLabel}${
-                      arr[i + 1] ? ', ' : ''
+                      arr[i + 1] ? ' | ' : ''
                     }`
                 )}
             </div>
@@ -371,6 +381,9 @@ const OfficeCredit = () => {
                   errors={errors}
                   width="auto"
                   isSearchable
+                  validation={{
+                    required: 'Please enter the payment mode.',
+                  }}
                 />
               </Grid>
               <Grid item xs={3}>
@@ -379,6 +392,9 @@ const OfficeCredit = () => {
                   register={register}
                   errors={errors}
                   label="Deposit Amount:"
+                  validation={{
+                    required: 'Please enter the deposit amount.',
+                  }}
                   type="number"
                 />
               </Grid>
@@ -388,6 +404,9 @@ const OfficeCredit = () => {
                   register={register}
                   errors={errors}
                   label="Deposit Description:"
+                  validation={{
+                    required: 'Please enter the deposit description.',
+                  }}
                 />
               </Grid>
             </Grid>
@@ -402,7 +421,9 @@ const OfficeCredit = () => {
           header={
             <DateRangeTableHeader
               control={control}
-              handleSearch={handleSubmit(handleSearch)}
+              handleSearch={handleSearch}
+              dates={dates}
+              handleDateChange={handleDateChange}
             />
           }
           headerData={headerData}
@@ -413,7 +434,7 @@ const OfficeCredit = () => {
             'center',
             'center',
             'right',
-            'left',
+            'right',
             'right',
             'right',
             'center',

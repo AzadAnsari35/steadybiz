@@ -27,6 +27,7 @@ const PrimaryTable = (props) => {
     handlePage,
     tableStyling,
     headerInArrOfObjFormat = false,
+    showPagination = true,
   } = props;
 
   const [lowOffset, setLowOffset] = React.useState(1);
@@ -37,7 +38,9 @@ const PrimaryTable = (props) => {
   // console.log('page', page);
 
   useEffect(() => {
-    setHighOffset(count > size ? size : count);
+    showPagination
+      ? setHighOffset(count > size ? size : count)
+      : setHighOffset(count);
     setLowOffset(1);
   }, [count]);
 
@@ -185,7 +188,11 @@ const PrimaryTable = (props) => {
                     bodyData.data.map((body, ind) => (
                       <TableRow key={ind}>
                         {AddElement?.first && (
-                          <TableCell component="td" scope="row" align="center">
+                          <TableCell
+                            component="td"
+                            scope="row"
+                            align={setAlignment(0)}
+                          >
                             {React.cloneElement(AddElement.first, {
                               rowNumber: ind + 1,
                             })}
@@ -203,7 +210,11 @@ const PrimaryTable = (props) => {
                                   headerInArrOfObjFormat
                                     ? headerData.find((item) => item.id === key)
                                         ?.alignment
-                                    : setAlignment(index - hideKeys.length)
+                                    : setAlignment(
+                                        index -
+                                          hideKeys.length +
+                                          (AddElement?.first ? 1 : 0)
+                                      )
                                 }
                                 style={
                                   index === imageIndex
@@ -252,7 +263,7 @@ const PrimaryTable = (props) => {
               }
 
               <div>
-                {count > size ? (
+                {count > size && showPagination ? (
                   <Pagination
                     count={Math.ceil(count / size)}
                     page={page}

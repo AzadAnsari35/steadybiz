@@ -209,6 +209,7 @@ const CreditLimitBreakup = () => {
           page: page - 1,
           size,
           ofId: selectedItem.ofId,
+          startDate: selectedCreditHistory.date,
         })
       );
     } catch (err) {
@@ -311,6 +312,7 @@ const CreditLimitBreakup = () => {
             bodyData={creditLimitBreakup.data}
             count={creditLimitBreakup.data.count}
             size={5}
+            showPagination={false}
             columnAlignments={[
               'center',
               'center',
@@ -324,6 +326,7 @@ const CreditLimitBreakup = () => {
               'center',
               'center',
               'right',
+              'right',
             ]}
             statusIndex={6}
             AddElement={{ first: <PopoverAction /> }}
@@ -335,7 +338,7 @@ const CreditLimitBreakup = () => {
               {},
               {},
               {},
-              { borderRight: `1px solid ${colors.mercury}` },
+              { borderRight: `1px solid ${colors.silverChalice1}` },
             ]}
           />
         )}
