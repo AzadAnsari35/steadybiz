@@ -20,5 +20,5 @@ export const refreshRoutes = (path) => {
     case transaction.searchOrder:
       return transaction.searchOrder;
   }
-  return flight.search;
+  return;
 };

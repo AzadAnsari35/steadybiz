@@ -1,16 +1,16 @@
-@import "./../../styles/functions";
+@import './../../styles/functions';
 
-$root: ".CustomDrawer";
+$root: '.CustomDrawer';
 
 #{$root} {
   padding: 0 20px 20px 38px;
   padding-top: calculateRem(100px);
   box-sizing: border-box;
-  &-header {
+  &-divider {
+    margin-top: 8px;
     margin-bottom: 30px;
   }
   &-title {
     text-transform: uppercase;
-
   }
 }

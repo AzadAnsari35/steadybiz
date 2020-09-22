@@ -815,6 +815,7 @@ const BookingReport = () => {
         onCloseClick={setShowChangeOffice}
         width={1150}
         className="BookingReport-CustomDrawer"
+        showBottomBorder={true}
       >
         <ChangeOffice onOfficeClick={handleChangeOfficeClick} />
       </CustomDrawer>
