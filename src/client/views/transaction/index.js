@@ -1,5 +1,5 @@
 //import viewOrder from './viewOrder';
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import Grid from '@material-ui/core/Grid';
@@ -22,7 +22,7 @@ import FlightDetails from 'Components/Flights/Availability/FlightDetails';
 import FareDetailsCard from 'Components/Common/FareDetailsCard';
 import OrderDetails from 'Components/Common/OrderDetails';
 
-import { Alert, IconWithBackground, Panel, Toast } from 'Widgets';
+import { Alert, IconWithBackground, Panel, Toast, Button } from 'Widgets';
 import MailIcon from 'Widgets/Icons/MailIcon';
 import SearchAirplaneIcon from 'Widgets/Icons/SearchAirplaneIcon';
 import endpoint from 'Config/endpoint';
@@ -43,9 +43,10 @@ const Transaction = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [issueTicketResponse, createIssueTicketResponse] = createEndpoint();
+  const [cancelOrderResponse, setCancelOrderResponse] = createEndpoint();
   const [retrieveOrder, setRetrieveOrder] = createEndpoint();
   const [showAlert, setShowAlert] = useState(true);
-
+  const alertRef = useRef(null);
   // let transaction = {};
   // transaction.items = viewOrder;
 
@@ -64,6 +65,8 @@ const Transaction = () => {
     pathname.toUpperCase() === routes.transaction.issueTicket.toUpperCase();
   const isBooking =
     pathname.toUpperCase() === routes.transaction.viewBooking.toUpperCase();
+  let isCancelPnr =
+    pathname.toUpperCase() === routes.transaction.cancelPNR.toUpperCase();
   const refreshOrder = (orderNumber) => {
     setRetrieveOrder(
       {
@@ -94,6 +97,7 @@ const Transaction = () => {
   const panelsInitialState = {
     flightDetailsPanel: true,
     passengerDetailsPanel: true,
+    //cancelationDetailsPanel: true,
     paymentDetailsPanel: true,
   };
 
@@ -135,9 +139,25 @@ const Transaction = () => {
       [id]: value ? value : !panelsState[id],
     });
   };
-
+  useEffect(() => {
+    if (cancelOrderResponse) {
+      const error = utils.checkError(cancelOrderResponse);
+      if (error != '') {
+        //alert(issueTicketResponse.error.message);
+        dispatch(utils.showErrorBox(error));
+      } else {
+        dispatch(utils.showSuccessBox('PNR cancelled successfully'));
+        setShowAlert(false);
+      }
+    }
+  }, [cancelOrderResponse]);
   const handleCancelClick = () => {
     // history.push("/search");
+    // alert(sourcePnr);
+    setCancelOrderResponse(
+      { orderNumber: transactionData.orderNo },
+      endpoint.orders.cancelOrder
+    );
   };
 
   const handleConfirmClick = () => {
@@ -211,20 +231,22 @@ const Transaction = () => {
       )}
       <div className="transaction layout-wrapper">
         <Grid item xs={12}>
-          {!!transactionData.airPricing && showAlert && (
-            <div className="alert-section mb-66">
+          {!!transactionData.airPricingReValidate && showAlert && (
+            <div className="alert-section mb-66" ref={alertRef}>
               <Alert
-                danger={transactionData.airPricing.showRedBox}
+                danger={transactionData.airPricingReValidate.showRedBox}
                 className="mb-32"
                 alertTitle="change alert"
                 alertMessage={
-                  transactionData.airPricing.showMessage &&
-                  (transactionData.airPricing.Message ||
-                    transactionData.airPricing.message)
+                  transactionData.airPricingReValidate.showMessage &&
+                  (transactionData.airPricingReValidate.Message ||
+                    transactionData.airPricingReValidate.message)
                 }
                 showSecondaryAction
                 secondaryActionText="cancel"
-                showPrimaryAction={transactionData.airPricing.showConfirmButton}
+                showPrimaryAction={
+                  transactionData.airPricingReValidate.showConfirmButton
+                }
                 primaryActionText="confirm"
                 onCancelClick={handleCancelClick}
                 onConfirmClick={handleConfirmClick}
@@ -312,6 +334,15 @@ const Transaction = () => {
                   flightSegments={flightSegments}
                 />
               </Panel>
+              {isCancelPnr && (
+                <Grid item xs={3}>
+                  <Button
+                    text="Cancel PNR"
+                    className="width-100 mt-12"
+                    onClick={handleCancelClick}
+                  />
+                </Grid>
+              )}
               {/* <Hidden only="md"> */}
               <Hidden mdUp={true}>
                 <div className="fareDetails-mob">

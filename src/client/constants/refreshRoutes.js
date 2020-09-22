@@ -1,5 +1,5 @@
 import routes from './routes';
-
+import { isDevelopment } from 'Helpers/utils';
 export const refreshRoutes = (path) => {
   //console.log(path);
   const common = routes.common;
@@ -14,8 +14,11 @@ export const refreshRoutes = (path) => {
     case transaction.issueTicket.toUpperCase():
     case transaction.viewPNR.toUpperCase():
     case transaction.viewOrder.toUpperCase():
+    case transaction.cancelPNR.toUpperCase():
       //console.log('hii');
       return transaction.searchOrder;
+    case transaction.searchOrder:
+      return transaction.searchOrder;
   }
-  return;
+  return isDevelopment() ? path : flight.search;
 };

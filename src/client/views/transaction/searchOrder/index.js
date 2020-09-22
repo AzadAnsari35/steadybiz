@@ -110,6 +110,19 @@ const PopoverAction = (props) => {
 
         break;
       }
+      case 'cancel': {
+        const securityMessage = utils.checkSecurityGroup(
+          securityOptionConstant.transaction.viewOrder
+        );
+        if (securityMessage !== '') {
+          dispatch(utils.showErrorBox(securityMessage));
+          return;
+        }
+
+        viewOrder(orderNo, 'retieve', routes.transaction.cancelPNR);
+
+        break;
+      }
       case 'issue': {
         const securityMessage = utils.checkSecurityGroup(
           securityOptionConstant.flights.issueTicket
@@ -187,6 +200,16 @@ const PopoverAction = (props) => {
               name="viewBooking"
             >
               View Booking{' '}
+            </div>
+          )}
+          {actualStatus === 'HOLD_PNR' && (
+            <div
+              className="font-primary-regular-14 cursor-pointer"
+              onClick={handleClick}
+              name="cancel"
+              actualStatus={actualStatus}
+            >
+              Cancel PNR{' '}
             </div>
           )}
         </div>

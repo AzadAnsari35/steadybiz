@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import CachedIcon from '@material-ui/icons/Cached';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ChangeOffice from 'Components/Offices/ChangeOffice';
-
+import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 import bookingReportData from './bookingReport.json';
 import {
   BOOKING_CATEGORY,
@@ -197,45 +197,11 @@ const hideKeys = [
   'vatGst',
   'paymentMode',
 ];
-
-const PopoverAction = (props) => {
-  const [showPopover, setShowPopover] = useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-    setShowPopover(true);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-    setShowPopover(false);
-  };
-
-  return (
-    <>
-      <img
-        src={displayImage('ParentGroupIcon.svg')}
-        className="cursor-pointer"
-        onClick={handlePopoverOpen}
-      />
-      <SimplePopover
-        open={showPopover}
-        handleClose={handlePopoverClose}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-      >
-        <div>Popover</div>
-      </SimplePopover>
-    </>
-  );
+const createEndpoint = () => {
+  return useAsyncEndpoint((endpoint, data) => ({
+    _endpoint: endpoint,
+    data,
+  }));
 };
 
 const BookingReport = () => {
@@ -243,14 +209,21 @@ const BookingReport = () => {
   const [page, setPage] = useState(1);
   const [size] = useState(10);
   const firstPageUpdate = useRef(true);
+  const [stateKey, setStateKey] = useState(true);
   const [showChangeOffice, setShowChangeOffice] = useToggle(false);
 
-  let history = useHistory();
   let dispatch = useDispatch();
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
   const {
     userDto: {
-      officeDto: { officeId, officeName, officeLevel, countryCode, cityCode },
+      officeDto: {
+        ofId,
+        officeId,
+        officeName,
+        officeLevel,
+        countryCode,
+        cityCode,
+      },
     },
   } = userData;
 
@@ -258,10 +231,10 @@ const BookingReport = () => {
     bookingCategory: '',
     officeId,
   };
-  const [defaultFormData, setDefaultFormData] = useState({
-    countryPos: null,
-    cityPos: null,
-  });
+  // const [defaultFormData, setDefaultFormData] = useState({
+  //   countryPos: null,
+  //   cityPos: null,
+  // });
   const [formData, setFormData] = useState({
     reportType: {},
     startDate: '',
@@ -274,85 +247,90 @@ const BookingReport = () => {
     bookingCategory: {},
     officeChannel: {},
     officeType: {},
-    officeId: '',
+    officeId: officeId,
+    ofId: ofId,
     userName: {},
-    countryPos: {},
-    cityPos: {},
+    countryPos: null,
+    cityPos: null,
     transactionStatus: {},
   });
 
   const { register, handleSubmit, reset } = useForm();
-
-  const ofId = utils.getItemFromStorage('officeId');
-
+  //const ofId = utils.getItemFromStorage('officeId');
   const searchResult = useSelector(
     (state) => state[endpoint.orders.searchOrders.reducerName]?.items
   );
-  const viewPNR = useSelector(
-    (state) => state[endpoint.orders.viewOrder.reducerName]?.items
-  );
-
   const countriesList = useDropDown(
     endpoint.master.countries,
     dropDownParam.countries,
     'masterCountries'
   );
-
   const citiesList = useSelector(
     (state) => state.masterCities?.items?.data?.data
   );
 
-  const [cityList, setCityList] = useState(citiesList);
-
-  const userNames = useDropDownApi(endpoint.office.searchUserDropDown, {
-    ofid: officeId,
-  });
-  const [userNameList, setUserNameList] = useState(userNames);
+  const [userNameList, setUserNameList] = createEndpoint();
+  const userNameListData = userNameList
+    ? userNameList.status
+      ? userNameList?.data
+      : []
+    : [];
   const [hiddenKeys, setHiddenKeys] = useState(hideKeys);
-
   const defaultTableFieldsSelection = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
     (item) => !hiddenKeys.includes(item.value)
   );
   const [fieldSelection, setFieldSelection] = useState(
     defaultTableFieldsSelection
   );
-
+  //console.log('hi', userNameList?.data);
   useEffect(() => {
-    getCitiesList(countryCode);
-    // getUserNameList(officeId);
-  }, []);
-
+    defaultCountry();
+  }, [countriesList.dropDownItems]);
   useEffect(() => {
-    if (countriesList.dropDownItems !== null && !!citiesList) {
-      setDefaultFormData({
-        ...defaultFormData,
-        countryPos: countriesList.dropDownItems.findItem(countryCode),
-        cityPos: citiesList.findItem(cityCode),
-      });
-      setCityList(citiesList);
+    console.log('abc', formData.countryPos);
+    if (formData.countryPos) {
+      getCitiesList(formData.countryPos.value);
     }
-  }, [countriesList.dropDownItems, !!citiesList]);
-
+  }, [formData.countryPos]);
   useEffect(() => {
-    setCityList(citiesList);
+    defaultCity();
   }, [citiesList]);
 
+  const getCitiesList = (countryCode) => {
+    if (countryCode != undefined)
+      dispatch(
+        commonAction(endpoint.master.cities, {
+          countryCode,
+        })
+      );
+  };
+
   useEffect(() => {
-    //console.log(viewPNR);
-    const actionType = utils.getItemFromStorage('searchOrderActionType');
-    // console.log(actionType);
-    // alert(actionType);
-    if (viewPNR != null && actionType != '') {
-      const error = utils.checkError(viewPNR);
-      if (error == '') {
-        utils.setItemToStorage('searchOrderActionType', '');
-        if (actionType == 'view') history.push(routes.transaction.viewPNR);
-        else if (actionType == 'retieve')
-          history.push(routes.transaction.issueTicket);
-        else history.push(routes.transaction.viewBooking);
-      } else dispatch(utils.showErrorBox(error));
-    }
-  }, [viewPNR]);
+    // setUserNameList(endpoint.office.searchUserDropDown, {
+    //   ofid: ofId,
+    // });
+    getCitiesList(countryCode);
+    getUserNameList(ofId);
+  }, []);
+  useEffect(() => {
+    // console.log('formData.officeId::: ', formData.officeId);
+    getUserNameList(formData.ofId);
+  }, [formData.officeId]);
+
+  const getUserNameList = (officeId) => {
+    setUserNameList(endpoint.office.searchUserDropDown, {
+      ofid: officeId,
+    });
+  };
+  const handleChangeOfficeClick = (officeDetail) => {
+    // console.log('officeId::: ', officeDetail);
+    setShowChangeOffice();
+    setFormData({
+      ...formData,
+      officeId: officeDetail.officeId,
+      ofId: officeDetail.ofId,
+    });
+  };
 
   useEffect(() => {
     if (requestJson !== null) {
@@ -378,26 +356,6 @@ const BookingReport = () => {
     callSearch(page);
   }, [page]);
 
-  useEffect(() => {
-    console.log('formData.officeId::: ', formData.officeId);
-    // getUserNameList(formData.officeId);
-  }, [formData.officeId]);
-
-  const getCitiesList = (countryCode) => {
-    dispatch(
-      commonAction(endpoint.master.cities, {
-        countryCode,
-      })
-    );
-  };
-
-  const getUserNameList = (officeId) => {
-    const userNames = useDropDownApi(endpoint.office.searchUserDropDown, {
-      ofid: officeId,
-    });
-    setUserNameList(userNames);
-  };
-
   const handlePage = (newPage) => {
     // console.log(newPage);
     setPage(newPage);
@@ -416,16 +374,7 @@ const BookingReport = () => {
       setFieldSelection(value);
       setHiddenKeys(updatedHiddenKeys);
     }
-    if (id === 'countryPos') {
-      const { countryPos } = formData;
-      if (countryPos.value !== value.value) {
-        setDefaultFormData({
-          ...defaultFormData,
-          cityPos: null,
-        });
-        getCitiesList(value.value);
-      }
-    }
+
     // if (value !== "") {
     // 	setErrorData({
     // 		...errorData,
@@ -458,15 +407,6 @@ const BookingReport = () => {
     });
   };
 
-  const handleChangeOfficeClick = (officeId) => {
-    console.log('officeId::: ', officeId);
-    setShowChangeOffice();
-    setFormData({
-      ...formData,
-      officeId,
-    });
-  };
-
   const callSearch = (page) => {
     //console.log('hi', requestJson);
     try {
@@ -488,9 +428,45 @@ const BookingReport = () => {
     setReqeustJson(data);
     //setPage(1);
   };
-
+  const defaultCountry = () => {
+    if (countriesList.dropDownItems !== null && countryCode != '') {
+      setFormData({
+        ...formData,
+        countryPos: countriesList.dropDownItems.findItem(countryCode),
+        cityPos: citiesList && citiesList.findItem(cityCode),
+      });
+    }
+  };
+  const defaultCity = () => {
+    if (
+      citiesList &&
+      formData.countryPos &&
+      formData.countryPos.value === countryCode &&
+      cityCode != ''
+    )
+      setFormData({
+        ...formData,
+        cityPos: citiesList.findItem(cityCode),
+      });
+    else {
+      setFormData({
+        ...formData,
+        cityPos: null,
+      });
+    }
+  };
   const handleReset = () => {
     reset(defaultValues);
+    setStateKey(!stateKey);
+    setFormData({
+      ...formData,
+      officeId: officeId,
+      ofId: ofId,
+      origin: '',
+      destination: '',
+    });
+    //defaultCity();
+    defaultCountry();
   };
 
   return (
@@ -575,6 +551,7 @@ const BookingReport = () => {
                   label="Origin:"
                   isSearchBar={false}
                   // initialValue={initialDepartureAirport}
+                  stateKey={stateKey}
                   onSelectSuggestion={handleInputChange}
                 />
               </Grid>
@@ -591,6 +568,7 @@ const BookingReport = () => {
                   label="Destination:"
                   isSearchBar={false}
                   // initialValue={initialDepartureAirport}
+                  stateKey={stateKey}
                   onSelectSuggestion={handleInputChange}
                 />
               </Grid>
@@ -703,7 +681,7 @@ const BookingReport = () => {
                   label="User Name:"
                   id="userName"
                   name="userName"
-                  options={userNameList.dropDownItems}
+                  options={userNameListData}
                   showBorder
                   changeStyle
                   width="auto"
@@ -719,9 +697,7 @@ const BookingReport = () => {
                   name="countryPos"
                   options={countriesList.dropDownItems}
                   defaultValue={
-                    !!defaultFormData.countryPos
-                      ? defaultFormData.countryPos
-                      : null
+                    formData.countryPos ? formData.countryPos : null
                   }
                   showBorder
                   changeStyle
@@ -736,10 +712,10 @@ const BookingReport = () => {
                   label="City POS:"
                   id="cityPos"
                   name="cityPos"
-                  options={(cityList && utils.sortObjectArray(cityList)) || []}
-                  defaultValue={
-                    !!defaultFormData.cityPos ? defaultFormData.cityPos : null
+                  options={
+                    (citiesList && utils.sortObjectArray(citiesList)) || []
                   }
+                  defaultValue={formData.cityPos ? formData.cityPos : null}
                   showBorder
                   changeStyle
                   width="auto"
@@ -799,9 +775,9 @@ const BookingReport = () => {
             }}
             bodyData={bookingReportData.data.data}
             page={page}
-            AddElement={{
-              first: <PopoverAction />,
-            }}
+            // AddElement={{
+            //   first: <PopoverAction />,
+            // }}
             count={bookingReportData.data.count}
             size={size}
             handlePage={handlePage}
