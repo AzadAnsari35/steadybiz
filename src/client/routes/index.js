@@ -284,6 +284,11 @@ const Routes = () => (
     />
     <PrivateRoute
       exact
+      path={routes.transaction.cancelPNR}
+      component={Transaction}
+    />
+    <PrivateRoute
+      exact
       path={routes.transaction.viewBooking}
       component={Transaction}
     />

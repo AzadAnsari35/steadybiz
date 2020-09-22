@@ -9,6 +9,11 @@ export default {
       actionType: actionTypeConstant.orders.searchOrders,
       reducerName: 'ordersSearchOrders',
     },
+    cancelOrder: {
+      url: config.api.url + '/api/v1/orders/cancelOrder',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+    },
     viewOrder: {
       url: config.api.url + '/api/v1/orders/viewOrder',
       isAuth: true,
