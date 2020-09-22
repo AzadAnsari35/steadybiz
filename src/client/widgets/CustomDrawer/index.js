@@ -17,6 +17,7 @@ const CustomDrawer = (props) => {
     onCloseClick,
     width,
     className,
+    showBottomBorder = false,
   } = props;
 
   return (
@@ -43,6 +44,10 @@ const CustomDrawer = (props) => {
             <CloseIcon style={{ color: colors.red }} />
           </IconWithBackground>
         </div>
+        {showBottomBorder && (
+          <div className="CustomDrawer-divider horizontal-grey-divider"></div>
+        )}
+
         {children}
       </div>
     </Drawer>

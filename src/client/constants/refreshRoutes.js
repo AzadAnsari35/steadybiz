@@ -17,5 +17,5 @@ export const refreshRoutes = (path) => {
       //console.log('hii');
       return transaction.searchOrder;
   }
-  return flight.search;
+  return;
 };

@@ -100,25 +100,25 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           link: '/agency/subAgent',
         },
         {
-          text: 'Deal & Commission',
-          link: '#',
+          text: 'Search Deals',
+          link: '/Agency/Search-Deals',
         },
-        {
-          text: 'Markup & Discount',
-          link: '#',
-        },
-        {
-          text: 'Productivity Group',
-          link: '#',
-        },
-        {
-          text: 'Invoice Details',
-          link: '#',
-        },
-        {
-          text: 'Account Statement',
-          link: '#',
-        },
+        // {
+        //   text: 'Markup & Discount',
+        //   link: '#',
+        // },
+        // {
+        //   text: 'Productivity Group',
+        //   link: '#',
+        // },
+        // {
+        //   text: 'Invoice Details',
+        //   link: '#',
+        // },
+        // {
+        //   text: 'Account Statement',
+        //   link: '#',
+        // },
       ],
     },
 
@@ -181,18 +181,18 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       clickFunc: () => setShowConfig(!showConfig),
       show: showConfig,
       subList: [
-        // {
-        //   text: 'Manage Deals',
-        //   link: routes.agency.searchDeals,
-        // },
-        // {
-        //   text: 'Manage Region',
-        //   link: routes.master.searchRegion,
-        // },
-        // {
-        //   text: 'Manage Multi PCC',
-        //   link: routes.master.searchMultiPcc,
-        // },
+        {
+          text: 'Manage Deals',
+          link: routes.agency.searchDeals,
+        },
+        {
+          text: 'Manage Region',
+          link: routes.master.searchRegion,
+        },
+        {
+          text: 'Manage Multi PCC',
+          link: routes.master.searchMultiPcc,
+        },
       ],
       link: '#',
     },
