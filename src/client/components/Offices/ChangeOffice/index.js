@@ -1,18 +1,9 @@
 import Grid from '@material-ui/core/Grid';
-import CloseIcon from '@material-ui/icons/Close';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {
-  commonAction,
-  commonActionUpdate,
-  commonActionWithoutApi,
-} from 'Actions/';
+import { commonAction } from 'Actions/';
 import endpoint from 'Config/endpoint.js';
-import { securityOptionConstant } from 'Constants';
-import colors from 'Constants/colors';
+import { commonConstant } from 'Constants';
 import { dropDownParam } from 'Constants/commonConstant';
-import routes from 'Constants/routes';
 import { utils } from 'Helpers';
-import { regex } from 'Helpers/validator';
 import useDropDown from 'Hooks/useDropDown';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -20,26 +11,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
   Button,
-  IconWithBackground,
   MultiSelect,
   PrimaryTable,
   PrimaryTableHeader,
-  SelectWithTextInput,
-  SimplePopover,
   Text,
   TextInput,
 } from 'Widgets';
-import endpointWithoutApi from 'Config/endpointWithoutApi';
-import { commonConstant } from 'Constants';
 import './style.scss';
 
 const LinkAction = (props) => {
   const { id, rowNumber, onOfficeClick } = props;
-
+  const searchOffice = useSelector((state) => state.searchOffice?.items);
+  console.log('id', searchOffice?.data?.data[rowNumber].officeId);
   return (
     <div
       className="link-text text-decoration-none font-primary-semibold-14"
-      onClick={() => onOfficeClick(id)}
+      onClick={() => onOfficeClick(searchOffice?.data?.data[rowNumber])}
     >
       Select
     </div>
@@ -56,7 +43,7 @@ const defaultValues = {
 
 const headerData = ['OFFICE NAME', 'OFFICE ID', 'COUNTRY', 'CITY', 'ACTION'];
 
-const ChangeOffice = props => {
+const ChangeOffice = (props) => {
   const { onOfficeClick } = props;
   const [requestJson, setReqeustJson] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
@@ -69,21 +56,9 @@ const ChangeOffice = props => {
   let history = useHistory();
   let dispatch = useDispatch();
 
-  const objectStatusesList = useDropDown(
-    endpoint.master.objectStatuses,
-    dropDownParam.objectStatuses,
-    'masterObjectStatuses'
-  );
-
   const countriesList = useDropDown(
     endpoint.master.countries,
     dropDownParam.countries,
-    'masterCountries'
-  );
-
-  const countriesDialCodeList = useDropDown(
-    endpoint.master.countries,
-    dropDownParam.countriesDialCode,
     'masterCountries'
   );
 
