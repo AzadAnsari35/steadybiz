@@ -84,6 +84,7 @@ const routes = {
   reports: {
     bookingReport: '/Reports/Booking-Report',
     totalSalesReport: '/Reports/Total-Sales-Report',
+    officeSalesReport: '/Reports/Office-Sales-Report',
   },
 };
 

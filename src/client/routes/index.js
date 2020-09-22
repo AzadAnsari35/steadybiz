@@ -53,6 +53,11 @@ const AsyncCreateAgencyGroup = loadable({
   loading: LinearLoaderSecondary,
 });
 
+const AsyncOfficeSalesReport = loadable({
+  loader: () => import('Views/reports/officeSalesReport'),
+  loading: LinearLoaderSecondary,
+});
+
 const Routes = () => (
   <Switch>
     <Route exact path="/" component={Home} />
@@ -397,6 +402,12 @@ const Routes = () => (
       exact
       path={routes.reports.totalSalesReport}
       component={TotalSalesReport}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.reports.officeSalesReport}
+      component={AsyncOfficeSalesReport}
     />
   </Switch>
 );

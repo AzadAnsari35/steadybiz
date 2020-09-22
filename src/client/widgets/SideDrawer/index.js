@@ -169,6 +169,10 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           text: 'Total Sales Report',
           link: routes.reports.totalSalesReport,
         },
+        {
+          text: 'Office Sales Report',
+          link: routes.reports.officeSalesReport,
+        },
       ],
     },
 

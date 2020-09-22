@@ -1,0 +1,98 @@
+@import '../../styles/variables';
+
+$root: '.CustomTable';
+
+#{$root} {
+  padding: 20px;
+  margin: 32px 100px;
+  padding: 32px;
+  background-color: $white;
+  box-shadow: 3px 3px 6px $black1;
+  > div {
+    &:nth-child(2) {
+      border: 1px solid $black3;
+    }
+  }
+  border-radius: 6px;
+
+  &-head {
+    &.MuiTableCell-head {
+      font-size: 14px !important;
+      font-family: 'Montserrat SemiBold' !important;
+      color: $black !important;
+    }
+  }
+
+  &-nestedHead-cell {
+    padding-top: 4px !important;
+
+    &__subHead {
+      padding: 0px 16px !important;
+      padding-top: 4px !important;
+      border-top: 1px solid $mercury;
+    }
+  }
+
+  &-body {
+    > :nth-child(2n) {
+      background: $mercury;
+    }
+    &-imageCell {
+      position: absolute;
+      top: 50%;
+      transform: translate(0px, -50%);
+      left: 28px;
+    }
+  }
+
+  &-footer {
+    display: flex;
+    padding: 24px;
+    justify-content: space-between;
+    align-items: center;
+    &-records {
+      font-size: 12px;
+      font-family: 'Montserrat SemiBold';
+      color: $black;
+      opacity: 0.8;
+      > span {
+        opacity: 1;
+      }
+    }
+  }
+
+  &-head-cell {
+    font-size: 14px !important;
+    font-family: 'Montserrat SemiBold' !important;
+    color: $black !important;
+    white-space: nowrap;
+  }
+
+  &-body-cell {
+    font-size: 14px !important;
+    font-family: 'Montserrat Regular' !important;
+    color: $mineShaft !important;
+    white-space: nowrap;
+  }
+
+  &-cell-link {
+    text-decoration: none;
+    color: $cornflowerBlue;
+    font-size: 14px !important;
+    font-family: 'Montserrat SemiBold' !important;
+  }
+
+  &-status {
+    &:before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      display: inline-block;
+      position: absolute;
+      top: 50%;
+      transform: translate(0px, -50%);
+      left: 0px;
+      border-radius: 50%;
+    }
+  }
+}
