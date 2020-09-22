@@ -91,17 +91,14 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           text: 'Manage Agency Group',
           link: routes.agency.searchAgencyGroup,
         },
-        {
-          text: 'Registration',
-          link: '/createAccount',
-        },
-        {
-          text: 'Profile & Credit Limit',
-          link: '/agency/subAgent',
-        },
+
+        // {
+        //   text: 'Profile & Credit Limit',
+        //   link: '/agency/subAgent',
+        // },
         {
           text: 'Search Deals',
-          link: '/Agency/Search-Deals',
+          link: routes.agency.searchDeals,
         },
         // {
         //   text: 'Markup & Discount',
