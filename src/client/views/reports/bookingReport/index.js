@@ -237,8 +237,8 @@ const BookingReport = () => {
   // });
   const [formData, setFormData] = useState({
     reportType: {},
-    startDate: '',
-    endDate: '',
+    dateFrom: '',
+    dateTo: '',
     origin: '',
     destination: '',
     orderNumber: '',
@@ -535,6 +535,8 @@ const BookingReport = () => {
                   }
                   isSearchable
                   useReactHookForm={false}
+                  // minDate={{  datePicker2: 'dateTo' }}
+                  maxDate={{ datePicker2: customAddDays(new Date(), 31) }}
                   onSelectChange={handleSelectOption}
                 />
               </Grid>
@@ -674,6 +676,7 @@ const BookingReport = () => {
                   value={formData.officeId}
                   useReactHookForm={false}
                   onChange={handleInputChange}
+                  disabled={true}
                 />
               </Grid>
               <Grid item xs={3}>
@@ -736,6 +739,7 @@ const BookingReport = () => {
                   isSearchable
                   useReactHookForm={false}
                   onSelectChange={handleSelectOption}
+                  isMulti
                 />
               </Grid>
               {/* </div>

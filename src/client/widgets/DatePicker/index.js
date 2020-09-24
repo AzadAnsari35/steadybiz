@@ -95,13 +95,13 @@ const DatePicker = (props) => {
                 // KeyboardButtonProps={{
                 //   'aria-label': 'change date',
                 // }}
-                keyboardIcon={
-                  <img
-                    className="date-icon"
-                    alt="calendar"
-                    src={icon ? icon : displayImage('calendar-grey.svg')}
-                  />
-                }
+                // keyboardIcon={
+                //   <img
+                //     className="date-icon"
+                //     alt="calendar"
+                //     src={icon ? icon : displayImage('calendar-grey.svg')}
+                //   />
+                // }
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -125,6 +125,7 @@ const DatePicker = (props) => {
             variant="inline"
             margin="normal"
             name={name}
+            id={id}
             format="dd-MMM-yyyy"
             value={value || ''}
             autoOk

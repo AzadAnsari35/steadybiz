@@ -64,14 +64,16 @@ const CustomTable = (props) => {
     setHighOffset(count > updatedHightOffset ? updatedHightOffset : count);
   };
 
-  const setAlignment = (index) => {
-    // const itemIndex =
-    //   hideKeys?.length > 0
-    //     ? hideKeys.length > index
-    //       ? hideKeys.length - index - 1
-    //       : index - hideKeys.length - 1
-    //     : index;
-    return columnAlignments && columnAlignments[index];
+  const setAlignment = (data, key) => {
+    let alignment = null;
+    for (const ind in data) {
+      if (data[ind].hasOwnProperty('subHeaderList')) {
+        alignment = setAlignment(data[ind].subHeaderList, key);
+        if (alignment) return alignment;
+      } else if (data[ind].id === key) return data[ind].alignment;
+    }
+
+    return null;
   };
 
   const applyStyle = (index) => {
@@ -113,8 +115,11 @@ const CustomTable = (props) => {
                                      : ''
                                  }`}
                             >
-                              {header.subHeaderList.map((subHeader) => (
-                                <div className=" CustomTable-head-cell">
+                              {header.subHeaderList.map((subHeader, ind) => (
+                                <div
+                                  className=" CustomTable-head-cell"
+                                  key={ind}
+                                >
                                   {subHeader.value}
                                 </div>
                               ))}
@@ -150,10 +155,7 @@ const CustomTable = (props) => {
                               style={
                                 index === imageIndex ? { paddingLeft: 72 } : {}
                               }
-                              align={
-                                headerData.find((item) => item.id === key)
-                                  ?.alignment
-                              }
+                              // align={}
                               style={applyStyle(index)}
                             >
                               {subHeaderData[key]}
@@ -182,8 +184,7 @@ const CustomTable = (props) => {
                                 key={`body-${index}`}
                                 // align={setAlignment(index - hideKeys.length)}
                                 align={
-                                  headerData.find((item) => item.id === key)
-                                    ?.alignment
+                                  setAlignment(headerData, key) || 'Center'
                                 }
                                 style={
                                   index === imageIndex

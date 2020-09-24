@@ -39,26 +39,48 @@ import {
   CustomTable,
 } from 'Widgets';
 import useToggle from 'Hooks/useToggle';
+import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 
-import './style.scss';
 import { customAddDays, displayImage } from 'Helpers/utils';
 import BookingReportsTableHeader from 'Components/Common/BookingReportsTableHeader/index';
 import useDropDownApi from 'Hooks/useDropDownApi';
+import './style.scss';
 
 const BOOKING_REPORT_FILED_SELECTION_OPTIONS = [
-  { value: 'bookingDate', label: 'BOOKING DATE' },
-  { value: 'officeChannel', label: 'OFFICE CHANNEL' },
-  { value: 'officeType', label: 'OFFICE TYPE' },
-  { value: 'officeId', label: 'ORDER ID' },
-  { value: 'officeLevel', label: 'ORDER LEVEL' },
-  { value: 'userName', label: 'USER NAME' },
-  { value: 'parentOfficeId', label: 'PARENT OFFICE ID' },
-  { value: 'parentOfficeLevel', label: 'PARENT OFFICE LEVEL' },
-  { value: 'countryPos', label: 'COUNTRY POS' },
-  { value: 'cityPos', label: 'CITY POS' },
-  { value: 'orderNo', label: 'ORDER NO.' },
-  { value: 'orderStatus', label: 'ORDER STATUS' },
-  { value: 'bookingType', label: 'BOOKING TYPE' },
+  { value: 'date', label: 'DATE' },
+  { value: 'baseCurrency', label: 'BASE CURRENCY' },
+  {
+    value: 'ownNetBooked',
+    label: 'OWN NET BOOKED',
+    subHeaderList: [
+      { id: 'ownNetBookedOrders', value: 'ORDERS', alignment: 'right' },
+      { id: 'ownNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
+    ],
+  },
+  {
+    value: 'branchesNetBooked',
+    label: 'BRANCHES NET BOOKED',
+    subHeaderList: [
+      { id: 'branchesNetBookedOrders', value: 'ORDERS', alignment: 'right' },
+      { id: 'branchesNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
+    ],
+  },
+  {
+    value: 'agencyNetBooked',
+    label: 'AGENCY NET BOOKED',
+    subHeaderList: [
+      { id: 'agencyNetBookedOrders', value: 'ORDERS', alignment: 'right' },
+      { id: 'agencyNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
+    ],
+  },
+  {
+    value: 'totalNetBooked',
+    label: 'TOTAL NET BOOKED',
+    subHeaderList: [
+      { id: 'totalNetBookedOrders', value: 'ORDERS', alignment: 'right' },
+      { id: 'totalNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
+    ],
+  },
 ];
 
 const headerData = [
@@ -81,8 +103,8 @@ const headerData = [
     alignment: 'center',
     colSpan: 2,
     subHeaderList: [
-      { id: 'branchesNetBooked', value: 'ORDERS' },
-      { id: 'branchesNetBooked', value: 'AMOUNT' },
+      { id: 'branchesNetBookedOrders', value: 'ORDERS', alignment: 'right' },
+      { id: 'branchesNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
     ],
   },
 
@@ -92,8 +114,8 @@ const headerData = [
     alignment: 'center',
     colSpan: 2,
     subHeaderList: [
-      { id: 'agencyNetBooked', value: 'ORDERS' },
-      { id: 'agencyNetBooked', value: 'AMOUNT' },
+      { id: 'agencyNetBookedOrders', value: 'ORDERS', alignment: 'right' },
+      { id: 'agencyNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
     ],
   },
 
@@ -103,33 +125,41 @@ const headerData = [
     alignment: 'center',
     colSpan: 2,
     subHeaderList: [
-      { id: 'totalNetBooked', value: 'ORDERS' },
-      { id: 'totalNetBooked', value: 'AMOUNT' },
+      { id: 'totalNetBookedOrders', value: 'ORDERS', alignment: 'right' },
+      { id: 'totalNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
     ],
   },
 ];
 
-const hideKeys = [
-  'officeChannel',
-  'officeType',
-  'officeLevel',
-  'userName',
-  'parentOfficeId',
-];
+const hideKeys = [];
+
+const createEndpoint = () => {
+  return useAsyncEndpoint((endpoint, data) => ({
+    _endpoint: endpoint,
+    data,
+  }));
+};
 
 const OfficeSalesReport = () => {
   const [requestJson, setReqeustJson] = useState(null);
   const [page, setPage] = useState(1);
   const [size] = useState(10);
   const firstPageUpdate = useRef(true);
+  const [stateKey, setStateKey] = useState(true);
   const [showChangeOffice, setShowChangeOffice] = useToggle(false);
 
-  let history = useHistory();
   let dispatch = useDispatch();
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
   const {
     userDto: {
-      officeDto: { officeId, officeName, officeLevel, countryCode, cityCode },
+      officeDto: {
+        ofId,
+        officeId,
+        officeName,
+        officeLevel,
+        countryCode,
+        cityCode,
+      },
     },
   } = userData;
 
@@ -137,10 +167,10 @@ const OfficeSalesReport = () => {
     bookingCategory: '',
     officeId,
   };
-  const [defaultFormData, setDefaultFormData] = useState({
-    countryPos: null,
-    cityPos: null,
-  });
+  // const [defaultFormData, setDefaultFormData] = useState({
+  //   countryPos: null,
+  //   cityPos: null,
+  // });
   const [formData, setFormData] = useState({
     reportType: {},
     startDate: '',
@@ -153,85 +183,90 @@ const OfficeSalesReport = () => {
     bookingCategory: {},
     officeChannel: {},
     officeType: {},
-    officeId: '',
+    officeId: officeId,
+    ofId: ofId,
     userName: {},
-    countryPos: {},
-    cityPos: {},
+    countryPos: null,
+    cityPos: null,
     transactionStatus: {},
   });
 
   const { register, handleSubmit, reset } = useForm();
-
-  const ofId = utils.getItemFromStorage('officeId');
-
+  //const ofId = utils.getItemFromStorage('officeId');
   const searchResult = useSelector(
     (state) => state[endpoint.orders.searchOrders.reducerName]?.items
   );
-  const viewPNR = useSelector(
-    (state) => state[endpoint.orders.viewOrder.reducerName]?.items
-  );
-
   const countriesList = useDropDown(
     endpoint.master.countries,
     dropDownParam.countries,
     'masterCountries'
   );
-
   const citiesList = useSelector(
     (state) => state.masterCities?.items?.data?.data
   );
 
-  const [cityList, setCityList] = useState(citiesList);
-
-  const userNames = useDropDownApi(endpoint.office.searchUserDropDown, {
-    ofid: officeId,
-  });
-  const [userNameList, setUserNameList] = useState(userNames);
+  const [userNameList, setUserNameList] = createEndpoint();
+  const userNameListData = userNameList
+    ? userNameList.status
+      ? userNameList?.data
+      : []
+    : [];
   const [hiddenKeys, setHiddenKeys] = useState(hideKeys);
-
   const defaultTableFieldsSelection = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
     (item) => !hiddenKeys.includes(item.value)
   );
   const [fieldSelection, setFieldSelection] = useState(
     defaultTableFieldsSelection
   );
-
+  //console.log('hi', userNameList?.data);
   useEffect(() => {
-    getCitiesList(countryCode);
-    // getUserNameList(officeId);
-  }, []);
-
+    defaultCountry();
+  }, [countriesList.dropDownItems]);
   useEffect(() => {
-    if (countriesList.dropDownItems !== null && !!citiesList) {
-      setDefaultFormData({
-        ...defaultFormData,
-        countryPos: countriesList.dropDownItems.findItem(countryCode),
-        cityPos: citiesList.findItem(cityCode),
-      });
-      setCityList(citiesList);
+    console.log('abc', formData.countryPos);
+    if (formData.countryPos) {
+      getCitiesList(formData.countryPos.value);
     }
-  }, [countriesList.dropDownItems, !!citiesList]);
-
+  }, [formData.countryPos]);
   useEffect(() => {
-    setCityList(citiesList);
+    defaultCity();
   }, [citiesList]);
 
+  const getCitiesList = (countryCode) => {
+    if (countryCode != undefined)
+      dispatch(
+        commonAction(endpoint.master.cities, {
+          countryCode,
+        })
+      );
+  };
+
   useEffect(() => {
-    //console.log(viewPNR);
-    const actionType = utils.getItemFromStorage('searchOrderActionType');
-    // console.log(actionType);
-    // alert(actionType);
-    if (viewPNR != null && actionType != '') {
-      const error = utils.checkError(viewPNR);
-      if (error == '') {
-        utils.setItemToStorage('searchOrderActionType', '');
-        if (actionType == 'view') history.push(routes.transaction.viewPNR);
-        else if (actionType == 'retieve')
-          history.push(routes.transaction.issueTicket);
-        else history.push(routes.transaction.viewBooking);
-      } else dispatch(utils.showErrorBox(error));
-    }
-  }, [viewPNR]);
+    // setUserNameList(endpoint.office.searchUserDropDown, {
+    //   ofid: ofId,
+    // });
+    getCitiesList(countryCode);
+    getUserNameList(ofId);
+  }, []);
+  useEffect(() => {
+    // console.log('formData.officeId::: ', formData.officeId);
+    getUserNameList(formData.ofId);
+  }, [formData.officeId]);
+
+  const getUserNameList = (officeId) => {
+    setUserNameList(endpoint.office.searchUserDropDown, {
+      ofid: officeId,
+    });
+  };
+  const handleChangeOfficeClick = (officeDetail) => {
+    // console.log('officeId::: ', officeDetail);
+    setShowChangeOffice();
+    setFormData({
+      ...formData,
+      officeId: officeDetail.officeId,
+      ofId: officeDetail.ofId,
+    });
+  };
 
   useEffect(() => {
     if (requestJson !== null) {
@@ -257,26 +292,6 @@ const OfficeSalesReport = () => {
     callSearch(page);
   }, [page]);
 
-  useEffect(() => {
-    console.log('formData.officeId::: ', formData.officeId);
-    // getUserNameList(formData.officeId);
-  }, [formData.officeId]);
-
-  const getCitiesList = (countryCode) => {
-    dispatch(
-      commonAction(endpoint.master.cities, {
-        countryCode,
-      })
-    );
-  };
-
-  const getUserNameList = (officeId) => {
-    const userNames = useDropDownApi(endpoint.office.searchUserDropDown, {
-      ofid: officeId,
-    });
-    setUserNameList(userNames);
-  };
-
   const handlePage = (newPage) => {
     // console.log(newPage);
     setPage(newPage);
@@ -289,22 +304,15 @@ const OfficeSalesReport = () => {
         [id]: value,
       });
     } else {
-      const updatedHiddenKeys = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
-        ((set) => (a) => !set.has(a.value))(new Set(value.map((b) => b.value)))
-      ).map((item) => item.value);
+      console.log('handleSelectOption', value, id);
+      // const updatedHiddenKeys = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
+      //   ((set) => (a) => !set.has(a.value))(new Set(value.map((b) => b.value)))
+      // ).map((item) => item.value);
+      const updatedHiddenKeys = BOOKING_REPORT_FILED_SELECTION_OPTIONS;
       setFieldSelection(value);
       setHiddenKeys(updatedHiddenKeys);
     }
-    if (id === 'countryPos') {
-      const { countryPos } = formData;
-      if (countryPos.value !== value.value) {
-        setDefaultFormData({
-          ...defaultFormData,
-          cityPos: null,
-        });
-        getCitiesList(value.value);
-      }
-    }
+
     // if (value !== "") {
     // 	setErrorData({
     // 		...errorData,
@@ -337,15 +345,6 @@ const OfficeSalesReport = () => {
     });
   };
 
-  const handleChangeOfficeClick = (officeId) => {
-    console.log('officeId::: ', officeId);
-    setShowChangeOffice();
-    setFormData({
-      ...formData,
-      officeId,
-    });
-  };
-
   const callSearch = (page) => {
     //console.log('hi', requestJson);
     try {
@@ -367,14 +366,221 @@ const OfficeSalesReport = () => {
     setReqeustJson(data);
     //setPage(1);
   };
-
+  const defaultCountry = () => {
+    if (countriesList.dropDownItems !== null && countryCode != '') {
+      setFormData({
+        ...formData,
+        countryPos: countriesList.dropDownItems.findItem(countryCode),
+        cityPos: citiesList && citiesList.findItem(cityCode),
+      });
+    }
+  };
+  const defaultCity = () => {
+    if (
+      citiesList &&
+      formData.countryPos &&
+      formData.countryPos.value === countryCode &&
+      cityCode != ''
+    )
+      setFormData({
+        ...formData,
+        cityPos: citiesList.findItem(cityCode),
+      });
+    else {
+      setFormData({
+        ...formData,
+        cityPos: null,
+      });
+    }
+  };
   const handleReset = () => {
     reset(defaultValues);
+    setStateKey(!stateKey);
+    setFormData({
+      ...formData,
+      officeId: officeId,
+      ofId: ofId,
+      origin: '',
+      destination: '',
+    });
+    //defaultCity();
+    defaultCountry();
   };
 
   return (
     <>
-      <div>
+      <div className="OfficeSalesReport">
+        <div className="OfficeSalesReport-head">
+          <div className="d-flex justify-content-between align-items-end pb-4">
+            <div className="font-primary-semibold-24 ">OFFICE SALES REPORT</div>
+            <IconWithBackground
+              bgColor="#74D3DC33"
+              showCursor
+              onClick={handleReset}
+            >
+              <CachedIcon style={{ color: '#74D3DC' }} />
+            </IconWithBackground>
+          </div>
+          <div className="horizontal-grey-divider"></div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <input
+              type="hidden"
+              name="ofid"
+              value={ofId}
+              ref={register}
+            ></input>
+            <input
+              type="hidden"
+              name="size"
+              value={size}
+              ref={register}
+            ></input>
+
+            <Text
+              showLeftBorder={true}
+              text="SEARCH OFFICE SALES"
+              className="font-primary-medium-18 my-24"
+            />
+            <Grid
+              container
+              spacing={3}
+              direction="row"
+              justify="center"
+              alignItems="flex-end"
+            >
+              <Grid item xs={6}>
+                <SelectWithDatePickers
+                  label="Date:"
+                  name={{
+                    select: 'reportType',
+                    datePicker1: 'dateFrom',
+                    datePicker2: 'dateTo',
+                  }}
+                  data={SEARCH_DATE_TYPE}
+                  defaultValues={{
+                    select: SEARCH_DATE_TYPE[1],
+                    datePicker1: new Date(),
+                    datePicker2:
+                      formData.reportType.value === 'T'
+                        ? customAddDays(new Date(), 31)
+                        : new Date(),
+                  }}
+                  disableFutureDatesDatePicker1={
+                    formData.reportType.value === 'B'
+                  }
+                  disableFutureDatesDatePicker2={
+                    formData.reportType.value === 'B'
+                  }
+                  disablePastDatesDatePicker1={
+                    formData.reportType.value === 'T'
+                  }
+                  disablePastDatesDatePicker2={
+                    formData.reportType.value === 'T'
+                  }
+                  isSearchable
+                  useReactHookForm={false}
+                  onSelectChange={handleSelectOption}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                {/* <TextInput
+                  label="Origin:"
+                  id="origin"
+                  name="origin"
+                  useReactHookForm={false}
+                  onChange={handleInputChange}
+                /> */}
+                <AutoSuggest
+                  id="origin"
+                  label="Origin:"
+                  isSearchBar={false}
+                  // initialValue={initialDepartureAirport}
+                  stateKey={stateKey}
+                  onSelectSuggestion={handleInputChange}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                {/* <TextInput
+                  label="Destination:"
+                  id="destination"
+                  name="destination"
+                  useReactHookForm={false}
+                  onChange={handleInputChange}
+                /> */}
+                <AutoSuggest
+                  id="destination"
+                  label="Destination:"
+                  isSearchBar={false}
+                  // initialValue={initialDepartureAirport}
+                  stateKey={stateKey}
+                  onSelectSuggestion={handleInputChange}
+                />
+              </Grid>
+
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="Country:"
+                  id="countryPos"
+                  name="countryPos"
+                  options={countriesList.dropDownItems}
+                  defaultValue={
+                    formData.countryPos ? formData.countryPos : null
+                  }
+                  showBorder
+                  changeStyle
+                  width="auto"
+                  isSearchable
+                  useReactHookForm={false}
+                  onSelectChange={handleSelectOption}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="City:"
+                  id="cityPos"
+                  name="cityPos"
+                  options={
+                    (citiesList && utils.sortObjectArray(citiesList)) || []
+                  }
+                  defaultValue={formData.cityPos ? formData.cityPos : null}
+                  showBorder
+                  changeStyle
+                  width="auto"
+                  isSearchable
+                  useReactHookForm={false}
+                  onSelectChange={handleSelectOption}
+                />
+              </Grid>
+
+              <Grid item xs={3}>
+                <TextInput
+                  label="Office ID:"
+                  id="officeId"
+                  name="officeId"
+                  value={formData.officeId}
+                  useReactHookForm={false}
+                  onChange={handleInputChange}
+                  disabled={true}
+                />
+              </Grid>
+
+              {/* </div>
+              </Grid> */}
+              <Grid item xs={3}>
+                <div className="d-flex justify-content-end pt-32">
+                  <Button
+                    text="CHANGE OFFICE"
+                    secondary
+                    className=" px-48 mr-10"
+                    onClick={() => setShowChangeOffice()}
+                  />
+
+                  <Button type="submit" text="Search" className=" px-48" />
+                </div>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
         {officeSalesReportData && (
           <CustomTable
             header={
@@ -406,7 +612,7 @@ const OfficeSalesReport = () => {
         showDrawer={showChangeOffice}
         onCloseClick={setShowChangeOffice}
         width={1150}
-        className="BookingReport-CustomDrawer"
+        className="OfficeSalesReport-CustomDrawer"
         showBottomBorder={true}
       >
         <ChangeOffice onOfficeClick={handleChangeOfficeClick} />

@@ -60,11 +60,12 @@
           "baseCurrency": "AED",
           "ownNetBookedOrders": 20,
           "ownNetBookedAmount": 3000,
-          "officeLevel": "1",
-          "userName": "oktravels",
-          "parentOfficeId": "OKT0000000012",
-          "parentOfficeLevel": "0",
-          "countryPos": "India"
+          "branchesNetBookedOrders": 10,
+          "branchesNetBookedAmount": 4000,
+          "agencyNetBookedOrders": 32,
+          "agencyNetBookedAmount": 6600,
+          "totalNetBookedOrders": 34,
+          "totalNetBookedAmount": 7670
         }
       ]
     }

@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import CachedIcon from '@material-ui/icons/Cached';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import useToggle from 'Hooks/useToggle';
 
 import bookingReportData from './bookingReport.json';
 import {
@@ -21,6 +22,7 @@ import routes from 'Constants/routes';
 import { utils } from 'Helpers';
 import useDropDown from 'Hooks/useDropDown';
 import useCheckboxData from 'Hooks/useCheckboxData';
+import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 
 import {
   Button,
@@ -32,6 +34,7 @@ import {
   SelectWithTextInput,
   SimplePopover,
   Text,
+  AutoSuggest,
   TextInput,
 } from 'Widgets';
 
@@ -54,32 +57,48 @@ const BOOKING_REPORT_FILED_SELECTION_OPTIONS = [
 ];
 
 const headerData = [
-  { id: 'date', value: 'DATE', alignment: 'center'},
-  { id: 'ordersBooked', value: 'ORDERS BOOKED', alignment: 'right'},
-  { id: 'ordersCancelled', value: 'ORDERS CANCELLED', alignment: 'right'},
-  { id: 'ordersRebooked', value: 'ORDERS REBOOKED', alignment: 'right'},
-  { id: 'netOrders', value: 'NET ORDERS', alignment: 'right'},
-  { id: 'baseCurrency', value: 'BASE CURRENCY', alignment: 'center'},
-  { id: 'totalTxnAmount', value: 'TOTAL TXN. AMT', alignment: 'right'},
-  { id: 'refundAmount', value: 'REFUND AMT', alignment: 'right'},
-  { id: 'rebookedAmount', value: 'REBOOKED AMT', alignment: 'right'},
-  { id: 'totalCommission', value: 'TOTAL COMMISSION', alignment: 'right'},
-  { id: 'netAmountPaid', value: 'NET AMT PAID', alignment: 'right'},
+  { id: 'date', value: 'DATE', alignment: 'center' },
+  { id: 'ordersBooked', value: 'ORDERS BOOKED', alignment: 'right' },
+  { id: 'ordersCancelled', value: 'ORDERS CANCELLED', alignment: 'right' },
+  { id: 'ordersRebooked', value: 'ORDERS REBOOKED', alignment: 'right' },
+  { id: 'netOrders', value: 'NET ORDERS', alignment: 'right' },
+  { id: 'baseCurrency', value: 'BASE CURRENCY', alignment: 'center' },
+  { id: 'totalTxnAmount', value: 'TOTAL TXN. AMT', alignment: 'right' },
+  { id: 'refundAmount', value: 'REFUND AMT', alignment: 'right' },
+  { id: 'rebookedAmount', value: 'REBOOKED AMT', alignment: 'right' },
+  { id: 'totalCommission', value: 'TOTAL COMMISSION', alignment: 'right' },
+  { id: 'netAmountPaid', value: 'NET AMT PAID', alignment: 'right' },
 ];
 
 const hideKeys = [];
+
+const createEndpoint = () => {
+  return useAsyncEndpoint((endpoint, data) => ({
+    _endpoint: endpoint,
+    data,
+  }));
+};
 
 const TotalSalesReport = () => {
   const [requestJson, setReqeustJson] = useState(null);
   const [page, setPage] = useState(1);
   const [size] = useState(10);
   const firstPageUpdate = useRef(true);
-  let history = useHistory();
+  const [stateKey, setStateKey] = useState(true);
+  const [showChangeOffice, setShowChangeOffice] = useToggle(false);
+
   let dispatch = useDispatch();
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
   const {
     userDto: {
-      officeDto: { officeId, officeName, officeLevel, countryCode, cityCode },
+      officeDto: {
+        ofId,
+        officeId,
+        officeName,
+        officeLevel,
+        countryCode,
+        cityCode,
+      },
     },
   } = userData;
 
@@ -87,96 +106,106 @@ const TotalSalesReport = () => {
     bookingCategory: '',
     officeId,
   };
-  const [defaultFormData, setDefaultFormData] = useState({
-    countryPos: null,
-    cityPos: null,
-  });
+  // const [defaultFormData, setDefaultFormData] = useState({
+  //   countryPos: null,
+  //   cityPos: null,
+  // });
   const [formData, setFormData] = useState({
     reportType: {},
-    startDate: "",
-    endDate: "",
-    origin: "",
-    destination: "",
-    orderNumber: "",
+    startDate: '',
+    endDate: '',
+    origin: '',
+    destination: '',
+    orderNumber: '',
     pnrType: {},
-    pnrNumber: "",
+    pnrNumber: '',
     bookingCategory: {},
     officeChannel: {},
     officeType: {},
-    officeId: "",
+    officeId: officeId,
+    ofId: ofId,
     userName: {},
-    countryPos: {},
-    cityPos: {},
+    countryPos: null,
+    cityPos: null,
     transactionStatus: {},
   });
 
   const { register, handleSubmit, reset } = useForm();
-
-  const ofId = utils.getItemFromStorage('officeId');
-
+  //const ofId = utils.getItemFromStorage('officeId');
   const searchResult = useSelector(
     (state) => state[endpoint.orders.searchOrders.reducerName]?.items
   );
-  const viewPNR = useSelector(
-    (state) => state[endpoint.orders.viewOrder.reducerName]?.items
-  );
-
   const countriesList = useDropDown(
     endpoint.master.countries,
     dropDownParam.countries,
     'masterCountries'
   );
-
   const citiesList = useSelector(
     (state) => state.masterCities?.items?.data?.data
   );
 
-  const [cityList, setCityList] = useState(citiesList);
-
-  const userNameList = useDropDownApi(endpoint.office.searchUserDropDown, {
-    ofid: ofId,
-  });
+  const [userNameList, setUserNameList] = createEndpoint();
+  const userNameListData = userNameList
+    ? userNameList.status
+      ? userNameList?.data
+      : []
+    : [];
   const [hiddenKeys, setHiddenKeys] = useState(hideKeys);
-
-  const defaultTableFieldsSelection =
-    BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(item => !hiddenKeys.includes(item.value));
-  const [fieldSelection, setFieldSelection] = useState(defaultTableFieldsSelection);
-
+  const defaultTableFieldsSelection = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
+    (item) => !hiddenKeys.includes(item.value)
+  );
+  const [fieldSelection, setFieldSelection] = useState(
+    defaultTableFieldsSelection
+  );
+  //console.log('hi', userNameList?.data);
   useEffect(() => {
-    getCitiesList(countryCode);
-  }, []);
-
+    defaultCountry();
+  }, [countriesList.dropDownItems]);
   useEffect(() => {
-    if (countriesList.dropDownItems !== null && !!citiesList) {
-      setDefaultFormData({
-        ...defaultFormData,
-        countryPos: countriesList.dropDownItems.findItem(countryCode),
-        cityPos: citiesList.findItem(cityCode),
-      });
-      setCityList(citiesList);
+    console.log('abc', formData.countryPos);
+    if (formData.countryPos) {
+      getCitiesList(formData.countryPos.value);
     }
-  }, [countriesList.dropDownItems, !!citiesList]);
-
+  }, [formData.countryPos]);
   useEffect(() => {
-    setCityList(citiesList);
+    defaultCity();
   }, [citiesList]);
 
+  const getCitiesList = (countryCode) => {
+    if (countryCode != undefined)
+      dispatch(
+        commonAction(endpoint.master.cities, {
+          countryCode,
+        })
+      );
+  };
+
   useEffect(() => {
-    //console.log(viewPNR);
-    const actionType = utils.getItemFromStorage('searchOrderActionType');
-    // console.log(actionType);
-    // alert(actionType);
-    if (viewPNR != null && actionType != '') {
-      const error = utils.checkError(viewPNR);
-      if (error == '') {
-        utils.setItemToStorage('searchOrderActionType', '');
-        if (actionType == 'view') history.push(routes.transaction.viewPNR);
-        else if (actionType == 'retieve')
-          history.push(routes.transaction.issueTicket);
-        else history.push(routes.transaction.viewBooking);
-      } else dispatch(utils.showErrorBox(error));
-    }
-  }, [viewPNR]);
+    // setUserNameList(endpoint.office.searchUserDropDown, {
+    //   ofid: ofId,
+    // });
+    getCitiesList(countryCode);
+    getUserNameList(ofId);
+  }, []);
+  useEffect(() => {
+    // console.log('formData.officeId::: ', formData.officeId);
+    getUserNameList(formData.ofId);
+  }, [formData.officeId]);
+
+  const getUserNameList = (officeId) => {
+    setUserNameList(endpoint.office.searchUserDropDown, {
+      ofid: officeId,
+    });
+  };
+  const handleChangeOfficeClick = (officeDetail) => {
+    // console.log('officeId::: ', officeDetail);
+    setShowChangeOffice();
+    setFormData({
+      ...formData,
+      officeId: officeDetail.officeId,
+      ofId: officeDetail.ofId,
+    });
+  };
 
   useEffect(() => {
     if (requestJson !== null) {
@@ -202,43 +231,35 @@ const TotalSalesReport = () => {
     callSearch(page);
   }, [page]);
 
-  const getCitiesList = countryCode => {
-    dispatch(
-      commonAction(endpoint.master.cities, {
-        countryCode,
-      })
-    );
-  }
-
   const handlePage = (newPage) => {
     // console.log(newPage);
     setPage(newPage);
   };
 
   const handleSelectOption = (value, id) => {
-    if (id !== "fieldSelection") {
+    if (id !== 'fieldSelection') {
       setFormData({
         ...formData,
         [id]: value,
       });
     } else {
-      const updatedHiddenKeys =
-        BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
-          (set => a => !set.has(a.value))(new Set(value.map(b => b.value)))
-        ).map(item => item.value);
+      const updatedHiddenKeys = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
+        ((set) => (a) => !set.has(a.value))(new Set(value.map((b) => b.value)))
+      ).map((item) => item.value);
       setFieldSelection(value);
       setHiddenKeys(updatedHiddenKeys);
     }
-    if (id === "countryPos") {
-      const { countryPos } = formData;
-      if (countryPos.value !== value.value) {
-        setDefaultFormData({
-          ...defaultFormData,
-          cityPos: null,
-        });
-        getCitiesList(value.value);
-      }
-    }
+
+    // if (value !== "") {
+    // 	setErrorData({
+    // 		...errorData,
+    // 		[id]: "",
+    // 	});
+    // }
+    // setFormData({
+    // 	...formData,
+    // 	[id]: value.value,
+    // });
   };
 
   const handleInputChange = (id, value) => {
@@ -246,9 +267,23 @@ const TotalSalesReport = () => {
       ...formData,
       [id]: value,
     });
-  }
+  };
+
+  const handleSelectSuggestion = (id, value) => {
+    if (value !== '') {
+      setErrorData({
+        ...errorData,
+        [id]: '',
+      });
+    }
+    setFormData({
+      ...formData,
+      [id]: value,
+    });
+  };
 
   const callSearch = (page) => {
+    //console.log('hi', requestJson);
     try {
       dispatch(
         commonAction(endpoint.orders.searchOrders, {
@@ -263,12 +298,50 @@ const TotalSalesReport = () => {
     }
   };
   const onSubmit = (data) => {
+    // console.log('data', data);
     setPage(1);
     setReqeustJson(data);
+    //setPage(1);
   };
-
+  const defaultCountry = () => {
+    if (countriesList.dropDownItems !== null && countryCode != '') {
+      setFormData({
+        ...formData,
+        countryPos: countriesList.dropDownItems.findItem(countryCode),
+        cityPos: citiesList && citiesList.findItem(cityCode),
+      });
+    }
+  };
+  const defaultCity = () => {
+    if (
+      citiesList &&
+      formData.countryPos &&
+      formData.countryPos.value === countryCode &&
+      cityCode != ''
+    )
+      setFormData({
+        ...formData,
+        cityPos: citiesList.findItem(cityCode),
+      });
+    else {
+      setFormData({
+        ...formData,
+        cityPos: null,
+      });
+    }
+  };
   const handleReset = () => {
     reset(defaultValues);
+    setStateKey(!stateKey);
+    setFormData({
+      ...formData,
+      officeId: officeId,
+      ofId: ofId,
+      origin: '',
+      destination: '',
+    });
+    //defaultCity();
+    defaultCountry();
   };
 
   return (
@@ -307,36 +380,59 @@ const TotalSalesReport = () => {
                 defaultValues={{
                   select: SEARCH_DATE_TYPE[1],
                   datePicker1: new Date(),
-                  datePicker2: formData.reportType.value === "T"
-                    ? customAddDays(new Date(), 31) : new Date(),
+                  datePicker2:
+                    formData.reportType.value === 'T'
+                      ? customAddDays(new Date(), 31)
+                      : new Date(),
                 }}
-                disableFutureDatesDatePicker1={formData.reportType.value === "B"}
-                disableFutureDatesDatePicker2={formData.reportType.value === "B"}
-                disablePastDatesDatePicker1={formData.reportType.value === "T"}
-                disablePastDatesDatePicker2={formData.reportType.value === "T"}
+                disableFutureDatesDatePicker1={
+                  formData.reportType.value === 'B'
+                }
+                disableFutureDatesDatePicker2={
+                  formData.reportType.value === 'B'
+                }
+                disablePastDatesDatePicker1={formData.reportType.value === 'T'}
+                disablePastDatesDatePicker2={formData.reportType.value === 'T'}
                 isSearchable
                 useReactHookForm={false}
                 onSelectChange={handleSelectOption}
               />
             </Grid>
             <Grid item xs={3}>
-              <TextInput
-                label="Origin:"
+              {/* <TextInput
+              label="Origin:"
+              id="origin"
+              name="origin"
+              useReactHookForm={false}
+              onChange={handleInputChange}
+            /> */}
+              <AutoSuggest
                 id="origin"
-                name="origin"
-                useReactHookForm={false}
-                onChange={handleInputChange}
+                label="Origin:"
+                isSearchBar={false}
+                // initialValue={initialDepartureAirport}
+                stateKey={stateKey}
+                onSelectSuggestion={handleInputChange}
               />
             </Grid>
             <Grid item xs={3}>
-              <TextInput
-                label="Destination:"
+              {/* <TextInput
+              label="Destination:"
+              id="destination"
+              name="destination"
+              useReactHookForm={false}
+              onChange={handleInputChange}
+            /> */}
+              <AutoSuggest
                 id="destination"
-                name="destination"
-                useReactHookForm={false}
-                onChange={handleInputChange}
+                label="Destination:"
+                isSearchBar={false}
+                // initialValue={initialDepartureAirport}
+                stateKey={stateKey}
+                onSelectSuggestion={handleInputChange}
               />
             </Grid>
+
             <Grid item xs={3}>
               <MultiSelect
                 label="Office Channel:"
@@ -365,13 +461,17 @@ const TotalSalesReport = () => {
                 onSelectChange={handleSelectOption}
               />
             </Grid>
+
+            {console.log('formData::: ', formData)}
             <Grid item xs={3}>
               <TextInput
                 label="Office ID:"
                 id="officeId"
                 name="officeId"
+                value={formData.officeId}
                 useReactHookForm={false}
                 onChange={handleInputChange}
+                disabled={true}
               />
             </Grid>
             <Grid item xs={3}>
@@ -379,7 +479,7 @@ const TotalSalesReport = () => {
                 label="User Name:"
                 id="userName"
                 name="userName"
-                options={userNameList.dropDownItems}
+                options={userNameListData}
                 showBorder
                 changeStyle
                 width="auto"
@@ -394,11 +494,7 @@ const TotalSalesReport = () => {
                 id="countryPos"
                 name="countryPos"
                 options={countriesList.dropDownItems}
-                defaultValue={
-                  !!defaultFormData.countryPos
-                  ? defaultFormData.countryPos
-                  : null
-                }
+                defaultValue={formData.countryPos ? formData.countryPos : null}
                 showBorder
                 changeStyle
                 width="auto"
@@ -413,13 +509,9 @@ const TotalSalesReport = () => {
                 id="cityPos"
                 name="cityPos"
                 options={
-                  (cityList && utils.sortObjectArray(cityList)) || []
+                  (citiesList && utils.sortObjectArray(citiesList)) || []
                 }
-                defaultValue={
-                  !!defaultFormData.cityPos
-                  ? defaultFormData.cityPos
-                  : null
-                }
+                defaultValue={formData.cityPos ? formData.cityPos : null}
                 showBorder
                 changeStyle
                 width="auto"
@@ -428,13 +520,16 @@ const TotalSalesReport = () => {
                 onSelectChange={handleSelectOption}
               />
             </Grid>
-            <Grid item xs={6}>
+
+            {/* </div>
+          </Grid> */}
+            <Grid item xs={12}>
               <div className="d-flex justify-content-end pt-32">
                 <Button
                   text="CHANGE OFFICE"
                   secondary
                   className=" px-48 mr-10"
-                  onClick={() => handleClick()}
+                  onClick={() => setShowChangeOffice()}
                 />
 
                 <Button type="submit" text="Search" className=" px-48" />
@@ -442,8 +537,6 @@ const TotalSalesReport = () => {
             </Grid>
           </Grid>
         </form>
-
-        <div></div>
       </div>
       {bookingReportData && (
         <PrimaryTable

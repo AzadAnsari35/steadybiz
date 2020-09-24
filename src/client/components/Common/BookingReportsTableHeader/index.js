@@ -1,11 +1,17 @@
 import React from 'react';
 
-import { MultiSelect } from "Widgets/";
+import { MultiSelect } from 'Widgets/';
 
 import './style.scss';
 
 const BookingReportsTableHeader = (props) => {
-  const { defaultFieldOptions, fieldsOptions, officeName, officeId, onSelectChange } = props;
+  const {
+    defaultFieldOptions,
+    fieldsOptions,
+    officeName,
+    officeId,
+    onSelectChange,
+  } = props;
   return (
     <div className="BookingReportsTableHeader ">
       <div className="BookingReportsTableHeader-officeDetail d-flex justify-content-between align-items-center pb-28">
@@ -33,6 +39,7 @@ const BookingReportsTableHeader = (props) => {
             showValue={false}
             hideMultiValueSelection
             onSelectChange={onSelectChange}
+            isClearable={false}
           />
         </div>
       </div>

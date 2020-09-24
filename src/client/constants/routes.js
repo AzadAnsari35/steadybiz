@@ -20,6 +20,11 @@ const routes = {
     createMultiPcc: '/Config/Create-MultiPcc',
     modifyMultiPcc: '/Config/Update-MultiPcc',
     viewMultiPcc: '/Config/View-MultiPcc',
+    searchDeals: '/Config/Search-Deals',
+    createDeal: '/Config/Create-Deal',
+    viewDeal: '/Config/View-Deal',
+    modifyDeal: '/Config/Update-Deal',
+    dealHistory: '/Config/Deal-History',
   },
 
   agency: {
