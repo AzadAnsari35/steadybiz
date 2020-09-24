@@ -204,6 +204,46 @@ const createEndpoint = () => {
   }));
 };
 
+const PopoverAction = (props) => {
+  const [showPopover, setShowPopover] = useState(true);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+    setShowPopover(true);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+    setShowPopover(false);
+  };
+
+  return (
+    <>
+      <img
+        src={displayImage('ParentGroupIcon.svg')}
+        className="cursor-pointer"
+        onClick={handlePopoverOpen}
+      />
+      <SimplePopover
+        open={showPopover}
+        handleClose={handlePopoverClose}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
+        <div>Popover</div>
+      </SimplePopover>
+    </>
+  );
+};
+
 const BookingReport = () => {
   const [requestJson, setReqeustJson] = useState(null);
   const [page, setPage] = useState(1);
@@ -779,9 +819,9 @@ const BookingReport = () => {
             }}
             bodyData={bookingReportData.data.data}
             page={page}
-            // AddElement={{
-            //   first: <PopoverAction />,
-            // }}
+            AddElement={{
+              first: <PopoverAction />,
+            }}
             count={bookingReportData.data.count}
             size={size}
             handlePage={handlePage}

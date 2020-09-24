@@ -71,8 +71,15 @@ const Aggregator = ({ path }) => {
               <TableRow>
                 <TableCell>AGGREGATOR</TableCell>
                 <TableCell align="left">PROVIDER NAME</TableCell>
-                <TableCell align="left">PROVIDER ID</TableCell>
-                <TableCell align="center">ACTION</TableCell>
+                <TableCell
+                  style={isViewDeal || isDealHistory ? { width: '6%' } : {}}
+                  align="left"
+                >
+                  PROVIDER ID
+                </TableCell>
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">ACTION</TableCell>
+                )}{' '}
               </TableRow>
             </TableHead>
             <TableBody className="Aggregator-container-table-body">
@@ -80,36 +87,39 @@ const Aggregator = ({ path }) => {
                 <TableCell scope="row">HitchHiker</TableCell>
                 <TableCell align="left">OK Tour &amp; Travel </TableCell>
                 <TableCell align="left">BOMCT0002</TableCell>
-                <TableCell align="center">
-                  {isUpdateDeal && (
-                    <EditIcon
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">
+                    {isUpdateDeal && (
+                      <EditIcon
+                        style={{ color: colors.cornflowerBlue }}
+                        className="cursor-pointer"
+                      />
+                    )}
+                    <DeleteIcon
                       style={{ color: colors.cornflowerBlue }}
                       className="cursor-pointer"
                     />
-                  )}
-                  <DeleteIcon
-                    style={{ color: colors.cornflowerBlue }}
-                    className="cursor-pointer"
-                  />
-                </TableCell>
+                  </TableCell>
+                )}
               </TableRow>
               <TableRow>
                 <TableCell scope="row">HitchHiker</TableCell>
                 <TableCell align="left">OK Tour &amp; Travel </TableCell>
                 <TableCell align="left">BOMCT0002</TableCell>
-                <TableCell align="center">
-                  {isUpdateDeal && (
-                    <EditIcon
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">
+                    {isUpdateDeal && (
+                      <EditIcon
+                        style={{ color: colors.cornflowerBlue }}
+                        className="cursor-pointer"
+                      />
+                    )}
+                    <DeleteIcon
                       style={{ color: colors.cornflowerBlue }}
                       className="cursor-pointer"
                     />
-                  )}
-
-                  <DeleteIcon
-                    style={{ color: colors.cornflowerBlue }}
-                    className="cursor-pointer"
-                  />
-                </TableCell>
+                  </TableCell>
+                )}
               </TableRow>
             </TableBody>
           </Table>

@@ -335,10 +335,10 @@ const Transaction = () => {
                 />
               </Panel>
               {isCancelPnr && (
-                <Grid item xs={3}>
+                <Grid item xs={12} className="d-flex justify-content-end">
                   <Button
                     text="Cancel PNR"
-                    className="width-100 mt-12"
+                    className="mb-40"
                     onClick={handleCancelClick}
                   />
                 </Grid>

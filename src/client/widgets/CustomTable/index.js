@@ -25,7 +25,8 @@ const CustomTable = (props) => {
     hideKeys = '',
     page = 1,
     handlePage,
-    tableStyling,
+    tableBodyStyling,
+    tableHeadStyling,
     showPagination = true,
   } = props;
 
@@ -76,8 +77,12 @@ const CustomTable = (props) => {
     return null;
   };
 
-  const applyStyle = (index) => {
-    return tableStyling?.length && tableStyling[index];
+  const applyHeadStyle = (index) => {
+    return tableHeadStyling?.length && tableHeadStyling[index];
+  };
+
+  const applyBodyStyle = (index) => {
+    return tableBodyStyling?.length && tableBodyStyling[index];
   };
 
   const showEntries = (key) => {
@@ -132,7 +137,7 @@ const CustomTable = (props) => {
                             style={
                               index === imageIndex
                                 ? { paddingLeft: 72 }
-                                : applyStyle(index)
+                                : applyHeadStyle(index)
                             }
                             // align={setAlignment(index)}
                             align={header.alignment}
@@ -189,9 +194,8 @@ const CustomTable = (props) => {
                                 style={
                                   index === imageIndex
                                     ? { paddingLeft: 72 }
-                                    : {}
+                                    : applyBodyStyle(index - hideKeys.length)
                                 }
-                                style={applyStyle(index - hideKeys.length)}
                                 className={`CustomTable-body-cell position-relative ${
                                   index === statusIndex + hideKeys.length
                                     ? statusColor(body[key])

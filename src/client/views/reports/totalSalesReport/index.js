@@ -58,15 +58,15 @@ const BOOKING_REPORT_FILED_SELECTION_OPTIONS = [
 
 const headerData = [
   { id: 'date', value: 'DATE', alignment: 'center' },
-  { id: 'ordersBooked', value: 'ORDERS BOOKED', alignment: 'right' },
-  { id: 'ordersCancelled', value: 'ORDERS CANCELLED', alignment: 'right' },
-  { id: 'ordersRebooked', value: 'ORDERS REBOOKED', alignment: 'right' },
+  { id: 'ordersBooked', value: 'ORDERS BOOK', alignment: 'right' },
+  { id: 'ordersCancelled', value: 'ORDERS CANCEL', alignment: 'right' },
+  { id: 'ordersRebooked', value: 'ORDERS REBOOK', alignment: 'right' },
   { id: 'netOrders', value: 'NET ORDERS', alignment: 'right' },
-  { id: 'baseCurrency', value: 'BASE CURRENCY', alignment: 'center' },
+  { id: 'baseCurrency', value: 'BASE CUR.', alignment: 'center' },
   { id: 'totalTxnAmount', value: 'TOTAL TXN. AMT', alignment: 'right' },
   { id: 'refundAmount', value: 'REFUND AMT', alignment: 'right' },
   { id: 'rebookedAmount', value: 'REBOOKED AMT', alignment: 'right' },
-  { id: 'totalCommission', value: 'TOTAL COMMISSION', alignment: 'right' },
+  { id: 'totalCommission', value: 'TOTAL COMN.', alignment: 'right' },
   { id: 'netAmountPaid', value: 'NET AMT PAID', alignment: 'right' },
 ];
 

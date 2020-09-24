@@ -19,7 +19,7 @@ $root: '.Commission';
           padding-bottom: 16px;
         }
         & tr {
-          & > th:last-child {
+          & > th:nth-child(9) {
             width: 5%;
           }
         }
