@@ -29,6 +29,7 @@ const routes = {
 
   agency: {
     registration: '/Agency/Registration',
+    publicRegistration: '/Registration',
     searchAgency: '/Agency/Search-Agency',
     viewAgency: '/Agency/View-Agency',
     createAgency: '/Agency/Create-Agency',

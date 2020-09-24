@@ -19,8 +19,8 @@ export const refreshRoutes = (path) => {
     case transaction.cancelPNR.toUpperCase():
       //console.log('hii');
       return transaction.searchOrder;
-    case agency.registration.toUpperCase():
-      return agency.registration + location.search;
+    case agency.publicRegistration.toUpperCase():
+      return path + location.search;
   }
   return isDevelopment() ? path + location.search : flight.search;
 };

@@ -233,7 +233,11 @@ const Routes = () => (
       path={routes.agency.registration}
       component={AgencyRegistration}
     />
-
+    <PublicRoute
+      exact
+      path={routes.agency.publicRegistration}
+      component={AgencyRegistration}
+    />
     <PrivateRoute
       exact
       path={routes.agency.manageCreditLimit}

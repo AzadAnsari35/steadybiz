@@ -31,23 +31,26 @@ const createEndpoint = () => {
   }));
 };
 
-const defaultValues = {
-  officeName: '',
-  title: '',
-  phoneDialCode: '',
-  securityGroup: '',
-  address1: '',
-  emailId: '',
-  zipCode: '',
-  noOfUserRequested: '',
-  mobileDialCode: '',
-  cityCode: '',
-  countryCode: '',
-};
-
 const AgencyRegistrationForm = (props) => {
-  const { countriesList, countriesDialCodeList, objectStatusesList } = props;
+  const { countriesList, countriesDialCodeList } = props;
   const [showSubmit, setShowSubmit] = useState(true);
+  const [createInvite, setCreateInvite] = createEndpoint();
+  const createInviteData = createInvite?.data?.data;
+  const defaultValues = {
+    officeName: '',
+    title: '',
+    firstName: createInviteData ? createInviteData.firstName : '',
+    lastName: createInviteData ? createInviteData.lastName : '',
+    phoneDialCode: '',
+    securityGroup: '',
+    address1: '',
+    emailId: createInviteData ? createInviteData.inviteeEmail : '',
+    zipCode: '',
+    noOfUserRequested: '',
+    mobileDialCode: '',
+    cityCode: '',
+    countryCode: '',
+  };
   const {
     register,
     handleSubmit,
@@ -59,22 +62,26 @@ const AgencyRegistrationForm = (props) => {
     reset,
   } = useForm({ defaultValues });
   let search = window.location.search;
-  let params = new URLSearchParams(search);
 
-  const {
+  let params = new URLSearchParams(search);
+  const inviteId = params.get('inviteId');
+  const userData = JSON.parse(utils.getItemFromStorage('userData'));
+  const defaultData = {
+    userDto: { officeId: '', userId: '', officeDto: { officeLevel: '' } },
+  };
+  let {
     userDto: {
       officeId,
       userId,
       officeDto: { officeLevel },
     },
-  } = JSON.parse(utils.getItemFromStorage('userData'));
-
+  } = userData || defaultData;
   // console.log('user info', officeId, userId, officeLevel);
+  //console.log('hh', officeLevel);
 
   const dispatch = useDispatch();
 
   const [createRes, postCreateRequest] = createEndpoint();
-  const [createInvite, setCreateInvite] = createEndpoint();
 
   const citiesList = useSelector(
     (state) => state.masterCities?.items?.data?.data
@@ -82,26 +89,28 @@ const AgencyRegistrationForm = (props) => {
   const settlementPlans = useSelector(
     (state) => state.masterSettlementPlans?.items?.data
   );
+
   useEffect(() => {
-    // console.log(createInvite);
-    if (createInvite) {
+    //console.log(createInviteData);
+    if (createInvite)
       if (createInvite.status) {
         setShowSubmit(true);
-        const data = createInvite.data.data;
-        setValue('lastName', data.lastName);
-        setValue('firstName', data.firstName);
-        setValue('emailId', data.inviteeEmail);
+        // setValue('lastName', createInviteData.lastName);
+        // setValue('firstName', createInviteData.firstName);
+        // setValue('emailId', createInviteData.inviteeEmail);
       } else {
         setShowSubmit(false);
         dispatch(utils.showErrorBox(createInvite.error.message));
       }
-    }
   }, [createInvite]);
   useEffect(() => {
-    const inviteId = params.get('inviteId');
-    //  alert(inviteId);
-    setCreateInvite(endpoint.agency.invite, { data: null, inviteId: inviteId });
-  }, [params.get('inviteId') != null]);
+    if (inviteId != null)
+      //  alert(inviteId);
+      setCreateInvite(endpoint.agency.invite, {
+        data: null,
+        inviteId: inviteId,
+      });
+  }, []);
   const setDefaultValue = () => {
     console.log('settlementPlans', settlementPlans[0].value);
     reset({ ...defaultValues, paymentOptions: settlementPlans[0].value });
@@ -151,16 +160,22 @@ const AgencyRegistrationForm = (props) => {
 
   const onSubmit = (data, e) => {
     console.log('data', data);
+
     postCreateRequest(endpoint.office.createOffice, {
       ...data,
       paymentOptions: [data.paymentOptions],
       action: 'I',
-      userId,
-      officeLevel,
-      officeId,
+      userId: createInviteData ? createInviteData.requesterUserId : userId,
+
+      officeLevel: createInviteData ? 0 : officeLevel,
+      officeId: createInviteData ? createInviteData.requesterOfId : officeId,
       officeChannel: 'SA',
-      status: objectStatusesList.dropDownItems[0],
+      status: {
+        value: 'c1142fd8-6933-4c5c-8667-3fb55a872e2b',
+        label: 'register',
+      }, //objectStatusesList.dropDownItems[0],
       officeType: commonConstant.officeType[1],
+      inviteId: inviteId,
     });
   };
 
@@ -206,7 +221,7 @@ const AgencyRegistrationForm = (props) => {
               errors={errors}
               placeholder="Last Name"
               label="Last Name:"
-              value="abc"
+              value=""
               validation={{
                 required: 'Please enter the last name.',
                 minLength: {
