@@ -129,6 +129,11 @@ export default {
       httpVerb: commonConstant.HttpVerbsConstant.POST,
       actionType: actionTypeConstant.agency.searchAgency,
     },
+    invite: {
+      url: config.api.url + '/api/v1/offices/invite',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+    },
   },
 
   office: {

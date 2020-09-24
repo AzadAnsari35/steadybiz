@@ -8,7 +8,8 @@ const useDropDown = (
   dropDownParam,
   stateName,
   customDropdownFunction = false,
-  _data = null
+  _data = null,
+  isApiCall = true
 ) => {
   const [dropDownItems, setDropDownItems] = useState([]);
   const stateList = useSelector(
@@ -20,7 +21,7 @@ const useDropDown = (
     const dispatchAction = async () => {
       await dispatch(commonAction(_endpoint, _data));
     };
-    dispatchAction();
+    if (isApiCall) dispatchAction();
   }, []);
 
   useEffect(() => {

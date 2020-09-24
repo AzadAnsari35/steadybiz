@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import {
   SelectWithTextInput,
@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { regex } from 'Helpers/validator';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
-import useDropDown from 'Hooks/useDropDown';
+
 import { utils } from 'Helpers';
 
 // import useAPi from 'Hooks/useApi';
@@ -25,8 +25,8 @@ import { commonConstant } from 'Constants/';
 import './style.scss';
 
 const createEndpoint = () => {
-  return useAsyncEndpoint((data) => ({
-    _endpoint: endpoint.office.createOffice,
+  return useAsyncEndpoint((endpoint, data) => ({
+    _endpoint: endpoint,
     data,
   }));
 };
@@ -45,7 +45,9 @@ const defaultValues = {
   countryCode: '',
 };
 
-const AgencyRegistrationForm = () => {
+const AgencyRegistrationForm = (props) => {
+  const { countriesList, countriesDialCodeList, objectStatusesList } = props;
+  const [showSubmit, setShowSubmit] = useState(true);
   const {
     register,
     handleSubmit,
@@ -56,6 +58,8 @@ const AgencyRegistrationForm = () => {
     getValues,
     reset,
   } = useForm({ defaultValues });
+  let search = window.location.search;
+  let params = new URLSearchParams(search);
 
   const {
     userDto: {
@@ -70,24 +74,7 @@ const AgencyRegistrationForm = () => {
   const dispatch = useDispatch();
 
   const [createRes, postCreateRequest] = createEndpoint();
-
-  const countriesList = useDropDown(
-    endpoint.master.countries,
-    commonConstant.dropDownParam.countries,
-    'masterCountries'
-  );
-
-  const countriesDialCodeList = useDropDown(
-    endpoint.master.countries,
-    commonConstant.dropDownParam.countriesDialCode,
-    'masterCountries'
-  );
-
-  const objectStatusesList = useDropDown(
-    endpoint.master.objectStatuses,
-    commonConstant.dropDownParam.objectStatuses,
-    'masterObjectStatuses'
-  );
+  const [createInvite, setCreateInvite] = createEndpoint();
 
   const citiesList = useSelector(
     (state) => state.masterCities?.items?.data?.data
@@ -95,7 +82,26 @@ const AgencyRegistrationForm = () => {
   const settlementPlans = useSelector(
     (state) => state.masterSettlementPlans?.items?.data
   );
-
+  useEffect(() => {
+    // console.log(createInvite);
+    if (createInvite) {
+      if (createInvite.status) {
+        setShowSubmit(true);
+        const data = createInvite.data.data;
+        setValue('lastName', data.lastName);
+        setValue('firstName', data.firstName);
+        setValue('emailId', data.inviteeEmail);
+      } else {
+        setShowSubmit(false);
+        dispatch(utils.showErrorBox(createInvite.error.message));
+      }
+    }
+  }, [createInvite]);
+  useEffect(() => {
+    const inviteId = params.get('inviteId');
+    //  alert(inviteId);
+    setCreateInvite(endpoint.agency.invite, { data: null, inviteId: inviteId });
+  }, [params.get('inviteId') != null]);
   const setDefaultValue = () => {
     console.log('settlementPlans', settlementPlans[0].value);
     reset({ ...defaultValues, paymentOptions: settlementPlans[0].value });
@@ -145,7 +151,7 @@ const AgencyRegistrationForm = () => {
 
   const onSubmit = (data, e) => {
     console.log('data', data);
-    postCreateRequest({
+    postCreateRequest(endpoint.office.createOffice, {
       ...data,
       paymentOptions: [data.paymentOptions],
       action: 'I',
@@ -486,7 +492,7 @@ const AgencyRegistrationForm = () => {
             className="mr-16"
             onClick={handleReset}
           />
-          <Button type="submit" text="Submit" />
+          {showSubmit && <Button type="submit" text="Submit" />}
         </div>
       </form>
     </div>
