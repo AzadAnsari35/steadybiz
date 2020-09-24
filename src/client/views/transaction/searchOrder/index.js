@@ -559,6 +559,7 @@ const SearchOrder = () => {
                 register={register}
                 control={control}
                 errors={errors}
+                disabled={true}
               />
             </Grid>
 

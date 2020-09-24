@@ -88,7 +88,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           },
         },
         {
-          text: 'Manage Agency Group',
+          text: 'Agency Group',
           link: routes.agency.searchAgencyGroup,
         },
 
@@ -97,7 +97,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         //   link: '/agency/subAgent',
         // },
         {
-          text: 'Search Deals',
+          text: 'Agency Deals',
           link: routes.agency.searchDeals,
         },
         // {
@@ -166,8 +166,12 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           link: routes.reports.bookingReport,
         },
         {
-          text: 'Total Sales Report',
+          text: 'Sales Report',
           link: routes.reports.totalSalesReport,
+        },
+        {
+          text: 'Office Sales Report',
+          link: routes.reports.officeSalesReport,
         },
       ],
     },

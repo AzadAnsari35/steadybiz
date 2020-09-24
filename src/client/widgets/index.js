@@ -54,6 +54,7 @@ import SelectWithDatePickers from './SelectWithDatePickers';
 import SecondaryTable from './SecondaryTable';
 import CustomDrawer from './CustomDrawer';
 import LinearLoaderSecondary from './LinearLoaderSecondary';
+import CustomTable from './CustomTable';
 
 export {
   Avatar,
@@ -112,4 +113,5 @@ export {
   SecondaryTable,
   CustomDrawer,
   LinearLoaderSecondary,
+  CustomTable,
 };

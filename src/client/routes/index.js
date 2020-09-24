@@ -24,8 +24,6 @@ import {
   BookingReport,
   TotalSalesReport,
   AgencyRegistration,
-  SearchRegion,
-  CreateRegion,
   SearchMultiPcc,
 } from 'Views/';
 import PrivateRoute from './privateRoute';
@@ -33,10 +31,15 @@ import PublicRoute from './publicRoute';
 import routes from 'Constants/routes';
 import { LinearLoaderSecondary } from 'Widgets/';
 //const LoadingComponent = () => <h3>please wait...</h3>;
-const AsyncSearchDeals = loadable({
+const AsyncAgencySearchDeals = loadable({
   loader: () => import('Views/agency/manageDeals/searchDeals'),
   loading: LinearLoaderSecondary,
 });
+
+// const AsyncSearchDeals = loadable({
+//   loader: () => import('Views/config'),
+//   loading: LinearLoaderSecondary,
+// });
 
 const AsyncCreatePcc = loadable({
   loader: () => import('Views/config/manageMultiPcc/createPcc'),
@@ -50,6 +53,21 @@ const AsyncSearchAgencyGroup = loadable({
 
 const AsyncCreateAgencyGroup = loadable({
   loader: () => import('Views/agency/manageAgencyGroup/createAgencyGroup'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncOfficeSalesReport = loadable({
+  loader: () => import('Views/reports/officeSalesReport'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncSearchRegion = loadable({
+  loader: () => import('Views/config/manageRegion/searchRegion'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncCreateRegion = loadable({
+  loader: () => import('Views/config/manageRegion/createRegion'),
   loading: LinearLoaderSecondary,
 });
 
@@ -254,7 +272,7 @@ const Routes = () => (
     <PrivateRoute
       exact
       path={routes.agency.searchDeals}
-      component={AsyncSearchDeals}
+      component={AsyncAgencySearchDeals}
     />
 
     <PrivateRoute
@@ -304,27 +322,27 @@ const Routes = () => (
       component={SearchOrder}
     />
 
-    {/* <PrivateRoute
+    <PrivateRoute
       exact
       path={routes.master.searchRegion}
-      component={SearchRegion}
+      component={AsyncSearchRegion}
     />
 
     <PrivateRoute
       exact
       path={routes.master.createRegion}
-      component={CreateRegion}
+      component={AsyncCreateRegion}
     />
     <PrivateRoute
       exact
-      path={routes.master.updateRegion}
-      component={CreateRegion}
+      path={routes.master.modifyRegion}
+      component={AsyncCreateRegion}
     />
     <PrivateRoute
       exact
       path={routes.master.viewRegion}
-      component={CreateRegion}
-    /> */}
+      component={AsyncCreateRegion}
+    />
 
     <PrivateRoute
       exact
@@ -402,6 +420,12 @@ const Routes = () => (
       exact
       path={routes.reports.totalSalesReport}
       component={TotalSalesReport}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.reports.officeSalesReport}
+      component={AsyncOfficeSalesReport}
     />
   </Switch>
 );

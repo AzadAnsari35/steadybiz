@@ -203,7 +203,7 @@ const MultiSelect = (props) => {
                       let [values, input] = children;
                       if (Array.isArray(values)) {
                         const plural = values.length === 1 ? '' : 's';
-                        values = `${values.length} item${plural} selected`;
+                        values = `${values.length} field${plural} selected`;
                       }
                       return (
                         <components.ValueContainer {...props}>
@@ -215,7 +215,7 @@ const MultiSelect = (props) => {
                   }),
             }}
             hideSelectedOptions={false}
-            isClearable={false}
+            isClearable={isClearable}
             isMulti={isMulti}
             isSearchable={isSearchable}
             placeholder={placeholder}

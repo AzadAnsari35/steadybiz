@@ -24,15 +24,17 @@ const SelectWithDatePickers = (props) => {
     disablePastDatesDatePicker1,
     disablePastDatesDatePicker2,
     onSelectChange,
+    maxDate = { datePicker1: null, datePicker2: null },
   } = props;
   return (
     <div className="SelectWithDatePickers">
-      {!!label && (
-        <Text
-          className="SelectWithTextInput-label font-primary-medium-16"
-          text={label}
-        />
-      )}
+      <div className="SelectWithTextInput-label font-primary-medium-16">
+        Date:{' '}
+        <span className="font-primary-italic-14">
+          [ Max date range allowed is 31 days. ]
+        </span>
+      </div>
+
       <div
         className="SelectWithDatePickers-container"
         style={{
@@ -83,6 +85,7 @@ const SelectWithDatePickers = (props) => {
           <DatePicker
             control={control}
             name={name?.datePicker1}
+            // id={name?.datePicker1}
             className="SelectWithDatePickers-container-datePicker-1"
             disableFutureDates={disableFutureDatesDatePicker1}
             disablePastDates={disablePastDatesDatePicker1}
@@ -90,11 +93,14 @@ const SelectWithDatePickers = (props) => {
         ) : (
           <DatePicker
             name={name?.datePicker1}
+            id={name?.datePicker1}
             className="SelectWithDatePickers-container-datePicker-1"
             useReactHookForm={useReactHookForm}
             value={defaultValues?.datePicker1}
             disableFutureDates={disableFutureDatesDatePicker1}
             disablePastDates={disablePastDatesDatePicker1}
+            maxDate={maxDate?.datePicker1}
+            onChange={onSelectChange}
           />
         )}
 
@@ -102,6 +108,7 @@ const SelectWithDatePickers = (props) => {
           <DatePicker
             control={control}
             name={name?.datePicker2}
+            // id={name?.datePicker2}
             className="SelectWithDatePickers-container-datePicker-2"
             disableFutureDates={disableFutureDatesDatePicker2}
             disablePastDates={disablePastDatesDatePicker2}
@@ -109,11 +116,14 @@ const SelectWithDatePickers = (props) => {
         ) : (
           <DatePicker
             name={name?.datePicker2}
+            id={name?.datePicker2}
             className="SelectWithDatePickers-container-datePicker-2"
             useReactHookForm={useReactHookForm}
             value={defaultValues?.datePicker2}
             disableFutureDates={disableFutureDatesDatePicker2}
             disablePastDates={disablePastDatesDatePicker2}
+            maxDate={maxDate?.datePicker2}
+            onChange={onSelectChange}
           />
         )}
 
