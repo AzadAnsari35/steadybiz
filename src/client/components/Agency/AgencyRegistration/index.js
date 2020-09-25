@@ -36,6 +36,7 @@ const AgencyRegistrationForm = (props) => {
   const [showSubmit, setShowSubmit] = useState(true);
   const [createInvite, setCreateInvite] = createEndpoint();
   const createInviteData = createInvite?.data?.data;
+  //console.log(createInviteData?.firstName);
   const defaultValues = {
     officeName: '',
     title: '',
@@ -95,9 +96,9 @@ const AgencyRegistrationForm = (props) => {
     if (createInvite)
       if (createInvite.status) {
         setShowSubmit(true);
-        // setValue('lastName', createInviteData.lastName);
-        // setValue('firstName', createInviteData.firstName);
-        // setValue('emailId', createInviteData.inviteeEmail);
+        setValue('lastName', createInviteData.lastName);
+        setValue('firstName', createInviteData.firstName);
+        setValue('emailId', createInviteData.inviteeEmail);
       } else {
         setShowSubmit(false);
         dispatch(utils.showErrorBox(createInvite.error.message));
