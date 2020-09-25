@@ -100,7 +100,7 @@ const AgencyRegistrationForm = (props) => {
         // setValue('lastName', createInviteData.lastName);
         // setValue('firstName', createInviteData.firstName);
         // setValue('emailId', createInviteData.inviteeEmail);
-        setInviteValue();
+        // setInviteValue();
       } else {
         setShowSubmit(false);
         dispatch(utils.showErrorBox(createInvite.error.message));
@@ -130,7 +130,7 @@ const AgencyRegistrationForm = (props) => {
       });
   };
   const setDefaultValue = () => {
-    console.log('settlementPlans', settlementPlans[0].value);
+    //console.log('settlementPlans', settlementPlans[0].value);
     reset({ ...defaultValues, paymentOptions: settlementPlans[0].value });
 
     // setValue('paymentOptions', settlementPlans[0].value);
@@ -164,11 +164,15 @@ const AgencyRegistrationForm = (props) => {
     }
   }, [createRes]);
   useEffect(() => {
-    if (settlementPlans) {
+    if (
+      settlementPlans &&
+      countriesDialCodeList &&
+      (inviteId == null || createInviteData)
+    ) {
       setDefaultValue();
       setInviteValue();
     }
-  }, [settlementPlans]);
+  }, [settlementPlans, createInviteData, countriesDialCodeList]);
 
   useEffect(() => {
     dispatch(commonAction(endpoint.master.settlementPlans));
