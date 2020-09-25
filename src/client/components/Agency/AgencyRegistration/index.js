@@ -23,6 +23,7 @@ import { commonAction } from 'Actions/';
 import { commonConstant } from 'Constants/';
 
 import './style.scss';
+import { TITLES } from 'Constants/commonConstant';
 
 const createEndpoint = () => {
   return useAsyncEndpoint((endpoint, data) => ({
@@ -30,28 +31,28 @@ const createEndpoint = () => {
     data,
   }));
 };
-
+const defaultValues = {
+  officeName: '',
+  title: '',
+  firstName: '',
+  lastName: '',
+  phoneDialCode: '',
+  securityGroup: '',
+  address1: '',
+  emailId: '',
+  zipCode: '',
+  noOfUserRequested: '',
+  mobileDialCode: '',
+  cityCode: '',
+  countryCode: '',
+};
 const AgencyRegistrationForm = (props) => {
   const { countriesList, countriesDialCodeList } = props;
   const [showSubmit, setShowSubmit] = useState(true);
   const [createInvite, setCreateInvite] = createEndpoint();
   const createInviteData = createInvite?.data?.data;
   //console.log(createInviteData?.firstName);
-  const defaultValues = {
-    officeName: '',
-    title: '',
-    firstName: createInviteData ? createInviteData.firstName : '',
-    lastName: createInviteData ? createInviteData.lastName : '',
-    phoneDialCode: '',
-    securityGroup: '',
-    address1: '',
-    emailId: createInviteData ? createInviteData.inviteeEmail : '',
-    zipCode: '',
-    noOfUserRequested: '',
-    mobileDialCode: '',
-    cityCode: '',
-    countryCode: '',
-  };
+
   const {
     register,
     handleSubmit,
@@ -61,7 +62,7 @@ const AgencyRegistrationForm = (props) => {
     watch,
     getValues,
     reset,
-  } = useForm({ defaultValues });
+  } = useForm();
   let search = window.location.search;
 
   let params = new URLSearchParams(search);
@@ -96,9 +97,10 @@ const AgencyRegistrationForm = (props) => {
     if (createInvite)
       if (createInvite.status) {
         setShowSubmit(true);
-        setValue('lastName', createInviteData.lastName);
-        setValue('firstName', createInviteData.firstName);
-        setValue('emailId', createInviteData.inviteeEmail);
+        // setValue('lastName', createInviteData.lastName);
+        // setValue('firstName', createInviteData.firstName);
+        // setValue('emailId', createInviteData.inviteeEmail);
+        setInviteValue();
       } else {
         setShowSubmit(false);
         dispatch(utils.showErrorBox(createInvite.error.message));
@@ -112,9 +114,25 @@ const AgencyRegistrationForm = (props) => {
         inviteId: inviteId,
       });
   }, []);
+  const setInviteValue = () => {
+    if (createInviteData)
+      reset({
+        firstName: createInviteData.firstName,
+        lastName: createInviteData.lastName,
+
+        emailId: createInviteData.inviteeEmail,
+        mobileDialCode: countriesDialCodeList.dropDownItems.findItem(
+          decodeURIComponent(createInviteData.phone.split('-')[0])
+        ),
+        mobile: createInviteData.phone.split('-')[1],
+        title: commonConstant.titles.findItem(createInviteData.title),
+        paymentOptions: settlementPlans ? settlementPlans[0].value : '',
+      });
+  };
   const setDefaultValue = () => {
     console.log('settlementPlans', settlementPlans[0].value);
     reset({ ...defaultValues, paymentOptions: settlementPlans[0].value });
+
     // setValue('paymentOptions', settlementPlans[0].value);
   };
 
@@ -148,6 +166,7 @@ const AgencyRegistrationForm = (props) => {
   useEffect(() => {
     if (settlementPlans) {
       setDefaultValue();
+      setInviteValue();
     }
   }, [settlementPlans]);
 
