@@ -180,10 +180,18 @@ const FlightItineraryCard = (props) => {
     }
     try {
       dispatch(
-        commonActionWithoutApi(endpointWithoutApi.flights.flightSelect, {
+        commonActionWithoutApi(endpointWithoutApi.flights.flightSelect, null)
+      );
+      dispatch(
+        commonAction(endpoint.flights.flightSelect, {
           outboundItinerary: itinerary,
         })
       );
+      // dispatch(
+      //   commonActionWithoutApi(endpointWithoutApi.flights.flightSelect, {
+      //     outboundItinerary: itinerary,
+      //   })
+      // );
       history.push(routes.common.passengerInformation);
     } catch (err) {
       showError(err, setError);
@@ -414,7 +422,7 @@ const FlightItineraryCard = (props) => {
                   text={`${seatsLeft} seats left!`}
                 />
                 <Tag
-                  text={!!isFareRefundable ? 'Refundable' : 'Non Refundable'}
+                  text={isFareRefundable ? 'Refundable' : 'Non Refundable'}
                   isSuccess={!!isFareRefundable}
                 />
               </div>
