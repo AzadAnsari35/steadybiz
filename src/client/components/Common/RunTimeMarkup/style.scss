@@ -1,0 +1,11 @@
+// @import "./../../../../styles/variables";
+$root: '.RunTimeMarkup';
+
+#{$root} {
+  &-btn {
+    border-radius: 0px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    margin-left: -2px;
+  }
+}

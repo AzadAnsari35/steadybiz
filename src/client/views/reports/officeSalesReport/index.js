@@ -16,12 +16,13 @@ import {
   OFFICE_CHANNEL,
   dropDownParam,
 } from 'Constants/commonConstant';
-import { commonAction } from 'Actions/';
+import { commonAction, commonActionUpdate } from 'Actions/';
 import endpoint from 'Config/endpoint.js';
 import routes from 'Constants/routes';
 import { utils } from 'Helpers';
 import useDropDown from 'Hooks/useDropDown';
 import useCheckboxData from 'Hooks/useCheckboxData';
+import colors from 'Constants/colors';
 
 import {
   Button,
@@ -37,6 +38,7 @@ import {
   CustomDrawer,
   AutoSuggest,
   CustomTable,
+  TextWithButton,
 } from 'Widgets';
 import useToggle from 'Hooks/useToggle';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
@@ -53,32 +55,32 @@ const BOOKING_REPORT_FILED_SELECTION_OPTIONS = [
     value: 'ownNetBooked',
     label: 'OWN NET BOOKED',
     subHeaderList: [
-      { id: 'ownNetBookedOrders', value: 'ORDERS', alignment: 'right' },
-      { id: 'ownNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
+      { value: 'ownNetBookedOrders', label: 'ORDERS' },
+      { value: 'ownNetBookedAmount', label: 'AMOUNT' },
     ],
   },
   {
     value: 'branchesNetBooked',
     label: 'BRANCHES NET BOOKED',
     subHeaderList: [
-      { id: 'branchesNetBookedOrders', value: 'ORDERS', alignment: 'right' },
-      { id: 'branchesNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
+      { value: 'branchesNetBookedOrders', label: 'ORDERS' },
+      { value: 'branchesNetBookedAmount', label: 'AMOUNT' },
     ],
   },
   {
     value: 'agencyNetBooked',
     label: 'AGENCY NET BOOKED',
     subHeaderList: [
-      { id: 'agencyNetBookedOrders', value: 'ORDERS', alignment: 'right' },
-      { id: 'agencyNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
+      { value: 'agencyNetBookedOrders', label: 'ORDERS' },
+      { value: 'agencyNetBookedAmount', label: 'AMOUNT' },
     ],
   },
   {
     value: 'totalNetBooked',
     label: 'TOTAL NET BOOKED',
     subHeaderList: [
-      { id: 'totalNetBookedOrders', value: 'ORDERS', alignment: 'right' },
-      { id: 'totalNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
+      { value: 'totalNetBookedOrders', label: 'ORDERS' },
+      { value: 'totalNetBookedAmount', label: 'AMOUNT' },
     ],
   },
 ];
@@ -308,7 +310,18 @@ const OfficeSalesReport = () => {
       // const updatedHiddenKeys = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
       //   ((set) => (a) => !set.has(a.value))(new Set(value.map((b) => b.value)))
       // ).map((item) => item.value);
-      const updatedHiddenKeys = BOOKING_REPORT_FILED_SELECTION_OPTIONS;
+
+      const hiddenKeysArray = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
+        (item1) =>
+          !value.some(
+            (item2) =>
+              item2.value === item1.value && item2.value === item1.value
+          )
+      );
+      const updatedHiddenKeys = getUpdatedkeys(hiddenKeysArray);
+
+      console.log('updatedHiddenKeys', updatedHiddenKeys);
+
       setFieldSelection(value);
       setHiddenKeys(updatedHiddenKeys);
     }
@@ -323,6 +336,19 @@ const OfficeSalesReport = () => {
     // 	...formData,
     // 	[id]: value.value,
     // });
+  };
+
+  const getUpdatedkeys = (arr) => {
+    const updatedHiddenKeys = [];
+
+    for (const item of arr) {
+      if (item.hasOwnProperty('subHeaderList')) {
+        updatedHiddenKeys.push(...getUpdatedkeys(item.subHeaderList));
+      }
+      updatedHiddenKeys.push(item.value);
+    }
+
+    return updatedHiddenKeys;
   };
 
   const handleInputChange = (id, value) => {
@@ -343,6 +369,11 @@ const OfficeSalesReport = () => {
       ...formData,
       [id]: value,
     });
+  };
+
+  const handleChangeOffice = () => {
+    dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
+    setShowChangeOffice();
   };
 
   const callSearch = (page) => {
@@ -572,7 +603,7 @@ const OfficeSalesReport = () => {
                     text="CHANGE OFFICE"
                     secondary
                     className=" px-48 mr-10"
-                    onClick={() => setShowChangeOffice()}
+                    onClick={() => handleChangeOffice()}
                   />
 
                   <Button type="submit" text="Search" className=" px-48" />
@@ -594,10 +625,21 @@ const OfficeSalesReport = () => {
               />
             }
             headerData={headerData}
-            // subHeaderData={{
-            //   parent: 'Title',
-            //   ...bookingReportData.data.data.subHeaderData,
-            // }}
+            subHeaderData={{
+              parent: 'Title',
+              ...officeSalesReportData.data.data.subHeaderData,
+            }}
+            tableBodyStyling={[
+              {},
+              {},
+              { width: '5.5%' },
+              { borderRight: `1px solid ${colors.silverChalice1}` },
+              { width: '5.5%' },
+              { borderRight: `1px solid ${colors.silverChalice1}` },
+              { width: '5.5%' },
+              { borderRight: `1px solid ${colors.silverChalice1}` },
+              { width: '5.5%' },
+            ]}
             bodyData={officeSalesReportData.data.data}
             page={page}
             count={officeSalesReportData.data.count}

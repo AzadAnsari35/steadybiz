@@ -184,8 +184,15 @@ const Segments = ({ path }) => {
                 <TableCell align="center">ORIGIN</TableCell>
                 <TableCell align="center">DESTINATION</TableCell>
                 <TableCell align="center">FROM COUNTRY</TableCell>
-                <TableCell align="center">TO COUNTRY</TableCell>
-                <TableCell align="center">ACTION</TableCell>
+                <TableCell
+                  style={isViewDeal || isDealHistory ? { width: '8%' } : {}}
+                  align="center"
+                >
+                  TO COUNTRY
+                </TableCell>
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">ACTION</TableCell>
+                )}
               </TableRow>
             </TableHead>
             <TableBody className="Segments-container-table-body">
@@ -199,18 +206,20 @@ const Segments = ({ path }) => {
                 <TableCell align="center">AE</TableCell>
                 <TableCell align="center">PK</TableCell>
 
-                <TableCell align="center">
-                  {isUpdateDeal && (
-                    <EditIcon
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">
+                    {isUpdateDeal && (
+                      <EditIcon
+                        style={{ color: colors.cornflowerBlue }}
+                        className="cursor-pointer"
+                      />
+                    )}
+                    <DeleteIcon
                       style={{ color: colors.cornflowerBlue }}
                       className="cursor-pointer"
                     />
-                  )}
-                  <DeleteIcon
-                    style={{ color: colors.cornflowerBlue }}
-                    className="cursor-pointer"
-                  />
-                </TableCell>
+                  </TableCell>
+                )}
               </TableRow>
               <TableRow>
                 <TableCell align="center" scope="row">
@@ -222,18 +231,20 @@ const Segments = ({ path }) => {
                 <TableCell align="center">AE</TableCell>
                 <TableCell align="center">PK</TableCell>
 
-                <TableCell align="center">
-                  {isUpdateDeal && (
-                    <EditIcon
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">
+                    {isUpdateDeal && (
+                      <EditIcon
+                        style={{ color: colors.cornflowerBlue }}
+                        className="cursor-pointer"
+                      />
+                    )}
+                    <DeleteIcon
                       style={{ color: colors.cornflowerBlue }}
                       className="cursor-pointer"
                     />
-                  )}
-                  <DeleteIcon
-                    style={{ color: colors.cornflowerBlue }}
-                    className="cursor-pointer"
-                  />
-                </TableCell>
+                  </TableCell>
+                )}
               </TableRow>
             </TableBody>
           </Table>

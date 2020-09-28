@@ -94,8 +94,15 @@ const Airlines = ({ path }) => {
                 <TableCell align="left">MARKETING CARRIER</TableCell>
                 <TableCell align="center">AIRLINE CODE</TableCell>
                 <TableCell align="left">OPERATING CARRIER</TableCell>
-                <TableCell align="center">AIRLINE CODE</TableCell>
-                <TableCell align="center">ACTION</TableCell>
+                <TableCell
+                  style={isViewDeal || isDealHistory ? { width: '9%' } : {}}
+                  align="center"
+                >
+                  AIRLINE CODE
+                </TableCell>
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">ACTION</TableCell>
+                )}
               </TableRow>
             </TableHead>
             <TableBody className="Airlines-container-table-body">
@@ -107,18 +114,20 @@ const Airlines = ({ path }) => {
                 <TableCell align="left">Air France</TableCell>
                 <TableCell align="center">AF</TableCell>
 
-                <TableCell align="center">
-                  {isUpdateDeal && (
-                    <EditIcon
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">
+                    {isUpdateDeal && (
+                      <EditIcon
+                        style={{ color: colors.cornflowerBlue }}
+                        className="cursor-pointer"
+                      />
+                    )}
+                    <DeleteIcon
                       style={{ color: colors.cornflowerBlue }}
                       className="cursor-pointer"
                     />
-                  )}
-                  <DeleteIcon
-                    style={{ color: colors.cornflowerBlue }}
-                    className="cursor-pointer"
-                  />
-                </TableCell>
+                  </TableCell>
+                )}
               </TableRow>
               <TableRow>
                 <TableCell scope="row">American Airlines</TableCell>
@@ -128,18 +137,20 @@ const Airlines = ({ path }) => {
                 <TableCell align="left">Air France</TableCell>
                 <TableCell align="center">AF</TableCell>
 
-                <TableCell align="center">
-                  {isUpdateDeal && (
-                    <EditIcon
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">
+                    {isUpdateDeal && (
+                      <EditIcon
+                        style={{ color: colors.cornflowerBlue }}
+                        className="cursor-pointer"
+                      />
+                    )}
+                    <DeleteIcon
                       style={{ color: colors.cornflowerBlue }}
                       className="cursor-pointer"
                     />
-                  )}
-                  <DeleteIcon
-                    style={{ color: colors.cornflowerBlue }}
-                    className="cursor-pointer"
-                  />
-                </TableCell>
+                  </TableCell>
+                )}
               </TableRow>
             </TableBody>
           </Table>

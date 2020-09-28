@@ -144,8 +144,17 @@ const Commission = ({ path }) => {
                 <TableCell align="center">COMMISSION ( % )</TableCell>
                 <TableCell align="center">CURRENCY</TableCell>
                 <TableCell align="center">COMMISSION AMOUNT</TableCell>
-                <TableCell align="center">START DATE</TableCell>
-                <TableCell align="center">ACTION</TableCell>
+                <TableCell style={isView ? { width: '8%' } : {}} align="center">
+                  START DATE
+                </TableCell>
+                {isDealHistory && (
+                  <TableCell style={{ width: '8%' }} align="center">
+                    END DATE
+                  </TableCell>
+                )}
+                {!isView && !isDealHistory && (
+                  <TableCell align="center">ACTION</TableCell>
+                )}
               </TableRow>
             </TableHead>
             <TableBody className="Commission-container-table-body">
@@ -160,18 +169,23 @@ const Commission = ({ path }) => {
                 <TableCell align="center">USD</TableCell>
                 <TableCell align="center"></TableCell>
                 <TableCell align="center">07-OCT-2020</TableCell>
-                <TableCell align="center">
-                  {isUpdate && (
-                    <EditIcon
+                {isDealHistory && (
+                  <TableCell align="center">27-OCT-2020</TableCell>
+                )}
+                {!isView && !isDealHistory && (
+                  <TableCell align="center">
+                    {isUpdate && (
+                      <EditIcon
+                        style={{ color: colors.cornflowerBlue }}
+                        className="cursor-pointer"
+                      />
+                    )}
+                    <DeleteIcon
                       style={{ color: colors.cornflowerBlue }}
                       className="cursor-pointer"
                     />
-                  )}
-                  <DeleteIcon
-                    style={{ color: colors.cornflowerBlue }}
-                    className="cursor-pointer"
-                  />
-                </TableCell>
+                  </TableCell>
+                )}
               </TableRow>
               <TableRow>
                 <TableCell align="left" scope="row">
@@ -184,18 +198,23 @@ const Commission = ({ path }) => {
                 <TableCell align="center">USD</TableCell>
                 <TableCell align="center"></TableCell>
                 <TableCell align="center">07-OCT-2020</TableCell>
-                <TableCell align="center">
-                  {isUpdate && (
-                    <EditIcon
+                {isDealHistory && (
+                  <TableCell align="center">27-OCT-2020</TableCell>
+                )}
+                {!isView && !isDealHistory && (
+                  <TableCell align="center">
+                    {isUpdate && (
+                      <EditIcon
+                        style={{ color: colors.cornflowerBlue }}
+                        className="cursor-pointer"
+                      />
+                    )}
+                    <DeleteIcon
                       style={{ color: colors.cornflowerBlue }}
                       className="cursor-pointer"
                     />
-                  )}
-                  <DeleteIcon
-                    style={{ color: colors.cornflowerBlue }}
-                    className="cursor-pointer"
-                  />
-                </TableCell>
+                  </TableCell>
+                )}
               </TableRow>
             </TableBody>
           </Table>

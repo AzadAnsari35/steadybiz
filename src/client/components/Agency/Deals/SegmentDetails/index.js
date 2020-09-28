@@ -351,7 +351,9 @@ const SegmentDetails = ({ path }) => {
                 <TableCell align="left">SEGMENT CRITERIA</TableCell>
                 <TableCell align="center">SEGMENT ( % )</TableCell>
                 <TableCell align="center">SEGMENT AMT</TableCell>
-                <TableCell align="center">ACTION</TableCell>
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">ACTION</TableCell>
+                )}
               </TableRow>
             </TableHead>
             <TableBody className="SegmentDetails-container-table-body">
@@ -373,18 +375,20 @@ const SegmentDetails = ({ path }) => {
                 <TableCell align="center">5%</TableCell>
                 <TableCell align="center"></TableCell>
 
-                <TableCell align="center">
-                  {isUpdateDeal && (
-                    <EditIcon
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">
+                    {isUpdateDeal && (
+                      <EditIcon
+                        style={{ color: colors.cornflowerBlue }}
+                        className="cursor-pointer"
+                      />
+                    )}
+                    <DeleteIcon
                       style={{ color: colors.cornflowerBlue }}
                       className="cursor-pointer"
                     />
-                  )}
-                  <DeleteIcon
-                    style={{ color: colors.cornflowerBlue }}
-                    className="cursor-pointer"
-                  />
-                </TableCell>
+                  </TableCell>
+                )}
               </TableRow>
               <TableRow>
                 <TableCell align="center" scope="row">
@@ -404,18 +408,20 @@ const SegmentDetails = ({ path }) => {
                 <TableCell align="center">5%</TableCell>
                 <TableCell align="center"></TableCell>
 
-                <TableCell align="center">
-                  {isUpdateDeal && (
-                    <EditIcon
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">
+                    {isUpdateDeal && (
+                      <EditIcon
+                        style={{ color: colors.cornflowerBlue }}
+                        className="cursor-pointer"
+                      />
+                    )}
+                    <DeleteIcon
                       style={{ color: colors.cornflowerBlue }}
                       className="cursor-pointer"
                     />
-                  )}
-                  <DeleteIcon
-                    style={{ color: colors.cornflowerBlue }}
-                    className="cursor-pointer"
-                  />
-                </TableCell>
+                  </TableCell>
+                )}
               </TableRow>
             </TableBody>
           </Table>

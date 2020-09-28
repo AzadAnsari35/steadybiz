@@ -145,6 +145,17 @@ const DatePicker = (props) => {
                 ? new Date()
                 : new Date('2100-01-01')
             }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Image
+                    altText="calendar"
+                    className="date-icon"
+                    imgName="calendar-grey.svg"
+                  />
+                </InputAdornment>
+              ),
+            }}
             // KeyboardButtonProps={{
             //   'aria-label': 'change date',
             // }}

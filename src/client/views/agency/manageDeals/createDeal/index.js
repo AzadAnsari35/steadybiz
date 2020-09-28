@@ -141,7 +141,7 @@ const CreateDeal = () => {
               options={STATUS_LIST}
               width="auto"
               useReactHookForm={false}
-              //        disabled={!isUpdateDeal}
+              disabled={!isUpdateDeal}
             />
           </Grid>
 

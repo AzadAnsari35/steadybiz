@@ -856,7 +856,7 @@ const Filters = (props) => {
         </div>
       )}
       <div className="Filters-section d-flex justify-content-between">
-        <PrimaryAccordion text="Run Time Markup">
+        <PrimaryAccordion text="Run Time Markup" defaultOpen>
           <RunTimeMarkup />
         </PrimaryAccordion>
       </div>

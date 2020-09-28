@@ -245,7 +245,6 @@ const AgencyRegistrationForm = (props) => {
               errors={errors}
               placeholder="Last Name"
               label="Last Name:"
-              value=""
               validation={{
                 required: 'Please enter the last name.',
                 minLength: {

@@ -423,7 +423,7 @@ p {
 }
 
 .border-right-gray-thin {
-  border-right: 1px solid $mercury;
+  border-right: 1px solid $silverChalice1;
 }
 
 .border-left-gray-thin {
@@ -704,6 +704,10 @@ p {
 }
 
 //Margin top
+
+.mt-4 {
+  margin-top: 4px;
+}
 .mt-6 {
   margin-top: 6px;
 }
@@ -794,6 +798,10 @@ p {
 
 .mb-32 {
   margin-bottom: 32px;
+}
+
+.mb-40 {
+  margin-bottom: 40px;
 }
 
 .mb-44 {

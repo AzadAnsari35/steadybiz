@@ -169,13 +169,13 @@ const AgencyCommission = ({ path }) => {
                 <TableCell align="center">COMM. AMT</TableCell>
                 <TableCell align="center">SEG.DISC. (%)</TableCell>
                 <TableCell align="center">SEG.DISC. AMT</TableCell>
-
                 <TableCell align="left">
                   COMMISSION CRITERIA APPLICABLE
                 </TableCell>
                 <TableCell align="center">MAX DISC. AMT</TableCell>
-
-                <TableCell align="center">ACTION</TableCell>
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">ACTION</TableCell>
+                )}
               </TableRow>
             </TableHead>
             <TableBody className="AgencyCommission-container-table-body">
@@ -196,18 +196,20 @@ const AgencyCommission = ({ path }) => {
                 </TableCell>
                 <TableCell align="center">70</TableCell>
 
-                <TableCell align="center">
-                  {isUpdateDeal && (
-                    <EditIcon
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">
+                    {isUpdateDeal && (
+                      <EditIcon
+                        style={{ color: colors.cornflowerBlue }}
+                        className="cursor-pointer"
+                      />
+                    )}
+                    <DeleteIcon
                       style={{ color: colors.cornflowerBlue }}
                       className="cursor-pointer"
                     />
-                  )}
-                  <DeleteIcon
-                    style={{ color: colors.cornflowerBlue }}
-                    className="cursor-pointer"
-                  />
-                </TableCell>
+                  </TableCell>
+                )}
               </TableRow>
               <TableRow>
                 <TableCell align="left" scope="row">
@@ -226,18 +228,20 @@ const AgencyCommission = ({ path }) => {
                 </TableCell>
                 <TableCell align="center">70</TableCell>
 
-                <TableCell align="center">
-                  {isUpdateDeal && (
-                    <EditIcon
+                {!isViewDeal && !isDealHistory && (
+                  <TableCell align="center">
+                    {isUpdateDeal && (
+                      <EditIcon
+                        style={{ color: colors.cornflowerBlue }}
+                        className="cursor-pointer"
+                      />
+                    )}
+                    <DeleteIcon
                       style={{ color: colors.cornflowerBlue }}
                       className="cursor-pointer"
                     />
-                  )}
-                  <DeleteIcon
-                    style={{ color: colors.cornflowerBlue }}
-                    className="cursor-pointer"
-                  />
-                </TableCell>
+                  </TableCell>
+                )}
               </TableRow>
             </TableBody>
           </Table>

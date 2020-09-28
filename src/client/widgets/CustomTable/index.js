@@ -25,7 +25,8 @@ const CustomTable = (props) => {
     hideKeys = '',
     page = 1,
     handlePage,
-    tableStyling,
+    tableBodyStyling,
+    tableHeadStyling,
     showPagination = true,
   } = props;
 
@@ -76,8 +77,12 @@ const CustomTable = (props) => {
     return null;
   };
 
-  const applyStyle = (index) => {
-    return tableStyling?.length && tableStyling[index];
+  const applyHeadStyle = (index) => {
+    return tableHeadStyling?.length && tableHeadStyling[index];
+  };
+
+  const applyBodyStyle = (index) => {
+    return tableBodyStyling?.length && tableBodyStyling[index];
   };
 
   const showEntries = (key) => {
@@ -110,7 +115,8 @@ const CustomTable = (props) => {
                             <div
                               className={`d-flex justify-content-between CustomTable-nestedHead-cell__subHead 
                                  ${
-                                   arr[index + 1]
+                                   arr[index + 1] &&
+                                   showEntries(arr[index + 1]?.id)
                                      ? ' border-right-gray-thin'
                                      : ''
                                  }`}
@@ -132,7 +138,7 @@ const CustomTable = (props) => {
                             style={
                               index === imageIndex
                                 ? { paddingLeft: 72 }
-                                : applyStyle(index)
+                                : applyHeadStyle(index)
                             }
                             // align={setAlignment(index)}
                             align={header.alignment}
@@ -153,10 +159,11 @@ const CustomTable = (props) => {
                               key={`head-${index}`}
                               className="CustomTable-head-cell "
                               style={
-                                index === imageIndex ? { paddingLeft: 72 } : {}
+                                index === imageIndex
+                                  ? { paddingLeft: 72 }
+                                  : applyBodyStyle(index)
                               }
-                              // align={}
-                              style={applyStyle(index)}
+                              align={setAlignment(headerData, key) || 'Center'}
                             >
                               {subHeaderData[key]}
                             </TableCell>
@@ -189,9 +196,8 @@ const CustomTable = (props) => {
                                 style={
                                   index === imageIndex
                                     ? { paddingLeft: 72 }
-                                    : {}
+                                    : applyBodyStyle(index)
                                 }
-                                style={applyStyle(index - hideKeys.length)}
                                 className={`CustomTable-body-cell position-relative ${
                                   index === statusIndex + hideKeys.length
                                     ? statusColor(body[key])
