@@ -1,28 +1,48 @@
-import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import { TextInput, SelectWithTextInput, Text, Button } from 'Widgets';
-import { useForm } from 'react-hook-form';
-import { regex } from 'Helpers/validator';
 import endpoint from 'Config/endpoint';
-import { commonAction } from 'Actions/';
 import { commonConstant } from 'Constants/';
-
-import useDropDown from 'Hooks/useDropDown';
-
+import { regex } from 'Helpers/validator';
+import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { Button, SelectWithTextInput, Text, TextInput } from 'Widgets';
 import './style.scss';
+import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
+import { utils } from 'Helpers/index';
+const createEndpoint = () => {
+  return useAsyncEndpoint((endpoint, data) => ({
+    _endpoint: endpoint,
+    data,
+  }));
+};
 
-const AgencyInvitationForm = () => {
-  const { register, handleSubmit, errors, control } = useForm({
+const AgencyInvitationForm = (props) => {
+  const { countriesDialCodeList } = props;
+  const { register, handleSubmit, errors, control, reset } = useForm({
     defaultValues: {},
   });
+  const [createRes, postCreateRequest] = createEndpoint();
+  const defaultValues = {
+    title: '',
 
-  const countriesDialCodeList = useDropDown(
-    endpoint.master.countries,
-    commonConstant.dropDownParam.countriesDialCode,
-    'masterCountries'
-  );
-
+    mobileDialCode: '',
+  };
+  const handleReset = () => {
+    reset(defaultValues);
+  };
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (createRes) {
+      if (createRes.status) {
+        dispatch(utils.showSuccessBox('Invitation sent successfully'));
+        handleReset();
+      } else {
+        dispatch(utils.showErrorBox(createRes.error.message));
+      }
+    }
+  }, [createRes]);
   const onSubmit = (data) => {
+    postCreateRequest(endpoint.agency.invite, { data, inviteId: null });
     console.log('data', data);
   };
 
@@ -82,30 +102,31 @@ const AgencyInvitationForm = () => {
           </Grid>
           <Grid item xs={6}>
             <SelectWithTextInput
-              name="mobileNumber"
-              selectInputName="mobileCountryCode"
-              data={countriesDialCodeList.dropDownParam}
+              name="mobile"
+              selectInputName="mobileDialCode"
+              data={countriesDialCodeList.dropDownItems}
               label="Mobile Number:"
               placeholder="Mobile Number"
-              selectPlaceholder="Country Code"
+              selectPlaceholder="Dial Code"
               errors={errors}
               register={register}
               validation={{
                 required: 'Please enter the mobile number.',
                 pattern: {
                   value: regex.number,
-                  message: 'Please enter valid mobile number.',
+                  message: 'Please enter valid phone number.',
                 },
               }}
               selectValidation={{
                 required: 'Please enter the country code.',
               }}
               control={control}
+              showValue
             />
           </Grid>
           <Grid item xs={6}>
             <TextInput
-              name="emailId"
+              name="inviteeEmail"
               register={register}
               errors={errors}
               label="Email:"
@@ -119,7 +140,14 @@ const AgencyInvitationForm = () => {
             />
           </Grid>
         </Grid>
+
         <div className="d-flex justify-content-end pt-36">
+          <Button
+            secondary
+            text="Reset"
+            className="mr-16"
+            onClick={handleReset}
+          />
           <Button text="Submit" type="submit" />
         </div>
       </form>

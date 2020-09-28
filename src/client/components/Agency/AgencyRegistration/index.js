@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import {
   SelectWithTextInput,
@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { regex } from 'Helpers/validator';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
-import useDropDown from 'Hooks/useDropDown';
+
 import { utils } from 'Helpers';
 
 // import useAPi from 'Hooks/useApi';
@@ -23,17 +23,19 @@ import { commonAction } from 'Actions/';
 import { commonConstant } from 'Constants/';
 
 import './style.scss';
+import { TITLES } from 'Constants/commonConstant';
 
 const createEndpoint = () => {
-  return useAsyncEndpoint((data) => ({
-    _endpoint: endpoint.office.createOffice,
+  return useAsyncEndpoint((endpoint, data) => ({
+    _endpoint: endpoint,
     data,
   }));
 };
-
 const defaultValues = {
   officeName: '',
   title: '',
+  firstName: '',
+  lastName: '',
   phoneDialCode: '',
   securityGroup: '',
   address1: '',
@@ -44,8 +46,13 @@ const defaultValues = {
   cityCode: '',
   countryCode: '',
 };
+const AgencyRegistrationForm = (props) => {
+  const { countriesList, countriesDialCodeList } = props;
+  const [showSubmit, setShowSubmit] = useState(true);
+  const [createInvite, setCreateInvite] = createEndpoint();
+  const createInviteData = createInvite?.data?.data;
+  //console.log(createInviteData?.firstName);
 
-const AgencyRegistrationForm = () => {
   const {
     register,
     handleSubmit,
@@ -55,39 +62,28 @@ const AgencyRegistrationForm = () => {
     watch,
     getValues,
     reset,
-  } = useForm({ defaultValues });
+  } = useForm();
+  let search = window.location.search;
 
-  const {
+  let params = new URLSearchParams(search);
+  const inviteId = params.get('inviteId');
+  const userData = JSON.parse(utils.getItemFromStorage('userData'));
+  const defaultData = {
+    userDto: { officeId: '', userId: '', officeDto: { officeLevel: '' } },
+  };
+  let {
     userDto: {
       officeId,
       userId,
       officeDto: { officeLevel },
     },
-  } = JSON.parse(utils.getItemFromStorage('userData'));
-
+  } = userData || defaultData;
   // console.log('user info', officeId, userId, officeLevel);
+  //console.log('hh', officeLevel);
 
   const dispatch = useDispatch();
 
   const [createRes, postCreateRequest] = createEndpoint();
-
-  const countriesList = useDropDown(
-    endpoint.master.countries,
-    commonConstant.dropDownParam.countries,
-    'masterCountries'
-  );
-
-  const countriesDialCodeList = useDropDown(
-    endpoint.master.countries,
-    commonConstant.dropDownParam.countriesDialCode,
-    'masterCountries'
-  );
-
-  const objectStatusesList = useDropDown(
-    endpoint.master.objectStatuses,
-    commonConstant.dropDownParam.objectStatuses,
-    'masterObjectStatuses'
-  );
 
   const citiesList = useSelector(
     (state) => state.masterCities?.items?.data?.data
@@ -96,9 +92,47 @@ const AgencyRegistrationForm = () => {
     (state) => state.masterSettlementPlans?.items?.data
   );
 
+  useEffect(() => {
+    //console.log(createInviteData);
+    if (createInvite)
+      if (createInvite.status) {
+        setShowSubmit(true);
+        // setValue('lastName', createInviteData.lastName);
+        // setValue('firstName', createInviteData.firstName);
+        // setValue('emailId', createInviteData.inviteeEmail);
+        // setInviteValue();
+      } else {
+        setShowSubmit(false);
+        dispatch(utils.showErrorBox(createInvite.error.message));
+      }
+  }, [createInvite]);
+  useEffect(() => {
+    if (inviteId != null)
+      //  alert(inviteId);
+      setCreateInvite(endpoint.agency.invite, {
+        data: null,
+        inviteId: inviteId,
+      });
+  }, []);
+  const setInviteValue = () => {
+    if (createInviteData)
+      reset({
+        firstName: createInviteData.firstName,
+        lastName: createInviteData.lastName,
+
+        emailId: createInviteData.inviteeEmail,
+        mobileDialCode: countriesDialCodeList.dropDownItems.findItem(
+          decodeURIComponent(createInviteData.phone.split('-')[0])
+        ),
+        mobile: createInviteData.phone.split('-')[1],
+        title: commonConstant.titles.findItem(createInviteData.title),
+        paymentOptions: settlementPlans ? settlementPlans[0].value : '',
+      });
+  };
   const setDefaultValue = () => {
-    console.log('settlementPlans', settlementPlans[0].value);
+    //console.log('settlementPlans', settlementPlans[0].value);
     reset({ ...defaultValues, paymentOptions: settlementPlans[0].value });
+
     // setValue('paymentOptions', settlementPlans[0].value);
   };
 
@@ -130,10 +164,15 @@ const AgencyRegistrationForm = () => {
     }
   }, [createRes]);
   useEffect(() => {
-    if (settlementPlans) {
+    if (
+      settlementPlans &&
+      countriesDialCodeList &&
+      (inviteId == null || createInviteData)
+    ) {
       setDefaultValue();
+      setInviteValue();
     }
-  }, [settlementPlans]);
+  }, [settlementPlans, createInviteData, countriesDialCodeList]);
 
   useEffect(() => {
     dispatch(commonAction(endpoint.master.settlementPlans));
@@ -145,16 +184,22 @@ const AgencyRegistrationForm = () => {
 
   const onSubmit = (data, e) => {
     console.log('data', data);
-    postCreateRequest({
+
+    postCreateRequest(endpoint.office.createOffice, {
       ...data,
       paymentOptions: [data.paymentOptions],
       action: 'I',
-      userId,
-      officeLevel,
-      officeId,
+      userId: createInviteData ? createInviteData.requesterUserId : userId,
+
+      officeLevel: createInviteData ? 0 : officeLevel,
+      officeId: createInviteData ? createInviteData.requesterOfId : officeId,
       officeChannel: 'SA',
-      status: objectStatusesList.dropDownItems[0],
+      status: {
+        value: 'c1142fd8-6933-4c5c-8667-3fb55a872e2b',
+        label: 'register',
+      }, //objectStatusesList.dropDownItems[0],
       officeType: commonConstant.officeType[1],
+      inviteId: inviteId,
     });
   };
 
@@ -485,7 +530,7 @@ const AgencyRegistrationForm = () => {
             className="mr-16"
             onClick={handleReset}
           />
-          <Button type="submit" text="Submit" />
+          {showSubmit && <Button type="submit" text="Submit" />}
         </div>
       </form>
     </div>

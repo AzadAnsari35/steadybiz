@@ -5,6 +5,8 @@ export const refreshRoutes = (path) => {
   const common = routes.common;
   const flight = routes.flight;
   const transaction = routes.transaction;
+  const agency = routes.agency;
+  //console.log(location.search);
   //console.log('hi', path.toUpperCase() === transaction.viewPNR.toUpperCase());
   //return transaction.searchOrder;
   switch (path.toUpperCase()) {
@@ -17,8 +19,8 @@ export const refreshRoutes = (path) => {
     case transaction.cancelPNR.toUpperCase():
       //console.log('hii');
       return transaction.searchOrder;
-    case transaction.searchOrder:
-      return transaction.searchOrder;
+    case agency.publicRegistration.toUpperCase():
+      return path + location.search;
   }
-  return isDevelopment() ? path : flight.search;
+  return isDevelopment() ? path + location.search : flight.search;
 };
