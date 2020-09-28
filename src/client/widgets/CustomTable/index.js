@@ -115,7 +115,8 @@ const CustomTable = (props) => {
                             <div
                               className={`d-flex justify-content-between CustomTable-nestedHead-cell__subHead 
                                  ${
-                                   arr[index + 1]
+                                   arr[index + 1] &&
+                                   showEntries(arr[index + 1]?.id)
                                      ? ' border-right-gray-thin'
                                      : ''
                                  }`}
@@ -158,10 +159,11 @@ const CustomTable = (props) => {
                               key={`head-${index}`}
                               className="CustomTable-head-cell "
                               style={
-                                index === imageIndex ? { paddingLeft: 72 } : {}
+                                index === imageIndex
+                                  ? { paddingLeft: 72 }
+                                  : applyBodyStyle(index)
                               }
-                              // align={}
-                              style={applyStyle(index)}
+                              align={setAlignment(headerData, key) || 'Center'}
                             >
                               {subHeaderData[key]}
                             </TableCell>
@@ -194,7 +196,7 @@ const CustomTable = (props) => {
                                 style={
                                   index === imageIndex
                                     ? { paddingLeft: 72 }
-                                    : applyBodyStyle(index - hideKeys.length)
+                                    : applyBodyStyle(index)
                                 }
                                 className={`CustomTable-body-cell position-relative ${
                                   index === statusIndex + hideKeys.length

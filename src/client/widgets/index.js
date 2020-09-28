@@ -55,6 +55,7 @@ import SecondaryTable from './SecondaryTable';
 import CustomDrawer from './CustomDrawer';
 import LinearLoaderSecondary from './LinearLoaderSecondary';
 import CustomTable from './CustomTable';
+import TextWithButton from './TextWithButton';
 
 export {
   Avatar,
@@ -114,4 +115,5 @@ export {
   CustomDrawer,
   LinearLoaderSecondary,
   CustomTable,
+  TextWithButton,
 };

@@ -16,7 +16,7 @@ import {
   OFFICE_CHANNEL,
   dropDownParam,
 } from 'Constants/commonConstant';
-import { commonAction } from 'Actions/';
+import { commonAction, commonActionUpdate } from 'Actions/';
 import endpoint from 'Config/endpoint.js';
 import routes from 'Constants/routes';
 import { utils } from 'Helpers';
@@ -38,6 +38,7 @@ import {
   CustomDrawer,
   AutoSuggest,
   CustomTable,
+  TextWithButton,
 } from 'Widgets';
 import useToggle from 'Hooks/useToggle';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
@@ -370,6 +371,11 @@ const OfficeSalesReport = () => {
     });
   };
 
+  const handleChangeOffice = () => {
+    dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
+    setShowChangeOffice();
+  };
+
   const callSearch = (page) => {
     //console.log('hi', requestJson);
     try {
@@ -597,7 +603,7 @@ const OfficeSalesReport = () => {
                     text="CHANGE OFFICE"
                     secondary
                     className=" px-48 mr-10"
-                    onClick={() => setShowChangeOffice()}
+                    onClick={() => handleChangeOffice()}
                   />
 
                   <Button type="submit" text="Search" className=" px-48" />
@@ -619,20 +625,20 @@ const OfficeSalesReport = () => {
               />
             }
             headerData={headerData}
-            // subHeaderData={{
-            //   parent: 'Title',
-            //   ...bookingReportData.data.data.subHeaderData,
-            // }}
+            subHeaderData={{
+              parent: 'Title',
+              ...officeSalesReportData.data.data.subHeaderData,
+            }}
             tableBodyStyling={[
               {},
               {},
               { width: '5.5%' },
               { borderRight: `1px solid ${colors.silverChalice1}` },
-              { width: '6%' },
+              { width: '5.5%' },
               { borderRight: `1px solid ${colors.silverChalice1}` },
-              { width: '6%' },
+              { width: '5.5%' },
               { borderRight: `1px solid ${colors.silverChalice1}` },
-              { width: '6%' },
+              { width: '5.5%' },
             ]}
             bodyData={officeSalesReportData.data.data}
             page={page}

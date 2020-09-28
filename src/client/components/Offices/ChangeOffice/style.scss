@@ -3,7 +3,7 @@ $root: '.ChangeOffice';
 
 #{$root} {
   &-head {
-    padding: 36px 75px;
+    padding: 0px 75px 36px;
     background-color: $white;
   }
   &-tableAction {
@@ -24,6 +24,7 @@ $root: '.ChangeOffice';
   &-table {
     background-color: $athensGray;
     padding: 36px 75px;
+    min-height: 500px;
     .PrimaryTable {
       margin: 0px;
     }

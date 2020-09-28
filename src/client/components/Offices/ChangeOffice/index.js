@@ -281,8 +281,8 @@ const ChangeOffice = (props) => {
           </Grid>
         </form>
       </div>
-      {searchOffice?.status && (
-        <div className="ChangeOffice-table">
+      <div className="ChangeOffice-table">
+        {searchOffice?.status && (
           <PrimaryTable
             header={
               <PrimaryTableHeader
@@ -322,8 +322,8 @@ const ChangeOffice = (props) => {
               'status',
             ]}
           />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

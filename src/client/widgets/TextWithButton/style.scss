@@ -1,0 +1,36 @@
+@import '../../styles/variables.scss';
+
+$root: '.TextWithButton';
+
+#{$root} {
+  display: flex;
+  &-label {
+    margin-bottom: 8px;
+  }
+
+  &-container {
+    position: relative;
+    &-input {
+      box-sizing: border-box;
+      margin: 0;
+      width: 100%;
+      border-radius: 4px;
+      height: 44px;
+      padding: 0 20px;
+      &:focus {
+        outline: none;
+        border: 2px solid $gulfBlue;
+      }
+      &::placeholder {
+        color: #00000080;
+      }
+    }
+
+    &-button {
+      border-radius: 0px;
+      border-top-right-radius: 6px;
+      border-bottom-right-radius: 6px;
+      margin-left: -2px;
+    }
+  }
+}

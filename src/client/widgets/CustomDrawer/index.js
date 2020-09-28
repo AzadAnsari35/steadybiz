@@ -45,7 +45,7 @@ const CustomDrawer = (props) => {
           </IconWithBackground>
         </div>
         {showBottomBorder && (
-          <div className="CustomDrawer-divider horizontal-grey-divider"></div>
+          <div className="CustomDrawer-divider horizontal-grey-divider mt-4"></div>
         )}
 
         {children}
