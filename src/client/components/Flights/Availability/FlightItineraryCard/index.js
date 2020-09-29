@@ -119,6 +119,7 @@ const FlightItineraryCard = (props) => {
   const inboundArrivalDetails = getArrivalSegmentDetails(inboundFlightSegment);
 
   const { fareBasisCode } = itinerary.totalfareDetails;
+  const isDeal = itinerary.totalfareDetails.dealDiscount ? true : false;
 
   const seatsLeft = Math.min.apply(
     Math,
@@ -438,10 +439,12 @@ const FlightItineraryCard = (props) => {
               </div>
             </div>
           </div>
-          <div className="FlightItineraryCard-deals">
-            <img src={utils.displayImage('crown.svg')} />
-            <span className="font-primary-semibold-14">DEAL</span>
-          </div>
+          {isDeal && (
+            <div className="FlightItineraryCard-deals">
+              <img src={utils.displayImage('crown.svg')} />
+              <span className="font-primary-semibold-14">DEAL</span>
+            </div>
+          )}
           <div className="FlightItineraryCard-bottom d-flex justify-content-between">
             <div className="FlightItineraryCard-bottom__leftAction d-flex align-items-center cursor-pointer">
               <AccountBalanceWalletIcon />
@@ -450,14 +453,14 @@ const FlightItineraryCard = (props) => {
                 text="Agency Info"
                 onClick={() => {
                   setShowAgencyInfo();
-                  dispatch(
-                    commonActionWithoutApi(
-                      endpointWithoutApi.flights.flightSelect,
-                      {
-                        outboundItinerary: itinerary,
-                      }
-                    )
-                  );
+                  // dispatch(
+                  //   commonActionWithoutApi(
+                  //     endpointWithoutApi.flights.flightSelect,
+                  //     {
+                  //       outboundItinerary: itinerary,
+                  //     }
+                  //   )
+                  // );
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
               />
