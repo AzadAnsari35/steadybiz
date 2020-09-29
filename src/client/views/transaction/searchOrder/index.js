@@ -10,16 +10,18 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { regex } from 'Helpers/validator';
+import ChangeOffice from 'Components/Offices/ChangeOffice';
 import useDropDown from 'Hooks/useDropDown';
 import moment from 'moment';
 import { dropDownParam } from 'Constants/commonConstant';
+import useToggle from 'Hooks/useToggle';
 import {
   PNR_STATUS,
   PNR_TYPE,
   //BOOKING_CATEGORY,
   SEARCH_DATE_TYPE,
 } from 'Constants/commonConstant';
-import useDropDownApi from 'Hooks/useDropDownApi';
+import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 import {
   Button,
   IconWithBackground,
@@ -32,6 +34,7 @@ import {
   Text,
   TextInput,
   AutoSuggest,
+  CustomDrawer,
 } from 'Widgets';
 import securityOptionConstant from 'Constants/securityOptionConstant';
 import './style.scss';
@@ -217,12 +220,18 @@ const PopoverAction = (props) => {
     </>
   );
 };
-
+const createEndpoint = () => {
+  return useAsyncEndpoint((endpoint, data) => ({
+    _endpoint: endpoint,
+    data,
+  }));
+};
 const SearchOrder = () => {
   const [requestJson, setReqeustJson] = useState(null);
   const [stateKey, setStateKey] = useState(true);
   const [page, setPage] = useState(1);
   const [size] = useState(10);
+  const [showChangeOffice, setShowChangeOffice] = useToggle(false);
   const firstPageUpdate = useRef(true);
   const countriesDialCodeList = useDropDown(
     endpoint.master.countries,
@@ -231,13 +240,20 @@ const SearchOrder = () => {
   );
   let history = useHistory();
   let dispatch = useDispatch();
+  const [userNameList, setUserNameList] = createEndpoint();
+  const userNameListData = userNameList
+    ? userNameList.status
+      ? userNameList?.data
+      : []
+    : [];
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
+  // const ofId = utils.getItemFromStorage('officeId');
   const {
     userDto: {
-      officeDto: { officeId, officeName, officeLevel },
+      officeDto: { ofId, officeId, officeName, officeLevel },
     },
   } = userData;
-
+  //console.log('ffff', ofId);
   const [formData, setFormData] = useState({
     origin: '',
     destination: '',
@@ -256,23 +272,45 @@ const SearchOrder = () => {
     mobile: '',
     userId: '',
     officeID: officeId,
+    ofID: ofId,
+
     DateType: '',
     dateFrom: moment(new Date()),
     dateTo: moment(new Date()),
   };
 
-  const { register, handleSubmit, errors, control, reset, getValues } = useForm(
-    {
-      defaultValues,
-    }
-  );
-
-  const ofId = utils.getItemFromStorage('officeId');
-  const userNameList = useDropDownApi(endpoint.office.searchUserDropDown, {
-    ofid: ofId,
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    reset,
+    getValues,
+    setValue,
+  } = useForm({
+    defaultValues,
   });
-  // console.log('jj', userNameList.dropDownItems);
-  // console.log(PNR_STATUS);
+
+  useEffect(() => {
+    getUserNameList(ofId);
+  }, []);
+  const getUserNameList = (officeId) => {
+    setUserNameList(endpoint.office.searchUserDropDown, {
+      ofid: officeId,
+    });
+  };
+  // useEffect(() => {
+  //   // console.log('formData.officeId::: ', formData.officeId);
+  //   //getUserNameList(formData.ofId);
+  // }, [getValues('officeId')]);
+  const handleChangeOfficeClick = (officeDetail) => {
+    console.log('officeId::: ', officeDetail);
+    setShowChangeOffice();
+    setValue('officeID', officeDetail.officeId);
+    setValue('ofID', officeDetail.ofId);
+    getUserNameList(officeDetail.ofId);
+  };
+
   const searchResult = useSelector(
     (state) => state[endpoint.orders.searchOrders.reducerName]?.items
   );
@@ -323,7 +361,7 @@ const SearchOrder = () => {
   };
 
   const callSearch = (page) => {
-    //console.log('hi', requestJson);
+    console.log('hi', requestJson);
     try {
       const securityMessage = utils.checkSecurityGroup(
         securityOptionConstant.transaction.searchOrder
@@ -337,7 +375,6 @@ const SearchOrder = () => {
           ...requestJson,
           page: page - 1,
           size,
-          ofid: ofId,
         })
       );
     } catch (err) {
@@ -347,6 +384,7 @@ const SearchOrder = () => {
   const handelPaxInfoType = (e) => {
     alert(e);
   };
+
   const handleInputChange = (id, value) => {
     setFormData({
       ...formData,
@@ -403,7 +441,6 @@ const SearchOrder = () => {
         </div>
         <div className="horizontal-grey-divider"></div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <input type="hidden" name="ofid" value={ofId} ref={register}></input>
           <input type="hidden" name="size" value={size} ref={register}></input>
 
           <Text
@@ -554,6 +591,13 @@ const SearchOrder = () => {
             </Grid>
             <Grid item xs={3}>
               <TextInput
+                type="hidden"
+                name="ofID"
+                register={register}
+                control={control}
+                errors={errors}
+              />
+              <TextInput
                 label="Office ID:"
                 name="officeID"
                 register={register}
@@ -567,7 +611,7 @@ const SearchOrder = () => {
               <MultiSelect
                 label="User Name:"
                 name="userId"
-                options={userNameList.dropDownItems}
+                options={userNameListData}
                 showBorder={true}
                 changeStyle={true}
                 control={control}
@@ -617,12 +661,12 @@ const SearchOrder = () => {
             </Grid>
             <Grid item xs={3}>
               <div className="d-flex justify-content-end pt-32">
-                {/* <Button
+                <Button
                   text="CHANGE OFFICE"
                   secondary
                   className=" px-48 mr-10"
-                  onClick={() => handleClick()}
-                /> */}
+                  onClick={() => setShowChangeOffice()}
+                />
 
                 <Button type="submit" text="Search" className=" px-48" />
               </div>
@@ -666,6 +710,16 @@ const SearchOrder = () => {
           hideKeys={['actualStatus', 'officeId']}
         />
       )}
+      <CustomDrawer
+        title="CHANGE OFFICE"
+        showDrawer={showChangeOffice}
+        onCloseClick={setShowChangeOffice}
+        width={1150}
+        className="BookingReport-CustomDrawer"
+        showBottomBorder={true}
+      >
+        <ChangeOffice onOfficeClick={handleChangeOfficeClick} />
+      </CustomDrawer>
     </div>
   );
 };

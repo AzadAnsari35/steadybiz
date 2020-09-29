@@ -71,7 +71,7 @@ const LayoverHtml = (props) => {
 };
 
 const StopsHtml = (props) => {
-  const { stopsData, activeTab, segmentType, setStops } = props;
+  const { stopsData, activeTab, segmentType, setStops, checkedValues } = props;
   //console.log(stopsData, activeTab);
   // style={{
   //   display: activeTab == segmentType ? 'block' : 'none',
@@ -97,6 +97,7 @@ const StopsHtml = (props) => {
             value={`${segmentType}-${index}`}
             disabled={!isFinite(stopsData[segmentType][item])}
             name="stops"
+            checkedValues={checkedValues}
             primaryLabel={
               index == 0 ? 'Direct' : index == 1 ? '1 Stop' : '2 Stops'
             }
@@ -118,6 +119,7 @@ const FlightSlotsHtml = (props) => {
     flightSlotsData,
     activeTab,
     segmentType,
+    checkedValues,
   } = props;
 
   return (
@@ -161,6 +163,7 @@ const FlightSlotsHtml = (props) => {
                     key={`${segmentType}${item.id}${index}${subIndex}${subItem}`}
                     value={`${segmentType}${item.id}-${range}`}
                     onChange={setflightSlots}
+                    checkedValues={checkedValues}
                     useReactHookForm={false}
                     name="flightSlotState"
                     primaryLabel={
@@ -191,6 +194,7 @@ const NearbyAirportHtml = (props) => {
     nearbyAirportsData,
     activeTab,
     segmentType,
+    checkedValues,
   } = props;
 
   return (
@@ -227,6 +231,7 @@ const NearbyAirportHtml = (props) => {
                     name="nearByAirports"
                     onChange={setNearByAirports}
                     useReactHookForm={false}
+                    checkedValues={checkedValues}
                     value={`${segmentType}${item.id}-${airport}`}
                     primaryLabel={
                       nearbyAirportsData[segmentType][item.id][airport].name
@@ -244,13 +249,14 @@ const NearbyAirportHtml = (props) => {
   );
 };
 const AirlineCheckbox = (props) => {
-  const { airlineCode, airlineName, price, onChange } = props;
+  const { airlineCode, airlineName, price, onChange, checkedValues } = props;
   return (
     <CustomCheckbox
       name="airlines"
       value={airlineCode}
       useReactHookForm={false}
       onChange={onChange}
+      checkedValues={checkedValues}
     >
       <div className="d-flex justify-content-between align-items-center width-100">
         <div className="d-flex align-items-center">
@@ -303,7 +309,7 @@ const Filters = (props) => {
   const [oTripRange, setOTripRange] = useState([]);
   const [rTripRange, setRTripRange] = useState([]);
   const [stops, setStops] = useCheckboxData([]);
-
+  const [isResetFilter, setIsResetFilter] = useState(false);
   const flightSelectData = useSelector(
     (state) => state[endpointWithoutApi.flights.flightSelect.reducerName]
   );
@@ -312,7 +318,7 @@ const Filters = (props) => {
   // console.log(sortingOption)
   const [sortOrder, setSortOrder] = useState('asc');
   useEffect(() => {
-    //console.log(stops);
+    //  console.log('hi');
     //2020-09-01T23:35:00+05:30
     // console.log(moment('2020-09-01T23:35:00+05:30').format('X'));
     //console.log(stops);
@@ -341,7 +347,7 @@ const Filters = (props) => {
     const oStops = returnFilterArray(stops, 'outbound').map((el) =>
       parseInt(el)
     );
-    console.log(stops);
+    //    console.log(stops);
     filterData = returnFilterData(oStops, filterData, 'oStops');
     // console.log('hi', filterData);
     if (isReturn) {
@@ -514,11 +520,33 @@ const Filters = (props) => {
     setRTripRange(newValue);
   };
 
-  // const handleResetAll = () => {
-  //   //console.log('hh');
-  //   setAirlines([]);
-  //   setFareType([]);
-  // };
+  const handleResetAll = () => {
+    //console.log('hh');
+    //setCheckedValue([]);
+    //   const [airlines, setAirlines] = useCheckboxData([]);
+    // const [fareType, setFareType] = useCheckboxData([]);
+
+    // const [nearByAirports, setNearByAirports] = useCheckboxData([]);
+    // const [flightSlotsState, setflightSlots] = useCheckboxData([]);
+    // const [newPriceRange, setNewPriceRange] = useState([]);
+    // const [oLayoverRange, setOLayoverRange] = useState([]);
+    // const [rLayoverRange, setRLayoverRange] = useState([]);
+    // const [oTripRange, setOTripRange] = useState([]);
+    // const [rTripRange, setRTripRange] = useState([]);
+    // const [stops, setStops] = useCheckboxData([]);
+    setAirlines([]);
+    setFareType([]);
+    setNearByAirports([]);
+    setflightSlots([]);
+    setStops([]);
+    setNewPriceRange([]);
+    setOLayoverRange([]);
+    setRLayoverRange([]);
+    setOTripRange([]);
+    setRTripRange([]);
+
+    setIsResetFilter(!isResetFilter);
+  };
   return (
     <div className="Filters">
       <Text
@@ -526,14 +554,17 @@ const Filters = (props) => {
         text="filter results"
       />
       <div className="Filters-section d-flex justify-content-between pt-0">
-        {!!count && (
+        {
           <Text
             className="font-primary-medium-14"
             text={`${count} flights found.`}
           />
-        )}
-        <Link className="ml-auto" text="Reset All" />
-        {/* <span onClick={handleResetAll}>reset all</span> */}
+        }
+        <Link
+          className="ml-auto"
+          text="Reset All"
+          onClick={() => handleResetAll()}
+        />
       </div>
       {/* <div className="Filters-section d-flex justify-content-between">
         <PrimaryAccordion
@@ -551,6 +582,7 @@ const Filters = (props) => {
             <RangeSlider
               isPrice
               range={priceRange}
+              isResetFilter={isResetFilter}
               parentCallback={priceRangeCallback}
             />
           </PrimaryAccordion>
@@ -573,6 +605,7 @@ const Filters = (props) => {
             nearbyAirportsData={nearbyAirportsData}
             activeTab={activeTab.nearbyAirports}
             segmentType={'outbound'}
+            checkedValues={nearByAirports}
           />
           {flightSegmentType === 'RT' && (
             <NearbyAirportHtml
@@ -581,6 +614,7 @@ const Filters = (props) => {
               nearbyAirportsData={nearbyAirportsData}
               activeTab={activeTab.nearbyAirports}
               segmentType={'return'}
+              checkedValues={nearByAirports}
             />
           )}
         </PrimaryAccordion>
@@ -602,6 +636,7 @@ const Filters = (props) => {
               stopsData={stopsData}
               activeTab={activeTab.stops}
               segmentType={'outbound'}
+              checkedValues={stops}
             />
             {flightSegmentType === 'RT' && (
               <StopsHtml
@@ -609,6 +644,7 @@ const Filters = (props) => {
                 stopsData={stopsData}
                 activeTab={activeTab.stops}
                 segmentType={'return'}
+                checkedValues={stops}
               />
             )}
           </PrimaryAccordion>
@@ -620,6 +656,7 @@ const Filters = (props) => {
             disabled={!isFinite(refundableMinPrice)}
             name="fareTypes"
             value={true}
+            checkedValues={fareType}
             onChange={setFareType}
             useReactHookForm={false}
             primaryLabel="Refundable"
@@ -632,6 +669,7 @@ const Filters = (props) => {
           <CustomCheckbox
             disabled={!isFinite(nonRefundableMinPrice)}
             name="fareTypes"
+            checkedValues={fareType}
             value={false}
             onChange={setFareType}
             useReactHookForm={false}
@@ -662,6 +700,7 @@ const Filters = (props) => {
                     !!masterAirlines && getAirlineName(masterAirlines, airline)
                   }
                   price={airlinesData[airline]}
+                  checkedValues={airlines}
                   onChange={setAirlines}
                 />
               );
@@ -710,6 +749,7 @@ const Filters = (props) => {
             flightSlotsData={flightSlots}
             activeTab={activeTab.flightTime}
             segmentType={'outbound'}
+            checkedValues={flightSlotsState}
           />
           {flightSegmentType === 'RT' && (
             <FlightSlotsHtml
@@ -718,6 +758,7 @@ const Filters = (props) => {
               flightSlotsData={flightSlots}
               activeTab={activeTab.flightTime}
               segmentType={'return'}
+              checkedValues={flightSlotsState}
             />
           )}
           {/* {!!flightSlots &&
@@ -804,6 +845,7 @@ const Filters = (props) => {
             >
               <RangeSlider
                 isTime
+                isResetFilter={isResetFilter}
                 range={layoverDurations['outbound']}
                 parentCallback={oLayoverCallback}
               />
@@ -817,6 +859,7 @@ const Filters = (props) => {
               >
                 <RangeSlider
                   isTime
+                  isResetFilter={isResetFilter}
                   range={layoverDurations['return']}
                   parentCallback={rLayoverCallback}
                 />
@@ -844,6 +887,7 @@ const Filters = (props) => {
             >
               <RangeSlider
                 isTime
+                isResetFilter={isResetFilter}
                 range={tripDurations['outbound']}
                 parentCallback={oTripRangeCallback}
               />
@@ -857,6 +901,7 @@ const Filters = (props) => {
               >
                 <RangeSlider
                   isTime
+                  isResetFilter={isResetFilter}
                   range={tripDurations['return']}
                   parentCallback={rTripRangeCallback}
                 />

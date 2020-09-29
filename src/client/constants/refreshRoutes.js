@@ -10,8 +10,8 @@ export const refreshRoutes = (path) => {
   //console.log('hi', path.toUpperCase() === transaction.viewPNR.toUpperCase());
   //return transaction.searchOrder;
   switch (path.toUpperCase()) {
-    case common.passengerInformation.toUpperCase():
-      return flight.search;
+    // case common.passengerInformation.toUpperCase():
+    //   return flight.search;
     case transaction.viewBooking.toUpperCase():
     case transaction.issueTicket.toUpperCase():
     case transaction.viewPNR.toUpperCase():

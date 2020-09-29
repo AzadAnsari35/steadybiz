@@ -121,6 +121,7 @@ const FlightItineraryCard = (props) => {
   const inboundArrivalDetails = getArrivalSegmentDetails(inboundFlightSegment);
 
   const { fareBasisCode } = itinerary.totalfareDetails;
+  const isDeal = itinerary.totalfareDetails.dealDiscount ? true : false;
 
   const seatsLeft = Math.min.apply(
     Math,
@@ -182,10 +183,18 @@ const FlightItineraryCard = (props) => {
     }
     try {
       dispatch(
-        commonActionWithoutApi(endpointWithoutApi.flights.flightSelect, {
+        commonActionWithoutApi(endpointWithoutApi.flights.flightSelect, null)
+      );
+      dispatch(
+        commonAction(endpoint.flights.flightSelect, {
           outboundItinerary: itinerary,
         })
       );
+      // dispatch(
+      //   commonActionWithoutApi(endpointWithoutApi.flights.flightSelect, {
+      //     outboundItinerary: itinerary,
+      //   })
+      // );
       history.push(routes.common.passengerInformation);
     } catch (err) {
       showError(err, setError);
@@ -416,7 +425,7 @@ const FlightItineraryCard = (props) => {
                   text={`${seatsLeft} seats left!`}
                 />
                 <Tag
-                  text={!!isFareRefundable ? 'Refundable' : 'Non Refundable'}
+                  text={isFareRefundable ? 'Refundable' : 'Non Refundable'}
                   isSuccess={!!isFareRefundable}
                 />
               </div>
@@ -432,10 +441,12 @@ const FlightItineraryCard = (props) => {
               </div>
             </div>
           </div>
-          <div className="FlightItineraryCard-deals">
-            <img src={utils.displayImage('crown.svg')} />
-            <span className="font-primary-semibold-14">DEAL</span>
-          </div>
+          {isDeal && (
+            <div className="FlightItineraryCard-deals">
+              <img src={utils.displayImage('crown.svg')} />
+              <span className="font-primary-semibold-14">DEAL</span>
+            </div>
+          )}
           <div className="FlightItineraryCard-bottom d-flex justify-content-between">
             <div className="FlightItineraryCard-bottom__leftAction d-flex align-items-center cursor-pointer">
               <AccountBalanceWalletIcon />
@@ -532,7 +543,7 @@ const FlightItineraryCard = (props) => {
         showDrawer={showAgencyInfo}
         onCloseClick={setShowAgencyInfo}
         width={calculateRem(450)}
-      className="FlightItineraryCard-CustomDrawer-agencyInfo"
+        className="FlightItineraryCard-CustomDrawer-agencyInfo"
       >
         <AgencyInformation itinerary={itinerary} />
       </CustomDrawer>
