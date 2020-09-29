@@ -36,10 +36,20 @@ const AsyncAgencySearchDeals = loadable({
   loading: LinearLoaderSecondary,
 });
 
-// const AsyncSearchDeals = loadable({
-//   loader: () => import('Views/config'),
-//   loading: LinearLoaderSecondary,
-// });
+const AsyncAgencyCreateDeals = loadable({
+  loader: () => import('Views/agency/manageDeals/createDeal'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncSearchDeals = loadable({
+  loader: () => import('Views/config/manageDeals/searchDeals'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncCreateDeals = loadable({
+  loader: () => import('Views/config/manageDeals/createDeal'),
+  loading: LinearLoaderSecondary,
+});
 
 const AsyncCreatePcc = loadable({
   loader: () => import('Views/config/manageMultiPcc/createPcc'),
@@ -275,6 +285,36 @@ const Routes = () => (
 
     <PrivateRoute
       exact
+      path={routes.master.searchDeals}
+      component={AsyncSearchDeals}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.master.createDeal}
+      component={AsyncCreateDeals}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.master.modifyDeal}
+      component={AsyncCreateDeals}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.master.viewDeal}
+      component={AsyncCreateDeals}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.master.dealHistory}
+      component={AsyncCreateDeals}
+    />
+
+    <PrivateRoute
+      exact
       path={routes.agency.searchDeals}
       component={AsyncAgencySearchDeals}
     />
@@ -282,21 +322,25 @@ const Routes = () => (
     <PrivateRoute
       exact
       path={routes.agency.createDeal}
-      component={CreateDeal}
+      component={AsyncAgencyCreateDeals}
     />
 
     <PrivateRoute
       exact
       path={routes.agency.modifyDeal}
-      component={CreateDeal}
+      component={AsyncAgencyCreateDeals}
     />
 
-    <PrivateRoute exact path={routes.agency.viewDeal} component={CreateDeal} />
+    <PrivateRoute
+      exact
+      path={routes.agency.viewDeal}
+      component={AsyncAgencyCreateDeals}
+    />
 
     <PrivateRoute
       exact
       path={routes.agency.dealHistory}
-      component={CreateDeal}
+      component={AsyncAgencyCreateDeals}
     />
 
     <PrivateRoute

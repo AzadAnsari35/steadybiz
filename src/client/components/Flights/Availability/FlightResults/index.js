@@ -5,7 +5,7 @@ import FlightItineraryCard from 'Components/Flights/Availability/FlightItinerary
 import './style.scss';
 
 const FlightResults = (props) => {
-  const { requestBody, results, setShowAgencyInfo } = props;
+  const { requestBody, results } = props;
 
   return (
     <div className="FlightResults">
@@ -14,7 +14,6 @@ const FlightResults = (props) => {
           key={itinerary.flightItineraryId}
           itinerary={itinerary}
           requestBody={requestBody}
-          setShowAgencyInfo={setShowAgencyInfo}
         />
       ))}
     </div>

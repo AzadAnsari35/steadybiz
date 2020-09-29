@@ -197,6 +197,15 @@ $root: '.FlightItineraryCard';
       border-bottom: 2px solid $gray;
     }
   }
+
+  &-CustomDrawer-agencyInfo {
+    padding: 0 20px 20px 20px;
+    padding-top: calculateRem(100px);
+
+    .CustomDrawer-title {
+      font-size: 20px;
+    }
+  }
 }
 
 @media screen and (min-width: 1280px) and (max-width: 1919px) {

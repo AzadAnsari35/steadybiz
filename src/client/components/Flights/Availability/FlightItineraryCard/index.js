@@ -47,6 +47,7 @@ import {
   Text,
 } from 'Widgets';
 import FareRules from 'Components/Common/FareRules';
+import AgencyInformation from 'Components/Common/AgencyInformation';
 
 const FlightDetails = lazy(() =>
   import('Components/Flights/Availability/FlightDetails')
@@ -82,7 +83,7 @@ const flightDetailsTabs = [
 const FlightItineraryCard = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { itinerary, requestBody, setShowAgencyInfo } = props;
+  const { itinerary, requestBody } = props;
   const [activeFlightTab, setActiveFlightTab] = useState('flightDetails');
   const [activeFareRulesTab, setActiveFareRulesTab] = useState(1);
   const [showTabSection, setShowTabSection] = useToggle(false);
@@ -93,6 +94,7 @@ const FlightItineraryCard = (props) => {
   const [error, setError] = useState(null);
   const [fareRulesSegments, setFareRulesSegments] = useState([]);
   const [showFareRules, setShowFareRules] = useToggle(false);
+  const [showAgencyInfo, setShowAgencyInfo] = useToggle(false);
 
   const airlines = getDataFromRedux(masterAirlinesResponse).data;
   const fareRules = getDataFromRedux(fareRulesResponse);
@@ -451,18 +453,7 @@ const FlightItineraryCard = (props) => {
               <Text
                 className="font-primary-medium-14"
                 text="Agency Info"
-                onClick={() => {
-                  setShowAgencyInfo();
-                  // dispatch(
-                  //   commonActionWithoutApi(
-                  //     endpointWithoutApi.flights.flightSelect,
-                  //     {
-                  //       outboundItinerary: itinerary,
-                  //     }
-                  //   )
-                  // );
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onClick={setShowAgencyInfo}
               />
             </div>
             <div className="FlightItineraryCard-bottom__rightAction d-flex">
@@ -546,6 +537,15 @@ const FlightItineraryCard = (props) => {
         width={calculateRem(868)}
       >
         <FareRules itinerary={itinerary} />
+      </CustomDrawer>
+      <CustomDrawer
+        title="Agency Information"
+        showDrawer={showAgencyInfo}
+        onCloseClick={setShowAgencyInfo}
+        width={calculateRem(450)}
+        className="FlightItineraryCard-CustomDrawer-agencyInfo"
+      >
+        <AgencyInformation itinerary={itinerary} />
       </CustomDrawer>
     </>
   );
