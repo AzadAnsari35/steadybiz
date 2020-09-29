@@ -7,7 +7,7 @@ $root: '.CustomDrawer';
   padding-top: calculateRem(100px);
   box-sizing: border-box;
   &-divider {
-    margin-top: 4px !important;
+    margin: 4px 75px 0px !important;
   }
   &-title {
     text-transform: uppercase;

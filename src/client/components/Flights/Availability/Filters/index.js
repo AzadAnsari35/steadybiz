@@ -11,6 +11,8 @@ import { applyCommaToPrice, getDataFromRedux } from 'Helpers/global';
 //import availabilityResults from 'Views/availability/availabilityResults';
 import moment from 'moment';
 //import { countryList } from 'Views/availability/countryList';
+import endpointWithoutApi from 'Config/endpointWithoutApi';
+
 import {
   returnFilterData,
   returnRangeFilterData,
@@ -280,6 +282,7 @@ const Filters = (props) => {
     sortingOption,
     sortDirection,
     count,
+    agencyInfo: { showAgencyInfo, setShowAgencyInfo },
   } = props;
   const [showAllAirlines, toggleShowAllAirlines] = useToggle(false);
   const [activeTab, setActiveTab] = useState({
@@ -301,6 +304,11 @@ const Filters = (props) => {
   const [oTripRange, setOTripRange] = useState([]);
   const [rTripRange, setRTripRange] = useState([]);
   const [stops, setStops] = useCheckboxData([]);
+
+  const flightSelectData = useSelector(
+    (state) => state[endpointWithoutApi.flights.flightSelect.reducerName]
+  );
+  const flightSelect = getDataFromRedux(flightSelectData);
   // const [sortType, setSortType] = useState(sortingOption);
   // console.log(sortingOption)
   const [sortOrder, setSortOrder] = useState('asc');
@@ -529,7 +537,11 @@ const Filters = (props) => {
         {/* <span onClick={handleResetAll}>reset all</span> */}
       </div>
       <div className="Filters-section d-flex justify-content-between">
-        <PrimaryAccordion text="Agency Information">
+        <PrimaryAccordion
+          text="Agency Information"
+          isOpen={showAgencyInfo}
+          handleOpen={flightSelect ? setShowAgencyInfo : () => {}}
+        >
           <AgencyInformation />
         </PrimaryAccordion>
       </div>

@@ -16,7 +16,7 @@ import {
   OFFICE_CHANNEL,
   dropDownParam,
 } from 'Constants/commonConstant';
-import { commonAction } from 'Actions/';
+import { commonAction, commonActionUpdate } from 'Actions/';
 import endpoint from 'Config/endpoint.js';
 import routes from 'Constants/routes';
 import { utils } from 'Helpers';
@@ -462,6 +462,12 @@ const BookingReport = () => {
       dispatch(utils.showErrorBox(err.message));
     }
   };
+
+  const handleChangeOffice = () => {
+    dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
+    setShowChangeOffice();
+  };
+
   const onSubmit = (data) => {
     // console.log('data', data);
     setPage(1);
@@ -790,7 +796,7 @@ const BookingReport = () => {
                     text="CHANGE OFFICE"
                     secondary
                     className=" px-48 mr-10"
-                    onClick={() => setShowChangeOffice()}
+                    onClick={() => handleChangeOffice()}
                   />
 
                   <Button type="submit" text="Search" className=" px-48" />

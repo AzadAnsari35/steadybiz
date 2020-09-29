@@ -1,0 +1,36 @@
+$root: '.AgencyInformation';
+
+#{$root} {
+  &-earning {
+    & > div {
+      margin-bottom: 6px;
+    }
+  }
+
+  .Tag {
+    top: 12px;
+    right: 0;
+  }
+  .container {
+    margin-top: 30px;
+    .price-category {
+      &-container {
+        margin-bottom: 6px;
+        &:last-child {
+          margin-bottom: 24px;
+        }
+      }
+      &__title {
+        margin-bottom: 6px;
+      }
+      &__description {
+        &-price {
+          margin-bottom: 6px;
+          &:last-child {
+            margin-bottom: 0px;
+          }
+        }
+      }
+    }
+  }
+}

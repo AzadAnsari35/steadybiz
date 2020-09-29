@@ -82,7 +82,7 @@ const flightDetailsTabs = [
 const FlightItineraryCard = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { itinerary, requestBody } = props;
+  const { itinerary, requestBody, setShowAgencyInfo } = props;
   const [activeFlightTab, setActiveFlightTab] = useState('flightDetails');
   const [activeFareRulesTab, setActiveFareRulesTab] = useState(1);
   const [showTabSection, setShowTabSection] = useToggle(false);
@@ -437,7 +437,22 @@ const FlightItineraryCard = (props) => {
           <div className="FlightItineraryCard-bottom d-flex justify-content-between">
             <div className="FlightItineraryCard-bottom__leftAction d-flex align-items-center cursor-pointer">
               <AccountBalanceWalletIcon />
-              <Text className="font-primary-medium-14" text="Agency Info" />
+              <Text
+                className="font-primary-medium-14"
+                text="Agency Info"
+                onClick={() => {
+                  setShowAgencyInfo();
+                  dispatch(
+                    commonActionWithoutApi(
+                      endpointWithoutApi.flights.flightSelect,
+                      {
+                        outboundItinerary: itinerary,
+                      }
+                    )
+                  );
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              />
             </div>
             <div className="FlightItineraryCard-bottom__rightAction d-flex">
               <div className="d-flex align-items-center cursor-pointer">
