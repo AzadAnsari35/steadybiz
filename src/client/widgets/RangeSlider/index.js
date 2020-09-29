@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Slider from '@material-ui/core/Slider';
 
 import {
@@ -11,8 +11,27 @@ import { Text } from 'Widgets';
 import './style.scss';
 
 const RangeSlider = (props) => {
-  const { isTime, isPrice, prefix, range, suffix, parentCallback } = props;
+  const {
+    isTime,
+    isPrice,
+    prefix,
+    range,
+    suffix,
+    parentCallback,
+    isResetFilter,
+  } = props;
+  const firstPageUpdate = useRef(true);
   const [value, setValue] = useState(range);
+
+  // useEffect(() => {
+  //   //setValue(resetValue);
+  //   if (firstPageUpdate.current) {
+  //     firstPageUpdate.current = false;
+  //     return;
+  //   }
+  //   setValue(range);
+  //   //console.log(resetValue);
+  // }, [isResetFilter]);
   const handleChange = (event, newValue) => {
     setValue(newValue);
     // parentCallback(newValue);

@@ -310,7 +310,7 @@ const Filters = (props) => {
   const [oTripRange, setOTripRange] = useState([]);
   const [rTripRange, setRTripRange] = useState([]);
   const [stops, setStops] = useCheckboxData([]);
-
+  const [isResetFilter, setIsResetFilter] = useState(false);
   const flightSelectData = useSelector(
     (state) => state[endpointWithoutApi.flights.flightSelect.reducerName]
   );
@@ -540,6 +540,13 @@ const Filters = (props) => {
     setNearByAirports([]);
     setflightSlots([]);
     setStops([]);
+    setNewPriceRange([]);
+    setOLayoverRange([]);
+    setRLayoverRange([]);
+    setOTripRange([]);
+    setRTripRange([]);
+
+    setIsResetFilter(!isResetFilter);
   };
   return (
     <div className="Filters">
@@ -576,6 +583,7 @@ const Filters = (props) => {
             <RangeSlider
               isPrice
               range={priceRange}
+              isResetFilter={isResetFilter}
               parentCallback={priceRangeCallback}
             />
           </PrimaryAccordion>
@@ -838,6 +846,7 @@ const Filters = (props) => {
             >
               <RangeSlider
                 isTime
+                isResetFilter={isResetFilter}
                 range={layoverDurations['outbound']}
                 parentCallback={oLayoverCallback}
               />
@@ -851,6 +860,7 @@ const Filters = (props) => {
               >
                 <RangeSlider
                   isTime
+                  isResetFilter={isResetFilter}
                   range={layoverDurations['return']}
                   parentCallback={rLayoverCallback}
                 />
@@ -878,6 +888,7 @@ const Filters = (props) => {
             >
               <RangeSlider
                 isTime
+                isResetFilter={isResetFilter}
                 range={tripDurations['outbound']}
                 parentCallback={oTripRangeCallback}
               />
@@ -891,6 +902,7 @@ const Filters = (props) => {
               >
                 <RangeSlider
                   isTime
+                  isResetFilter={isResetFilter}
                   range={tripDurations['return']}
                   parentCallback={rTripRangeCallback}
                 />
