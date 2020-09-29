@@ -16,13 +16,14 @@ import {
   OFFICE_CHANNEL,
   dropDownParam,
 } from 'Constants/commonConstant';
-import { commonAction } from 'Actions/';
+import { commonAction, commonActionUpdate } from 'Actions/';
 import endpoint from 'Config/endpoint.js';
 import routes from 'Constants/routes';
 import { utils } from 'Helpers';
 import useDropDown from 'Hooks/useDropDown';
 import useCheckboxData from 'Hooks/useCheckboxData';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
+import ChangeOffice from 'Components/Offices/ChangeOffice';
 
 import {
   Button,
@@ -36,6 +37,7 @@ import {
   Text,
   AutoSuggest,
   TextInput,
+  CustomDrawer,
 } from 'Widgets';
 
 import './style.scss';
@@ -282,6 +284,11 @@ const TotalSalesReport = () => {
     });
   };
 
+  const handleChangeOffice = () => {
+    dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
+    setShowChangeOffice();
+  };
+
   const callSearch = (page) => {
     //console.log('hi', requestJson);
     try {
@@ -345,225 +352,253 @@ const TotalSalesReport = () => {
   };
 
   return (
-    <div className="TotalSalesReport">
-      <div className="TotalSalesReport-head">
-        <div className="d-flex justify-content-between align-items-end pb-4">
-          <div className="font-primary-semibold-24 ">SALES REPORT</div>
-          <IconWithBackground
-            bgColor="#74D3DC33"
-            showCursor
-            onClick={handleReset}
-          >
-            <CachedIcon style={{ color: '#74D3DC' }} />
-          </IconWithBackground>
-        </div>
-        <div className="horizontal-grey-divider"></div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <input type="hidden" name="ofid" value={ofId} ref={register}></input>
-          <input type="hidden" name="size" value={size} ref={register}></input>
+    <>
+      <div className="TotalSalesReport">
+        <div className="TotalSalesReport-head">
+          <div className="d-flex justify-content-between align-items-end pb-4">
+            <div className="font-primary-semibold-24 ">SALES REPORT</div>
+            <IconWithBackground
+              bgColor="#74D3DC33"
+              showCursor
+              onClick={handleReset}
+            >
+              <CachedIcon style={{ color: '#74D3DC' }} />
+            </IconWithBackground>
+          </div>
+          <div className="horizontal-grey-divider"></div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <input
+              type="hidden"
+              name="ofid"
+              value={ofId}
+              ref={register}
+            ></input>
+            <input
+              type="hidden"
+              name="size"
+              value={size}
+              ref={register}
+            ></input>
 
-          <Text
-            showLeftBorder={true}
-            text="SEARCH SALES REPORT"
-            className="font-primary-medium-18 my-24"
-          />
-          <Grid container spacing={3}>
-            <Grid item xs={6}>
-              <SelectWithDatePickers
-                label="Date:"
-                name={{
-                  select: 'reportType',
-                  datePicker1: 'dateFrom',
-                  datePicker2: 'dateTo',
-                }}
-                data={SEARCH_DATE_TYPE}
-                defaultValues={{
-                  select: SEARCH_DATE_TYPE[1],
-                  datePicker1: new Date(),
-                  datePicker2:
+            <Text
+              showLeftBorder={true}
+              text="SEARCH SALES REPORT"
+              className="font-primary-medium-18 my-24"
+            />
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                <SelectWithDatePickers
+                  label="Date:"
+                  name={{
+                    select: 'reportType',
+                    datePicker1: 'dateFrom',
+                    datePicker2: 'dateTo',
+                  }}
+                  data={SEARCH_DATE_TYPE}
+                  defaultValues={{
+                    select: SEARCH_DATE_TYPE[1],
+                    datePicker1: new Date(),
+                    datePicker2:
+                      formData.reportType.value === 'T'
+                        ? customAddDays(new Date(), 31)
+                        : new Date(),
+                  }}
+                  disableFutureDatesDatePicker1={
+                    formData.reportType.value === 'B'
+                  }
+                  disableFutureDatesDatePicker2={
+                    formData.reportType.value === 'B'
+                  }
+                  disablePastDatesDatePicker1={
                     formData.reportType.value === 'T'
-                      ? customAddDays(new Date(), 31)
-                      : new Date(),
-                }}
-                disableFutureDatesDatePicker1={
-                  formData.reportType.value === 'B'
-                }
-                disableFutureDatesDatePicker2={
-                  formData.reportType.value === 'B'
-                }
-                disablePastDatesDatePicker1={formData.reportType.value === 'T'}
-                disablePastDatesDatePicker2={formData.reportType.value === 'T'}
-                isSearchable
-                useReactHookForm={false}
-                onSelectChange={handleSelectOption}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              {/* <TextInput
+                  }
+                  disablePastDatesDatePicker2={
+                    formData.reportType.value === 'T'
+                  }
+                  isSearchable
+                  useReactHookForm={false}
+                  onSelectChange={handleSelectOption}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                {/* <TextInput
               label="Origin:"
               id="origin"
               name="origin"
               useReactHookForm={false}
               onChange={handleInputChange}
             /> */}
-              <AutoSuggest
-                id="origin"
-                label="Origin:"
-                isSearchBar={false}
-                // initialValue={initialDepartureAirport}
-                stateKey={stateKey}
-                onSelectSuggestion={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              {/* <TextInput
+                <AutoSuggest
+                  id="origin"
+                  label="Origin:"
+                  isSearchBar={false}
+                  // initialValue={initialDepartureAirport}
+                  stateKey={stateKey}
+                  onSelectSuggestion={handleInputChange}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                {/* <TextInput
               label="Destination:"
               id="destination"
               name="destination"
               useReactHookForm={false}
               onChange={handleInputChange}
             /> */}
-              <AutoSuggest
-                id="destination"
-                label="Destination:"
-                isSearchBar={false}
-                // initialValue={initialDepartureAirport}
-                stateKey={stateKey}
-                onSelectSuggestion={handleInputChange}
-              />
-            </Grid>
-
-            <Grid item xs={3}>
-              <MultiSelect
-                label="Office Channel:"
-                id="officeChannel"
-                name="officeChannel"
-                options={OFFICE_CHANNEL}
-                showBorder
-                changeStyle
-                width="auto"
-                isSearchable
-                useReactHookForm={false}
-                onSelectChange={handleSelectOption}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <MultiSelect
-                label="Office Type:"
-                id="officeType"
-                name="officeType"
-                options={officeType}
-                showBorder
-                changeStyle
-                width="auto"
-                isSearchable
-                useReactHookForm={false}
-                onSelectChange={handleSelectOption}
-              />
-            </Grid>
-
-            {console.log('formData::: ', formData)}
-            <Grid item xs={3}>
-              <TextInput
-                label="Office ID:"
-                id="officeId"
-                name="officeId"
-                value={formData.officeId}
-                useReactHookForm={false}
-                onChange={handleInputChange}
-                disabled={true}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <MultiSelect
-                label="User Name:"
-                id="userName"
-                name="userName"
-                options={userNameListData}
-                showBorder
-                changeStyle
-                width="auto"
-                isSearchable
-                useReactHookForm={false}
-                onSelectChange={handleSelectOption}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <MultiSelect
-                label="Country:"
-                id="countryPos"
-                name="countryPos"
-                options={countriesList.dropDownItems}
-                defaultValue={formData.countryPos ? formData.countryPos : null}
-                showBorder
-                changeStyle
-                width="auto"
-                isSearchable
-                useReactHookForm={false}
-                onSelectChange={handleSelectOption}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <MultiSelect
-                label="City:"
-                id="cityPos"
-                name="cityPos"
-                options={
-                  (citiesList && utils.sortObjectArray(citiesList)) || []
-                }
-                defaultValue={formData.cityPos ? formData.cityPos : null}
-                showBorder
-                changeStyle
-                width="auto"
-                isSearchable
-                useReactHookForm={false}
-                onSelectChange={handleSelectOption}
-              />
-            </Grid>
-
-            {/* </div>
-          </Grid> */}
-            <Grid item xs={12}>
-              <div className="d-flex justify-content-end pt-32">
-                <Button
-                  text="CHANGE OFFICE"
-                  secondary
-                  className=" px-48 mr-10"
-                  onClick={() => setShowChangeOffice()}
+                <AutoSuggest
+                  id="destination"
+                  label="Destination:"
+                  isSearchBar={false}
+                  // initialValue={initialDepartureAirport}
+                  stateKey={stateKey}
+                  onSelectSuggestion={handleInputChange}
                 />
+              </Grid>
 
-                <Button type="submit" text="Search" className=" px-48" />
-              </div>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="Office Channel:"
+                  id="officeChannel"
+                  name="officeChannel"
+                  options={OFFICE_CHANNEL}
+                  showBorder
+                  changeStyle
+                  width="auto"
+                  isSearchable
+                  useReactHookForm={false}
+                  onSelectChange={handleSelectOption}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="Office Type:"
+                  id="officeType"
+                  name="officeType"
+                  options={officeType}
+                  showBorder
+                  changeStyle
+                  width="auto"
+                  isSearchable
+                  useReactHookForm={false}
+                  onSelectChange={handleSelectOption}
+                />
+              </Grid>
+
+              {console.log('formData::: ', formData)}
+              <Grid item xs={3}>
+                <TextInput
+                  label="Office ID:"
+                  id="officeId"
+                  name="officeId"
+                  value={formData.officeId}
+                  useReactHookForm={false}
+                  onChange={handleInputChange}
+                  disabled={true}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="User Name:"
+                  id="userName"
+                  name="userName"
+                  options={userNameListData}
+                  showBorder
+                  changeStyle
+                  width="auto"
+                  isSearchable
+                  useReactHookForm={false}
+                  onSelectChange={handleSelectOption}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="Country:"
+                  id="countryPos"
+                  name="countryPos"
+                  options={countriesList.dropDownItems}
+                  defaultValue={
+                    formData.countryPos ? formData.countryPos : null
+                  }
+                  showBorder
+                  changeStyle
+                  width="auto"
+                  isSearchable
+                  useReactHookForm={false}
+                  onSelectChange={handleSelectOption}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="City:"
+                  id="cityPos"
+                  name="cityPos"
+                  options={
+                    (citiesList && utils.sortObjectArray(citiesList)) || []
+                  }
+                  defaultValue={formData.cityPos ? formData.cityPos : null}
+                  showBorder
+                  changeStyle
+                  width="auto"
+                  isSearchable
+                  useReactHookForm={false}
+                  onSelectChange={handleSelectOption}
+                />
+              </Grid>
+
+              {/* </div>
+          </Grid> */}
+              <Grid item xs={12}>
+                <div className="d-flex justify-content-end pt-32">
+                  <Button
+                    text="CHANGE OFFICE"
+                    secondary
+                    className=" px-48 mr-10"
+                    onClick={() => handleChangeOffice()}
+                  />
+
+                  <Button type="submit" text="Search" className=" px-48" />
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
+          </form>
+        </div>
+        {bookingReportData && (
+          <PrimaryTable
+            header={
+              <BookingReportsTableHeader
+                officeName={officeName}
+                officeId={officeId}
+                officeLevel={officeLevel}
+                defaultFieldOptions={fieldSelection}
+                fieldsOptions={BOOKING_REPORT_FILED_SELECTION_OPTIONS}
+                onSelectChange={handleSelectOption}
+              />
+            }
+            headerInArrOfObjFormat
+            headerData={headerData}
+            subHeaderData={{
+              ...bookingReportData.data.data.subHeaderData,
+            }}
+            bodyData={bookingReportData.data.data}
+            page={page}
+            count={bookingReportData.data.count}
+            size={size}
+            handlePage={handlePage}
+            hideKeys={hiddenKeys}
+          />
+        )}
       </div>
-      {bookingReportData && (
-        <PrimaryTable
-          header={
-            <BookingReportsTableHeader
-              officeName={officeName}
-              officeId={officeId}
-              officeLevel={officeLevel}
-              defaultFieldOptions={fieldSelection}
-              fieldsOptions={BOOKING_REPORT_FILED_SELECTION_OPTIONS}
-              onSelectChange={handleSelectOption}
-            />
-          }
-          headerInArrOfObjFormat
-          headerData={headerData}
-          subHeaderData={{
-            ...bookingReportData.data.data.subHeaderData,
-          }}
-          bodyData={bookingReportData.data.data}
-          page={page}
-          count={bookingReportData.data.count}
-          size={size}
-          handlePage={handlePage}
-          hideKeys={hiddenKeys}
-        />
-      )}
-    </div>
+      <CustomDrawer
+        title="CHANGE OFFICE"
+        showDrawer={showChangeOffice}
+        onCloseClick={setShowChangeOffice}
+        width={1150}
+        className="TotalSalesReport-CustomDrawer"
+        showBottomBorder={true}
+      >
+        <ChangeOffice onOfficeClick={handleChangeOfficeClick} />
+      </CustomDrawer>
+    </>
   );
 };
 

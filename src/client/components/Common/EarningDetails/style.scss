@@ -1,0 +1,9 @@
+$root: '.EarningDetails';
+
+#{$root} {
+  &-earning {
+    & > div {
+      margin-bottom: 6px;
+    }
+  }
+}
