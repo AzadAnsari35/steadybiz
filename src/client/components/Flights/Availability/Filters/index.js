@@ -282,7 +282,6 @@ const Filters = (props) => {
     sortingOption,
     sortDirection,
     count,
-    agencyInfo: { showAgencyInfo, setShowAgencyInfo },
   } = props;
   const [showAllAirlines, toggleShowAllAirlines] = useToggle(false);
   const [activeTab, setActiveTab] = useState({
@@ -536,7 +535,7 @@ const Filters = (props) => {
         <Link className="ml-auto" text="Reset All" />
         {/* <span onClick={handleResetAll}>reset all</span> */}
       </div>
-      <div className="Filters-section d-flex justify-content-between">
+      {/* <div className="Filters-section d-flex justify-content-between">
         <PrimaryAccordion
           text="Agency Information"
           isOpen={showAgencyInfo}
@@ -544,7 +543,7 @@ const Filters = (props) => {
         >
           <AgencyInformation />
         </PrimaryAccordion>
-      </div>
+      </div> */}
 
       {!!priceRange && (
         <div className="Filters-section d-flex justify-content-between">

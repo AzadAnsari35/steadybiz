@@ -238,6 +238,7 @@ const ChangeOffice = (props) => {
                 showBorder={true}
                 changeStyle={true}
                 control={control}
+                validation={{ required: 'Please enter the office channel' }}
                 errors={errors}
                 getValues={getValues}
                 showLabel
@@ -253,6 +254,11 @@ const ChangeOffice = (props) => {
                 showBorder={true}
                 changeStyle={true}
                 control={control}
+                validation={
+                  getValues('officeChannel') !== 'SA'
+                    ? { required: 'Please enter the office type' }
+                    : {}
+                }
                 errors={errors}
                 getValues={getValues}
                 showLabel

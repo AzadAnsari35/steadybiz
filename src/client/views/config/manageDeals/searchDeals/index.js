@@ -126,21 +126,14 @@ const PopoverAction = ({ rowNumber }) => {
           onClick={handleClick}
         >
           <Link
-            to={routes.agency.createDeal}
-            className="font-primary-regular-14"
-            name="view"
-          >
-            Create Deal
-          </Link>
-          <Link
-            to={routes.agency.viewDeal}
+            to={routes.master.viewDeal}
             className="font-primary-regular-14"
             name="view"
           >
             View Deal
           </Link>
           <Link
-            to={routes.agency.modifyDeal}
+            to={routes.master.modifyDeal}
             className="font-primary-regular-14"
             name="modify"
           >
@@ -148,7 +141,7 @@ const PopoverAction = ({ rowNumber }) => {
           </Link>
 
           <Link
-            to={routes.agency.dealHistory}
+            to={routes.master.dealHistory}
             className="font-primary-regular-14"
             name="history"
           >
@@ -181,7 +174,7 @@ const SearchDeals = () => {
     <div className="SearchDeals">
       <div className="SearchDeals-head">
         <div className="d-flex justify-content-between align-items-end pb-4">
-          <div className="font-primary-semibold-24 pb-4">AGENCY DEALS</div>
+          <div className="font-primary-semibold-24 pb-4">MANAGE DEALS</div>
           <IconWithBackground
             bgColor="#74D3DC33"
             showCursor
@@ -330,6 +323,13 @@ const SearchDeals = () => {
           </Grid>
 
           <Grid item xs={12} className="d-flex justify-content-end pt-32">
+            <Button
+              text="Create"
+              secondary
+              className=" px-48 mr-10"
+              onClick={() => history.push(routes.master.createDeal)}
+            />
+
             <Button type="submit" text="Search" className=" px-48" />
           </Grid>
         </Grid>

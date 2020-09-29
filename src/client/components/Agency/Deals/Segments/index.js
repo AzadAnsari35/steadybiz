@@ -17,6 +17,7 @@ import './style.scss';
 
 const Segments = ({ path }) => {
   const {
+    isAgencyCreateDeal,
     isCreateDeal,
     isUpdateDeal,
     isViewDeal,
@@ -53,7 +54,7 @@ const Segments = ({ path }) => {
       className="Segments"
     >
       <div className="Segments-container">
-        {!(isViewDeal || isDealHistory) && (
+        {!(isViewDeal || isDealHistory || isAgencyCreateDeal) && (
           <Grid
             container
             spacing={1}

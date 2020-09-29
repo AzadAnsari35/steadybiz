@@ -33,7 +33,7 @@ const CustomDrawer = (props) => {
       >
         <div className="CustomDrawer-header d-flex justify-content-between align-items-center">
           <Text
-            className="CustomDrawer-title font-primary-semibold-24"
+            className={`CustomDrawer-title font-primary-semibold-24 `}
             text={title}
           />
           <IconWithBackground

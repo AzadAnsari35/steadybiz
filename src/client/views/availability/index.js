@@ -39,7 +39,6 @@ const sortingOptions = [
 const Availability = () => {
   const dispatch = useDispatch();
   const [showSearch, setShowSearch] = useToggle(false);
-  const [showAgencyInfo, setShowAgencyInfo] = useToggle(false);
 
   const [sortingOption, setSortingOption] = useState(sortingOptions[0]);
   const [sortDirection, setSortDirection] = useState('asc');
@@ -177,10 +176,6 @@ const Availability = () => {
                       count={
                         !!filteredItineraries && filteredItineraries.length
                       }
-                      agencyInfo={{
-                        showAgencyInfo: showAgencyInfo,
-                        setShowAgencyInfo: setShowAgencyInfo,
-                      }}
                     />
                   )}
               </div>
@@ -234,7 +229,6 @@ const Availability = () => {
                   <FlightResults
                     requestBody={flightSearchInputData}
                     results={filteredItineraries}
-                    setShowAgencyInfo={setShowAgencyInfo}
                   />
                 )}
               </div>

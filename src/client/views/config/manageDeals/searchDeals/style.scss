@@ -1,0 +1,9 @@
+@import '../../../../styles/variables';
+$root: '.SearchDeals';
+
+#{$root} {
+  &-head {
+    padding: 36px 100px;
+    background-color: $white;
+  }
+}

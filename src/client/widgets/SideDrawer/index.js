@@ -184,7 +184,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       subList: [
         {
           text: 'Manage Deals',
-          link: routes.agency.searchDeals,
+          link: routes.master.searchDeals,
         },
         {
           text: 'Manage Region',

@@ -21,7 +21,13 @@ import EditIcon from '@material-ui/icons/Edit';
 import './style.scss';
 
 const SegmentDetails = ({ path }) => {
-  const { isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory } = path;
+  const {
+    isAgencyCreateDeal,
+    isCreateDeal,
+    isUpdateDeal,
+    isViewDeal,
+    isDealHistory,
+  } = path;
 
   return (
     <SecondaryAccordion
@@ -31,7 +37,7 @@ const SegmentDetails = ({ path }) => {
       className="SegmentDetails"
     >
       <div className="SegmentDetails-container">
-        {!(isViewDeal || isDealHistory) && (
+        {!(isViewDeal || isDealHistory || isAgencyCreateDeal) && (
           <Grid
             container
             spacing={1}

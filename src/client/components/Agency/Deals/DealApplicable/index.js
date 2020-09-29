@@ -11,6 +11,7 @@ import './style.scss';
 
 const DealApplicable = ({ path }) => {
   const {
+    isAgencyCreateDeal,
     isCreateDeal,
     isUpdateDeal,
     isViewDeal,
@@ -39,7 +40,7 @@ const DealApplicable = ({ path }) => {
           className="DealApplicable-container-form"
           alignItems="flex-end"
         >
-          {!(isViewDeal || isDealHistory) && (
+          {!(isViewDeal || isDealHistory || isAgencyCreateDeal) && (
             <Grid item xs={3}>
               <MultiSelect
                 name="region"
@@ -55,7 +56,10 @@ const DealApplicable = ({ path }) => {
               />
             </Grid>
           )}
-          <Grid item xs={isViewDeal || isDealHistory ? 12 : 9}>
+          <Grid
+            item
+            xs={isViewDeal || isDealHistory || isAgencyCreateDeal ? 12 : 9}
+          >
             <TextInput
               name=""
               // disabled={isViewSecurityGroup}
@@ -66,7 +70,7 @@ const DealApplicable = ({ path }) => {
               disabled={isViewDeal || isDealHistory}
             />
           </Grid>
-          {!(isViewDeal || isDealHistory) && (
+          {!(isViewDeal || isDealHistory || isAgencyCreateDeal) && (
             <Grid item xs={3}>
               <MultiSelect
                 name="continent"
@@ -81,7 +85,10 @@ const DealApplicable = ({ path }) => {
               />
             </Grid>
           )}
-          <Grid item xs={isViewDeal || isDealHistory ? 12 : 9}>
+          <Grid
+            item
+            xs={isViewDeal || isDealHistory || isAgencyCreateDeal ? 12 : 9}
+          >
             <TextInput
               name=""
               label={isViewDeal || isDealHistory ? 'Continent:' : ''}
@@ -91,7 +98,7 @@ const DealApplicable = ({ path }) => {
             />
           </Grid>
 
-          {!(isViewDeal || isDealHistory) && (
+          {!(isViewDeal || isDealHistory || isAgencyCreateDeal) && (
             <Grid item xs={3}>
               <MultiSelect
                 name="country"
@@ -107,7 +114,10 @@ const DealApplicable = ({ path }) => {
               />
             </Grid>
           )}
-          <Grid item xs={isViewDeal || isDealHistory ? 12 : 9}>
+          <Grid
+            item
+            xs={isViewDeal || isDealHistory || isAgencyCreateDeal ? 12 : 9}
+          >
             <TextInput
               name=""
               label={isViewDeal || isDealHistory ? 'Country:' : ''}
@@ -118,7 +128,7 @@ const DealApplicable = ({ path }) => {
             />
           </Grid>
 
-          {!(isViewDeal || isDealHistory) && (
+          {!(isViewDeal || isDealHistory || isAgencyCreateDeal) && (
             <Grid item xs={3}>
               <MultiSelect
                 name="city"
@@ -134,7 +144,10 @@ const DealApplicable = ({ path }) => {
               />
             </Grid>
           )}
-          <Grid item xs={isViewDeal || isDealHistory ? 12 : 9}>
+          <Grid
+            item
+            xs={isViewDeal || isDealHistory || isAgencyCreateDeal ? 12 : 9}
+          >
             <TextInput
               name=""
               label={isViewDeal || isDealHistory ? 'City:' : ''}

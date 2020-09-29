@@ -56,15 +56,10 @@ const CreateDeal = () => {
 
   const path = location.pathname;
 
-  const isAgencyDeal =
-    utils.stringComparison(path, routes.agency.createDeal) ||
-    utils.stringComparison(path, routes.agency.modifyDeal) ||
-    utils.stringComparison(path, routes.agency.viewDeal) ||
-    utils.stringComparison(path, routes.agency.dealHistory);
-  const isCreateDeal = utils.stringComparison(path, routes.agency.createDeal);
-  const isUpdateDeal = utils.stringComparison(path, routes.agency.modifyDeal);
-  const isViewDeal = utils.stringComparison(path, routes.agency.viewDeal);
-  const isDealHistory = utils.stringComparison(path, routes.agency.dealHistory);
+  const isCreateDeal = utils.stringComparison(path, routes.master.createDeal);
+  const isUpdateDeal = utils.stringComparison(path, routes.master.modifyDeal);
+  const isViewDeal = utils.stringComparison(path, routes.master.viewDeal);
+  const isDealHistory = utils.stringComparison(path, routes.master.dealHistory);
   const [isSourceAggregator, setIsSourceAggregator] = useState(false);
   const [isSourceGds, setIsSourceGds] = useState(false);
   const handleSourceChange = () => {
@@ -79,7 +74,7 @@ const CreateDeal = () => {
           <div className="font-primary-semibold-24 pb-4">MANAGE DEALS</div>
           <IconWithBackground
             bgColor={colors.lightRed}
-            onClick={() => history.push(routes.agency.searchDeals)}
+            onClick={() => history.push(routes.master.searchDeals)}
             showCursor
           >
             <CloseIcon style={{ color: colors.red }} />
@@ -109,7 +104,7 @@ const CreateDeal = () => {
               changeStyle={true}
               width="auto"
               useReactHookForm={false}
-              disabled={true}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -121,7 +116,7 @@ const CreateDeal = () => {
               onChange={() => console.log('value')}
               useReactHookForm={false}
               placeholder="Code"
-              disabled={true}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -133,7 +128,7 @@ const CreateDeal = () => {
               useReactHookForm={false}
               placeholder="Name"
               maxLength={50}
-              disabled={true}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -146,7 +141,7 @@ const CreateDeal = () => {
               options={STATUS_LIST}
               width="auto"
               useReactHookForm={false}
-              disabled={true}
+              disabled={!isUpdateDeal}
             />
           </Grid>
 
@@ -156,7 +151,7 @@ const CreateDeal = () => {
               label="Ticket From Date:"
               onChange={() => console.log('value')}
               useReactHookForm={false}
-              disabled={true}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -166,7 +161,7 @@ const CreateDeal = () => {
               label="Ticket To Date:"
               onChange={() => console.log('value')}
               useReactHookForm={false}
-              disabled={true}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -176,7 +171,7 @@ const CreateDeal = () => {
               label="Travel From Date:"
               onChange={() => console.log('value')}
               useReactHookForm={false}
-              disabled={true}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -186,7 +181,7 @@ const CreateDeal = () => {
               label="Travel To Date:"
               onChange={() => console.log('value')}
               useReactHookForm={false}
-              disabled={true}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
 
@@ -197,7 +192,7 @@ const CreateDeal = () => {
               onChange={() => console.log('value')}
               useReactHookForm={false}
               placeholder="Description"
-              disabled={true}
+              disabled={isViewDeal || isDealHistory}
             />
           </Grid>
           {isDealHistory && (
@@ -215,15 +210,52 @@ const CreateDeal = () => {
             </Grid>
           )}
         </Grid>
-        <div className="d-flex justify-content-between align-items-center pt-32">
-          <div className="font-primary-italic-14">
-            <b>Please Note:</b> The Create Deals button should only be clicked
-            after defining Deal Applicable Criteria below to this newly created
-            Deal.
+        <div className="d-flex justify-content-between align-items-end">
+          <div>
+            <div className="d-flex py-20">
+              <span className="font-primary-medium-14">
+                Deal Applicable for:
+              </span>
+              <CustomCheckbox
+                value="own"
+                onChange={() => console.log('object')}
+                useReactHookForm={false}
+                name="dealApplicableFor"
+                primaryLabel="Own"
+                className="pl-40"
+                disabled={isViewDeal || isDealHistory}
+              />
+
+              <CustomCheckbox
+                value="branches"
+                onChange={() => console.log('object')}
+                useReactHookForm={false}
+                name="dealApplicableFor"
+                primaryLabel="Branches"
+                className="pl-40"
+                disabled={isViewDeal || isDealHistory}
+              />
+
+              <CustomCheckbox
+                value="subAgency"
+                onChange={() => console.log('object')}
+                useReactHookForm={false}
+                name="dealApplicableFor"
+                primaryLabel="Sub-Agency"
+                className="pl-40"
+                disabled={isViewDeal || isDealHistory}
+              />
+            </div>
+
+            <div className="font-primary-italic-14">
+              <b>Please Note:</b> The Create Deals button should only be clicked
+              after defining Deal Applicable Criteria below to this newly
+              created Deal.
+            </div>
           </div>
 
           {!isViewDeal && (
-            <div className="d-flex justify-content-end ">
+            <div className="d-flex justify-content-end pt-32">
               <Button
                 type="submit"
                 text={`${
@@ -277,9 +309,27 @@ const CreateDeal = () => {
             }}
           />
 
+          <Source
+            path={{
+              isCreateDeal,
+              isUpdateDeal,
+              isViewDeal,
+              isDealHistory,
+              handleSourceChange,
+            }}
+          />
+          {!!isSourceAggregator && (
+            <Aggregator
+              path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+            />
+          )}
+          {!!isSourceGds && (
+            <Gds
+              path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
+            />
+          )}
           <Airlines
             path={{
-              isAgencyDeal,
               isCreateDeal,
               isUpdateDeal,
               isViewDeal,
@@ -289,7 +339,6 @@ const CreateDeal = () => {
           />
           <Segments
             path={{
-              isAgencyDeal,
               isCreateDeal,
               isUpdateDeal,
               isViewDeal,
@@ -298,20 +347,13 @@ const CreateDeal = () => {
             }}
           />
           <SegmentDetails
-            path={{
-              isAgencyDeal,
-              isCreateDeal,
-              isUpdateDeal,
-              isViewDeal,
-              isDealHistory,
-            }}
+            path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
           />
           <AgencyCommission
             path={{ isCreateDeal, isUpdateDeal, isViewDeal, isDealHistory }}
           />
           <DealApplicable
             path={{
-              isAgencyDeal,
               isCreateDeal,
               isUpdateDeal,
               isViewDeal,

@@ -1,3 +1,4 @@
+@import '../../../styles/variables';
 $root: '.AgencyInformation';
 
 #{$root} {
@@ -12,7 +13,6 @@ $root: '.AgencyInformation';
     right: 0;
   }
   .container {
-    margin-top: 30px;
     .price-category {
       &-container {
         margin-bottom: 6px;
@@ -30,6 +30,32 @@ $root: '.AgencyInformation';
             margin-bottom: 0px;
           }
         }
+      }
+    }
+  }
+
+  &-accordian {
+    box-shadow: none;
+    border: none;
+    border-radius: none;
+
+    .SecondaryAccordion-header {
+      font-size: 14px;
+      font-family: 'Montserrat SemiBold';
+      padding: 24px 0px 12px;
+      border-bottom: none;
+      display: flex;
+      justify-content: space-between;
+      text-transform: uppercase;
+    }
+    .SecondaryAccordion-header__icon {
+      width: 20px;
+      height: 20px;
+      border: 1px solid $royalBlue;
+      margin-left: 6px;
+      > svg {
+        width: 8px;
+        height: 8px;
       }
     }
   }

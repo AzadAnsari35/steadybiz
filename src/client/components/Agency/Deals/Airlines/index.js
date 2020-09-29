@@ -15,12 +15,15 @@ import './style.scss';
 
 const Airlines = ({ path }) => {
   const {
+    isAgencyDeal,
     isCreateDeal,
     isUpdateDeal,
     isViewDeal,
     isDealHistory,
     airlineList,
   } = path;
+
+  console.log('isAgencyDeal', isAgencyDeal);
 
   return (
     <SecondaryAccordion
@@ -30,7 +33,7 @@ const Airlines = ({ path }) => {
       className="Airlines"
     >
       <div className="Airlines-container">
-        {!(isViewDeal || isDealHistory) && (
+        {!(isViewDeal || isDealHistory || isAgencyDeal) && (
           <Grid
             container
             spacing={1}
@@ -95,12 +98,16 @@ const Airlines = ({ path }) => {
                 <TableCell align="center">AIRLINE CODE</TableCell>
                 <TableCell align="left">OPERATING CARRIER</TableCell>
                 <TableCell
-                  style={isViewDeal || isDealHistory ? { width: '9%' } : {}}
+                  style={
+                    isViewDeal || isDealHistory || isAgencyDeal
+                      ? { width: '9%' }
+                      : {}
+                  }
                   align="center"
                 >
                   AIRLINE CODE
                 </TableCell>
-                {!isViewDeal && !isDealHistory && (
+                {!isViewDeal && !isDealHistory && !isAgencyDeal && (
                   <TableCell align="center">ACTION</TableCell>
                 )}
               </TableRow>
@@ -114,7 +121,7 @@ const Airlines = ({ path }) => {
                 <TableCell align="left">Air France</TableCell>
                 <TableCell align="center">AF</TableCell>
 
-                {!isViewDeal && !isDealHistory && (
+                {!isViewDeal && !isDealHistory && !isAgencyDeal && (
                   <TableCell align="center">
                     {isUpdateDeal && (
                       <EditIcon
@@ -137,7 +144,7 @@ const Airlines = ({ path }) => {
                 <TableCell align="left">Air France</TableCell>
                 <TableCell align="center">AF</TableCell>
 
-                {!isViewDeal && !isDealHistory && (
+                {!isViewDeal && !isDealHistory && !isAgencyDeal && (
                   <TableCell align="center">
                     {isUpdateDeal && (
                       <EditIcon

@@ -17,199 +17,153 @@ import { getDataFromRedux, getFormattedPrice } from 'Helpers/global';
 import useToggle from 'Hooks/useToggle';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text } from 'Widgets';
+import { Text, SecondaryAccordion } from 'Widgets';
 import ItineraryFareDeatils from '../ItineraryFareDeatils';
 import './style.scss';
 
-const AgencyInformation = () => {
-  const flightSelectData = useSelector(
-    (state) => state[endpointWithoutApi.flights.flightSelect.reducerName]
-  );
-  const flightSelect = getDataFromRedux(flightSelectData);
-  const { outboundItinerary } = flightSelect;
+const AgencyInformation = (props) => {
+  // const {
+  //   taxTotal,
+  //   airlineFuelSurcharge,
+  //   airlineMiscellaneousFee,
+  // } = getTaxesAndFeesDetails(outboundItinerary);
+  // const totalFare = getTotalFare(outboundItinerary);
+  // const handlingCharges = getHandlingCharges(outboundItinerary);
+  // const totalAmount = getTotalAmount(outboundItinerary);
+  // const totalAmountCurrency = getTotalAmountCurrency(outboundItinerary);
 
-  const dispatch = useDispatch();
-  const [showFareRules, setShowFareRules] = useToggle(false);
+  // const outboundFlightSegment = getFlightSegmentByType(
+  //   outboundItinerary,
+  //   'Outbound'
+  // );
+  // const inboundFlightSegment = getFlightSegmentByType(
+  //   outboundItinerary,
+  //   'Inbound'
+  // );
 
-  const passengersCount = getTotalPassengersCount(outboundItinerary);
-  const { baseFareTotal, baseFareBreakup } = getBaseFareDetails(
-    outboundItinerary
-  );
-  const {
-    taxTotal,
-    airlineFuelSurcharge,
-    airlineMiscellaneousFee,
-  } = getTaxesAndFeesDetails(outboundItinerary);
-  const totalFare = getTotalFare(outboundItinerary);
-  const handlingCharges = getHandlingCharges(outboundItinerary);
-  const totalAmount = getTotalAmount(outboundItinerary);
-  const totalAmountCurrency = getTotalAmountCurrency(outboundItinerary);
+  // const { fareBasisCode } = outboundItinerary.totalfareDetails;
 
-  const outboundFlightSegment = getFlightSegmentByType(
-    outboundItinerary,
-    'Outbound'
-  );
-  const inboundFlightSegment = getFlightSegmentByType(
-    outboundItinerary,
-    'Inbound'
-  );
+  // const handleFareRulesClick = () => {
+  //   const securityMessage = utils.checkSecurityGroup(
+  //     securityOptionConstant.flights.fareRules
+  //   );
+  //   if (securityMessage !== '') {
+  //     dispatch(utils.showErrorBox(securityMessage));
+  //     return;
+  //   }
+  //   setShowFareRules();
+  //   getFareRulesData(outboundFlightSegment);
+  // };
 
-  const { fareBasisCode } = outboundItinerary.totalfareDetails;
-
-  const handleFareRulesClick = () => {
-    const securityMessage = utils.checkSecurityGroup(
-      securityOptionConstant.flights.fareRules
-    );
-    if (securityMessage !== '') {
-      dispatch(utils.showErrorBox(securityMessage));
-      return;
-    }
-    setShowFareRules();
-    getFareRulesData(outboundFlightSegment);
-  };
-
-  const getFareRulesData = (tab) => {
-    dispatch(
-      commonAction(endpoint.flights.fareRules, {
-        flightSegments: tab,
-        fareBasisCode,
-      })
-    );
-  };
+  // const getFareRulesData = (tab) => {
+  //   dispatch(
+  //     commonAction(endpoint.flights.fareRules, {
+  //       flightSegments: tab,
+  //       fareBasisCode,
+  //     })
+  //   );
+  // };
 
   return (
     <div className="AgencyInformation">
-      <div className="container">
-        <div className="price-category">
-          <div className="price-category-container">
-            <div className="price-category__title d-flex justify-content-between">
-              <Text
-                className="font-primary-semibold-14"
-                text={`Base Fare (${passengersCount} Persons)`}
-              />
-              <Text
-                className="font-primary-semibold-14"
-                text={getFormattedPrice(baseFareTotal)}
-              />
-            </div>
-            <div className="price-category__description">
-              {baseFareBreakup &&
-                baseFareBreakup.length > 0 &&
-                baseFareBreakup.map((passengerBaseFare, index) => (
-                  <div
-                    key={index}
-                    className="price-category__description-price d-flex justify-content-between"
-                  >
-                    <Text
-                      className="font-primary-regular-14"
-                      text={`${passengerBaseFare.passengerType} x ${passengerBaseFare.passengerCount}`}
-                    />
-                    <Text
-                      className="font-primary-regular-14"
-                      text={getFormattedPrice(
-                        passengerBaseFare.passengerBaseFare
-                      )}
-                    />
-                  </div>
-                ))}
-            </div>
-          </div>
-          <div className="price-category-container">
-            <div className="price-category__title d-flex justify-content-between">
-              <Text
-                className="font-primary-semibold-14"
-                text="Taxes and Fees"
-              />
-              <Text
-                className="font-primary-semibold-14"
-                text={getFormattedPrice(taxTotal)}
-              />
-            </div>
-            <div className="price-category__description">
-              {/* DO NOT REMOVE IT - WILL BE USED IN FUTURE */}
-              {/* <div className="price-category__description-price d-flex justify-content-between">
-										<Text className="font-primary-medium-16" text="Passenger Service Fee" />
-										<Text className="font-primary-medium-16" text={getFormattedPrice(0)} />
-									</div> */}
-              <div className="price-category__description-price d-flex justify-content-between">
+      {/* <SecondaryAccordion
+        text="ITINERARY FARE"
+        defaultOpen={true}
+        className="AgencyInformation-accordian"
+      >
+        <div className="container">
+          <div className="price-category">
+            <div className="price-category-container">
+              <div className="price-category__title d-flex justify-content-between">
                 <Text
-                  className="font-primary-regular-14"
-                  text="Airline Fuel Surcharge"
+                  className="font-primary-semibold-14"
+                  text={`Base Fare (${passengersCount} Persons)`}
                 />
                 <Text
-                  className="font-primary-regular-14"
-                  text={getFormattedPrice(airlineFuelSurcharge)}
+                  className="font-primary-semibold-14"
+                  text={getFormattedPrice(baseFareTotal)}
                 />
               </div>
-              <div className="price-category__description-price d-flex justify-content-between">
-                <Text
-                  className="font-primary-regular-14"
-                  text="Airline Miscellaneous Fee"
-                />
-                <Text
-                  className="font-primary-regular-14"
-                  text={getFormattedPrice(airlineMiscellaneousFee)}
-                />
-              </div>
-              <div className="price-category__description-price d-flex justify-content-between">
-                <Text
-                  className="font-primary-regular-14"
-                  text="Value Added Tax (VAT)"
-                />
-                <Text
-                  className="font-primary-regular-14"
-                  text={getFormattedPrice(0)}
-                />
+              <div className="price-category__description">
+                {baseFareBreakup &&
+                  baseFareBreakup.length > 0 &&
+                  baseFareBreakup.map((passengerBaseFare, index) => (
+                    <div
+                      key={index}
+                      className="price-category__description-price d-flex justify-content-between"
+                    >
+                      <Text
+                        className="font-primary-regular-14"
+                        text={`${passengerBaseFare.passengerType} x ${passengerBaseFare.passengerCount}`}
+                      />
+                      <Text
+                        className="font-primary-regular-14"
+                        text={getFormattedPrice(
+                          passengerBaseFare.passengerBaseFare
+                        )}
+                      />
+                    </div>
+                  ))}
               </div>
             </div>
-          </div>
-          {/* DO NOT REMOVE IT - WILL BE USED IN FUTURE */}
-          {/* <div className="price-category-container">
-								<div className="price-category__title d-flex justify-content-between">
-									<Text className="font-primary-bold-18" text="Other services" />
-									<Text className="font-primary-bold-18" text={getFormattedPrice(0)} />
-								</div>
-								<div className="price-category__description">
-									<div className="price-category__description-price d-flex justify-content-between">
-										<Text className="font-primary-medium-16" text="Insurance" />
-										<Text className="font-primary-medium-16" text={getFormattedPrice(0)} />
-									</div>
-									<div className="price-category__description-price d-flex justify-content-between">
-										<Text className="font-primary-medium-16" text="Meals" />
-										<Text className="font-primary-medium-16" text={getFormattedPrice(0)} />
-									</div>
-								</div>
-							</div> */}
-          <div className="price-category-container">
-            <div className="price-category__title d-flex justify-content-between">
-              <Text className="font-primary-semibold-14" text="Total Fare" />
-              <Text
-                className="font-primary-semibold-14"
-                text={getFormattedPrice(totalFare)}
-              />
-            </div>
-            {/* <div className="price-category__description">
+            <div className="price-category-container">
+              <div className="price-category__title d-flex justify-content-between">
+                <Text
+                  className="font-primary-semibold-14"
+                  text="Taxes and Fees"
+                />
+                <Text
+                  className="font-primary-semibold-14"
+                  text={getFormattedPrice(taxTotal)}
+                />
+              </div>
+              <div className="price-category__description">
                 <div className="price-category__description-price d-flex justify-content-between">
                   <Text
                     className="font-primary-regular-14"
-                    text="Handling Charges"
+                    text="Airline Fuel Surcharge"
                   />
                   <Text
                     className="font-primary-regular-14"
-                    text={getFormattedPrice(handlingCharges)}
+                    text={getFormattedPrice(airlineFuelSurcharge)}
                   />
                 </div>
-              </div> */}
+                <div className="price-category__description-price d-flex justify-content-between">
+                  <Text
+                    className="font-primary-regular-14"
+                    text="Airline Miscellaneous Fee"
+                  />
+                  <Text
+                    className="font-primary-regular-14"
+                    text={getFormattedPrice(airlineMiscellaneousFee)}
+                  />
+                </div>
+                <div className="price-category__description-price d-flex justify-content-between">
+                  <Text
+                    className="font-primary-regular-14"
+                    text="Value Added Tax (VAT)"
+                  />
+                  <Text
+                    className="font-primary-regular-14"
+                    text={getFormattedPrice(0)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="price-category-container">
+              <div className="price-category__title d-flex justify-content-between">
+                <Text className="font-primary-semibold-14" text="Total Fare" />
+                <Text
+                  className="font-primary-semibold-14"
+                  text={getFormattedPrice(totalFare)}
+                />
+              </div>
+            </div>
           </div>
         </div>
-        {/* <div className="total-section d-flex justify-content-between">
-            <Text className="font-primary-bold-22" text="Total Amount" />
-            <Text
-              className="font-primary-bold-22 text-align-right"
-              text={`${totalAmountCurrency} ${getFormattedPrice(totalAmount)}`}
-            />
-          </div> */}
-      </div>
+      </SecondaryAccordion> */}
+
       <div className="font-primary-semibold-14 pb-12">EARNING</div>
       <div className="AgencyInformation-earning">
         <div className="d-flex justify-content-between font-primary-regular-14">

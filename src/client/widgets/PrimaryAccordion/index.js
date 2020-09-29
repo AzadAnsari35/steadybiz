@@ -9,27 +9,25 @@ import Text from 'Widgets/Text/index';
 import './style.scss';
 
 const PrimaryAccordion = (props) => {
-  const { children, text, defaultOpen, isOpen, handleOpen } = props;
+  const { children, text, defaultOpen } = props;
   const [open, setOpen] = useToggle(defaultOpen);
 
   return (
     <div className="PrimaryAccordion width-100">
       <div
         className={`PrimaryAccordion-header d-flex justify-content-between align-items-center cursor-pointer ${
-          !isOpen || !open ? 'mb-0' : ''
+          !open ? 'mb-0' : ''
         }`}
-        onClick={handleOpen || setOpen}
+        onClick={setOpen}
       >
         <Text className="font-primary-semibold" text={text} />
         <ArrowIcon
           size={12}
           color={colors.black}
-          orientation={isOpen || open ? -90 : 90}
+          orientation={open ? -90 : 90}
         />
       </div>
-      {(isOpen || open) && (
-        <div className="PrimaryAccordion-content">{children}</div>
-      )}
+      {open && <div className="PrimaryAccordion-content">{children}</div>}
     </div>
   );
 };

@@ -1,0 +1,40 @@
+@import '../../../../styles/variables';
+
+$root: '.CreateDeal';
+
+#{$root} {
+  &-head {
+    padding: 36px 100px;
+    background-color: $white;
+  }
+  &-panel {
+    &-heading {
+      .react-select {
+        &__control {
+          background-color: transparent;
+        }
+        &__single-value {
+          color: $royalBlue;
+          font-family: 'Montserrat Medium';
+          font-size: 14px;
+        }
+        &__indicators {
+          .MuiSvgIcon-root {
+            color: $royalBlue !important;
+          }
+        }
+        &__menu {
+          right: 0;
+        }
+      }
+    }
+
+    padding: 80px 100px;
+    .Panel-body > div:first-child {
+      margin-bottom: 20px;
+    }
+    .Panel-body > div {
+      margin-bottom: 32px;
+    }
+  }
+}
