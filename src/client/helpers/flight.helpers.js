@@ -1,4 +1,4 @@
-import { cabinClasses } from "Constants/flight.constant";
+import { cabinClasses } from 'Constants/flight.constant';
 import {
   addDurations,
   calculateDurationInMinutes,
@@ -7,7 +7,7 @@ import {
   extractTime,
   getPassengerTypeName,
   getRange,
-} from "Helpers/global";
+} from 'Helpers/global';
 
 const positiveInfinity = Number.POSITIVE_INFINITY,
   negativeInfinity = Number.NEGATIVE_INFINITY;
@@ -18,21 +18,26 @@ export const getCabinClassName = (code) => {
   );
 };
 
-export const getFlightSegmentType = flightItinerary => {
+export const getFlightSegmentType = (flightItinerary) => {
   return flightItinerary[0].flightSegmentType;
 };
 
-export const checkIsFareRefundable = itinerary => {
-  return itinerary && itinerary.totalfareDetails && itinerary.totalfareDetails.fareRefundable;
+export const checkIsFareRefundable = (itinerary) => {
+  return (
+    itinerary &&
+    itinerary.totalfareDetails &&
+    itinerary.totalfareDetails.fareRefundable
+  );
 };
 
-export const getTotalItineraryFareAndCurrency = itinerary => {
-  let currency = "AED", totalAmount = 0;
+export const getTotalItineraryFareAndCurrency = (itinerary) => {
+  let currency = 'AED',
+    totalAmount = 0;
   if (itinerary && itinerary.totalfareDetails) {
-    if (!!itinerary.totalfareDetails.totalAmountCurrency) {
+    if (itinerary.totalfareDetails.totalAmountCurrency) {
       currency = itinerary.totalfareDetails.totalAmountCurrency;
     }
-    if (!!itinerary.totalfareDetails.totalAmount) {
+    if (itinerary.totalfareDetails.totalAmount) {
       totalAmount = itinerary.totalfareDetails.totalAmount;
     }
   }
@@ -40,128 +45,192 @@ export const getTotalItineraryFareAndCurrency = itinerary => {
 };
 
 export const getFlightSegmentByType = (itinerary, segmentType) => {
-  const flightSegment = itinerary && itinerary.flightSegments.find(item => item.flightSegmentDirection === segmentType);
+  const flightSegment =
+    itinerary &&
+    itinerary.flightSegments.find(
+      (item) => item.flightSegmentDirection === segmentType
+    );
   return flightSegment;
 };
 
-export const getAirlineDetails = flightSegment => {
+export const getAirlineDetails = (flightSegment) => {
   // NEED TO ADD LOGIC TO CHECK VALID ARRAY
-  if (flightSegment && flightSegment.flightSegmentGroup && flightSegment.flightSegmentGroup.length > 0) {
+  if (
+    flightSegment &&
+    flightSegment.flightSegmentGroup &&
+    flightSegment.flightSegmentGroup.length > 0
+  ) {
     return flightSegment.flightSegmentGroup[0].airlineDetails;
   }
-}
+};
 
-export const getDepartureSegmentDetails = flightSegment => {
+export const getDepartureSegmentDetails = (flightSegment) => {
   // NEED TO ADD LOGIC TO CHECK VALID ARRAY
-  if (flightSegment && flightSegment.flightSegmentGroup && flightSegment.flightSegmentGroup.length > 0) {
+  if (
+    flightSegment &&
+    flightSegment.flightSegmentGroup &&
+    flightSegment.flightSegmentGroup.length > 0
+  ) {
     return flightSegment.flightSegmentGroup[0].departureDetails;
   }
-}
+};
 
-export const getArrivalSegmentDetails = flightSegment => {
+export const getArrivalSegmentDetails = (flightSegment) => {
   // NEED TO ADD LOGIC TO CHECK VALID ARRAY
-  if (flightSegment && flightSegment.flightSegmentGroup && flightSegment.flightSegmentGroup.length > 0) {
-    return flightSegment.flightSegmentGroup[flightSegment.flightSegmentGroup.length - 1].arrivalDetails;
+  if (
+    flightSegment &&
+    flightSegment.flightSegmentGroup &&
+    flightSegment.flightSegmentGroup.length > 0
+  ) {
+    return flightSegment.flightSegmentGroup[
+      flightSegment.flightSegmentGroup.length - 1
+    ].arrivalDetails;
   }
-}
+};
 
-export const getTotalFlightDuration = flightSegment => {
+export const getTotalFlightDuration = (flightSegment) => {
   const durationsArr = [];
   flightSegment.flightSegmentGroup.map((segmentGroup, index) => {
     if (index < flightSegment.flightSegmentGroup.length - 1) {
-      durationsArr.push(segmentGroup.arrivalDetails.flightDuration, segmentGroup.arrivalDetails.layOverTime);
+      durationsArr.push(
+        segmentGroup.arrivalDetails.flightDuration,
+        segmentGroup.arrivalDetails.layOverTime
+      );
     } else {
       durationsArr.push(segmentGroup.arrivalDetails.flightDuration);
     }
   });
 
   return calculateTotalDuration(durationsArr);
-}
+};
 
-export const getTotalPassengersCount = outboundItinerary => {
-  if (outboundItinerary && outboundItinerary.totalfareDetails &&
-    outboundItinerary.totalfareDetails.fareDetails && outboundItinerary.totalfareDetails.fareDetails.length > 0) {
-    return outboundItinerary.totalfareDetails.fareDetails.reduce((a, b) => a + (b['count'] || 0), 0);
+export const getTotalPassengersCount = (outboundItinerary) => {
+  if (
+    outboundItinerary &&
+    outboundItinerary.totalfareDetails &&
+    outboundItinerary.totalfareDetails.fareDetails &&
+    outboundItinerary.totalfareDetails.fareDetails.length > 0
+  ) {
+    return outboundItinerary.totalfareDetails.fareDetails.reduce(
+      (a, b) => a + (b['count'] || 0),
+      0
+    );
   }
-}
+};
 
-export const getBaseFareDetails = outboundItinerary => {
+export const getBaseFareDetails = (outboundItinerary) => {
   let baseFareTotal = 0;
   const baseFareBreakup = [];
-  if (outboundItinerary && outboundItinerary.totalfareDetails &&
-    outboundItinerary.totalfareDetails.fareDetails && outboundItinerary.totalfareDetails.fareDetails.length > 0) {
-    baseFareTotal = outboundItinerary.totalfareDetails.baseFareTotal && outboundItinerary.totalfareDetails.baseFareTotal;
-    outboundItinerary.totalfareDetails.fareDetails.map(passengerFareDetail => {
-      baseFareBreakup.push({
-        passengerType: getPassengerTypeName(passengerFareDetail.ptc),
-        passengerCount: passengerFareDetail.count,
-        passengerBaseFare: passengerFareDetail.count * passengerFareDetail.baseFare
-      });
-    });
+  if (
+    outboundItinerary &&
+    outboundItinerary.totalfareDetails &&
+    outboundItinerary.totalfareDetails.fareDetails &&
+    outboundItinerary.totalfareDetails.fareDetails.length > 0
+  ) {
+    baseFareTotal =
+      outboundItinerary.totalfareDetails.baseFareTotal &&
+      outboundItinerary.totalfareDetails.baseFareTotal;
+    outboundItinerary.totalfareDetails.fareDetails.map(
+      (passengerFareDetail) => {
+        baseFareBreakup.push({
+          passengerType: getPassengerTypeName(passengerFareDetail.ptc),
+          passengerCount: passengerFareDetail.count,
+          passengerBaseFare:
+            passengerFareDetail.count * passengerFareDetail.baseFare,
+        });
+      }
+    );
   }
   return {
     baseFareTotal,
-    baseFareBreakup
+    baseFareBreakup,
   };
-}
+};
+
+// export const calculateTaxBreakUp = (fareDetails, taxCode) => {
+//   let taxAmount = 0;
+//   fareDetails.map((passengerFareDetail) => {
+//     const filteredTaxDetails = passengerFareDetail.taxDetails.filter(
+//       (taxItem) => taxItem.taxcode.startsWith(taxCode)
+//     );
+//     taxAmount += filteredTaxDetails.reduce(
+//       (a, b) => a + (b['taxAmount'] || 0),
+//       0
+//     );
+//   });
+//   return taxAmount;
+// };
 
 const calculateAirlineFuelSurcharge = (taxDetails, index) => {
-  const filteredTaxDetails = taxDetails.filter(taxItem =>
-    taxItem.taxcode.startsWith("YQ") || taxItem.taxcode.startsWith("YR")
+  const filteredTaxDetails = taxDetails.filter(
+    (taxItem) =>
+      taxItem.taxcode.startsWith('YQ') || taxItem.taxcode.startsWith('YR')
   );
   return filteredTaxDetails.reduce((a, b) => a + (b['taxAmount'] || 0), 0);
-}
+};
 
 const calculateAirlineMiscellaneousFee = (taxDetails) => {
-  const filteredTaxDetails = taxDetails.filter(taxItem =>
-    !(taxItem.taxcode.startsWith("YQ") || taxItem.taxcode.startsWith("YR"))
+  const filteredTaxDetails = taxDetails.filter(
+    (taxItem) =>
+      !(taxItem.taxcode.startsWith('YQ') || taxItem.taxcode.startsWith('YR'))
   );
   return filteredTaxDetails.reduce((a, b) => a + (b['taxAmount'] || 0), 0);
-}
+};
 
-export const getTaxesAndFeesDetails = outboundItinerary => {
+export const getTaxesAndFeesDetails = (outboundItinerary) => {
   let taxTotal = 0;
   let airlineFuelSurcharge = 0;
   let airlineMiscellaneousFee = 0;
-  const totalfareDetails = outboundItinerary.totalfareDetails && outboundItinerary.totalfareDetails;
+  const totalfareDetails =
+    outboundItinerary.totalfareDetails && outboundItinerary.totalfareDetails;
   const fareDetails = !!totalfareDetails && totalfareDetails.fareDetails;
   if (fareDetails && fareDetails.length > 0) {
     taxTotal = !!totalfareDetails.taxTotal && totalfareDetails.taxTotal;
     fareDetails.map((passengerFareDetail, index) => {
       const taxDetails = passengerFareDetail.taxDetails;
-      airlineFuelSurcharge += taxDetails && calculateAirlineFuelSurcharge(taxDetails, index);
-      airlineMiscellaneousFee += taxDetails && calculateAirlineMiscellaneousFee(taxDetails);
+      airlineFuelSurcharge +=
+        taxDetails && calculateAirlineFuelSurcharge(taxDetails, index);
+      airlineMiscellaneousFee +=
+        taxDetails && calculateAirlineMiscellaneousFee(taxDetails);
     });
   }
   return {
     taxTotal,
     airlineFuelSurcharge,
-    airlineMiscellaneousFee
+    airlineMiscellaneousFee,
   };
-}
+};
 
-export const getTotalFare = outboundItinerary => {
+export const getTotalFare = (outboundItinerary) => {
   let totalFare = 0;
   const totalfareDetails = outboundItinerary.totalfareDetails;
   if (totalfareDetails) {
     totalFare = totalfareDetails.totalAmount;
   }
   return totalFare;
-}
+};
 
-export const getHandlingCharges = outboundItinerary => {
+export const getHandlingCharges = (outboundItinerary) => {
   let handlingCharges = 0;
   return handlingCharges;
-}
-
-export const getTotalAmount = outboundItinerary => {
-  let totalAmount = getTotalFare(outboundItinerary) + getHandlingCharges(outboundItinerary);
+};
+export const getTotalEarning = (outboundItinerary) => {
+  const dealDiscount = outboundItinerary?.totalfareDetails?.dealDiscount;
+  if (dealDiscount) return dealDiscount;
+  else return 0;
+};
+export const getTotalAmount = (outboundItinerary) => {
+  let totalAmount =
+    getTotalFare(outboundItinerary) +
+    getHandlingCharges(outboundItinerary) -
+    getTotalEarning(outboundItinerary);
   return totalAmount;
-}
+};
 
-export const getTotalAmountCurrency = outboundItinerary => {
-  let currency = "";
-  const totalfareDetails = outboundItinerary && outboundItinerary.totalfareDetails;
+export const getTotalAmountCurrency = (outboundItinerary) => {
+  let currency = '';
+  const totalfareDetails =
+    outboundItinerary && outboundItinerary.totalfareDetails;
   if (totalfareDetails) {
     currency = totalfareDetails.totalAmountCurrency;
   }
@@ -169,8 +238,10 @@ export const getTotalAmountCurrency = outboundItinerary => {
 };
 
 export const getAirlineName = (airlines, airlineCode) => {
-  const searchedAirline = airlines.find(airline => airline.airlineCode === airlineCode);
-  return !!searchedAirline ? searchedAirline.airlineName : airlineCode;
+  const searchedAirline = airlines.find(
+    (airline) => airline.airlineCode === airlineCode
+  );
+  return searchedAirline ? searchedAirline.airlineName : airlineCode;
 };
 
 const getMinimumValue = (value, min = positiveInfinity) => {
@@ -180,36 +251,43 @@ const getMinimumValue = (value, min = positiveInfinity) => {
   return min;
 };
 
-export const getFlightDuration = flightSegment => {
+export const getFlightDuration = (flightSegment) => {
   const { flightSegmentGroup = [] } = !!flightSegment && flightSegment;
-  let flightDurationTime = "00:00";
-  if (!!flightSegment) {
+  let flightDurationTime = '00:00';
+  if (flightSegment) {
     for (let i = 0; i <= flightSegment.stopCount; i++) {
       let segmentFlightDuration =
-        flightSegmentGroup[i].arrivalDetails.flightDuration || "00:00";
+        flightSegmentGroup[i].arrivalDetails.flightDuration || '00:00';
       let segmentlayOverDuration =
-        flightSegmentGroup[i].arrivalDetails.layOverTime || "00:00";
-      flightDurationTime = addDurations([flightDurationTime, segmentFlightDuration, segmentlayOverDuration]);
+        flightSegmentGroup[i].arrivalDetails.layOverTime || '00:00';
+      flightDurationTime = addDurations([
+        flightDurationTime,
+        segmentFlightDuration,
+        segmentlayOverDuration,
+      ]);
     }
   }
   return flightDurationTime;
 };
 
-const getLayOverDuration = flightSegment => {
+const getLayOverDuration = (flightSegment) => {
   const { flightSegmentGroup = [] } = !!flightSegment && flightSegment;
-  let flightLayOverTime = "00:00";
-  if (!!flightSegment) {
+  let flightLayOverTime = '00:00';
+  if (flightSegment) {
     for (let i = 0; i < flightSegment.stopCount; i++) {
       let segmentlayOverDuration =
-        flightSegmentGroup[i].arrivalDetails.layOverTime || "00:00";
-      flightLayOverTime = addDurations([flightLayOverTime, segmentlayOverDuration]);
+        flightSegmentGroup[i].arrivalDetails.layOverTime || '00:00';
+      flightLayOverTime = addDurations([
+        flightLayOverTime,
+        segmentlayOverDuration,
+      ]);
     }
   }
   return flightLayOverTime;
 };
 
 // filters data
-export const getFiltersData = outboundItinerary => {
+export const getFiltersData = (outboundItinerary) => {
   let priceRange = [positiveInfinity, negativeInfinity],
     refundableMinPrice = positiveInfinity,
     nonRefundableMinPrice = positiveInfinity;
@@ -233,7 +311,7 @@ export const getFiltersData = outboundItinerary => {
       directFlightsMinPrice: positiveInfinity,
       oneStopFlighstMinPrice: positiveInfinity,
       twoStopFlighstMinPrice: positiveInfinity,
-    }
+    },
   };
   const airlinesData = {};
   const timeSlotsInitialObj = {
@@ -262,73 +340,117 @@ export const getFiltersData = outboundItinerary => {
   };
   const itineraryCityNames = [
     {
-      id: "departure",
-      value: "",
+      id: 'departure',
+      value: '',
     },
     {
-      id: "arrival",
-      value: "",
+      id: 'arrival',
+      value: '',
     },
   ];
 
   outboundItinerary.forEach((itinerary, index) => {
     const { flightSegments, totalfareDetails } = itinerary;
     const { totalAmount, fareRefundable } = totalfareDetails;
-    const { flightSegmentGroup: outboundFlightSegmentGroup } = flightSegments[0];
-    const { flightSegmentGroup: returnFlightSegmentGroup } = !!flightSegments && flightSegments.length > 1 && flightSegments[1];
+    const {
+      flightSegmentGroup: outboundFlightSegmentGroup,
+    } = flightSegments[0];
+    const { flightSegmentGroup: returnFlightSegmentGroup } =
+      !!flightSegments && flightSegments.length > 1 && flightSegments[1];
     const outboundDepartureFlightSegmentGroup = outboundFlightSegmentGroup[0];
-    const outboundArrivalFlightSegmentGroup = outboundFlightSegmentGroup[outboundFlightSegmentGroup.length - 1];
-    const returnDepartureFlightSegmentGroup = !!returnFlightSegmentGroup && returnFlightSegmentGroup[0];
-    const returnArrivalFlightSegmentGroup = !!returnFlightSegmentGroup && returnFlightSegmentGroup[returnFlightSegmentGroup.length - 1];
-    const outboundDepartureFlightSegmentGroupAirline = outboundDepartureFlightSegmentGroup.airlineDetails.marketingAirline;
-    const outboundDepartureDetails = outboundDepartureFlightSegmentGroup.departureDetails;
-    const outboundArrivalDetails = outboundArrivalFlightSegmentGroup.arrivalDetails;
-    const returnDepartureDetails = !!returnDepartureFlightSegmentGroup && returnDepartureFlightSegmentGroup.departureDetails;
-    const returnArrivalDetails = !!returnArrivalFlightSegmentGroup && returnArrivalFlightSegmentGroup.arrivalDetails;
+    const outboundArrivalFlightSegmentGroup =
+      outboundFlightSegmentGroup[outboundFlightSegmentGroup.length - 1];
+    const returnDepartureFlightSegmentGroup =
+      !!returnFlightSegmentGroup && returnFlightSegmentGroup[0];
+    const returnArrivalFlightSegmentGroup =
+      !!returnFlightSegmentGroup &&
+      returnFlightSegmentGroup[returnFlightSegmentGroup.length - 1];
+    const outboundDepartureFlightSegmentGroupAirline =
+      outboundDepartureFlightSegmentGroup.airlineDetails.marketingAirline;
+    const outboundDepartureDetails =
+      outboundDepartureFlightSegmentGroup.departureDetails;
+    const outboundArrivalDetails =
+      outboundArrivalFlightSegmentGroup.arrivalDetails;
+    const returnDepartureDetails =
+      !!returnDepartureFlightSegmentGroup &&
+      returnDepartureFlightSegmentGroup.departureDetails;
+    const returnArrivalDetails =
+      !!returnArrivalFlightSegmentGroup &&
+      returnArrivalFlightSegmentGroup.arrivalDetails;
     // PRICE RANGE
     priceRange = getRange(totalAmount, priceRange[0], priceRange[1]);
     // NEARBY AIRPORTS
-    if (outboundDepartureDetails.airportCode in nearbyAirportsData.outbound.departure &&
-      nearbyAirportsData.outbound.departure[outboundDepartureDetails.airportCode].price < totalAmount
+    if (
+      outboundDepartureDetails.airportCode in
+        nearbyAirportsData.outbound.departure &&
+      nearbyAirportsData.outbound.departure[
+        outboundDepartureDetails.airportCode
+      ].price < totalAmount
     ) {
-      nearbyAirportsData.outbound.departure[outboundDepartureDetails.airportCode].price = getMinimumValue(
-        totalAmount, nearbyAirportsData.outbound.departure[outboundDepartureDetails]
+      nearbyAirportsData.outbound.departure[
+        outboundDepartureDetails.airportCode
+      ].price = getMinimumValue(
+        totalAmount,
+        nearbyAirportsData.outbound.departure[outboundDepartureDetails]
       );
     } else {
-      nearbyAirportsData.outbound.departure[outboundDepartureDetails.airportCode] = {
+      nearbyAirportsData.outbound.departure[
+        outboundDepartureDetails.airportCode
+      ] = {
         name: outboundDepartureDetails.airportName,
         price: totalAmount,
       };
     }
-    if (outboundArrivalDetails.airportCode in nearbyAirportsData.outbound.arrival &&
-      nearbyAirportsData.outbound.arrival[outboundArrivalDetails.airportCode].price < totalAmount
+    if (
+      outboundArrivalDetails.airportCode in
+        nearbyAirportsData.outbound.arrival &&
+      nearbyAirportsData.outbound.arrival[outboundArrivalDetails.airportCode]
+        .price < totalAmount
     ) {
-      nearbyAirportsData.outbound.arrival[outboundArrivalDetails.airportCode].price = getMinimumValue(
-        totalAmount, nearbyAirportsData.outbound.arrival[outboundArrivalDetails]
+      nearbyAirportsData.outbound.arrival[
+        outboundArrivalDetails.airportCode
+      ].price = getMinimumValue(
+        totalAmount,
+        nearbyAirportsData.outbound.arrival[outboundArrivalDetails]
       );
     } else {
-      nearbyAirportsData.outbound.arrival[outboundArrivalDetails.airportCode] = {
+      nearbyAirportsData.outbound.arrival[
+        outboundArrivalDetails.airportCode
+      ] = {
         name: outboundArrivalDetails.airportName,
         price: totalAmount,
       };
     }
-    if (returnDepartureDetails.airportCode in nearbyAirportsData.return.departure &&
-      nearbyAirportsData.return.departure[returnDepartureDetails.airportCode].price < totalAmount
+    if (
+      returnDepartureDetails.airportCode in
+        nearbyAirportsData.return.departure &&
+      nearbyAirportsData.return.departure[returnDepartureDetails.airportCode]
+        .price < totalAmount
     ) {
-      nearbyAirportsData.return.departure[returnDepartureDetails.airportCode].price = getMinimumValue(
-        totalAmount, nearbyAirportsData.return.departure[returnDepartureDetails]
+      nearbyAirportsData.return.departure[
+        returnDepartureDetails.airportCode
+      ].price = getMinimumValue(
+        totalAmount,
+        nearbyAirportsData.return.departure[returnDepartureDetails]
       );
     } else {
-      nearbyAirportsData.return.departure[returnDepartureDetails.airportCode] = {
+      nearbyAirportsData.return.departure[
+        returnDepartureDetails.airportCode
+      ] = {
         name: returnDepartureDetails.airportName,
         price: totalAmount,
       };
     }
-    if (returnArrivalDetails.airportCode in nearbyAirportsData.return.arrival &&
-      nearbyAirportsData.return.arrival[returnArrivalDetails.airportCode].price < totalAmount
+    if (
+      returnArrivalDetails.airportCode in nearbyAirportsData.return.arrival &&
+      nearbyAirportsData.return.arrival[returnArrivalDetails.airportCode]
+        .price < totalAmount
     ) {
-      nearbyAirportsData.return.arrival[returnArrivalDetails.airportCode].price = getMinimumValue(
-        totalAmount, nearbyAirportsData.return.arrival[returnArrivalDetails]
+      nearbyAirportsData.return.arrival[
+        returnArrivalDetails.airportCode
+      ].price = getMinimumValue(
+        totalAmount,
+        nearbyAirportsData.return.arrival[returnArrivalDetails]
       );
     } else {
       nearbyAirportsData.return.arrival[returnArrivalDetails.airportCode] = {
@@ -347,19 +469,37 @@ export const getFiltersData = outboundItinerary => {
     //     stopsData[segmentName].twoStopFlighstMinPrice = totalAmount;
     //   }
     // });
-    if (flightSegments[0].stopCount === 0 && totalAmount < stopsData.outbound.directFlightsMinPrice) {
+    if (
+      flightSegments[0].stopCount === 0 &&
+      totalAmount < stopsData.outbound.directFlightsMinPrice
+    ) {
       stopsData.outbound.directFlightsMinPrice = totalAmount;
-    } else if (flightSegments[0].stopCount === 1 && totalAmount < stopsData.outbound.oneStopFlighstMinPrice) {
+    } else if (
+      flightSegments[0].stopCount === 1 &&
+      totalAmount < stopsData.outbound.oneStopFlighstMinPrice
+    ) {
       stopsData.outbound.oneStopFlighstMinPrice = totalAmount;
-    } else if (flightSegments[0].stopCount === 2 && totalAmount < stopsData.outbound.twoStopFlighstMinPrice) {
+    } else if (
+      flightSegments[0].stopCount === 2 &&
+      totalAmount < stopsData.outbound.twoStopFlighstMinPrice
+    ) {
       stopsData.outbound.twoStopFlighstMinPrice = totalAmount;
     }
     if (flightSegments.length > 1) {
-      if (flightSegments[1].stopCount === 0 && totalAmount < stopsData.return.directFlightsMinPrice) {
+      if (
+        flightSegments[1].stopCount === 0 &&
+        totalAmount < stopsData.return.directFlightsMinPrice
+      ) {
         stopsData.return.directFlightsMinPrice = totalAmount;
-      } else if (flightSegments[1].stopCount === 1 && totalAmount < stopsData.return.oneStopFlighstMinPrice) {
+      } else if (
+        flightSegments[1].stopCount === 1 &&
+        totalAmount < stopsData.return.oneStopFlighstMinPrice
+      ) {
         stopsData.return.oneStopFlighstMinPrice = totalAmount;
-      } else if (flightSegments[1].stopCount === 2 && totalAmount < stopsData.return.twoStopFlighstMinPrice) {
+      } else if (
+        flightSegments[1].stopCount === 2 &&
+        totalAmount < stopsData.return.twoStopFlighstMinPrice
+      ) {
         stopsData.return.twoStopFlighstMinPrice = totalAmount;
       }
     }
@@ -367,32 +507,38 @@ export const getFiltersData = outboundItinerary => {
     if (fareRefundable) {
       refundableMinPrice = getMinimumValue(totalAmount, refundableMinPrice);
     } else {
-      nonRefundableMinPrice = getMinimumValue(totalAmount, nonRefundableMinPrice);
+      nonRefundableMinPrice = getMinimumValue(
+        totalAmount,
+        nonRefundableMinPrice
+      );
     }
     // AIRLINES
-    if (outboundDepartureFlightSegmentGroupAirline in airlinesData &&
+    if (
+      outboundDepartureFlightSegmentGroupAirline in airlinesData &&
       airlinesData[outboundDepartureFlightSegmentGroupAirline] < totalAmount
     ) {
-      airlinesData[outboundDepartureFlightSegmentGroupAirline] = getMinimumValue(
-        totalAmount, airlinesData[outboundDepartureFlightSegmentGroupAirline]
+      airlinesData[
+        outboundDepartureFlightSegmentGroupAirline
+      ] = getMinimumValue(
+        totalAmount,
+        airlinesData[outboundDepartureFlightSegmentGroupAirline]
       );
     } else {
-      airlinesData[outboundDepartureFlightSegmentGroupAirline] = getMinimumValue(
-        totalAmount, airlinesData[outboundDepartureFlightSegmentGroupAirline]
+      airlinesData[
+        outboundDepartureFlightSegmentGroupAirline
+      ] = getMinimumValue(
+        totalAmount,
+        airlinesData[outboundDepartureFlightSegmentGroupAirline]
       );
     }
     // FLIGHT TIME
     // OUTBOUND DEPARTURE
     if (
       calculateDurationInMinutes(
-        extractTime(
-          outboundDepartureFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundDepartureFlightSegmentGroup.departureDetails.time)
       ) >= 360 &&
       calculateDurationInMinutes(
-        extractTime(
-          outboundDepartureFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundDepartureFlightSegmentGroup.departureDetails.time)
       ) <= 719 &&
       totalAmount < flightSlots.outbound.departure.first
     ) {
@@ -400,14 +546,10 @@ export const getFiltersData = outboundItinerary => {
     }
     if (
       calculateDurationInMinutes(
-        extractTime(
-          outboundDepartureFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundDepartureFlightSegmentGroup.departureDetails.time)
       ) >= 720 &&
       calculateDurationInMinutes(
-        extractTime(
-          outboundDepartureFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundDepartureFlightSegmentGroup.departureDetails.time)
       ) <= 1079 &&
       totalAmount < flightSlots.outbound.departure.second
     ) {
@@ -415,14 +557,10 @@ export const getFiltersData = outboundItinerary => {
     }
     if (
       calculateDurationInMinutes(
-        extractTime(
-          outboundDepartureFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundDepartureFlightSegmentGroup.departureDetails.time)
       ) >= 1080 &&
       calculateDurationInMinutes(
-        extractTime(
-          outboundDepartureFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundDepartureFlightSegmentGroup.departureDetails.time)
       ) <= 1439 &&
       totalAmount < flightSlots.outbound.departure.third
     ) {
@@ -430,14 +568,10 @@ export const getFiltersData = outboundItinerary => {
     }
     if (
       calculateDurationInMinutes(
-        extractTime(
-          outboundDepartureFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundDepartureFlightSegmentGroup.departureDetails.time)
       ) >= 0 &&
       calculateDurationInMinutes(
-        extractTime(
-          outboundDepartureFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundDepartureFlightSegmentGroup.departureDetails.time)
       ) <= 359 &&
       totalAmount < flightSlots.outbound.departure.fourth
     ) {
@@ -446,14 +580,10 @@ export const getFiltersData = outboundItinerary => {
     // OUTBOUND ARRIVAL
     if (
       calculateDurationInMinutes(
-        extractTime(
-          outboundArrivalFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundArrivalFlightSegmentGroup.departureDetails.time)
       ) >= 360 &&
       calculateDurationInMinutes(
-        extractTime(
-          outboundArrivalFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundArrivalFlightSegmentGroup.departureDetails.time)
       ) <= 719 &&
       totalAmount < flightSlots.outbound.arrival.first
     ) {
@@ -461,14 +591,10 @@ export const getFiltersData = outboundItinerary => {
     }
     if (
       calculateDurationInMinutes(
-        extractTime(
-          outboundArrivalFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundArrivalFlightSegmentGroup.departureDetails.time)
       ) >= 720 &&
       calculateDurationInMinutes(
-        extractTime(
-          outboundArrivalFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundArrivalFlightSegmentGroup.departureDetails.time)
       ) <= 1079 &&
       totalAmount < flightSlots.outbound.arrival.second
     ) {
@@ -476,14 +602,10 @@ export const getFiltersData = outboundItinerary => {
     }
     if (
       calculateDurationInMinutes(
-        extractTime(
-          outboundArrivalFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundArrivalFlightSegmentGroup.departureDetails.time)
       ) >= 1080 &&
       calculateDurationInMinutes(
-        extractTime(
-          outboundArrivalFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundArrivalFlightSegmentGroup.departureDetails.time)
       ) <= 1439 &&
       totalAmount < flightSlots.outbound.arrival.third
     ) {
@@ -491,31 +613,23 @@ export const getFiltersData = outboundItinerary => {
     }
     if (
       calculateDurationInMinutes(
-        extractTime(
-          outboundArrivalFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundArrivalFlightSegmentGroup.departureDetails.time)
       ) >= 0 &&
       calculateDurationInMinutes(
-        extractTime(
-          outboundArrivalFlightSegmentGroup.departureDetails.time
-        )
+        extractTime(outboundArrivalFlightSegmentGroup.departureDetails.time)
       ) <= 359 &&
       totalAmount < flightSlots.outbound.arrival.fourth
     ) {
       flightSlots.outbound.arrival.fourth = totalAmount;
     }
-    if (!!returnDepartureFlightSegmentGroup) {
+    if (returnDepartureFlightSegmentGroup) {
       // RETURN DEPARTURE
       if (
         calculateDurationInMinutes(
-          extractTime(
-            returnDepartureFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnDepartureFlightSegmentGroup.departureDetails.time)
         ) >= 360 &&
         calculateDurationInMinutes(
-          extractTime(
-            returnDepartureFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnDepartureFlightSegmentGroup.departureDetails.time)
         ) <= 719 &&
         totalAmount < flightSlots.return.departure.first
       ) {
@@ -523,14 +637,10 @@ export const getFiltersData = outboundItinerary => {
       }
       if (
         calculateDurationInMinutes(
-          extractTime(
-            returnDepartureFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnDepartureFlightSegmentGroup.departureDetails.time)
         ) >= 720 &&
         calculateDurationInMinutes(
-          extractTime(
-            returnDepartureFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnDepartureFlightSegmentGroup.departureDetails.time)
         ) <= 1079 &&
         totalAmount < flightSlots.return.departure.second
       ) {
@@ -538,14 +648,10 @@ export const getFiltersData = outboundItinerary => {
       }
       if (
         calculateDurationInMinutes(
-          extractTime(
-            returnDepartureFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnDepartureFlightSegmentGroup.departureDetails.time)
         ) >= 1080 &&
         calculateDurationInMinutes(
-          extractTime(
-            returnDepartureFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnDepartureFlightSegmentGroup.departureDetails.time)
         ) <= 1439 &&
         totalAmount < flightSlots.return.departure.third
       ) {
@@ -553,14 +659,10 @@ export const getFiltersData = outboundItinerary => {
       }
       if (
         calculateDurationInMinutes(
-          extractTime(
-            returnDepartureFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnDepartureFlightSegmentGroup.departureDetails.time)
         ) >= 0 &&
         calculateDurationInMinutes(
-          extractTime(
-            returnDepartureFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnDepartureFlightSegmentGroup.departureDetails.time)
         ) <= 359 &&
         totalAmount < flightSlots.return.departure.fourth
       ) {
@@ -569,14 +671,10 @@ export const getFiltersData = outboundItinerary => {
       // OUTBOUND ARRIVAL
       if (
         calculateDurationInMinutes(
-          extractTime(
-            returnArrivalFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnArrivalFlightSegmentGroup.departureDetails.time)
         ) >= 360 &&
         calculateDurationInMinutes(
-          extractTime(
-            returnArrivalFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnArrivalFlightSegmentGroup.departureDetails.time)
         ) <= 719 &&
         totalAmount < flightSlots.return.arrival.first
       ) {
@@ -584,14 +682,10 @@ export const getFiltersData = outboundItinerary => {
       }
       if (
         calculateDurationInMinutes(
-          extractTime(
-            returnArrivalFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnArrivalFlightSegmentGroup.departureDetails.time)
         ) >= 720 &&
         calculateDurationInMinutes(
-          extractTime(
-            returnArrivalFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnArrivalFlightSegmentGroup.departureDetails.time)
         ) <= 1079 &&
         totalAmount < flightSlots.return.arrival.second
       ) {
@@ -599,14 +693,10 @@ export const getFiltersData = outboundItinerary => {
       }
       if (
         calculateDurationInMinutes(
-          extractTime(
-            returnArrivalFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnArrivalFlightSegmentGroup.departureDetails.time)
         ) >= 1080 &&
         calculateDurationInMinutes(
-          extractTime(
-            returnArrivalFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnArrivalFlightSegmentGroup.departureDetails.time)
         ) <= 1439 &&
         totalAmount < flightSlots.return.arrival.third
       ) {
@@ -614,14 +704,10 @@ export const getFiltersData = outboundItinerary => {
       }
       if (
         calculateDurationInMinutes(
-          extractTime(
-            returnArrivalFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnArrivalFlightSegmentGroup.departureDetails.time)
         ) >= 0 &&
         calculateDurationInMinutes(
-          extractTime(
-            returnArrivalFlightSegmentGroup.departureDetails.time
-          )
+          extractTime(returnArrivalFlightSegmentGroup.departureDetails.time)
         ) <= 359 &&
         totalAmount < flightSlots.return.arrival.fourth
       ) {
@@ -633,27 +719,29 @@ export const getFiltersData = outboundItinerary => {
     layoverDurations.outbound = getRange(
       calculateDurationInMinutes(getLayOverDuration(flightSegments[0])),
       layoverDurations.outbound[0],
-      layoverDurations.outbound[1],
+      layoverDurations.outbound[1]
     );
     layoverDurations.return = getRange(
       calculateDurationInMinutes(getLayOverDuration(flightSegments[1])),
       layoverDurations.outbound[0],
-      layoverDurations.return[1],
+      layoverDurations.return[1]
     );
 
     // TRIP DURATION
     tripDurations.outbound = getRange(
       calculateDurationInMinutes(getFlightDuration(flightSegments[0])),
       tripDurations.outbound[0],
-      tripDurations.outbound[1],
+      tripDurations.outbound[1]
     );
     tripDurations.return = getRange(
       calculateDurationInMinutes(getFlightDuration(flightSegments[1])),
       tripDurations.return[0],
-      tripDurations.return[1],
+      tripDurations.return[1]
     );
-    itineraryCityNames[0].value = outboundDepartureFlightSegmentGroup.departureDetails.cityName;
-    itineraryCityNames[1].value = outboundArrivalFlightSegmentGroup.arrivalDetails.cityName;
+    itineraryCityNames[0].value =
+      outboundDepartureFlightSegmentGroup.departureDetails.cityName;
+    itineraryCityNames[1].value =
+      outboundArrivalFlightSegmentGroup.arrivalDetails.cityName;
   });
   return {
     priceRange,
@@ -669,40 +757,48 @@ export const getFiltersData = outboundItinerary => {
   };
 };
 
-export const getOutboundFlightSegmentGroup = outboundItinerary => {
+export const getOutboundFlightSegmentGroup = (outboundItinerary) => {
   const { flightSegments } = outboundItinerary;
-  const outboundFlightSegment = flightSegments.find(segment => 
-    segment.flightSegmentDirection.toLowerCase() === "outbound"
+  const outboundFlightSegment = flightSegments.find(
+    (segment) => segment.flightSegmentDirection.toLowerCase() === 'outbound'
   );
   return outboundFlightSegment.flightSegmentGroup;
 };
 
-export const getReturnFlightSegmentGroup = outboundItinerary => {
+export const getReturnFlightSegmentGroup = (outboundItinerary) => {
   const { flightSegments } = outboundItinerary;
-  const returnFlightSegment = flightSegments.find(segment => 
-    segment.flightSegmentDirection.toLowerCase() === "inbound"
+  const returnFlightSegment = flightSegments.find(
+    (segment) => segment.flightSegmentDirection.toLowerCase() === 'inbound'
   );
-  return !!returnFlightSegment &&returnFlightSegment.flightSegmentGroup;
+  return !!returnFlightSegment && returnFlightSegment.flightSegmentGroup;
 };
 
-export const getDepartureAirportCodeCityName = outboundFlightSegmentGroup => {
-  if (outboundFlightSegmentGroup[0].departureDetails &&
+export const getDepartureAirportCodeCityName = (outboundFlightSegmentGroup) => {
+  if (
+    outboundFlightSegmentGroup[0].departureDetails &&
     outboundFlightSegmentGroup[0].departureDetails.airportCode &&
     outboundFlightSegmentGroup[0].departureDetails.cityName
   ) {
     return {
-      departureAirportCode: outboundFlightSegmentGroup[0].departureDetails.airportCode,
-      departureCityName: outboundFlightSegmentGroup[0].departureDetails.cityName,
+      departureAirportCode:
+        outboundFlightSegmentGroup[0].departureDetails.airportCode,
+      departureCityName:
+        outboundFlightSegmentGroup[0].departureDetails.cityName,
     };
   }
   return {
-    departureAirportCode: "",
-    departureCityName: "",
+    departureAirportCode: '',
+    departureCityName: '',
   };
 };
 
-export const getArrivalAirportCodeCityName = (flightSegmentGroup, isRoundTrip = true) => {
-  if (isRoundTrip && flightSegmentGroup[0].departureDetails &&
+export const getArrivalAirportCodeCityName = (
+  flightSegmentGroup,
+  isRoundTrip = true
+) => {
+  if (
+    isRoundTrip &&
+    flightSegmentGroup[0].departureDetails &&
     flightSegmentGroup[0].departureDetails.airportCode &&
     flightSegmentGroup[0].departureDetails.cityName
   ) {
@@ -721,30 +817,46 @@ export const getArrivalAirportCodeCityName = (flightSegmentGroup, isRoundTrip = 
     };
   }
   return {
-    arrivalAirportCode: "",
-    arrivalCityName: "",
+    arrivalAirportCode: '',
+    arrivalCityName: '',
   };
 };
 
-export const getDepartureDate = outboundFlightSegmentGroup => {
-  if (outboundFlightSegmentGroup[0].departureDetails && outboundFlightSegmentGroup[0].departureDetails.date) {
-    return changeDateFormat(outboundFlightSegmentGroup[0].departureDetails.date)
+export const getDepartureDate = (outboundFlightSegmentGroup) => {
+  if (
+    outboundFlightSegmentGroup[0].departureDetails &&
+    outboundFlightSegmentGroup[0].departureDetails.date
+  ) {
+    return changeDateFormat(
+      outboundFlightSegmentGroup[0].departureDetails.date
+    );
   }
-  return "";
+  return '';
 };
 
-export const getArrivalDate = returnFlightSegmentGroup => {
-  if (returnFlightSegmentGroup[0].departureDetails && returnFlightSegmentGroup[0].departureDetails.date) {
-    return changeDateFormat(returnFlightSegmentGroup[0].departureDetails.date)
+export const getArrivalDate = (returnFlightSegmentGroup) => {
+  if (
+    returnFlightSegmentGroup[0].departureDetails &&
+    returnFlightSegmentGroup[0].departureDetails.date
+  ) {
+    return changeDateFormat(returnFlightSegmentGroup[0].departureDetails.date);
   }
-  return "";
+  return '';
 };
 
-export const getPassengerTypeAndCount = outboundItinerary => {
+export const getPassengerTypeAndCount = (outboundItinerary) => {
   const passengerCountAndType = [];
-  if (outboundItinerary && outboundItinerary.totalfareDetails &&
-  outboundItinerary.totalfareDetails.fareDetails && outboundItinerary.totalfareDetails.fareDetails.length > 0) {
-    outboundItinerary.totalfareDetails.fareDetails.map(item => passengerCountAndType.push(`${item.count} ${getPassengerTypeName(item.ptc)}`));
+  if (
+    outboundItinerary &&
+    outboundItinerary.totalfareDetails &&
+    outboundItinerary.totalfareDetails.fareDetails &&
+    outboundItinerary.totalfareDetails.fareDetails.length > 0
+  ) {
+    outboundItinerary.totalfareDetails.fareDetails.map((item) =>
+      passengerCountAndType.push(
+        `${item.count} ${getPassengerTypeName(item.ptc)}`
+      )
+    );
   }
   return passengerCountAndType;
 };

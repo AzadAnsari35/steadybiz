@@ -23,15 +23,15 @@ const RangeSlider = (props) => {
   const firstPageUpdate = useRef(true);
   const [value, setValue] = useState(range);
 
-  // useEffect(() => {
-  //   //setValue(resetValue);
-  //   if (firstPageUpdate.current) {
-  //     firstPageUpdate.current = false;
-  //     return;
-  //   }
-  //   setValue(range);
-  //   //console.log(resetValue);
-  // }, [isResetFilter]);
+  useEffect(() => {
+    //setValue(resetValue);
+    if (firstPageUpdate.current) {
+      firstPageUpdate.current = false;
+      return;
+    }
+    setValue(range);
+    //console.log(resetValue);
+  }, [isResetFilter]);
   const handleChange = (event, newValue) => {
     setValue(newValue);
     // parentCallback(newValue);
