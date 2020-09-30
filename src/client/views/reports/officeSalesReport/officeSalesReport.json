@@ -3,8 +3,8 @@
     "count": 1,
     "data": {
       "subHeaderData": {
+        "date": "Total",
         "baseCurrency": "AED",
-
         "ownNetBookedOrders": 665,
         "ownNetBookedAmount": 11500.0,
         "branchesNetBookedOrders": 550,

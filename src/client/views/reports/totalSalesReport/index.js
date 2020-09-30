@@ -159,6 +159,10 @@ const TotalSalesReport = () => {
   const [fieldSelection, setFieldSelection] = useState(
     defaultTableFieldsSelection
   );
+
+  const [defaultFieldSelection, setDefaultFieldSelection] = useState(
+    defaultTableFieldsSelection
+  );
   //console.log('hi', userNameList?.data);
   useEffect(() => {
     defaultCountry();
@@ -349,6 +353,16 @@ const TotalSalesReport = () => {
     });
     //defaultCity();
     defaultCountry();
+  };
+
+  const handleFieldReset = () => {
+    setFieldSelection(defaultFieldSelection);
+    const updatedHiddenKeys = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
+      ((set) => (a) => !set.has(a.value))(
+        new Set(defaultFieldSelection.map((b) => b.value))
+      )
+    ).map((item) => item.value);
+    setHiddenKeys(updatedHiddenKeys);
   };
 
   return (
@@ -572,6 +586,7 @@ const TotalSalesReport = () => {
                 defaultFieldOptions={fieldSelection}
                 fieldsOptions={BOOKING_REPORT_FILED_SELECTION_OPTIONS}
                 onSelectChange={handleSelectOption}
+                handleFieldReset={handleFieldReset}
               />
             }
             headerInArrOfObjFormat
