@@ -322,6 +322,10 @@ const BookingReport = () => {
   const [fieldSelection, setFieldSelection] = useState(
     defaultTableFieldsSelection
   );
+
+  const [defaultFieldSelection, setDefaultFieldSelection] = useState(
+    defaultTableFieldsSelection
+  );
   //console.log('hi', userNameList?.data);
   useEffect(() => {
     defaultCountry();
@@ -513,6 +517,10 @@ const BookingReport = () => {
     });
     //defaultCity();
     defaultCountry();
+  };
+
+  const handleFieldReset = () => {
+    setFieldSelection(defaultFieldSelection);
   };
 
   return (
@@ -815,6 +823,7 @@ const BookingReport = () => {
                 defaultFieldOptions={fieldSelection}
                 fieldsOptions={BOOKING_REPORT_FILED_SELECTION_OPTIONS}
                 onSelectChange={handleSelectOption}
+                handleFieldReset={handleFieldReset}
               />
             }
             headerInArrOfObjFormat
