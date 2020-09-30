@@ -59,7 +59,12 @@ export const countriesDialCodeFormatter = (data) => {
 };
 
 export const getFormattedPrice = (price) => {
-  return price.toFixed(priceFractionDigit);
+  //console.log(price, priceFractionDigit);
+  if (price) return price.toFixed(priceFractionDigit);
+  else {
+    const num = 0;
+    return num.toFixed(priceFractionDigit);
+  }
 };
 
 export const getPassengerTypeName = (ptc, isUppercase = false) => {
@@ -164,9 +169,7 @@ const formatTime = (time) => {
 
 export const formatDateFromDateTime = (date, time) => {
   const defaultTime = '00:00:00';
-  const dateTime = new Date(
-    `${date} ${formatTime(!!time ? time : defaultTime)}`
-  );
+  const dateTime = new Date(`${date} ${formatTime(time ? time : defaultTime)}`);
   return moment(dateTime).format('YYYY-MM-DD HH:mm:ss');
 };
 

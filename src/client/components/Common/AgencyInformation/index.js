@@ -1,36 +1,31 @@
-import { commonAction } from 'Actions/index';
-import endpoint from 'Config/endpoint';
-import endpointWithoutApi from 'Config/endpointWithoutApi';
-import securityOptionConstant from 'Constants/securityOptionConstant';
-import { utils } from 'Helpers';
+/* eslint-disable react/prop-types */
 import {
-  getBaseFareDetails,
   getFlightSegmentByType,
   getHandlingCharges,
+  getTotalEarning,
   getTaxesAndFeesDetails,
   getTotalAmount,
   getTotalAmountCurrency,
   getTotalFare,
-  getTotalPassengersCount,
+  calculateTaxBreakUp,
 } from 'Helpers/flight.helpers';
-import { getDataFromRedux, getFormattedPrice } from 'Helpers/global';
-import useToggle from 'Hooks/useToggle';
+import { getFormattedPrice } from 'Helpers/global';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Text, SecondaryAccordion } from 'Widgets';
-import ItineraryFareDeatils from '../ItineraryFareDeatils';
+import { SecondaryAccordion, Text } from 'Widgets';
 import './style.scss';
 
 const AgencyInformation = (props) => {
-  // const {
-  //   taxTotal,
-  //   airlineFuelSurcharge,
-  //   airlineMiscellaneousFee,
-  // } = getTaxesAndFeesDetails(outboundItinerary);
-  // const totalFare = getTotalFare(outboundItinerary);
-  // const handlingCharges = getHandlingCharges(outboundItinerary);
-  // const totalAmount = getTotalAmount(outboundItinerary);
-  // const totalAmountCurrency = getTotalAmountCurrency(outboundItinerary);
+  const { outboundItinerary } = props;
+  //console.log(outboundItinerary);
+  const {
+    taxTotal,
+
+    airlineMiscellaneousFee,
+  } = getTaxesAndFeesDetails(outboundItinerary);
+  const totalFare = getTotalFare(outboundItinerary);
+  const handlingCharges = getHandlingCharges(outboundItinerary);
+  const totalAmount = getTotalAmount(outboundItinerary);
+  const totalAmountCurrency = getTotalAmountCurrency(outboundItinerary);
 
   // const outboundFlightSegment = getFlightSegmentByType(
   //   outboundItinerary,
@@ -40,33 +35,20 @@ const AgencyInformation = (props) => {
   //   outboundItinerary,
   //   'Inbound'
   // );
+  const totalfareDetails = outboundItinerary.totalfareDetails;
+  const fareDetails = totalfareDetails.fareDetails;
+  const YQTax = calculateTaxBreakUp(fareDetails, 'YQ');
+  const YRTax = calculateTaxBreakUp(fareDetails, 'YR');
+  const passengersCount = fareDetails.reduce(
+    (totalSum, pax) => totalSum + pax.count,
+    0
+  );
 
   // const { fareBasisCode } = outboundItinerary.totalfareDetails;
 
-  // const handleFareRulesClick = () => {
-  //   const securityMessage = utils.checkSecurityGroup(
-  //     securityOptionConstant.flights.fareRules
-  //   );
-  //   if (securityMessage !== '') {
-  //     dispatch(utils.showErrorBox(securityMessage));
-  //     return;
-  //   }
-  //   setShowFareRules();
-  //   getFareRulesData(outboundFlightSegment);
-  // };
-
-  // const getFareRulesData = (tab) => {
-  //   dispatch(
-  //     commonAction(endpoint.flights.fareRules, {
-  //       flightSegments: tab,
-  //       fareBasisCode,
-  //     })
-  //   );
-  // };
-
   return (
     <div className="AgencyInformation">
-      {/* <SecondaryAccordion
+      <SecondaryAccordion
         text="ITINERARY FARE"
         defaultOpen={true}
         className="AgencyInformation-accordian"
@@ -81,29 +63,25 @@ const AgencyInformation = (props) => {
                 />
                 <Text
                   className="font-primary-semibold-14"
-                  text={getFormattedPrice(baseFareTotal)}
+                  text={getFormattedPrice(totalfareDetails.baseFareTotal)}
                 />
               </div>
               <div className="price-category__description">
-                {baseFareBreakup &&
-                  baseFareBreakup.length > 0 &&
-                  baseFareBreakup.map((passengerBaseFare, index) => (
-                    <div
-                      key={index}
-                      className="price-category__description-price d-flex justify-content-between"
-                    >
-                      <Text
-                        className="font-primary-regular-14"
-                        text={`${passengerBaseFare.passengerType} x ${passengerBaseFare.passengerCount}`}
-                      />
-                      <Text
-                        className="font-primary-regular-14"
-                        text={getFormattedPrice(
-                          passengerBaseFare.passengerBaseFare
-                        )}
-                      />
-                    </div>
-                  ))}
+                {fareDetails.map((passengerBaseFare, index) => (
+                  <div
+                    key={index}
+                    className="price-category__description-price d-flex justify-content-between"
+                  >
+                    <Text
+                      className="font-primary-regular-14"
+                      text={`${passengerBaseFare.ptc} x ${passengerBaseFare.count}`}
+                    />
+                    <Text
+                      className="font-primary-regular-14"
+                      text={getFormattedPrice(passengerBaseFare.baseFare)}
+                    />
+                  </div>
+                ))}
               </div>
             </div>
             <div className="price-category-container">
@@ -119,13 +97,17 @@ const AgencyInformation = (props) => {
               </div>
               <div className="price-category__description">
                 <div className="price-category__description-price d-flex justify-content-between">
+                  <Text className="font-primary-regular-14" text="YQ Tax" />
                   <Text
                     className="font-primary-regular-14"
-                    text="Airline Fuel Surcharge"
+                    text={getFormattedPrice(YQTax)}
                   />
+                </div>
+                <div className="price-category__description-price d-flex justify-content-between">
+                  <Text className="font-primary-regular-14" text="YR Tax" />
                   <Text
                     className="font-primary-regular-14"
-                    text={getFormattedPrice(airlineFuelSurcharge)}
+                    text={getFormattedPrice(YRTax)}
                   />
                 </div>
                 <div className="price-category__description-price d-flex justify-content-between">
@@ -138,7 +120,7 @@ const AgencyInformation = (props) => {
                     text={getFormattedPrice(airlineMiscellaneousFee)}
                   />
                 </div>
-                <div className="price-category__description-price d-flex justify-content-between">
+                {/* <div className="price-category__description-price d-flex justify-content-between">
                   <Text
                     className="font-primary-regular-14"
                     text="Value Added Tax (VAT)"
@@ -147,7 +129,7 @@ const AgencyInformation = (props) => {
                     className="font-primary-regular-14"
                     text={getFormattedPrice(0)}
                   />
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -162,52 +144,52 @@ const AgencyInformation = (props) => {
             </div>
           </div>
         </div>
-      </SecondaryAccordion> */}
+      </SecondaryAccordion>
 
       <div className="font-primary-semibold-14 pb-12">EARNING</div>
       <div className="AgencyInformation-earning">
         <div className="d-flex justify-content-between font-primary-regular-14">
-          <div>Commission @ 2%</div>
-          <div>77.16</div>
+          <div>Commission</div>
+          <div>0.00</div>
         </div>
         <div className="d-flex justify-content-between font-primary-regular-14">
-          <div>Incentive @ 1%</div>
-          <div>77.16</div>
+          <div>Incentive</div>
+          <div>0.00</div>
         </div>
         <div className="d-flex justify-content-between font-primary-regular-14">
           <div>GDS Discount</div>
-          <div>77.16</div>
+          <div>0.00</div>
         </div>
         <div className="d-flex justify-content-between font-primary-regular-14">
-          <div>Deal Discount @ 2%</div>
-          <div>77.16</div>
+          <div>Deal Discount</div>
+          <div>{getFormattedPrice(totalfareDetails.dealDiscount)}</div>
         </div>
         <div className="d-flex justify-content-between font-primary-regular-14">
-          <div>Discount @ 1%</div>
-          <div>77.16</div>
+          <div>Discount</div>
+          <div>0.00</div>
         </div>
         <div className="d-flex justify-content-between font-primary-regular-14">
-          <div>Markup @ 1%</div>
-          <div>77.16</div>
+          <div>Markup</div>
+          <div>0.00</div>
         </div>
         <div className="d-flex justify-content-between font-primary-regular-14">
           <div>Run Time Markup</div>
-          <div>77.16</div>
+          <div>0.00</div>
         </div>
         <div className="d-flex justify-content-between font-primary-semibold-14">
           <div>Total Earning</div>
-          <div>77.16</div>
+          <div>{getFormattedPrice(getTotalEarning(outboundItinerary))}</div>
         </div>
       </div>
       <div className="font-primary-semibold-14 pb-12 pt-24">TAXES</div>
       <div className="AgencyInformation-tax">
         <div className="d-flex justify-content-between font-primary-regular-14">
-          <div>VAT / GST Amount @ 5%</div>
-          <div>77.16</div>
+          <div>VAT / GST Amount </div>
+          <div>0.00</div>
         </div>
         <div className="d-flex justify-content-between font-primary-semibold-14">
           <div>Net Amount to be Paid</div>
-          <div>77.16</div>
+          <div>{getFormattedPrice(totalAmount)}</div>
         </div>
       </div>
     </div>

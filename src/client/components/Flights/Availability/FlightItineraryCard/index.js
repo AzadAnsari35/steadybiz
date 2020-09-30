@@ -543,9 +543,10 @@ const FlightItineraryCard = (props) => {
         showDrawer={showAgencyInfo}
         onCloseClick={setShowAgencyInfo}
         width={calculateRem(450)}
+        //width={calculateRem(450+Math.floor(Math.random() * 6) + 1  )}
         className="FlightItineraryCard-CustomDrawer-agencyInfo"
       >
-        <AgencyInformation itinerary={itinerary} />
+        <AgencyInformation outboundItinerary={itinerary} />
       </CustomDrawer>
     </>
   );
