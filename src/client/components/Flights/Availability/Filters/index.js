@@ -1,25 +1,15 @@
 /* eslint-disable react/prop-types */
-import React, { useState, Fragment, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import { commonActionWithoutApi } from 'Actions';
-import useToggle from 'Client/hooks/useToggle';
 import useCheckboxData from 'Client/hooks/useCheckboxData';
+import useToggle from 'Client/hooks/useToggle';
+import RunTimeMarkup from 'Components/Common/RunTimeMarkup';
 import endpoint from 'Config/endpoint';
-import { getAirlineName, getFiltersData } from 'Helpers/flight.helpers';
-import { applyCommaToPrice, getDataFromRedux } from 'Helpers/global';
-//import availabilityResults from 'Views/availability/availabilityResults';
-import moment from 'moment';
 //import { countryList } from 'Views/availability/countryList';
 import endpointWithoutApi from 'Config/endpointWithoutApi';
-
-import {
-  returnFilterData,
-  returnRangeFilterData,
-  returnFilterArray,
-  returnFilterTimeSlot,
-  returnSortArray,
-} from './filters.helpers';
+import { getAirlineName, getFiltersData } from 'Helpers/flight.helpers';
+import { applyCommaToPrice, getDataFromRedux } from 'Helpers/global';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   CustomCheckbox,
   Image,
@@ -29,9 +19,13 @@ import {
   SwitchTab,
   Text,
 } from 'Widgets';
-import AgencyInformation from 'Components/Common/AgencyInformation';
-import RunTimeMarkup from 'Components/Common/RunTimeMarkup';
-
+import {
+  returnFilterArray,
+  returnFilterData,
+  returnFilterTimeSlot,
+  returnRangeFilterData,
+  returnSortArray,
+} from './filters.helpers';
 import './style.scss';
 
 const LIMIT_AIRLINES_SHOW_COUNT = 6;
@@ -46,29 +40,29 @@ const swtichTab2 = [
     text: 'return',
   },
 ];
-const LayoverHtml = (props) => {
-  const {
-    layoverDurations,
-    activeTab,
-    segmentType,
-    setLayoverDuration,
-  } = props;
-  //console.log(stopsData, activeTab);
-  // style={{
-  //   display: activeTab == segmentType ? 'block' : 'none',
-  // }}
-  return (
-    <Fragment>
-      <div
-        style={{
-          display: activeTab == segmentType ? 'block' : 'none',
-        }}
-      >
-        <RangeSlider isTime range={layoverDurations[activeTab]} />
-      </div>
-    </Fragment>
-  );
-};
+// const LayoverHtml = (props) => {
+//   const {
+//     layoverDurations,
+//     activeTab,
+//     segmentType,
+//     setLayoverDuration,
+//   } = props;
+//   //console.log(stopsData, activeTab);
+//   // style={{
+//   //   display: activeTab == segmentType ? 'block' : 'none',
+//   // }}
+//   return (
+//     <Fragment>
+//       <div
+//         style={{
+//           display: activeTab == segmentType ? 'block' : 'none',
+//         }}
+//       >
+//         <RangeSlider isTime range={layoverDurations[activeTab]} />
+//       </div>
+//     </Fragment>
+//   );
+// };
 
 const StopsHtml = (props) => {
   const { stopsData, activeTab, segmentType, setStops, checkedValues } = props;
@@ -280,7 +274,6 @@ const AirlineCheckbox = (props) => {
 };
 
 const Filters = (props) => {
-  const dispatch = useDispatch();
   const {
     flightSegmentType,
     outboundItinerary,
@@ -310,13 +303,10 @@ const Filters = (props) => {
   const [rTripRange, setRTripRange] = useState([]);
   const [stops, setStops] = useCheckboxData([]);
   const [isResetFilter, setIsResetFilter] = useState(false);
-  const flightSelectData = useSelector(
-    (state) => state[endpointWithoutApi.flights.flightSelect.reducerName]
-  );
-  const flightSelect = getDataFromRedux(flightSelectData);
+
   // const [sortType, setSortType] = useState(sortingOption);
   // console.log(sortingOption)
-  const [sortOrder, setSortOrder] = useState('asc');
+  //const [sortOrder, setSortOrder] = useState('asc');
   useEffect(() => {
     //  console.log('hi');
     //2020-09-01T23:35:00+05:30
