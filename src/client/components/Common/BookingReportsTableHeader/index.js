@@ -1,6 +1,7 @@
 import React from 'react';
+import CachedIcon from '@material-ui/icons/Cached';
 
-import { MultiSelect } from 'Widgets/';
+import { MultiSelect, IconWithBackground } from 'Widgets/';
 
 import './style.scss';
 
@@ -11,6 +12,7 @@ const BookingReportsTableHeader = (props) => {
     officeName,
     officeId,
     onSelectChange,
+    handleFieldReset,
   } = props;
   return (
     <div className="BookingReportsTableHeader ">
@@ -23,24 +25,34 @@ const BookingReportsTableHeader = (props) => {
             [ {officeId} ]
           </span>
         </div>
-        <div className="BookingReportsTableHeader-officeDetail__right font-primary-semibold-16">
-          <MultiSelect
-            id="fieldSelection"
-            name="fieldSelection"
-            placeholder="Fields Selection"
-            options={fieldsOptions}
-            defaultValue={defaultFieldOptions}
-            showBorder
-            changeStyle
-            width="auto"
-            isSearchable
-            useReactHookForm={false}
-            isMulti
-            showValue={false}
-            hideMultiValueSelection
-            onSelectChange={onSelectChange}
-            isClearable={false}
-          />
+        <div className="BookingReportsTableHeader-officeDetail__right font-primary-semibold-16 d-flex">
+          <div className="pr-10">
+            <MultiSelect
+              id="fieldSelection"
+              name="fieldSelection"
+              placeholder="Fields Selection"
+              options={fieldsOptions}
+              defaultValue={defaultFieldOptions}
+              showBorder
+              changeStyle
+              width="auto"
+              isSearchable
+              useReactHookForm={false}
+              isMulti
+              showValue={false}
+              hideMultiValueSelection
+              onSelectChange={onSelectChange}
+              isClearable={false}
+            />
+          </div>
+
+          <IconWithBackground
+            bgColor="#74D3DC33"
+            showCursor
+            onClick={handleFieldReset}
+          >
+            <CachedIcon style={{ color: '#74D3DC' }} />
+          </IconWithBackground>
         </div>
       </div>
     </div>

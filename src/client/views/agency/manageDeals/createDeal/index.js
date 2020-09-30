@@ -215,12 +215,20 @@ const CreateDeal = () => {
             </Grid>
           )}
         </Grid>
-        <div className="d-flex justify-content-between align-items-center pt-32">
-          <div className="font-primary-italic-14">
-            <b>Please Note:</b> The Create Deals button should only be clicked
-            after defining Deal Applicable Criteria below to this newly created
-            Deal.
-          </div>
+        <div
+          className={`d-flex ${
+            !isViewDeal && !isDealHistory
+              ? 'justify-content-between'
+              : 'justify-content-end'
+          } align-items-center pt-32`}
+        >
+          {!isViewDeal && !isDealHistory && (
+            <div className="font-primary-italic-14">
+              <b>Please Note:</b> The Create Deals button should only be clicked
+              after defining Deal Applicable Criteria below to this newly
+              created Deal.
+            </div>
+          )}
 
           {!isViewDeal && (
             <div className="d-flex justify-content-end ">

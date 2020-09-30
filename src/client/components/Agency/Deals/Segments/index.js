@@ -17,7 +17,7 @@ import './style.scss';
 
 const Segments = ({ path }) => {
   const {
-    isAgencyCreateDeal,
+    isAgencyDeal,
     isCreateDeal,
     isUpdateDeal,
     isViewDeal,
@@ -54,7 +54,7 @@ const Segments = ({ path }) => {
       className="Segments"
     >
       <div className="Segments-container">
-        {!(isViewDeal || isDealHistory || isAgencyCreateDeal) && (
+        {!(isViewDeal || isDealHistory || isAgencyDeal) && (
           <Grid
             container
             spacing={1}
@@ -186,12 +186,16 @@ const Segments = ({ path }) => {
                 <TableCell align="center">DESTINATION</TableCell>
                 <TableCell align="center">FROM COUNTRY</TableCell>
                 <TableCell
-                  style={isViewDeal || isDealHistory ? { width: '8%' } : {}}
+                  style={
+                    isViewDeal || isDealHistory || isAgencyDeal
+                      ? { width: '8%' }
+                      : {}
+                  }
                   align="center"
                 >
                   TO COUNTRY
                 </TableCell>
-                {!isViewDeal && !isDealHistory && (
+                {!isViewDeal && !isDealHistory && !isAgencyDeal && (
                   <TableCell align="center">ACTION</TableCell>
                 )}
               </TableRow>
@@ -207,7 +211,7 @@ const Segments = ({ path }) => {
                 <TableCell align="center">AE</TableCell>
                 <TableCell align="center">PK</TableCell>
 
-                {!isViewDeal && !isDealHistory && (
+                {!isViewDeal && !isDealHistory && !isAgencyDeal && (
                   <TableCell align="center">
                     {isUpdateDeal && (
                       <EditIcon
@@ -232,7 +236,7 @@ const Segments = ({ path }) => {
                 <TableCell align="center">AE</TableCell>
                 <TableCell align="center">PK</TableCell>
 
-                {!isViewDeal && !isDealHistory && (
+                {!isViewDeal && !isDealHistory && !isAgencyDeal && (
                   <TableCell align="center">
                     {isUpdateDeal && (
                       <EditIcon

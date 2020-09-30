@@ -22,7 +22,7 @@ import './style.scss';
 
 const SegmentDetails = ({ path }) => {
   const {
-    isAgencyCreateDeal,
+    isAgencyDeal,
     isCreateDeal,
     isUpdateDeal,
     isViewDeal,
@@ -37,7 +37,7 @@ const SegmentDetails = ({ path }) => {
       className="SegmentDetails"
     >
       <div className="SegmentDetails-container">
-        {!(isViewDeal || isDealHistory || isAgencyCreateDeal) && (
+        {!(isViewDeal || isDealHistory || isAgencyDeal) && (
           <Grid
             container
             spacing={1}
@@ -357,7 +357,7 @@ const SegmentDetails = ({ path }) => {
                 <TableCell align="left">SEGMENT CRITERIA</TableCell>
                 <TableCell align="center">SEGMENT ( % )</TableCell>
                 <TableCell align="center">SEGMENT AMT</TableCell>
-                {!isViewDeal && !isDealHistory && (
+                {!isViewDeal && !isDealHistory && !isAgencyDeal && (
                   <TableCell align="center">ACTION</TableCell>
                 )}
               </TableRow>
@@ -381,7 +381,7 @@ const SegmentDetails = ({ path }) => {
                 <TableCell align="center">5%</TableCell>
                 <TableCell align="center"></TableCell>
 
-                {!isViewDeal && !isDealHistory && (
+                {!isViewDeal && !isDealHistory && !isAgencyDeal && (
                   <TableCell align="center">
                     {isUpdateDeal && (
                       <EditIcon
@@ -414,7 +414,7 @@ const SegmentDetails = ({ path }) => {
                 <TableCell align="center">5%</TableCell>
                 <TableCell align="center"></TableCell>
 
-                {!isViewDeal && !isDealHistory && (
+                {!isViewDeal && !isDealHistory && !isAgencyDeal && (
                   <TableCell align="center">
                     {isUpdateDeal && (
                       <EditIcon
