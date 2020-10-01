@@ -147,19 +147,19 @@ export const getBaseFareDetails = (outboundItinerary) => {
   };
 };
 
-export const calculateTaxBreakUp = (fareDetails, taxCode) => {
-  let taxAmount = 0;
-  fareDetails.map((passengerFareDetail) => {
-    const filteredTaxDetails = passengerFareDetail.taxDetails.filter(
-      (taxItem) => taxItem.taxcode.startsWith(taxCode)
-    );
-    taxAmount += filteredTaxDetails.reduce(
-      (a, b) => a + (b['taxAmount'] || 0),
-      0
-    );
-  });
-  return taxAmount;
-};
+// export const calculateTaxBreakUp = (fareDetails, taxCode) => {
+//   let taxAmount = 0;
+//   fareDetails.map((passengerFareDetail) => {
+//     const filteredTaxDetails = passengerFareDetail.taxDetails.filter(
+//       (taxItem) => taxItem.taxcode.startsWith(taxCode)
+//     );
+//     taxAmount += filteredTaxDetails.reduce(
+//       (a, b) => a + (b['taxAmount'] || 0),
+//       0
+//     );
+//   });
+//   return taxAmount;
+// };
 
 const calculateAirlineFuelSurcharge = (taxDetails, index) => {
   const filteredTaxDetails = taxDetails.filter(

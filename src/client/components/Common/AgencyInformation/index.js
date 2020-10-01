@@ -7,7 +7,6 @@ import {
   getTotalAmount,
   getTotalAmountCurrency,
   getTotalFare,
-  calculateTaxBreakUp,
 } from 'Helpers/flight.helpers';
 import { getFormattedPrice } from 'Helpers/global';
 import React from 'react';
@@ -19,7 +18,7 @@ const AgencyInformation = (props) => {
   //console.log(outboundItinerary);
   const {
     taxTotal,
-
+    airlineFuelSurcharge,
     airlineMiscellaneousFee,
   } = getTaxesAndFeesDetails(outboundItinerary);
   const totalFare = getTotalFare(outboundItinerary);
@@ -27,18 +26,16 @@ const AgencyInformation = (props) => {
   const totalAmount = getTotalAmount(outboundItinerary);
   const totalAmountCurrency = getTotalAmountCurrency(outboundItinerary);
 
-  // const outboundFlightSegment = getFlightSegmentByType(
-  //   outboundItinerary,
-  //   'Outbound'
-  // );
-  // const inboundFlightSegment = getFlightSegmentByType(
-  //   outboundItinerary,
-  //   'Inbound'
-  // );
+  const outboundFlightSegment = getFlightSegmentByType(
+    outboundItinerary,
+    'Outbound'
+  );
+  const inboundFlightSegment = getFlightSegmentByType(
+    outboundItinerary,
+    'Inbound'
+  );
   const totalfareDetails = outboundItinerary.totalfareDetails;
   const fareDetails = totalfareDetails.fareDetails;
-  const YQTax = calculateTaxBreakUp(fareDetails, 'YQ');
-  const YRTax = calculateTaxBreakUp(fareDetails, 'YR');
   const passengersCount = fareDetails.reduce(
     (totalSum, pax) => totalSum + pax.count,
     0
@@ -97,17 +94,13 @@ const AgencyInformation = (props) => {
               </div>
               <div className="price-category__description">
                 <div className="price-category__description-price d-flex justify-content-between">
-                  <Text className="font-primary-regular-14" text="YQ Tax" />
                   <Text
                     className="font-primary-regular-14"
-                    text={getFormattedPrice(YQTax)}
+                    text="Airline Fuel Surcharge"
                   />
-                </div>
-                <div className="price-category__description-price d-flex justify-content-between">
-                  <Text className="font-primary-regular-14" text="YR Tax" />
                   <Text
                     className="font-primary-regular-14"
-                    text={getFormattedPrice(YRTax)}
+                    text={getFormattedPrice(airlineFuelSurcharge)}
                   />
                 </div>
                 <div className="price-category__description-price d-flex justify-content-between">
@@ -178,7 +171,7 @@ const AgencyInformation = (props) => {
         </div>
         <div className="d-flex justify-content-between font-primary-semibold-14">
           <div>Total Earning</div>
-          <div>{getFormattedPrice(getTotalEarning(outboundItinerary))}</div>
+          <div>{getFormattedPrice(getTotalEarning())}</div>
         </div>
       </div>
       <div className="font-primary-semibold-14 pb-12 pt-24">TAXES</div>
