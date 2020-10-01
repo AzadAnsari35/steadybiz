@@ -19,7 +19,9 @@ import PassengerInformationStatic from 'Components/Common/PassengerInformationSt
 import PaymentDetails from 'Components/Common/PaymentDetails';
 import PaymentDetailsCard from 'Components/Common/PaymentDetailsCard';
 import FlightDetails from 'Components/Flights/Availability/FlightDetails';
-import FareDetailsCard from 'Components/Common/FareDetailsCard';
+// import FareDetailsCard from 'Components/Common/FareDetailsCard';
+import AgencyInformation from 'Components/Common/AgencyInformation';
+
 import OrderDetails from 'Components/Common/OrderDetails';
 
 import { Alert, IconWithBackground, Panel, Toast, Button } from 'Widgets';
@@ -346,7 +348,7 @@ const Transaction = () => {
               {/* <Hidden only="md"> */}
               <Hidden mdUp={true}>
                 <div className="fareDetails-mob">
-                  <FareDetailsCard
+                  <AgencyInformation
                     outboundItinerary={transactionData.outboundItinerary}
                   />
                   {transactionData.isTicketing && (
@@ -388,7 +390,7 @@ const Transaction = () => {
           <Hidden mdDown={true}>
             <Grid item xs={12} md={3}>
               <div className="right-section">
-                <FareDetailsCard
+                <AgencyInformation
                   outboundItinerary={transactionData.outboundItinerary}
                 />
                 {transactionData.isTicketing && (

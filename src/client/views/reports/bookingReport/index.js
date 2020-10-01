@@ -521,6 +521,12 @@ const BookingReport = () => {
 
   const handleFieldReset = () => {
     setFieldSelection(defaultFieldSelection);
+    const updatedHiddenKeys = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
+      ((set) => (a) => !set.has(a.value))(
+        new Set(defaultFieldSelection.map((b) => b.value))
+      )
+    ).map((item) => item.value);
+    setHiddenKeys(updatedHiddenKeys);
   };
 
   return (
@@ -829,7 +835,7 @@ const BookingReport = () => {
             headerInArrOfObjFormat
             headerData={headerData}
             subHeaderData={{
-              parent: 'Title',
+              parent: 'Total',
               ...bookingReportData.data.data.subHeaderData,
             }}
             bodyData={bookingReportData.data.data}

@@ -220,6 +220,10 @@ const OfficeSalesReport = () => {
   const [fieldSelection, setFieldSelection] = useState(
     defaultTableFieldsSelection
   );
+
+  const [defaultFieldSelection, setDefaultFieldSelection] = useState(
+    defaultTableFieldsSelection
+  );
   //console.log('hi', userNameList?.data);
   useEffect(() => {
     defaultCountry();
@@ -438,6 +442,21 @@ const OfficeSalesReport = () => {
     defaultCountry();
   };
 
+  const handleFieldReset = () => {
+    setFieldSelection(defaultFieldSelection);
+    const hiddenKeysArray = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
+      (item1) =>
+        !defaultFieldSelection.some(
+          (item2) => item2.value === item1.value && item2.value === item1.value
+        )
+    );
+    const updatedHiddenKeys = getUpdatedkeys(hiddenKeysArray);
+
+    console.log('updatedHiddenKeys', updatedHiddenKeys);
+
+    setHiddenKeys(updatedHiddenKeys);
+  };
+
   return (
     <>
       <div className="OfficeSalesReport">
@@ -622,11 +641,11 @@ const OfficeSalesReport = () => {
                 defaultFieldOptions={fieldSelection}
                 fieldsOptions={BOOKING_REPORT_FILED_SELECTION_OPTIONS}
                 onSelectChange={handleSelectOption}
+                handleFieldReset={handleFieldReset}
               />
             }
             headerData={headerData}
             subHeaderData={{
-              parent: 'Title',
               ...officeSalesReportData.data.data.subHeaderData,
             }}
             tableBodyStyling={[

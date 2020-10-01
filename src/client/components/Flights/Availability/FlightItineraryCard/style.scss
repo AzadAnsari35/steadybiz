@@ -199,8 +199,19 @@ $root: '.FlightItineraryCard';
   }
 
   &-CustomDrawer-agencyInfo {
-    padding: 0 20px 20px 20px;
-    padding-top: calculateRem(100px);
+    padding: 0px;
+    padding-top: calculateRem(80px);
+    background-color: $athensGray;
+
+    .CustomDrawer-header {
+      padding: 20px;
+      background-color: $white;
+      margin-bottom: 30px;
+    }
+
+    .CustomDrawer-content {
+      padding: 0px 20px;
+    }
 
     .CustomDrawer-title {
       font-size: 20px;

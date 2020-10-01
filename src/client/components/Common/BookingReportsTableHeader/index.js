@@ -25,7 +25,7 @@ const BookingReportsTableHeader = (props) => {
             [ {officeId} ]
           </span>
         </div>
-        <div className="BookingReportsTableHeader-officeDetail__right font-primary-semibold-16 d-flex">
+        <div className="BookingReportsTableHeader-officeDetail__right font-primary-semibold-16 d-flex align-items-center">
           <div className="pr-10">
             <MultiSelect
               id="fieldSelection"

@@ -28,7 +28,9 @@ import { PAYMENT_MODE, dropDownParam } from 'Constants/commonConstant.js';
 import ContactDetails from 'Components/Common/ContactDetails';
 import FlightDetails from 'Components/Flights/Availability/FlightDetails';
 import FlightSummary from 'Components/Flights/Availability/FlightSummary';
-import FareDetailsCard from 'Components/Common/FareDetailsCard';
+// import FareDetailsCard from 'Components/Common/FareDetailsCard';
+import AgencyInformation from 'Components/Common/AgencyInformation';
+
 import PassengerDetails from 'Components/Common/PassengerDetails';
 import TicketTimeLimitDetails from 'Components/Common/TicketTimeLimitDetails';
 import PaymentDetails from 'Components/Common/PaymentDetails';
@@ -515,7 +517,7 @@ const PassengerInformation = () => {
                 )}
                 <Hidden mdUp={true}>
                   <div className="fareDetails-mob">
-                    <FareDetailsCard outboundItinerary={outboundItinerary} />
+                    <AgencyInformation outboundItinerary={outboundItinerary} />
                   </div>
                 </Hidden>
                 {visiblePanelsState.isPaymentDetailsPanelVisible && (
@@ -542,7 +544,7 @@ const PassengerInformation = () => {
             <Hidden mdDown={true}>
               <Grid item xs={12} md={3}>
                 <div className="right-section">
-                  <FareDetailsCard outboundItinerary={outboundItinerary} />
+                  <AgencyInformation outboundItinerary={outboundItinerary} />
                 </div>
               </Grid>
             </Hidden>
