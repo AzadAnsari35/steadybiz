@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-
+import { useLocation } from 'react-router-dom';
 import { commonAction } from 'Actions/index';
 import endpoint from 'Config/endpoint';
 import {
@@ -19,6 +19,7 @@ import useToggle from 'Hooks/useToggle';
 import { calculateRem } from 'Helpers/utils';
 import { utils } from 'Helpers';
 import securityOptionConstant from 'Constants/securityOptionConstant';
+import routes from 'Constants/routes';
 
 import { Card, Tag, Text, CustomDrawer } from 'Widgets';
 import FareRules from './../FareRules';
@@ -27,6 +28,15 @@ import './style.scss';
 
 const FareDetailsCard = (props) => {
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  const path = location.pathname;
+
+  const isAvailability = utils.stringComparison(
+    path,
+    routes.flight.availability
+  );
+
   const { outboundItinerary } = props;
   const [showFareRules, setShowFareRules] = useToggle(false);
 
@@ -83,7 +93,7 @@ const FareDetailsCard = (props) => {
         <Card
           title="Fare Details"
           cardContainerClassName="position-relative"
-          link="Fare Rule"
+          link={!isAvailability ? 'Fare Rule' : null}
           linkCallback={handleFareRulesClick}
         >
           <Tag
@@ -95,11 +105,11 @@ const FareDetailsCard = (props) => {
               <div className="price-category-container">
                 <div className="price-category__title d-flex justify-content-between">
                   <Text
-                    className="font-primary-bold-18"
+                    className="font-primary-semibold-16"
                     text={`Base Fare (${passengersCount} Persons)`}
                   />
                   <Text
-                    className="font-primary-bold-18"
+                    className="font-primary-semibold-16"
                     text={getFormattedPrice(baseFareTotal)}
                   />
                 </div>
@@ -128,11 +138,11 @@ const FareDetailsCard = (props) => {
               <div className="price-category-container">
                 <div className="price-category__title d-flex justify-content-between">
                   <Text
-                    className="font-primary-bold-18"
+                    className="font-primary-semibold-16"
                     text="Taxes and Fees"
                   />
                   <Text
-                    className="font-primary-bold-18"
+                    className="font-primary-semibold-16"
                     text={getFormattedPrice(taxTotal)}
                   />
                 </div>
@@ -162,7 +172,7 @@ const FareDetailsCard = (props) => {
                       text={getFormattedPrice(airlineMiscellaneousFee)}
                     />
                   </div>
-                  <div className="price-category__description-price d-flex justify-content-between">
+                  {/* <div className="price-category__description-price d-flex justify-content-between">
                     <Text
                       className="font-primary-medium-16"
                       text="Value Added Tax (VAT)"
@@ -171,7 +181,7 @@ const FareDetailsCard = (props) => {
                       className="font-primary-medium-16"
                       text={getFormattedPrice(0)}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </div>
               {/* DO NOT REMOVE IT - WILL BE USED IN FUTURE */}
@@ -193,33 +203,36 @@ const FareDetailsCard = (props) => {
 							</div> */}
               <div className="price-category-container">
                 <div className="price-category__title d-flex justify-content-between">
-                  <Text className="font-primary-bold-18" text="Total Fare" />
                   <Text
-                    className="font-primary-bold-18"
-                    text={getFormattedPrice(totalFare)}
+                    className="font-primary-semibold-16"
+                    text="Services Charges"
                   />
+                  <Text className="font-primary-semibold-16" text="0.00" />
                 </div>
                 <div className="price-category__description">
                   <div className="price-category__description-price d-flex justify-content-between">
                     <Text
                       className="font-primary-medium-16"
-                      text="Handling Charges"
+                      text="Seat Charges"
                     />
+                    <Text className="font-primary-medium-16" text="0.00" />
+                  </div>
+
+                  <div className="price-category__description-price d-flex justify-content-between">
                     <Text
                       className="font-primary-medium-16"
-                      text={getFormattedPrice(handlingCharges)}
+                      text="Meals Charges"
                     />
+                    <Text className="font-primary-medium-16" text="0.00" />
                   </div>
                 </div>
               </div>
             </div>
             <div className="total-section d-flex justify-content-between">
-              <Text className="font-primary-bold-22" text="Total Amount" />
+              <Text className="font-primary-semibold-20" text="Total Fare" />
               <Text
-                className="font-primary-bold-22 text-align-right"
-                text={`${totalAmountCurrency} ${getFormattedPrice(
-                  totalAmount
-                )}`}
+                className="font-primary-semibold-20 text-align-right"
+                text={`${totalAmountCurrency} ${getFormattedPrice(totalFare)}`}
               />
             </div>
           </div>

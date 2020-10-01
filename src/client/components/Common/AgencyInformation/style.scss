@@ -2,7 +2,8 @@
 $root: '.AgencyInformation';
 
 #{$root} {
-  &-earning {
+  background-color: $athensGray;
+  &-commission {
     & > div {
       margin-bottom: 10px;
       &:last-child {
@@ -14,32 +15,6 @@ $root: '.AgencyInformation';
   &-tax {
     & > div {
       margin-bottom: 10px;
-    }
-  }
-
-  .Tag {
-    top: 12px;
-    right: 0;
-  }
-  .container {
-    .price-category {
-      &-container {
-        margin-bottom: 10px;
-        &:last-child {
-          margin-bottom: 24px;
-        }
-      }
-      &__title {
-        margin-bottom: 10px;
-      }
-      &__description {
-        &-price {
-          margin-bottom: 10px;
-          &:last-child {
-            margin-bottom: 0px;
-          }
-        }
-      }
     }
   }
 

@@ -1,9 +1,23 @@
 $root: '.EarningDetails';
 
 #{$root} {
-  &-earning {
-    & > div {
-      margin-bottom: 6px;
+  .Tag {
+    top: 12px;
+    right: 0;
+  }
+  .container {
+    .price-category {
+      &-container {
+        margin-bottom: 20px;
+      }
+      &__title {
+        margin-bottom: 16px;
+      }
+      &__description {
+        &-price {
+          margin-bottom: 10px;
+        }
+      }
     }
   }
 }

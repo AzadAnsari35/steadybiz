@@ -48,7 +48,7 @@ const CustomDrawer = (props) => {
           <div className="CustomDrawer-divider horizontal-grey-divider mt-4"></div>
         )}
 
-        {children}
+        <div className="CustomDrawer-content">{children}</div>
       </div>
     </Drawer>
   );
