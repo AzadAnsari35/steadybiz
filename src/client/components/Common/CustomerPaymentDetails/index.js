@@ -14,7 +14,9 @@ const CustomerPaymentDetails = (props) => {
 
   const totalFare = getTotalFare(outboundItinerary);
   const handlingCharges = getHandlingCharges(outboundItinerary);
-  const totalAmount = getTotalAmount(outboundItinerary);
+  const totalAmount = getTotalAmount(outboundItinerary, {
+    isForCustomer: true,
+  });
 
   return (
     <div className="CustomerPaymentDetails">

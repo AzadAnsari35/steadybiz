@@ -219,11 +219,14 @@ export const getTotalEarning = (outboundItinerary) => {
   if (dealDiscount) return dealDiscount;
   else return 0;
 };
-export const getTotalAmount = (outboundItinerary) => {
+export const getTotalAmount = (
+  outboundItinerary,
+  customer = { isForCustomer: false }
+) => {
   let totalAmount =
-    getTotalFare(outboundItinerary) +
-    getHandlingCharges(outboundItinerary) -
-    getTotalEarning(outboundItinerary);
+    getTotalFare(outboundItinerary) + getHandlingCharges(outboundItinerary);
+  if (!customer.isForCustomer)
+    totalAmount = totalAmount - getTotalEarning(outboundItinerary);
   return totalAmount;
 };
 

@@ -7,7 +7,7 @@ import './style.scss';
 
 const AgencyInformation = (props) => {
   const { outboundItinerary } = props;
-  console.log('outboundItinerary', outboundItinerary);
+  //console.log('outboundItinerary', outboundItinerary);
 
   // const { fareBasisCode } = outboundItinerary.totalfareDetails;
 

@@ -18,6 +18,7 @@ const EarningDetails = (props) => {
   const { outboundItinerary } = props;
 
   const totalAmount = getTotalAmount(outboundItinerary);
+  const totalEarning=getTotalEarning(outboundItinerary);
 
   const totalfareDetails = outboundItinerary?.totalfareDetails;
 
@@ -112,7 +113,7 @@ const EarningDetails = (props) => {
                 />
                 <Text
                   className="font-primary-semibold-16"
-                  text={getFormattedPrice(getTotalEarning())}
+                  text={getFormattedPrice(totalEarning)}
                 />
               </div>
             </div>
