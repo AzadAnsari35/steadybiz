@@ -10,7 +10,7 @@ import { getFormattedPrice } from 'Helpers/global';
 import './style.scss';
 
 const CustomerPaymentDetails = (props) => {
-  const { outboundItinerary } = props;
+  const { outboundItinerary, isBooking } = props;
 
   const totalFare = getTotalFare(outboundItinerary);
   const handlingCharges = getHandlingCharges(outboundItinerary);
@@ -29,10 +29,18 @@ const CustomerPaymentDetails = (props) => {
           <div className="price-category">
             <div className="price-category-container">
               <div className="price-category__title d-flex justify-content-between">
-                <Text
-                  className="font-primary-semibold-16"
-                  text="       Amount to be paid by Customer                  "
-                />
+                {!isBooking && (
+                  <Text
+                    className="font-primary-semibold-16"
+                    text="       Amount to be paid by Customer                  "
+                  />
+                )}
+                {isBooking && (
+                  <Text
+                    className="font-primary-semibold-16"
+                    text="       Amount paid by Customer                  "
+                  />
+                )}
               </div>
 
               <div className="price-category__description">
@@ -65,6 +73,12 @@ const CustomerPaymentDetails = (props) => {
               text={getFormattedPrice(totalAmount)}
             />
           </div>
+          {isBooking && (
+            <div className="price-category__description-price d-flex justify-content-between">
+              <Text className="font-primary-medium-16" text="Form of Payment" />
+              <Text className="font-primary-medium-16" text="Credit Limit" />
+            </div>
+          )}
         </div>
       </Card>
     </div>
