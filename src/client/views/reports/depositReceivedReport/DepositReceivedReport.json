@@ -1,0 +1,39 @@
+{
+  "data": {
+    "count": 1,
+    "data": {
+      "subHeaderData": {
+        "dateAndTime": "Total",
+        "agencyName": "",
+        "depositUser": "",
+        "openingBal": "0",
+        "depositType": "",
+        "paymentMode": "",
+        "currency": "AED",
+        "depositAmt": "10,300.00",
+        "closingBal": "10,300.00",
+        "equiCurrency": "10,300.00",
+        "equiAmt": "10,300.00",
+        "equiClosingBal": "10,300.00",
+        "depositDescription": ""
+      },
+      "data": [
+        {
+          "dateAndTime": "09-Aug-2020, 23:00 Hrs",
+          "agencyName": "Axis Tours & Travels",
+          "depositUser": "Azad",
+          "openingBal": "0",
+          "depositType": "Manual",
+          "paymentMode": "Cheque",
+          "currency": "AED",
+          "depositAmt": "10,300.00",
+          "closingBal": "10,300.00",
+          "equiCurrency": "10,300.00",
+          "equiAmt": "10,300.00",
+          "equiClosingBal": "10,300.00",
+          "depositDescription": "Joining Bonus"
+        }
+      ]
+    }
+  }
+}

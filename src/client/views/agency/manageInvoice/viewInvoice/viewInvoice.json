@@ -1,0 +1,21 @@
+{
+  "data": {
+    "count": 1,
+    "data": {
+      "data": [
+        {
+          "date": "2-OCT-2020",
+          "officeId": "OKT001235",
+          "txnType": "Booked",
+          "ordersNumber": "OKT0000000022",
+          "currency": "AED",
+          "totalAmount": 4000,
+          "totalCommission": 320,
+          "vatAmount": 120,
+          "payMode": "cheque",
+          "netAmtPaid": 4440
+        }
+      ]
+    }
+  }
+}

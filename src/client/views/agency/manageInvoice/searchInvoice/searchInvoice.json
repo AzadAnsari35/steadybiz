@@ -1,0 +1,23 @@
+{
+  "data": {
+    "count": 1,
+    "data": {
+      "data": [
+        {
+          "agencyName": "Axis Tours and Travels",
+          "officeId": "OKT001235",
+          "country": "IN",
+          "city": "Delhi",
+          "nativeCurrency": "INR",
+          "nativeTotalAmount": 4000,
+          "nativeCommission": 320,
+          "nativeNetAmount": 4320,
+          "equiCurrency": "AED",
+          "equiTotalAmount": 4000,
+          "equiCommission": 320,
+          "equiNetAmount": 4320
+        }
+      ]
+    }
+  }
+}

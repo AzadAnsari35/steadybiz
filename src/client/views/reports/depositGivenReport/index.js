@@ -7,7 +7,7 @@ import CachedIcon from '@material-ui/icons/Cached';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import useToggle from 'Hooks/useToggle';
 
-import bookingReportData from './bookingReport.json';
+import DepositGivenReportData from './DepositGivenReport.json';
 import {
   BOOKING_CATEGORY,
   officeType,
@@ -38,38 +38,33 @@ import {
   AutoSuggest,
   TextInput,
   CustomDrawer,
+  DatePicker,
 } from 'Widgets';
 
 import './style.scss';
 import { customAddDays, displayImage } from 'Helpers/utils';
-import BookingReportsTableHeader from 'Components/Common/BookingReportsTableHeader/index';
+import BookingReportsTableHeader from 'Components/Common/BookingReportsTableHeader';
 import useDropDownApi from 'Hooks/useDropDownApi';
 
-const BOOKING_REPORT_FILED_SELECTION_OPTIONS = [
-  { value: 'ordersBooked', label: 'ORDERS BOOKED' },
-  { value: 'ordersCancelled', label: 'ORDERS CANCELLED' },
-  { value: 'ordersRebooked', label: 'ORDERS REBOOKED' },
-  { value: 'netOrders', label: 'NET ORDERS' },
-  { value: 'baseCurrency', label: 'BASE CURRENCY' },
-  { value: 'totalTxnAmount', label: 'TOTAL TXN. AMT' },
-  { value: 'refundAmount', label: 'REFUND AMT' },
-  { value: 'rebookedAmount', label: 'REBOOKED AMT' },
-  { value: 'totalCommission', label: 'TOTAL COMMISSION' },
-  { value: 'netAmountPaid', label: 'NET AMT PAID' },
+const DEPOSIT_GIVEN_REPORT_FILED_SELECTION_OPTIONS = [
+  { value: 'dateAndTime', label: 'DATE & TIME' },
+  { value: 'clBeforeDeposit', label: 'CL BEFORE DEPOSIT' },
+
+  { value: 'depositType', label: 'DEPOSIT TYPE' },
+  { value: 'paymentMode', label: 'PAYMENT MODE' },
+  { value: 'currency', label: 'CURRENCY' },
+  { value: 'depositAmt', label: 'DEPOSIT AMOUNT' },
+  { value: 'clAfterDeposit', label: 'CL AFTER DEPOSIT' },
 ];
 
 const headerData = [
-  { id: 'date', value: 'DATE', alignment: 'center' },
-  { id: 'ordersBooked', value: 'ORDERS BOOK', alignment: 'right' },
-  { id: 'ordersCancelled', value: 'ORDERS CANCEL', alignment: 'right' },
-  { id: 'ordersRebooked', value: 'ORDERS REBOOK', alignment: 'right' },
-  { id: 'netOrders', value: 'NET ORDERS', alignment: 'right' },
-  { id: 'baseCurrency', value: 'BASE CUR.', alignment: 'center' },
-  { id: 'totalTxnAmount', value: 'TOTAL TXN. AMT', alignment: 'right' },
-  { id: 'refundAmount', value: 'REFUND AMT', alignment: 'right' },
-  { id: 'rebookedAmount', value: 'REBOOKED AMT', alignment: 'right' },
-  { id: 'totalCommission', value: 'TOTAL COMN.', alignment: 'right' },
-  { id: 'netAmountPaid', value: 'NET AMT PAID', alignment: 'right' },
+  { id: 'dateAndTime', value: 'DATE & TIME', alignment: 'center' },
+  { id: 'clBeforeDeposit', value: 'CL BEFORE DEPOSIT', alignment: 'right' },
+  { id: 'depositType', value: 'DEPOSIT TYPE', alignment: 'center' },
+  { id: 'paymentMode', value: 'PAYMENT MODE', alignment: 'left' },
+  { id: 'currency', value: 'CURRENCY', alignment: 'center' },
+  { id: 'depositAmt', value: 'DEPOSIT AMOUNT', alignment: 'right' },
+  { id: 'clAfterDeposit', value: '  CL AFTER DEPOSIT', alignment: 'right' },
 ];
 
 const hideKeys = [];
@@ -81,7 +76,7 @@ const createEndpoint = () => {
   }));
 };
 
-const TotalSalesReport = () => {
+const DepositGivenReport = () => {
   const [requestJson, setReqeustJson] = useState(null);
   const [page, setPage] = useState(1);
   const [size] = useState(10);
@@ -153,7 +148,7 @@ const TotalSalesReport = () => {
       : []
     : [];
   const [hiddenKeys, setHiddenKeys] = useState(hideKeys);
-  const defaultTableFieldsSelection = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
+  const defaultTableFieldsSelection = DEPOSIT_GIVEN_REPORT_FILED_SELECTION_OPTIONS.filter(
     (item) => !hiddenKeys.includes(item.value)
   );
   const [fieldSelection, setFieldSelection] = useState(
@@ -249,7 +244,8 @@ const TotalSalesReport = () => {
         [id]: value,
       });
     } else {
-      const updatedHiddenKeys = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
+      console.log('value', value);
+      const updatedHiddenKeys = DEPOSIT_GIVEN_REPORT_FILED_SELECTION_OPTIONS.filter(
         ((set) => (a) => !set.has(a.value))(new Set(value.map((b) => b.value)))
       ).map((item) => item.value);
       setFieldSelection(value);
@@ -357,7 +353,7 @@ const TotalSalesReport = () => {
 
   const handleFieldReset = () => {
     setFieldSelection(defaultFieldSelection);
-    const updatedHiddenKeys = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
+    const updatedHiddenKeys = DEPOSIT_GIVEN_REPORT_FILED_SELECTION_OPTIONS.filter(
       ((set) => (a) => !set.has(a.value))(
         new Set(defaultFieldSelection.map((b) => b.value))
       )
@@ -367,10 +363,12 @@ const TotalSalesReport = () => {
 
   return (
     <>
-      <div className="TotalSalesReport">
-        <div className="TotalSalesReport-head">
+      <div className="DepositGivenReport">
+        <div className="DepositGivenReport-head">
           <div className="d-flex justify-content-between align-items-end pb-4">
-            <div className="font-primary-semibold-24 ">SALES REPORT</div>
+            <div className="font-primary-semibold-24 ">
+              DEPOSIT GIVEN REPORT{' '}
+            </div>
             <IconWithBackground
               bgColor="#74D3DC33"
               showCursor
@@ -396,187 +394,36 @@ const TotalSalesReport = () => {
 
             <Text
               showLeftBorder={true}
-              text="SEARCH SALES REPORT"
+              text="SEARCH DEPOSIT GIVEN"
               className="font-primary-medium-18 my-24"
             />
-            <Grid container spacing={3}>
-              <Grid item xs={6}>
-                <SelectWithDatePickers
-                  label="Date:"
-                  name={{
-                    select: 'reportType',
-                    datePicker1: 'dateFrom',
-                    datePicker2: 'dateTo',
-                  }}
-                  data={SEARCH_DATE_TYPE}
-                  defaultValues={{
-                    select: SEARCH_DATE_TYPE[1],
-                    datePicker1: new Date(),
-                    datePicker2:
-                      formData.reportType?.value === 'T'
-                        ? customAddDays(new Date(), 31)
-                        : new Date(),
-                  }}
-                  disableFutureDatesDatePicker1={
-                    formData.reportType?.value === 'B'
-                  }
-                  disableFutureDatesDatePicker2={
-                    formData.reportType?.value === 'B'
-                  }
-                  disablePastDatesDatePicker1={
-                    formData.reportType?.value === 'T'
-                  }
-                  disablePastDatesDatePicker2={
-                    formData.reportType?.value === 'T'
-                  }
-                  isSearchable
+            <Grid container spacing={3} alignItems="flex-end">
+              <Grid item xs={4}>
+                <DatePicker
+                  name="dateFrom"
+                  label="Date From:"
                   useReactHookForm={false}
-                  onSelectChange={handleSelectOption}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                {/* <TextInput
-              label="Origin:"
-              id="origin"
-              name="origin"
-              useReactHookForm={false}
-              onChange={handleInputChange}
-            /> */}
-                <AutoSuggest
-                  id="origin"
-                  label="Origin:"
-                  isSearchBar={false}
-                  // initialValue={initialDepartureAirport}
-                  stateKey={stateKey}
-                  onSelectSuggestion={handleInputChange}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                {/* <TextInput
-              label="Destination:"
-              id="destination"
-              name="destination"
-              useReactHookForm={false}
-              onChange={handleInputChange}
-            /> */}
-                <AutoSuggest
-                  id="destination"
-                  label="Destination:"
-                  isSearchBar={false}
-                  // initialValue={initialDepartureAirport}
-                  stateKey={stateKey}
-                  onSelectSuggestion={handleInputChange}
+                  onChange={() => console.log('h')}
                 />
               </Grid>
 
-              <Grid item xs={3}>
-                <MultiSelect
-                  label="Office Channel:"
-                  id="officeChannel"
-                  name="officeChannel"
-                  options={OFFICE_CHANNEL}
-                  showBorder
-                  changeStyle
-                  width="auto"
-                  isSearchable
+              <Grid item xs={4}>
+                <DatePicker
+                  name="dateto"
+                  label="Date To:"
                   useReactHookForm={false}
-                  onSelectChange={handleSelectOption}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <MultiSelect
-                  label="Office Type:"
-                  id="officeType"
-                  name="officeType"
-                  options={officeType}
-                  showBorder
-                  changeStyle
-                  width="auto"
-                  isSearchable
-                  useReactHookForm={false}
-                  onSelectChange={handleSelectOption}
+                  onChange={() => console.log('h')}
                 />
               </Grid>
 
-              {console.log('formData::: ', formData)}
-              <Grid item xs={3}>
-                <TextInput
-                  label="Office ID:"
-                  id="officeId"
-                  name="officeId"
-                  value={formData.officeId}
-                  useReactHookForm={false}
-                  onChange={handleInputChange}
-                  disabled={true}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <MultiSelect
-                  label="User Name:"
-                  id="userName"
-                  name="userName"
-                  options={userNameListData}
-                  showBorder
-                  changeStyle
-                  width="auto"
-                  isSearchable
-                  useReactHookForm={false}
-                  onSelectChange={handleSelectOption}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <MultiSelect
-                  label="Country:"
-                  id="countryPos"
-                  name="countryPos"
-                  options={countriesList.dropDownItems}
-                  defaultValue={
-                    formData.countryPos ? formData.countryPos : null
-                  }
-                  showBorder
-                  changeStyle
-                  width="auto"
-                  isSearchable
-                  useReactHookForm={false}
-                  onSelectChange={handleSelectOption}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <MultiSelect
-                  label="City:"
-                  id="cityPos"
-                  name="cityPos"
-                  options={
-                    (citiesList && utils.sortObjectArray(citiesList)) || []
-                  }
-                  defaultValue={formData.cityPos ? formData.cityPos : null}
-                  showBorder
-                  changeStyle
-                  width="auto"
-                  isSearchable
-                  useReactHookForm={false}
-                  onSelectChange={handleSelectOption}
-                />
-              </Grid>
-
-              {/* </div>
-          </Grid> */}
-              <Grid item xs={12}>
-                <div className="d-flex justify-content-end pt-32">
-                  <Button
-                    text="CHANGE OFFICE"
-                    secondary
-                    className=" px-48 mr-10"
-                    onClick={() => handleChangeOffice()}
-                  />
-
-                  <Button type="submit" text="Search" className=" px-48" />
-                </div>
+              <Grid item xs={2}></Grid>
+              <Grid item xs={2} className="d-flex justify-content-end">
+                <Button type="submit" text="Search" className=" px-48" />
               </Grid>
             </Grid>
           </form>
         </div>
-        {bookingReportData && (
+        {DepositGivenReportData && (
           <PrimaryTable
             header={
               <BookingReportsTableHeader
@@ -584,7 +431,7 @@ const TotalSalesReport = () => {
                 officeId={officeId}
                 officeLevel={officeLevel}
                 defaultFieldOptions={fieldSelection}
-                fieldsOptions={BOOKING_REPORT_FILED_SELECTION_OPTIONS}
+                fieldsOptions={DEPOSIT_GIVEN_REPORT_FILED_SELECTION_OPTIONS}
                 onSelectChange={handleSelectOption}
                 handleFieldReset={handleFieldReset}
               />
@@ -592,11 +439,11 @@ const TotalSalesReport = () => {
             headerInArrOfObjFormat
             headerData={headerData}
             subHeaderData={{
-              ...bookingReportData.data.data.subHeaderData,
+              ...DepositGivenReportData.data.data.subHeaderData,
             }}
-            bodyData={bookingReportData.data.data}
+            bodyData={DepositGivenReportData.data.data}
             page={page}
-            count={bookingReportData.data.count}
+            count={DepositGivenReportData.data.count}
             size={size}
             handlePage={handlePage}
             hideKeys={hiddenKeys}
@@ -608,7 +455,7 @@ const TotalSalesReport = () => {
         showDrawer={showChangeOffice}
         onCloseClick={setShowChangeOffice}
         width={1150}
-        className="TotalSalesReport-CustomDrawer"
+        className="DepositGivenReport-CustomDrawer"
         showBottomBorder={true}
       >
         <ChangeOffice onOfficeClick={handleChangeOfficeClick} />
@@ -617,4 +464,4 @@ const TotalSalesReport = () => {
   );
 };
 
-export default TotalSalesReport;
+export default DepositGivenReport;

@@ -5,9 +5,9 @@ import { useHistory } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import CachedIcon from '@material-ui/icons/Cached';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import ChangeOffice from 'Components/Offices/ChangeOffice';
+import useToggle from 'Hooks/useToggle';
 
-import officeSalesReportData from './officeSalesReport.json';
+import depositReceivedReportData from './DepositReceivedReport.json';
 import {
   BOOKING_CATEGORY,
   officeType,
@@ -22,7 +22,8 @@ import routes from 'Constants/routes';
 import { utils } from 'Helpers';
 import useDropDown from 'Hooks/useDropDown';
 import useCheckboxData from 'Hooks/useCheckboxData';
-import colors from 'Constants/colors';
+import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
+import ChangeOffice from 'Components/Offices/ChangeOffice';
 
 import {
   Button,
@@ -34,106 +35,50 @@ import {
   SelectWithTextInput,
   SimplePopover,
   Text,
+  AutoSuggest,
   TextInput,
   CustomDrawer,
-  AutoSuggest,
-  CustomTable,
-  TextWithButton,
+  DatePicker,
 } from 'Widgets';
-import useToggle from 'Hooks/useToggle';
-import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
 
+import './style.scss';
 import { customAddDays, displayImage } from 'Helpers/utils';
 import BookingReportsTableHeader from 'Components/Common/BookingReportsTableHeader/index';
 import useDropDownApi from 'Hooks/useDropDownApi';
-import './style.scss';
 
-const BOOKING_REPORT_FILED_SELECTION_OPTIONS = [
-  { value: 'date', label: 'DATE' },
-  { value: 'baseCurrency', label: 'BASE CURRENCY' },
-  {
-    value: 'ownNetBooked',
-    label: 'OWN NET BOOKED',
-    subHeaderList: [
-      { value: 'ownNetBookedOrders', label: 'ORDERS' },
-      { value: 'ownNetBookedAmount', label: 'AMOUNT' },
-    ],
-  },
-  {
-    value: 'branchesNetBooked',
-    label: 'BRANCHES NET BOOKED',
-    subHeaderList: [
-      { value: 'branchesNetBookedOrders', label: 'ORDERS' },
-      { value: 'branchesNetBookedAmount', label: 'AMOUNT' },
-    ],
-  },
-  {
-    value: 'agencyNetBooked',
-    label: 'AGENCY NET BOOKED',
-    subHeaderList: [
-      { value: 'agencyNetBookedOrders', label: 'ORDERS' },
-      { value: 'agencyNetBookedAmount', label: 'AMOUNT' },
-    ],
-  },
-  {
-    value: 'totalNetBooked',
-    label: 'TOTAL NET BOOKED',
-    subHeaderList: [
-      { value: 'totalNetBookedOrders', label: 'ORDERS' },
-      { value: 'totalNetBookedAmount', label: 'AMOUNT' },
-    ],
-  },
+const DEPOSIT_RECEIVED_REPORT_FILED_SELECTION_OPTIONS = [
+  { value: 'dateAndTime', label: 'DATE & TIME' },
+  { value: 'agencyName', label: 'AGENCY NAME' },
+  { value: 'depositUser', label: 'DEPOSIT USER' },
+  { value: 'openingBal', label: 'OPENING BAL' },
+  { value: 'depositType', label: 'DEPOSIT TYPE' },
+  { value: 'paymentMode', label: 'PAYMENT MODE' },
+  { value: 'currency', label: 'CURRENCY' },
+  { value: 'depositAmt', label: 'DEPOSIT AMT' },
+  { value: 'closingBal', label: 'CLOSING BAL' },
+  { value: 'equiCurrency', label: 'EQUI. CURR.' },
+  { value: 'equiAmt', label: 'EQUI. AMT' },
+  { value: 'equiClosingBal', label: 'EQUI. CLOSING BAL.' },
+  { value: 'depositDescription', label: 'DEPOSIT DESCRIPTION' },
 ];
 
 const headerData = [
-  { id: 'date', value: 'DATE', alignment: 'center' },
-  { id: 'baseCurrency', value: 'BASE CURRENCY', alignment: 'center' },
-  {
-    id: 'ownNetBooked',
-    value: 'OWN NET BOOKED',
-    alignment: 'right',
-    colSpan: 2,
-    subHeaderList: [
-      { id: 'ownNetBookedOrders', value: 'ORDERS', alignment: 'right' },
-      { id: 'ownNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
-    ],
-  },
-
-  {
-    id: 'branchesNetBooked',
-    value: 'BRANCHES NET BOOKED',
-    alignment: 'center',
-    colSpan: 2,
-    subHeaderList: [
-      { id: 'branchesNetBookedOrders', value: 'ORDERS', alignment: 'right' },
-      { id: 'branchesNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
-    ],
-  },
-
-  {
-    id: 'agencyNetBooked',
-    value: 'AGENCY NET BOOKED',
-    alignment: 'center',
-    colSpan: 2,
-    subHeaderList: [
-      { id: 'agencyNetBookedOrders', value: 'ORDERS', alignment: 'right' },
-      { id: 'agencyNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
-    ],
-  },
-
-  {
-    id: 'totalNetBooked',
-    value: 'TOTAL NET BOOKED',
-    alignment: 'center',
-    colSpan: 2,
-    subHeaderList: [
-      { id: 'totalNetBookedOrders', value: 'ORDERS', alignment: 'right' },
-      { id: 'totalNetBookedAmount', value: 'AMOUNT', alignment: 'right' },
-    ],
-  },
+  { id: 'dateAndTime', value: 'DATE & TIME', alignment: 'center' },
+  { id: 'agencyName', value: 'AGENCY NAME', alignment: 'left' },
+  { id: 'depositUser', value: 'DEPOSIT USER', alignment: 'left' },
+  { id: 'openingBal', value: 'OPENING BAL', alignment: 'right' },
+  { id: 'depositType', value: 'DEPOSIT TYPE', alignment: 'center' },
+  { id: 'paymentMode', value: 'PAYMENT MODE', alignment: 'left' },
+  { id: 'currency', value: 'CURRENCY', alignment: 'center' },
+  { id: 'depositAmt', value: 'DEPOSIT AMT', alignment: 'right' },
+  { id: 'closingBal', value: 'CLOSING BAL', alignment: 'right' },
+  { id: 'equiCurrency', value: 'EQUI. CURR.', alignment: 'center' },
+  { id: 'equiAmt', value: 'EQUI. AMT', alignment: 'right' },
+  { id: 'equiClosingBal', value: 'EQUI. CLOSING BAL.', alignment: 'right' },
+  { id: 'depositDescription', value: 'DEPOSIT DESCRIPTION', alignment: 'left' },
 ];
 
-const hideKeys = [];
+const hideKeys = ['depositType', 'depositDescription'];
 
 const createEndpoint = () => {
   return useAsyncEndpoint((endpoint, data) => ({
@@ -142,7 +87,7 @@ const createEndpoint = () => {
   }));
 };
 
-const OfficeSalesReport = () => {
+const DepositReceivedReport = () => {
   const [requestJson, setReqeustJson] = useState(null);
   const [page, setPage] = useState(1);
   const [size] = useState(10);
@@ -214,7 +159,7 @@ const OfficeSalesReport = () => {
       : []
     : [];
   const [hiddenKeys, setHiddenKeys] = useState(hideKeys);
-  const defaultTableFieldsSelection = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
+  const defaultTableFieldsSelection = DEPOSIT_RECEIVED_REPORT_FILED_SELECTION_OPTIONS.filter(
     (item) => !hiddenKeys.includes(item.value)
   );
   const [fieldSelection, setFieldSelection] = useState(
@@ -310,22 +255,10 @@ const OfficeSalesReport = () => {
         [id]: value,
       });
     } else {
-      console.log('handleSelectOption', value, id);
-      // const updatedHiddenKeys = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
-      //   ((set) => (a) => !set.has(a.value))(new Set(value.map((b) => b.value)))
-      // ).map((item) => item.value);
-
-      const hiddenKeysArray = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
-        (item1) =>
-          !value.some(
-            (item2) =>
-              item2.value === item1.value && item2.value === item1.value
-          )
-      );
-      const updatedHiddenKeys = getUpdatedkeys(hiddenKeysArray);
-
-      console.log('updatedHiddenKeys', updatedHiddenKeys);
-
+      console.log('value', value);
+      const updatedHiddenKeys = DEPOSIT_RECEIVED_REPORT_FILED_SELECTION_OPTIONS.filter(
+        ((set) => (a) => !set.has(a.value))(new Set(value.map((b) => b.value)))
+      ).map((item) => item.value);
       setFieldSelection(value);
       setHiddenKeys(updatedHiddenKeys);
     }
@@ -340,19 +273,6 @@ const OfficeSalesReport = () => {
     // 	...formData,
     // 	[id]: value.value,
     // });
-  };
-
-  const getUpdatedkeys = (arr) => {
-    const updatedHiddenKeys = [];
-
-    for (const item of arr) {
-      if (item.hasOwnProperty('subHeaderList')) {
-        updatedHiddenKeys.push(...getUpdatedkeys(item.subHeaderList));
-      }
-      updatedHiddenKeys.push(item.value);
-    }
-
-    return updatedHiddenKeys;
   };
 
   const handleInputChange = (id, value) => {
@@ -444,25 +364,22 @@ const OfficeSalesReport = () => {
 
   const handleFieldReset = () => {
     setFieldSelection(defaultFieldSelection);
-    const hiddenKeysArray = BOOKING_REPORT_FILED_SELECTION_OPTIONS.filter(
-      (item1) =>
-        !defaultFieldSelection.some(
-          (item2) => item2.value === item1.value && item2.value === item1.value
-        )
-    );
-    const updatedHiddenKeys = getUpdatedkeys(hiddenKeysArray);
-
-    console.log('updatedHiddenKeys', updatedHiddenKeys);
-
+    const updatedHiddenKeys = DEPOSIT_RECEIVED_REPORT_FILED_SELECTION_OPTIONS.filter(
+      ((set) => (a) => !set.has(a.value))(
+        new Set(defaultFieldSelection.map((b) => b.value))
+      )
+    ).map((item) => item.value);
     setHiddenKeys(updatedHiddenKeys);
   };
 
   return (
     <>
-      <div className="OfficeSalesReport">
-        <div className="OfficeSalesReport-head">
+      <div className="DepositReceivedReport">
+        <div className="DepositReceivedReport-head">
           <div className="d-flex justify-content-between align-items-end pb-4">
-            <div className="font-primary-semibold-24 ">OFFICE SALES REPORT</div>
+            <div className="font-primary-semibold-24 ">
+              DEPOSIT RECEIVED REPORT
+            </div>
             <IconWithBackground
               bgColor="#74D3DC33"
               showCursor
@@ -488,82 +405,25 @@ const OfficeSalesReport = () => {
 
             <Text
               showLeftBorder={true}
-              text="SEARCH OFFICE SALES"
+              text="SEARCH DEPOSIT RECEIVED"
               className="font-primary-medium-18 my-24"
             />
-            <Grid
-              container
-              spacing={3}
-              direction="row"
-              justify="center"
-              alignItems="flex-end"
-            >
-              <Grid item xs={6}>
-                <SelectWithDatePickers
-                  label="Date:"
-                  name={{
-                    select: 'reportType',
-                    datePicker1: 'dateFrom',
-                    datePicker2: 'dateTo',
-                  }}
-                  data={SEARCH_DATE_TYPE}
-                  defaultValues={{
-                    select: SEARCH_DATE_TYPE[1],
-                    datePicker1: new Date(),
-                    datePicker2:
-                      formData.reportType?.value === 'T'
-                        ? customAddDays(new Date(), 31)
-                        : new Date(),
-                  }}
-                  disableFutureDatesDatePicker1={
-                    formData.reportType?.value === 'B'
-                  }
-                  disableFutureDatesDatePicker2={
-                    formData.reportType?.value === 'B'
-                  }
-                  disablePastDatesDatePicker1={
-                    formData.reportType?.value === 'T'
-                  }
-                  disablePastDatesDatePicker2={
-                    formData.reportType?.value === 'T'
-                  }
-                  isSearchable
+            <Grid container spacing={3}>
+              <Grid item xs={3}>
+                <DatePicker
+                  name="dateFrom"
+                  label="Date From:"
                   useReactHookForm={false}
-                  onSelectChange={handleSelectOption}
+                  onChange={() => console.log('h')}
                 />
               </Grid>
+
               <Grid item xs={3}>
-                {/* <TextInput
-                  label="Origin:"
-                  id="origin"
-                  name="origin"
+                <DatePicker
+                  name="dateto"
+                  label="Date To:"
                   useReactHookForm={false}
-                  onChange={handleInputChange}
-                /> */}
-                <AutoSuggest
-                  id="origin"
-                  label="Origin:"
-                  isSearchBar={false}
-                  // initialValue={initialDepartureAirport}
-                  stateKey={stateKey}
-                  onSelectSuggestion={handleInputChange}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                {/* <TextInput
-                  label="Destination:"
-                  id="destination"
-                  name="destination"
-                  useReactHookForm={false}
-                  onChange={handleInputChange}
-                /> */}
-                <AutoSuggest
-                  id="destination"
-                  label="Destination:"
-                  isSearchBar={false}
-                  // initialValue={initialDepartureAirport}
-                  stateKey={stateKey}
-                  onSelectSuggestion={handleInputChange}
+                  onChange={() => console.log('h')}
                 />
               </Grid>
 
@@ -603,6 +463,35 @@ const OfficeSalesReport = () => {
               </Grid>
 
               <Grid item xs={3}>
+                <MultiSelect
+                  label="Office Channel:"
+                  id="officeChannel"
+                  name="officeChannel"
+                  options={OFFICE_CHANNEL}
+                  showBorder
+                  changeStyle
+                  width="auto"
+                  isSearchable
+                  useReactHookForm={false}
+                  onSelectChange={handleSelectOption}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="Office Type:"
+                  id="officeType"
+                  name="officeType"
+                  options={officeType}
+                  showBorder
+                  changeStyle
+                  width="auto"
+                  isSearchable
+                  useReactHookForm={false}
+                  onSelectChange={handleSelectOption}
+                />
+              </Grid>
+
+              <Grid item xs={3}>
                 <TextInput
                   label="Office ID:"
                   id="officeId"
@@ -613,10 +502,24 @@ const OfficeSalesReport = () => {
                   disabled={true}
                 />
               </Grid>
+              <Grid item xs={3}>
+                <MultiSelect
+                  label="Deposit User Name:"
+                  id="userName"
+                  name="userName"
+                  options={userNameListData}
+                  showBorder
+                  changeStyle
+                  width="auto"
+                  isSearchable
+                  useReactHookForm={false}
+                  onSelectChange={handleSelectOption}
+                />
+              </Grid>
 
               {/* </div>
-              </Grid> */}
-              <Grid item xs={3}>
+          </Grid> */}
+              <Grid item xs={12}>
                 <div className="d-flex justify-content-end pt-32">
                   <Button
                     text="CHANGE OFFICE"
@@ -631,37 +534,27 @@ const OfficeSalesReport = () => {
             </Grid>
           </form>
         </div>
-        {officeSalesReportData && (
-          <CustomTable
+        {depositReceivedReportData && (
+          <PrimaryTable
             header={
               <BookingReportsTableHeader
                 officeName={officeName}
                 officeId={officeId}
                 officeLevel={officeLevel}
                 defaultFieldOptions={fieldSelection}
-                fieldsOptions={BOOKING_REPORT_FILED_SELECTION_OPTIONS}
+                fieldsOptions={DEPOSIT_RECEIVED_REPORT_FILED_SELECTION_OPTIONS}
                 onSelectChange={handleSelectOption}
                 handleFieldReset={handleFieldReset}
               />
             }
+            headerInArrOfObjFormat
             headerData={headerData}
             subHeaderData={{
-              ...officeSalesReportData.data.data.subHeaderData,
+              ...depositReceivedReportData.data.data.subHeaderData,
             }}
-            tableBodyStyling={[
-              {},
-              {},
-              { width: '5.5%' },
-              { borderRight: `1px solid ${colors.silverChalice1}` },
-              { width: '5.5%' },
-              { borderRight: `1px solid ${colors.silverChalice1}` },
-              { width: '5.5%' },
-              { borderRight: `1px solid ${colors.silverChalice1}` },
-              { width: '5.5%' },
-            ]}
-            bodyData={officeSalesReportData.data.data}
+            bodyData={depositReceivedReportData.data.data}
             page={page}
-            count={officeSalesReportData.data.count}
+            count={depositReceivedReportData.data.count}
             size={size}
             handlePage={handlePage}
             hideKeys={hiddenKeys}
@@ -673,7 +566,7 @@ const OfficeSalesReport = () => {
         showDrawer={showChangeOffice}
         onCloseClick={setShowChangeOffice}
         width={1150}
-        className="OfficeSalesReport-CustomDrawer"
+        className="DepositReceivedReport-CustomDrawer"
         showBottomBorder={true}
       >
         <ChangeOffice onOfficeClick={handleChangeOfficeClick} />
@@ -682,4 +575,4 @@ const OfficeSalesReport = () => {
   );
 };
 
-export default OfficeSalesReport;
+export default DepositReceivedReport;

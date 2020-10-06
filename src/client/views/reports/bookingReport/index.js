@@ -577,21 +577,21 @@ const BookingReport = () => {
                     select: SEARCH_DATE_TYPE[1],
                     datePicker1: new Date(),
                     datePicker2:
-                      formData.reportType.value === 'T'
+                      formData.reportType?.value === 'T'
                         ? customAddDays(new Date(), 31)
                         : new Date(),
                   }}
                   disableFutureDatesDatePicker1={
-                    formData.reportType.value === 'B'
+                    formData.reportType?.value === 'B'
                   }
                   disableFutureDatesDatePicker2={
-                    formData.reportType.value === 'B'
+                    formData.reportType?.value === 'B'
                   }
                   disablePastDatesDatePicker1={
-                    formData.reportType.value === 'T'
+                    formData.reportType?.value === 'T'
                   }
                   disablePastDatesDatePicker2={
-                    formData.reportType.value === 'T'
+                    formData.reportType?.value === 'T'
                   }
                   isSearchable
                   useReactHookForm={false}
