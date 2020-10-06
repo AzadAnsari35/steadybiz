@@ -13,6 +13,7 @@ import './style.scss';
 const FareRules = (props) => {
   const { itinerary } = props;
   const dispatch = useDispatch();
+  console.log('hii');
   const fareRulesResponse = useSelector(
     (state) => state[endpoint.flights.fareRules.reducerName]
   );
