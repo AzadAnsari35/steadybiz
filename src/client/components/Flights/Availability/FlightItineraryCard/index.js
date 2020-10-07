@@ -530,24 +530,28 @@ const FlightItineraryCard = (props) => {
           </div>
         )}
       </div>
-      <CustomDrawer
-        title="Fare Rules"
-        showDrawer={showFareRules}
-        onCloseClick={handleFareRulesCloseClick}
-        width={calculateRem(868)}
-      >
-        <FareRules itinerary={itinerary} />
-      </CustomDrawer>
-      <CustomDrawer
-        title="Agency Information"
-        showDrawer={showAgencyInfo}
-        onCloseClick={setShowAgencyInfo}
-        width={calculateRem(450)}
-        //width={calculateRem(450+Math.floor(Math.random() * 6) + 1  )}
-        className="FlightItineraryCard-CustomDrawer-agencyInfo"
-      >
-        <AgencyInformation outboundItinerary={itinerary} />
-      </CustomDrawer>
+      {!!showFareRules && (
+        <CustomDrawer
+          title="Fare Rules"
+          showDrawer={showFareRules}
+          onCloseClick={handleFareRulesCloseClick}
+          width={calculateRem(868)}
+        >
+          <FareRules itinerary={itinerary} />
+        </CustomDrawer>
+      )}
+      {!!showAgencyInfo && (
+        <CustomDrawer
+          title="Agency Information"
+          showDrawer={showAgencyInfo}
+          onCloseClick={setShowAgencyInfo}
+          width={calculateRem(450)}
+          //width={calculateRem(450+Math.floor(Math.random() * 6) + 1  )}
+          className="FlightItineraryCard-CustomDrawer-agencyInfo"
+        >
+          <AgencyInformation outboundItinerary={itinerary} />
+        </CustomDrawer>
+      )}
     </>
   );
 };

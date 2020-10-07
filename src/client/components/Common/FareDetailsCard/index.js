@@ -97,7 +97,7 @@ const FareDetailsCard = (props) => {
           linkCallback={handleFareRulesClick}
         >
           <Tag
-            text={!!isRefundable ? 'Refundable' : 'Non Refundable'}
+            text={isRefundable ? 'Refundable' : 'Non Refundable'}
             isSuccess={!!isRefundable}
           />
           <div className="container">
@@ -238,15 +238,17 @@ const FareDetailsCard = (props) => {
           </div>
         </Card>
       </div>
-      <CustomDrawer
-        title="Fare Rules"
-        showDrawer={showFareRules}
-        // setShowDrawer={setShowFareRules}
-        onCloseClick={setShowFareRules}
-        width={calculateRem(868)}
-      >
-        <FareRules itinerary={outboundItinerary} />
-      </CustomDrawer>
+      {/* {showFareRules === true && (
+        <CustomDrawer
+          title="Fare Rules"
+          showDrawer={showFareRules}
+          // setShowDrawer={setShowFareRules}
+          onCloseClick={setShowFareRules}
+          width={calculateRem(868)}
+        >
+          <FareRules itinerary={outboundItinerary} />
+        </CustomDrawer>
+      )} */}
     </>
   );
 };

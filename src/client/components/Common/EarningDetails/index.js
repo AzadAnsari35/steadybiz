@@ -15,9 +15,10 @@ import { Card, Text } from 'Widgets';
 import './style.scss';
 
 const EarningDetails = (props) => {
-  const { outboundItinerary } = props;
+  const { outboundItinerary, isBooking } = props;
 
   const totalAmount = getTotalAmount(outboundItinerary);
+  const totalEarning = getTotalEarning(outboundItinerary);
 
   const totalfareDetails = outboundItinerary?.totalfareDetails;
 
@@ -112,7 +113,7 @@ const EarningDetails = (props) => {
                 />
                 <Text
                   className="font-primary-semibold-16"
-                  text={getFormattedPrice(getTotalEarning())}
+                  text={getFormattedPrice(totalEarning)}
                 />
               </div>
             </div>
@@ -140,10 +141,12 @@ const EarningDetails = (props) => {
           </div>
 
           <div className="d-flex justify-content-between font-primary-semibold-16">
-            <div>Net Amount to be Paid</div>
+            <div>Net Amount {!isBooking && 'to be Paid'}</div>
             <div>{getFormattedPrice(totalAmount)}</div>
           </div>
-          <div className="font-primary-italic-14">[To be Paid By Agency]</div>
+          <div className="font-primary-italic-14">
+            [{!isBooking && 'To be '}Paid By Agency]
+          </div>
         </div>
       </Card>
     </div>

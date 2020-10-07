@@ -158,10 +158,8 @@ const CreateSecurityGroup = () => {
             isToastVisible: true,
           })
         );
-        setAllSection([])
-        reset({userGroupName:""})
-
-
+        setAllSection([]);
+        reset({ userGroupName: '' });
       }
     }
   }, [createResponse]);
@@ -188,8 +186,8 @@ const CreateSecurityGroup = () => {
   const getCheckboxData = (data, handleChange, name, stateVariable) => {
     const checkboxData = data.map((cur) => {
       return {
-        label: cur.label,
-        access: (
+        label: cur.noHeader ? cur.label : `<b>${cur.label}</b>`,
+        access: cur.noHeader ? (
           <CustomCheckbox
             noLabel={true}
             value={cur.value}
@@ -199,6 +197,8 @@ const CreateSecurityGroup = () => {
             name={name}
             checkedValues={stateVariable}
           />
+        ) : (
+          ''
         ),
       };
     });
