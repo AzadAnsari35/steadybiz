@@ -542,7 +542,7 @@ const SearchInvoice = () => {
 
               {/* </div>
           </Grid> */}
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <div className="d-flex justify-content-end pt-32">
                   <Button
                     text="CHANGE OFFICE"

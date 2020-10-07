@@ -11,5 +11,9 @@ $root: '.ViewInvoice';
     .PrimaryTable > div:nth-child(2) {
       border-top: none;
     }
+
+    .PrimaryTable-footer {
+      justify-content: flex-start;
+    }
   }
 }

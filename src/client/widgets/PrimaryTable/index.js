@@ -28,6 +28,8 @@ const PrimaryTable = (props) => {
     tableStyling,
     headerInArrOfObjFormat = false,
     showPagination = true,
+    footerData,
+    subFooterData,
   } = props;
 
   const [lowOffset, setLowOffset] = React.useState(1);
@@ -245,10 +247,39 @@ const PrimaryTable = (props) => {
                     ))}
                   {children}
                 </TableBody>
+                <TableHead>
+                  <TableRow className="PrimaryTable-subFooterData">
+                    {subFooterData &&
+                      Object.keys(subFooterData).map(
+                        (key, index) =>
+                          showEntries(key) && (
+                            <TableCell
+                              key={`head-${index}`}
+                              className="PrimaryTable-head-cell "
+                              style={
+                                index === imageIndex
+                                  ? { paddingLeft: 72 }
+                                  : applyStyle(index)
+                              }
+                              align={
+                                !!headerData.find((item) => item.id === key) &&
+                                !!headerData.find((item) => item.id === key)
+                                  .alignment
+                                  ? headerData.find((item) => item.id === key)
+                                      .alignment
+                                  : 'center'
+                              }
+                            >
+                              {subFooterData[key]}
+                            </TableCell>
+                          )
+                      )}
+                  </TableRow>
+                </TableHead>
               </Table>
             </TableContainer>
             <div className="PrimaryTable-footer">
-              {
+              {showPagination && (
                 <div className="PrimaryTable-footer-records">
                   Showing{' '}
                   <span>
@@ -256,7 +287,7 @@ const PrimaryTable = (props) => {
                   </span>
                   of {count} Records
                 </div>
-              }
+              )}
 
               <div>
                 {count > size && showPagination ? (
@@ -270,6 +301,7 @@ const PrimaryTable = (props) => {
                   />
                 ) : null}
               </div>
+              {footerData && footerData}
             </div>
           </div>
         ) : (

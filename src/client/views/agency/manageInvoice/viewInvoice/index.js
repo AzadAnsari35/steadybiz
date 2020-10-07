@@ -11,14 +11,14 @@ import routes from 'Constants/routes';
 import './style.scss';
 
 const headerData = [
-  { id: 'date', value: 'DATE', alignment: 'center' },
+  { id: 'dateAndTime', value: 'DATE & TIME', alignment: 'center' },
   { id: 'officeId', value: 'OFFICE ID', alignment: 'center' },
   { id: 'txnType', value: 'TXN TYPE', alignment: 'left' },
   { id: 'ordersNumber', value: 'ORDERS NO.', alignment: 'center' },
   { id: 'currency', value: 'CURRENCY', alignment: 'center' },
   { id: 'totalAmount', value: 'TOTAL AMT.', alignment: 'right' },
   { id: 'totalCommission', value: 'TOTAL COMN.', alignment: 'right' },
-  { id: 'vatAmount', value: 'VAT/GST AMT.', alignment: 'right' },
+  { id: 'vatAmount', value: 'VAT / GST AMT.', alignment: 'right' },
   { id: 'payMode', value: 'PAY MODE', alignment: 'left' },
   { id: 'netAmtPaid', value: 'NET AMT PAID', alignment: 'right' },
 ];
@@ -56,11 +56,18 @@ const ViewInvoice = () => {
             header={<InvoiceTableHeader />}
             headerInArrOfObjFormat
             headerData={headerData}
-            subHeaderData={{
-              ...viewInvoiceData.data.data.subHeaderData,
+            subFooterData={{
+              ...viewInvoiceData.data.data.subFooterData,
             }}
             bodyData={viewInvoiceData.data.data}
             count={viewInvoiceData.data.count}
+            showPagination={false}
+            footerData={
+              <div className="font-primary-italic-16">
+                <b>Note:</b> This is a computer generated invoice, hence no
+                signature required.
+              </div>
+            }
           />
         )}
       </div>
