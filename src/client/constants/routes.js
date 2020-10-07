@@ -46,6 +46,8 @@ const routes = {
     modifyAgencyGroup: '/Agency/Update-Agency-Group',
     viewAgencyGroup: '/Agency/View-Agency-Group',
     agencyGroupHistory: '/Agency/Agency-Group-History',
+    searchInvoice: '/Agency/Search-Invoice',
+    viewInvoice: '/Agency/View-Invoice',
   },
 
   office: {
@@ -92,6 +94,8 @@ const routes = {
     bookingReport: '/Reports/Booking-Report',
     totalSalesReport: '/Reports/Total-Sales-Report',
     officeSalesReport: '/Reports/Office-Sales-Report',
+    depositReceivedReport: '/Reports/Deposit-Received-Report',
+    depositGivenReport: '/Reports/Deposit-Given-Report',
   },
 };
 

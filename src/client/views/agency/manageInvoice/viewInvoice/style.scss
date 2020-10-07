@@ -1,0 +1,15 @@
+@import '../../../../styles/variables';
+$root: '.ViewInvoice';
+
+#{$root} {
+  &-head {
+    padding: 36px 100px;
+    background-color: $white;
+  }
+
+  &-table {
+    .PrimaryTable > div:nth-child(2) {
+      border-top: none;
+    }
+  }
+}

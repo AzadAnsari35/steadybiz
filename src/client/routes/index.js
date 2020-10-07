@@ -31,6 +31,7 @@ import PublicRoute from './publicRoute';
 import routes from 'Constants/routes';
 import { LinearLoaderSecondary } from 'Widgets/';
 //const LoadingComponent = () => <h3>please wait...</h3>;
+
 const AsyncAgencySearchDeals = loadable({
   loader: () => import('Views/agency/manageDeals/searchDeals'),
   loading: LinearLoaderSecondary,
@@ -78,6 +79,26 @@ const AsyncSearchRegion = loadable({
 
 const AsyncCreateRegion = loadable({
   loader: () => import('Views/config/manageRegion/createRegion'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncDepositReceivedReport = loadable({
+  loader: () => import('Views/reports/depositReceivedReport'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncDepositGivenReport = loadable({
+  loader: () => import('Views/reports/depositGivenReport'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncSearchInvoice = loadable({
+  loader: () => import('Views/agency/manageInvoice/searchInvoice'),
+  loading: LinearLoaderSecondary,
+});
+
+const AsyncViewInvoice = loadable({
+  loader: () => import('Views/agency/manageInvoice/viewInvoice'),
   loading: LinearLoaderSecondary,
 });
 
@@ -474,6 +495,30 @@ const Routes = () => (
       exact
       path={routes.reports.officeSalesReport}
       component={AsyncOfficeSalesReport}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.reports.depositReceivedReport}
+      component={AsyncDepositReceivedReport}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.reports.depositGivenReport}
+      component={AsyncDepositGivenReport}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.searchInvoice}
+      component={AsyncSearchInvoice}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.viewInvoice}
+      component={AsyncViewInvoice}
     />
   </Switch>
 );

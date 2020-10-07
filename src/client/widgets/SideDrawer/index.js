@@ -100,6 +100,11 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
           text: 'Agency Deals',
           link: routes.agency.searchDeals,
         },
+
+        {
+          text: 'Manage Invoice',
+          link: routes.agency.searchInvoice,
+        },
         // {
         //   text: 'Markup & Discount',
         //   link: '#',
@@ -172,6 +177,14 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Office Sales Report',
           link: routes.reports.officeSalesReport,
+        },
+        {
+          text: 'Deposit Received Report',
+          link: routes.reports.depositReceivedReport,
+        },
+        {
+          text: 'Deposit Given Report',
+          link: routes.reports.depositGivenReport,
         },
       ],
     },

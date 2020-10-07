@@ -1,0 +1,27 @@
+{
+  "data": {
+    "count": 1,
+    "data": {
+      "subHeaderData": {
+        "dateAndTime": "Total",
+        "clBeforeDeposit": "10,300.00",
+        "depositType": "",
+        "paymentMode": "",
+        "currency": "AED",
+        "depositAmt": "10,300.00",
+        "clAfterDeposit": "10,300.00"
+      },
+      "data": [
+        {
+          "dateAndTime": "09-Aug-2020, 23:00 Hrs",
+          "clBeforeDeposit": "10,300.00",
+          "depositType": "Manual",
+          "paymentMode": "Cheque",
+          "currency": "AED",
+          "depositAmt": "10,300.00",
+          "clAfterDeposit": "10,300.00"
+        }
+      ]
+    }
+  }
+}

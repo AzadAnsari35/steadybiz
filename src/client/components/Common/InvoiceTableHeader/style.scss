@@ -1,0 +1,28 @@
+@import '../../../styles/variables';
+$root: '.InvoiceTableHeader';
+
+#{$root} {
+  padding: 32px;
+  border: 1px solid #00000038;
+
+  &-left {
+    &__company {
+      padding-bottom: 70px;
+      &__logo {
+        padding: 6px;
+        background-color: $gulfBlue;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        margin-right: 20px;
+      }
+    }
+  }
+
+  &-right {
+    &__details {
+      padding-top: 10px;
+    }
+  }
+}
