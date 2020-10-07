@@ -80,6 +80,8 @@ const CreateSecurityGroup = () => {
   const funtionalGroupsList = useSelector(
     (state) => state.funtionalGroups?.items?.data
   );
+
+  console.log('funtionalGroupsList', funtionalGroupsList?.data);
   const securityGroupNameList = useSelector(
     (state) => state.securityGroupNameList?.items?.data
   );
@@ -183,46 +185,114 @@ const CreateSecurityGroup = () => {
   // };
   // useEffect(() => splitDataIntoState(), []);
 
-  const getCheckboxData = (data, handleChange, name, stateVariable) => {
-    const checkboxData = data.map((cur) => {
-      return {
-        label: cur.noHeader ? cur.label : `<b>${cur.label}</b>`,
-        access: cur.noHeader ? (
+  const getSelectedSectionValue = (data, key) => {
+    let selectedData = [];
+
+    if (data) {
+      const keys = Object.keys(data);
+
+      keys.map(
+        (k) => utils.stringComparison(k, key) && (selectedData = data[k])
+      );
+    }
+    selectedData = selectedData.map((c) => c.value);
+    return selectedData;
+  };
+
+  const handleAll = (key) => {
+    let data = funtionalGroupsList?.data;
+    let selectedData = getSelectedSectionValue(data, key);
+
+    console.log('selectedData', selectedData);
+
+    setAllSection([...allSection, ...selectedData]);
+  };
+
+  const isAllSelected = (name) => {};
+
+  const getCheckboxData = (data, handleChange, name) => {
+    let checkboxData = [
+      {
+        label: 'All',
+        access: (
           <CustomCheckbox
             noLabel={true}
-            value={cur.value}
+            // value={value}
             disabled={isViewSecurityGroup}
-            onChange={handleChange}
+            onChange={() => handleAll(name)}
             useReactHookForm={false}
             name={name}
-            checkedValues={stateVariable}
+            // checkedValues={() => isAllSelected(name)}
           />
-        ) : (
-          ''
         ),
-      };
-    });
+      },
+    ];
+    checkboxData = [
+      ...checkboxData,
+      ...data.map((cur) => {
+        return {
+          label: cur.label,
+          access: (
+            <CustomCheckbox
+              noLabel={true}
+              value={cur.value}
+              disabled={isViewSecurityGroup}
+              onChange={handleChange}
+              useReactHookForm={false}
+              name={name}
+              checkedValues={allSection}
+            />
+          ),
+        };
+      }),
+    ];
     return checkboxData;
   };
 
+  const getSectionData = (sectionName) => {
+    let sectionData;
+    let allData = funtionalGroupsList?.data;
+    if (allData) {
+      const keys = Object.keys(allData);
+
+      keys.map(
+        (key) =>
+          utils.stringComparison(key, sectionName) &&
+          (sectionData = allData[key])
+      );
+    }
+
+    return sectionData;
+  };
+
   const mainData = [
+    // {
+    //   title: 'All Sections',
+    //   data: funtionalGroupsList?.data
+    //     ? getCheckboxData(
+    //         funtionalGroupsList.data,
+    //         setAllSection,
+    //         'allSection',
+    //         allSection
+    //       )
+    //     : [],
+    //   className: 'mb-32',
+    // },
     {
-      title: 'All Sections',
-      data: funtionalGroupsList?.data
-        ? getCheckboxData(
-            funtionalGroupsList.data,
-            setAllSection,
-            'allSection',
-            allSection
-          )
+      title: 'FLIGHT',
+      data: getSectionData('flight')
+        ? getCheckboxData(getSectionData('flight'), setAllSection, 'flight')
         : [],
       className: 'mb-32',
     },
-    // {
-    //   title: 'FLIGHT',
-    //   data: flightData,
-    //   className: 'mb-32',
-    // },
+
+    {
+      title: 'OFFICE',
+      data: getSectionData('office')
+        ? getCheckboxData(getSectionData('office'), setAllSection, 'office')
+        : [],
+      className: 'mb-32',
+    },
     // {
     //   title: 'AGENCY',
     //   data: agencyData,
@@ -363,7 +433,10 @@ const CreateSecurityGroup = () => {
                 headerData={['FUNCTIONALITY', 'ENABLE [ACCESS RIGHTS]']}
                 bodyData={curData.data}
                 columnAlignments={['left', 'center']}
-                tableStyling={[{ paddingLeft: 30, width: '83%' }]}
+                tableStyling={[
+                  { paddingLeft: 30, width: '83%' },
+                  { display: 'flex', justifyContent: 'center' },
+                ]}
               />
             </SecondaryAccordion>
           ))}
