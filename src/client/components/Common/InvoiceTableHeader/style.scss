@@ -4,6 +4,7 @@ $root: '.InvoiceTableHeader';
 #{$root} {
   padding: 32px;
   border: 1px solid #00000038;
+  border-bottom: 2px solid $biscay;
 
   &-left {
     &__company {

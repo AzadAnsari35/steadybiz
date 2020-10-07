@@ -10,7 +10,9 @@ const useCheckboxData = (initialValue = []) => {
     if (!data.includes(value)) {
       Array.isArray(value) ? (data = [...value]) : data.push(value);
     } else {
-      data = data.filter((item) => item !== value);
+      data = Array.isArray(value)
+        ? data.filter((item, i) => value.indexOf(item) > -1)
+        : data.filter((item) => item !== value);
     }
     setCheckboxData(data);
   });

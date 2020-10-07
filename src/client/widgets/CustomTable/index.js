@@ -115,8 +115,9 @@ const CustomTable = (props) => {
                             <div
                               className={`d-flex justify-content-between CustomTable-nestedHead-cell__subHead 
                                  ${
-                                   arr[index + 1] &&
-                                   showEntries(arr[index + 1]?.id)
+                                   arr[index + 1]?.hasOwnProperty(
+                                     'subHeaderList'
+                                   )
                                      ? ' border-right-gray-thin'
                                      : ''
                                  }`}

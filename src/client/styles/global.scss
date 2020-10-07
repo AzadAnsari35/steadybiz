@@ -413,6 +413,12 @@ p {
   line-height: calculateRem(18px);
 }
 
+.font-primary-italic-16 {
+  @extend .font-primary-italic;
+  font-size: calculateRem(16px);
+  line-height: calculateRem(20px);
+}
+
 // Borders
 .border-dark-gray-thin {
   border: 1px solid $doveGray;

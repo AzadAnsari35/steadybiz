@@ -45,6 +45,12 @@ $root: '.PrimaryTable';
     }
   }
 
+  &-subFooterData {
+    border: 2px solid $biscay;
+    border-left: none;
+    border-right: none;
+  }
+
   &-footer {
     display: flex;
     padding: 24px;

@@ -40,7 +40,7 @@ const InvoiceTableHeader = () => {
               Email: info@axistours.in
             </div>
             <div className="font-primary-regular-14">
-              Contact No..: +971 4 294 0099
+              Contact No.: +971 4 294 0099
             </div>
             <div className="font-primary-semibold-14">
               GSTIN: 4512313121212487
@@ -63,7 +63,7 @@ const InvoiceTableHeader = () => {
               Email: info@axistours.in
             </div>
             <div className="font-primary-regular-14">
-              Contact No..: +971 4 294 0099
+              Contact No.: +971 4 294 0099
             </div>
             <div className="font-primary-semibold-14">
               GSTIN: 4512313121212487
