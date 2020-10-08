@@ -1,6 +1,17 @@
 import config from 'Config/';
 import endpointWithoutApi from 'Config/endpointWithoutApi';
 import { commonActionWithoutApi } from 'Actions/';
+export const returnUserType = (userData) => {
+  //const userData = JSON.parse(getItemFromStorage('userData'));
+  //console.log(userData);
+  const officeChannel = userData.userDto.officeDto.officeChannel;
+  const officeType = userData.userDto.officeDto.officeType;
+  const isAgency = officeChannel == 'AG' && officeType == 'O';
+  const isSubAgency = officeChannel == 'SA' && officeType == 'O';
+  const isAgencyBranch = officeChannel == 'AG' && officeType == 'B';
+  const isSubAgencyBranch = officeChannel == 'SA' && officeType == 'B';
+  return { isAgency, isAgencyBranch, isSubAgency, isSubAgencyBranch };
+};
 export const checkSecurityGroup = (securityGroupObj) => {
   const isSecurityGroup = config.client.securityGroup;
   //alert(!userData.masterUser);
@@ -144,6 +155,6 @@ export const customSubtractDays = (date, days) => {
   return result;
 };
 
-export const calculateRem = size => {
-  return `${size / 16 * 1}rem`;
+export const calculateRem = (size) => {
+  return `${(size / 16) * 1}rem`;
 };

@@ -11,9 +11,9 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import { commonActionUpdate } from 'Actions/';
 import endpoint from 'Config/endpoint.js';
 import routes from 'Constants/routes';
-import { setItemToStorage } from 'Helpers/utils';
+import { setItemToStorage, returnUserType } from 'Helpers/utils';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { ConstructIcon } from 'Widgets';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -34,7 +34,15 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
   const [showReport, setShowReport] = React.useState(false);
   const [showConfig, setShowConfig] = React.useState(false);
   const [showSetting, setShowSetting] = React.useState(false);
-
+  const usersSignIn = useSelector(
+    (state) => state[endpoint.user.login.reducerName]?.items?.data
+  );
+  const {
+    isAgency,
+    isAgencyBranch,
+    isSubAgency,
+    isSubAgencyBranch,
+  } = returnUserType(usersSignIn);
   const drawerData = [
     {
       text: 'Dashboard',
@@ -50,6 +58,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
       subList: [
         {
           text: 'Flight Search',
+          isHide: false,
           link: routes.flight.search,
           clickFunc: () => {
             dispatch(
@@ -64,6 +73,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Search Order',
           link: routes.transaction.searchOrder,
+          isHide: false,
           clickFunc: () => {
             dispatch(commonActionUpdate(endpoint.orders.searchOrders, null));
           },
@@ -79,10 +89,12 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Registration',
           link: routes.agency.registration,
+          isHide: isAgencyBranch || isSubAgencyBranch,
         },
         {
           text: 'Manage Agency',
           link: routes.agency.searchAgency,
+          isHide: isAgencyBranch || isSubAgencyBranch,
           clickFunc: () => {
             dispatch(commonActionUpdate(endpoint.agency.searchAgency, null));
           },
@@ -90,6 +102,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Agency Group',
           link: routes.agency.searchAgencyGroup,
+          isHide: isAgency || isAgencyBranch || isSubAgencyBranch,
         },
 
         // {
@@ -99,11 +112,13 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Agency Deals',
           link: routes.agency.searchDeals,
+          isHide: isAgencyBranch || isSubAgencyBranch,
         },
 
         {
           text: 'Manage Invoice',
           link: routes.agency.searchInvoice,
+          isHide: isAgencyBranch || isSubAgencyBranch,
         },
         // {
         //   text: 'Markup & Discount',
@@ -133,6 +148,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Manage Office',
           link: routes.office.searchOffice,
+          isHide: false,
           clickFunc: () => {
             dispatch(commonActionUpdate(endpoint.office.searchOffice, null));
           },
@@ -140,6 +156,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Manage User',
           link: routes.office.searchOfficeUser,
+          isHide: false,
           clickFunc: () => {
             setItemToStorage('selectedOffice', '');
             setItemToStorage('selectedAgency', '');
@@ -151,6 +168,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Security Group',
           link: routes.office.searchSecurityGroup,
+          isHide: false,
           clickFunc: () => {
             dispatch(
               commonActionUpdate(endpoint.office.searchSecurityGroup, null)
@@ -169,22 +187,27 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Booking Report',
           link: routes.reports.bookingReport,
+          isHide: false,
         },
         {
           text: 'Sales Report',
           link: routes.reports.totalSalesReport,
+          isHide: false,
         },
         {
           text: 'Office Sales Report',
           link: routes.reports.officeSalesReport,
+          isHide: false,
         },
         {
           text: 'Deposit Received Report',
           link: routes.reports.depositReceivedReport,
+          isHide: isAgencyBranch || isSubAgencyBranch,
         },
         {
           text: 'Deposit Given Report',
           link: routes.reports.depositGivenReport,
+          isHide: isAgencyBranch || isSubAgencyBranch,
         },
       ],
     },
@@ -198,14 +221,17 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Manage Deals',
           link: routes.master.searchDeals,
+          isHide: isAgencyBranch || isSubAgency || isSubAgencyBranch,
         },
         {
           text: 'Manage Region',
           link: routes.master.searchRegion,
+          isHide: isAgencyBranch || isSubAgency || isSubAgencyBranch,
         },
         {
           text: 'Manage Multi PCC',
           link: routes.master.searchMultiPcc,
+          isHide: isAgencyBranch || isSubAgency || isSubAgencyBranch,
         },
       ],
       link: '#',
@@ -257,19 +283,21 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
                   key={subrowIndex}
                   onClick={() => setShowDrawer(false)}
                 >
-                  <Link
-                    to={subrow.link}
-                    className={`SideDrawer-toggleList font-primary-semibold-16 py-12  ${
-                      isSelected(subrow.link)
-                        ? `SideDrawer-toggleList-selected`
-                        : ''
-                    }`}
-                    {...(subrow.clickFunc && {
-                      onClick: subrow.clickFunc,
-                    })}
-                  >
-                    {subrow.text}
-                  </Link>
+                  {!subrow.isHide && (
+                    <Link
+                      to={subrow.link}
+                      className={`SideDrawer-toggleList font-primary-semibold-16 py-12  ${
+                        isSelected(subrow.link)
+                          ? `SideDrawer-toggleList-selected`
+                          : ''
+                      }`}
+                      {...(subrow.clickFunc && {
+                        onClick: subrow.clickFunc,
+                      })}
+                    >
+                      {subrow.text}
+                    </Link>
+                  )}
                 </Collapse>
               ))}
           </div>
