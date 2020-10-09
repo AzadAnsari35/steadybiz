@@ -423,32 +423,34 @@ const DepositGivenReport = () => {
             </Grid>
           </form>
         </div>
-        {DepositGivenReportData && (
-          <PrimaryTable
-            header={
-              <BookingReportsTableHeader
-                officeName={officeName}
-                officeId={officeId}
-                officeLevel={officeLevel}
-                defaultFieldOptions={fieldSelection}
-                fieldsOptions={DEPOSIT_GIVEN_REPORT_FILED_SELECTION_OPTIONS}
-                onSelectChange={handleSelectOption}
-                handleFieldReset={handleFieldReset}
-              />
-            }
-            headerInArrOfObjFormat
-            headerData={headerData}
-            subHeaderData={{
-              ...DepositGivenReportData.data.data.subHeaderData,
-            }}
-            bodyData={DepositGivenReportData.data.data}
-            page={page}
-            count={DepositGivenReportData.data.count}
-            size={size}
-            handlePage={handlePage}
-            hideKeys={hiddenKeys}
-          />
-        )}
+        <div className="DepositGivenReport-table">
+          {DepositGivenReportData && (
+            <PrimaryTable
+              header={
+                <BookingReportsTableHeader
+                  officeName={officeName}
+                  officeId={officeId}
+                  officeLevel={officeLevel}
+                  defaultFieldOptions={fieldSelection}
+                  fieldsOptions={DEPOSIT_GIVEN_REPORT_FILED_SELECTION_OPTIONS}
+                  onSelectChange={handleSelectOption}
+                  handleFieldReset={handleFieldReset}
+                />
+              }
+              headerInArrOfObjFormat
+              headerData={headerData}
+              subHeaderData={{
+                ...DepositGivenReportData.data.data.subHeaderData,
+              }}
+              bodyData={DepositGivenReportData.data.data}
+              page={page}
+              count={DepositGivenReportData.data.count}
+              size={size}
+              handlePage={handlePage}
+              hideKeys={hiddenKeys}
+            />
+          )}
+        </div>
       </div>
       <CustomDrawer
         title="CHANGE OFFICE"

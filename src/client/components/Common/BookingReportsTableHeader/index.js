@@ -1,6 +1,6 @@
 import React from 'react';
 import CachedIcon from '@material-ui/icons/Cached';
-
+import { utils } from 'Helpers';
 import { MultiSelect, IconWithBackground } from 'Widgets/';
 
 import './style.scss';
@@ -26,6 +26,11 @@ const BookingReportsTableHeader = (props) => {
           </span>
         </div>
         <div className="BookingReportsTableHeader-officeDetail__right font-primary-semibold-16 d-flex align-items-center">
+          <div className="d-flex align-items-center justify-content-center">
+            <div className="font-primary-semibold-16 pr-20">Export:</div>
+            <img src={utils.displayImage('excel.svg')} className="pr-12" />
+            <img src={utils.displayImage('adobe.svg')} className="pr-20" />
+          </div>
           <div className="pr-10">
             <MultiSelect
               id="fieldSelection"

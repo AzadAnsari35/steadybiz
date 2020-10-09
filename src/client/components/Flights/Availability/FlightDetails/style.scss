@@ -1,7 +1,7 @@
-@import "./../../../../styles/variables";
-@import "./../../../../styles/functions";
+@import './../../../../styles/variables';
+@import './../../../../styles/functions';
 
-$root: ".FlightDetails";
+$root: '.FlightDetails';
 
 #{$root} {
   padding-top: 32px;
@@ -10,6 +10,9 @@ $root: ".FlightDetails";
   .FlightSegment {
     height: 100%;
     &-segment {
+      .CustomCheckbox {
+        margin-bottom: 0px;
+      }
       margin-left: calculateRem(144px);
       margin-bottom: 24px;
     }
@@ -19,9 +22,9 @@ $root: ".FlightDetails";
       &__date {
         display: flex;
         margin-left: calculateRem(144px);
-        &:first-of-type {
-          margin-bottom: 24px;
-        }
+        // &:first-of-type {
+        //   margin-bottom: 24px;
+        // }
         &:last-of-type {
           margin-top: 24px;
         }

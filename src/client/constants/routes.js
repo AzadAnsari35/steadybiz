@@ -86,6 +86,7 @@ const routes = {
     updateOrder: '/Transaction/Update-Order',
     issueTicket: '/Transaction/Issue-Ticket',
     viewBooking: '/Transaction/View-Booking',
+    cancelBooking: '/Transaction/Cancel-Booking',
     viewPNR: '/Transaction/View-PNR',
     cancelPNR: '/Transaction/Cancel-PNR',
     bookingReport: '/Transaction/Booking-Report',
