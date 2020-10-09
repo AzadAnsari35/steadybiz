@@ -1,26 +1,32 @@
-import React, { Fragment } from "react";
-import { useSelector } from "react-redux";
-import Grid from "@material-ui/core/Grid";
-import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import React, { Fragment } from 'react';
+import { useSelector } from 'react-redux';
+import Grid from '@material-ui/core/Grid';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import FlightIcon from '@material-ui/icons/Flight';
-import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
+import WorkOutlineIcon from '@material-ui/icons/WorkOutline';
 
-import colors from "Constants/colors";
-import { displayImage } from "Helpers/utils";
-import { changeDateFormat, convertIntoTime, extractTime, getDataFromRedux, convertDurationIntoHourAndMinutes } from "Helpers/global";
-import { getCabinClassName, getAirlineName } from "Helpers/flight.helpers";
-import endpoint from "Config/endpoint";
+import colors from 'Constants/colors';
+import { displayImage } from 'Helpers/utils';
+import {
+  changeDateFormat,
+  convertIntoTime,
+  extractTime,
+  getDataFromRedux,
+  convertDurationIntoHourAndMinutes,
+} from 'Helpers/global';
+import { getCabinClassName, getAirlineName } from 'Helpers/flight.helpers';
+import endpoint from 'Config/endpoint';
 
-import Chip from "Widgets/Chip/index";
-import DashedLine from "Widgets/DashedLine/index";
-import Dot from "Widgets/Dot/index";
-import Line from "Widgets/Line/index";
-import Text from "Widgets/Text/index";
-import { Image } from "Widgets";
+import Chip from 'Widgets/Chip/index';
+import DashedLine from 'Widgets/DashedLine/index';
+import Dot from 'Widgets/Dot/index';
+import Line from 'Widgets/Line/index';
+import Text from 'Widgets/Text/index';
+import { Image, CustomCheckbox } from 'Widgets';
 
-import "./style.scss";
+import './style.scss';
 
-const FlightLayover = (layoverDuration) => {  
+const FlightLayover = (layoverDuration) => {
   return (
     <div className="FlightLayover d-flex">
       <div className="d-flex flex-direction-column align-items-center">
@@ -29,13 +35,18 @@ const FlightLayover = (layoverDuration) => {
       <Chip
         isBordered
         style={{
-          margin: "40px 0",
+          margin: '40px 0',
         }}
       >
-        <Text className="font-primary-medium-14" text={`Layover time : ${convertIntoTime(layoverDuration.layoverDuration)}`} />
+        <Text
+          className="font-primary-medium-14"
+          text={`Layover time : ${convertIntoTime(
+            layoverDuration.layoverDuration
+          )}`}
+        />
       </Chip>
     </div>
-  )
+  );
 };
 
 const AirlineText = (props) => {
@@ -45,8 +56,8 @@ const AirlineText = (props) => {
     <Text
       className="airline-text font-primary-regular-16"
       style={{
-        borderRight: !!showBorder ? `1px solid ${colors.gray}` : "none",
-        paddingLeft: !!leftPadding ? "8px" : "0",
+        borderRight: !!showBorder ? `1px solid ${colors.gray}` : 'none',
+        paddingLeft: !!leftPadding ? '8px' : '0',
         minHeight: minHeight,
       }}
       text={text}
@@ -79,14 +90,16 @@ const FlightSegmentGroup = (props) => {
         </div>
         <div className="d-flex flex-direction-column align-items-center">
           <AccessTimeIcon
-            style={{ color: colors.black5, width: "16px", height: "16px" }}
+            style={{ color: colors.black5, width: '16px', height: '16px' }}
           />
           <Text
             className="font-primary-regular-16"
-            style={{ opacity: "0.5" }}
-            text={convertDurationIntoHourAndMinutes(extractTime(
-              segmentGroupArray[index].arrivalDetails.flightDuration
-            ))}
+            style={{ opacity: '0.5' }}
+            text={convertDurationIntoHourAndMinutes(
+              extractTime(
+                segmentGroupArray[index].arrivalDetails.flightDuration
+              )
+            )}
           />
         </div>
         <div>
@@ -106,7 +119,13 @@ const FlightSegmentGroup = (props) => {
             <Dot big />
           </div>
         ) : (
-          <FlightIcon style={{ height: "20px", width: "20px", transform: "rotate(180deg)" }} />
+          <FlightIcon
+            style={{
+              height: '20px',
+              width: '20px',
+              transform: 'rotate(180deg)',
+            }}
+          />
         )}
         <Line vertical adjustTop={index > 0} />
         {!!segmentGroupArray && segmentGroupArray.length - 1 === index ? (
@@ -127,7 +146,7 @@ const FlightSegmentGroup = (props) => {
               text={
                 segmentGroupArray[index].departureDetails.terminal
                   ? `Terminal ${segmentGroupArray[index].departureDetails.terminal}`
-                  : "Terminal"
+                  : 'Terminal'
               }
             />
             {segmentGroupArray && index !== 0 && (
@@ -152,7 +171,13 @@ const FlightSegmentGroup = (props) => {
             />
             <AirlineText
               showBorder
-              text={!!masterAirlines && getAirlineName(masterAirlines, segmentGroupArray[index].airlineDetails.marketingAirline)}
+              text={
+                !!masterAirlines &&
+                getAirlineName(
+                  masterAirlines,
+                  segmentGroupArray[index].airlineDetails.marketingAirline
+                )
+              }
             />
             <AirlineText
               leftPadding
@@ -179,12 +204,13 @@ const FlightSegmentGroup = (props) => {
           </div>
           <div>
             <AirlineText
-              text={
-                `Operated by ${
-                  !!masterAirlines &&
-                  getAirlineName(masterAirlines, segmentGroupArray[index].airlineDetails.operatingAirline)
-                }`
-              }
+              text={`Operated by ${
+                !!masterAirlines &&
+                getAirlineName(
+                  masterAirlines,
+                  segmentGroupArray[index].airlineDetails.operatingAirline
+                )
+              }`}
             />
           </div>
         </div>
@@ -193,61 +219,67 @@ const FlightSegmentGroup = (props) => {
             minHeight: `calc(102px +  ${
               segmentGroupArray[index].airlineDetails.marketingAirline !==
               segmentGroupArray[index].airlineDetails.operatingAirline
-                ? "0px"
-                : "25px"
+                ? '0px'
+                : '25px'
             })`,
-            display: "flex",
-            alignItems: "center",
+            display: 'flex',
+            alignItems: 'center',
           }}
         >
           <div className="FlightSegmentGroup-right__baggageDetails">
-            {!!segmentGroupArray[0].baggageInformation && !!segmentGroupArray[0].baggageInformation.checkInBaggage &&
-            <div className="checkin d-flex align-items-center">
-              <Text
-                className="font-primary-regular-14 mr-10"
-                style={{
-                  opacity: "0.5",
-                  minWidth: "80px",
-                }}
-                text="Check In"
-              />
-              <img
-                alt="checkin baggage"
-                src={displayImage("checkin-baggage-black.svg")}
-                width={24}
-                height={24}
-                className="mr-10"
-              />
-              <AirlineText
-                className="font-primary-regular-14"
-                text={
-                  segmentGroupArray[0].baggageInformation.checkInBaggage
-                    .noOfPieces
-                    ? `${segmentGroupArray[0].baggageInformation.checkInBaggage.noOfPieces} Pieces / Person`
-                    : `${segmentGroupArray[0].baggageInformation.checkInBaggage.weight} kg / Person`
-                }
-              />
-            </div>
-            }
-            {!!segmentGroupArray[0].baggageInformation && !!segmentGroupArray[0].baggageInformation.cabinBaggage.weight &&
-              <div className="cabin d-flex align-items-center">
-                <Text
-                  className="font-primary-regular-14 mr-10"
-                  style={{
-                    opacity: "0.5",
-                    minWidth: "80px",
-                  }}
-                  text="Cabin"
-                />
-                <WorkOutlineIcon
-                  style={{ width: "24px", height: "24px", marginRight: "10px" }}
-                />
-                <Text
-                  className="font-primary-regular-14"
-                  text={`${segmentGroupArray[0].baggageInformation.cabinBaggage.weight} kg / Person`}
-                />
-              </div>
-            }
+            {!!segmentGroupArray[0].baggageInformation &&
+              !!segmentGroupArray[0].baggageInformation.checkInBaggage && (
+                <div className="checkin d-flex align-items-center">
+                  <Text
+                    className="font-primary-regular-14 mr-10"
+                    style={{
+                      opacity: '0.5',
+                      minWidth: '80px',
+                    }}
+                    text="Check In"
+                  />
+                  <img
+                    alt="checkin baggage"
+                    src={displayImage('checkin-baggage-black.svg')}
+                    width={24}
+                    height={24}
+                    className="mr-10"
+                  />
+                  <AirlineText
+                    className="font-primary-regular-14"
+                    text={
+                      segmentGroupArray[0].baggageInformation.checkInBaggage
+                        .noOfPieces
+                        ? `${segmentGroupArray[0].baggageInformation.checkInBaggage.noOfPieces} Pieces / Person`
+                        : `${segmentGroupArray[0].baggageInformation.checkInBaggage.weight} kg / Person`
+                    }
+                  />
+                </div>
+              )}
+            {!!segmentGroupArray[0].baggageInformation &&
+              !!segmentGroupArray[0].baggageInformation.cabinBaggage.weight && (
+                <div className="cabin d-flex align-items-center">
+                  <Text
+                    className="font-primary-regular-14 mr-10"
+                    style={{
+                      opacity: '0.5',
+                      minWidth: '80px',
+                    }}
+                    text="Cabin"
+                  />
+                  <WorkOutlineIcon
+                    style={{
+                      width: '24px',
+                      height: '24px',
+                      marginRight: '10px',
+                    }}
+                  />
+                  <Text
+                    className="font-primary-regular-14"
+                    text={`${segmentGroupArray[0].baggageInformation.cabinBaggage.weight} kg / Person`}
+                  />
+                </div>
+              )}
           </div>
         </div>
         <div>
@@ -258,9 +290,10 @@ const FlightSegmentGroup = (props) => {
           <div className="d-flex">
             <Text
               className="font-primary-regular-14 pr-8"
-              text={segmentGroupArray[index].arrivalDetails.terminal
-                ? `Terminal ${segmentGroupArray[index].arrivalDetails.terminal}`
-                : "Terminal"
+              text={
+                segmentGroupArray[index].arrivalDetails.terminal
+                  ? `Terminal ${segmentGroupArray[index].arrivalDetails.terminal}`
+                  : 'Terminal'
               }
             />
 
@@ -281,33 +314,56 @@ const FlightSegmentGroup = (props) => {
 };
 
 const FlightSegment = (props) => {
-  const { fareBasisCode = "", isInboundFound = false, itinerary = [] } = props;
+  const {
+    fareBasisCode = '',
+    isInboundFound = false,
+    itinerary = [],
+    segmentWithCheckbox,
+  } = props;
   const totalSegmentGroup = itinerary[0].flightSegmentGroup.length;
 
   return (
     <Grid item xs={12} md={6}>
       <div className="FlightSegment d-flex flex-direction-column align-items-start">
         <Chip className="FlightSegment-segment">
+          {segmentWithCheckbox && (
+            <CustomCheckbox
+              noLabel={true}
+              // value={cur.value}
+              // disabled={isViewSecurityGroup}
+              onChange={() => {}}
+              useReactHookForm={false}
+              // name={name}
+            />
+          )}
           <Text
             className="font-primary-medium-16"
             text={itinerary[0].flightSegmentGroup[0].departureDetails.cityName}
           />
-          <FlightIcon style={{ transform: "rotate(90deg)" }} />
+          <FlightIcon style={{ transform: 'rotate(90deg)' }} />
           <Text
             className="font-primary-medium-16"
             text={
-              itinerary[0].flightSegmentGroup[totalSegmentGroup - 1].arrivalDetails.cityName
+              itinerary[0].flightSegmentGroup[totalSegmentGroup - 1]
+                .arrivalDetails.cityName
             }
           />
         </Chip>
+
         <div
           className="FlightSegment-content d-flex flex-direction-column"
           style={{
-            borderRight: isInboundFound ? `1px solid ${colors.alto}` : "none",
+            borderRight: isInboundFound ? `1px solid ${colors.alto}` : 'none',
           }}
         >
+          {segmentWithCheckbox && (
+            <Text
+              className="FlightSegment-content__date font-primary-medium-16 mb-16"
+              text="Airline PNR: FD5AYA | Status: Confirmed"
+            />
+          )}
           <Text
-            className="FlightSegment-content__date font-primary-bold-18"
+            className="FlightSegment-content__date font-primary-bold-18 mb-24"
             text={`Depart: ${changeDateFormat(
               itinerary[0].flightSegmentGroup[0].departureDetails.date
             )}`}
@@ -342,30 +398,45 @@ const FlightSegment = (props) => {
   );
 };
 
-const FlightDetails = props => {
-  const { itinerary } = props;
+const FlightDetails = (props) => {
+  const { itinerary, segmentWithCheckbox = false } = props;
   const checkInboundItinerary = () => {
-    if(isInboundFound) {
-      return <FlightSegment fareBasisCode={fareBasisCode} itinerary={returnItinerary("Inbound")} />;
+    if (isInboundFound) {
+      return (
+        <FlightSegment
+          fareBasisCode={fareBasisCode}
+          itinerary={returnItinerary('Inbound')}
+          segmentWithCheckbox={segmentWithCheckbox}
+        />
+      );
     }
   };
-      
-  const returnItinerary = type => {
-    const data = itinerary.flightSegments.filter(element => element.flightSegmentDirection === type);
+
+  const returnItinerary = (type) => {
+    const data = itinerary.flightSegments.filter(
+      (element) => element.flightSegmentDirection === type
+    );
     return data;
   };
-  const outbound=returnItinerary("Outbound");
-  const isInboundFound = itinerary.flightSegments.some(element => element.flightSegmentDirection === "Inbound");
+  const outbound = returnItinerary('Outbound');
+  const isInboundFound = itinerary.flightSegments.some(
+    (element) => element.flightSegmentDirection === 'Inbound'
+  );
   const fareBasisCode = itinerary.totalfareDetails.fareBasisCode;
 
   return (
     <div className="FlightDetails">
       <Grid container>
-        <FlightSegment itinerary={outbound} isInboundFound={isInboundFound} fareBasisCode={fareBasisCode}  />
+        <FlightSegment
+          itinerary={outbound}
+          isInboundFound={isInboundFound}
+          fareBasisCode={fareBasisCode}
+          segmentWithCheckbox={segmentWithCheckbox}
+        />
         {checkInboundItinerary()}
       </Grid>
     </div>
-  )
+  );
 };
 
 export default FlightDetails;

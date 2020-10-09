@@ -9,10 +9,17 @@ import Text from 'Widgets/Text/index';
 import './style.scss';
 
 const SecondaryAccordion = (props) => {
-  const { children, text, defaultOpen, className, headerClass } = props;
+  const {
+    children,
+    text,
+    defaultOpen,
+    className,
+    headerClass,
+    showAccordian,
+  } = props;
   const [open, setOpen] = useToggle(defaultOpen);
 
-  return (
+  return showAccordian ? (
     <div className={`SecondaryAccordion ${className ? className : ''}`}>
       <div
         className={`SecondaryAccordion-header font-primary-semibold-20 d-flex justify-content-between align-items-center  cursor-pointer ${
@@ -31,6 +38,8 @@ const SecondaryAccordion = (props) => {
       </div>
       {open && <div className="SecondaryAccordion-content">{children}</div>}
     </div>
+  ) : (
+    <>{children}</>
   );
 };
 

@@ -152,6 +152,19 @@ const PopoverAction = (props) => {
         break;
       }
 
+      case 'cancelBooking': {
+        // const securityMessage = utils.checkSecurityGroup(
+        //   securityOptionConstant.transaction.viewBooking
+        // );
+        // if (securityMessage !== '') {
+        //   dispatch(utils.showErrorBox(securityMessage));
+        //   return;
+        // }
+        viewOrder(orderNo, 'cancel', routes.transaction.cancelBooking);
+
+        break;
+      }
+
       default: {
         return;
       }
@@ -197,13 +210,22 @@ const PopoverAction = (props) => {
             </div>
           )}
           {actualStatus === 'BOOKED' && (
-            <div
-              className="font-primary-regular-14 cursor-pointer"
-              onClick={handleClick}
-              name="viewBooking"
-            >
-              View Booking{' '}
-            </div>
+            <>
+              <div
+                className="font-primary-regular-14 cursor-pointer"
+                onClick={handleClick}
+                name="viewBooking"
+              >
+                View Booking{' '}
+              </div>
+              <div
+                className="font-primary-regular-14 cursor-pointer"
+                onClick={handleClick}
+                name="cancelBooking"
+              >
+                Cancel Booking
+              </div>
+            </>
           )}
           {actualStatus === 'HOLD_PNR' && (
             <div
@@ -275,7 +297,7 @@ const SearchOrder = () => {
     ofID: ofId,
 
     DateType: '',
-    dateFrom: moment(new Date()),
+    dateFrom: moment(new Date()).subtract(1, 'month'),
     dateTo: moment(new Date()),
   };
 

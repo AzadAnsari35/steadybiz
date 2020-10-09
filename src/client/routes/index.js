@@ -102,6 +102,11 @@ const AsyncViewInvoice = loadable({
   loading: LinearLoaderSecondary,
 });
 
+const AsyncCancelBooking = loadable({
+  loader: () => import('Views/transaction/cancelBooking'),
+  loading: LinearLoaderSecondary,
+});
+
 const Routes = () => (
   <Switch>
     <Route exact path="/" component={Home} />
@@ -519,6 +524,12 @@ const Routes = () => (
       exact
       path={routes.agency.viewInvoice}
       component={AsyncViewInvoice}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.transaction.cancelBooking}
+      component={AsyncCancelBooking}
     />
   </Switch>
 );

@@ -6,21 +6,29 @@ $root: '.DepositGivenReport';
     padding: 36px 100px;
     background-color: $white;
   }
-  &-tableAction {
-    padding: 12px 0px;
-    > div {
-      text-decoration: none;
-      color: $black;
-      padding: 6px 36px;
-      &:hover {
-        color: $royalBlue;
-        border-left: 2px solid $royalBlue;
-        padding-left: 34px;
-        padding-right: 34px;
-        font-family: 'Montserrat SemiBold';
+
+  &-table {
+    .MuiTableRow-head {
+      & > th:nth-child(3) {
+        width: 20%;
       }
     }
   }
+  // &-tableAction {
+  //   padding: 12px 0px;
+  //   > div {
+  //     text-decoration: none;
+  //     color: $black;
+  //     padding: 6px 36px;
+  //     &:hover {
+  //       color: $royalBlue;
+  //       border-left: 2px solid $royalBlue;
+  //       padding-left: 34px;
+  //       padding-right: 34px;
+  //       font-family: 'Montserrat SemiBold';
+  //     }
+  //   }
+  // }
 
   &-CustomDrawer {
     padding: 112px 0px 20px 0px;
