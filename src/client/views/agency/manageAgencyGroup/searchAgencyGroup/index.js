@@ -121,6 +121,21 @@ const PopoverAction = ({ rowNumber }) => {
         break;
       }
 
+      case 'createMapping': {
+        history.push(routes.agency.createAgencyMapping);
+        break;
+      }
+
+      case 'viewMapping': {
+        history.push(routes.agency.viewAgencyMapping);
+        break;
+      }
+
+      case 'modifyMapping': {
+        history.push(routes.agency.modifyAgencyMapping);
+        break;
+      }
+
       default: {
         return;
       }
@@ -155,6 +170,15 @@ const PopoverAction = ({ rowNumber }) => {
           </div>
           <div className="font-primary-regular-14" name="history">
             Agency Group History
+          </div>
+          <div className="font-primary-regular-14" name="createMapping">
+            Create Agency Mapping
+          </div>
+          <div className="font-primary-regular-14" name="viewMapping">
+            View Agency Mapping
+          </div>
+          <div className="font-primary-regular-14" name="modifyMapping">
+            Modify Agency Mapping
           </div>
         </div>
       </SimplePopover>
@@ -354,6 +378,13 @@ const SearchAgencyGroup = () => {
               />
             </Grid>
             <Grid item xs={12} className="d-flex justify-content-end pt-32">
+              <Button
+                text="Mapping History"
+                secondary
+                className=" px-48 mr-10"
+                // onClick={() => handleCreate()}
+              />
+
               <Button
                 text="Create"
                 secondary

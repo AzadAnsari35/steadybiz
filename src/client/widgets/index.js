@@ -56,6 +56,7 @@ import CustomDrawer from './CustomDrawer';
 import LinearLoaderSecondary from './LinearLoaderSecondary';
 import CustomTable from './CustomTable';
 import TextWithButton from './TextWithButton';
+import TransferList from './TransferList';
 
 export {
   Avatar,
@@ -116,4 +117,5 @@ export {
   LinearLoaderSecondary,
   CustomTable,
   TextWithButton,
+  TransferList,
 };

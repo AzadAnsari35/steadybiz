@@ -1,0 +1,17 @@
+@import '../../../../styles/variables';
+
+$root: '.CreateAgencyMapping';
+
+#{$root} {
+  &-head {
+    padding: 36px 100px;
+    background-color: $white;
+  }
+  &-panel {
+    padding: 80px 100px;
+    &-transferList {
+      padding: 36px 30px 20px;
+      background-color: $biscayLight;
+    }
+  }
+}

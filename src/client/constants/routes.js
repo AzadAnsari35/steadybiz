@@ -48,6 +48,9 @@ const routes = {
     agencyGroupHistory: '/Agency/Agency-Group-History',
     searchInvoice: '/Agency/Search-Invoice',
     viewInvoice: '/Agency/View-Invoice',
+    createAgencyMapping: '/Agency/Create-Agency-Mapping',
+    modifyAgencyMapping: '/Agency/Update-Agency-Mapping',
+    viewAgencyMapping: '/Agency/View-Agency-Mapping',
   },
 
   office: {

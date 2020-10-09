@@ -183,6 +183,12 @@ p {
   line-height: calculateRem(18px);
 }
 
+.font-primary-regular-14_1 {
+  @extend .font-primary-regular;
+  font-size: calculateRem(14px);
+  line-height: calculateRem(32px);
+}
+
 .font-primary-regular-16 {
   @extend .font-primary-regular;
   font-size: calculateRem(16px);
