@@ -15,7 +15,7 @@ const SecondaryAccordion = (props) => {
     defaultOpen,
     className,
     headerClass,
-    showAccordian,
+    showAccordian = true,
   } = props;
   const [open, setOpen] = useToggle(defaultOpen);
 

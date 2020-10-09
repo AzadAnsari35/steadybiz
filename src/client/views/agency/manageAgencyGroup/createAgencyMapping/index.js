@@ -12,15 +12,11 @@ import {
   Panel,
   Text,
   TextInput,
+  TransferList,
+  SecondaryAccordion,
 } from 'Widgets';
 import PrimaryTableHeader from 'Widgets/TableHeaders/PrimaryTableHeader';
-import {
-  Commission,
-  Incentive,
-  GdsDiscount,
-  Markup,
-  Discount,
-} from 'Components/Agency/AgencyGroup';
+
 import { useHistory, useLocation } from 'react-router-dom';
 import endpoint from 'Config/endpoint';
 import useDropDown from 'Hooks/useDropDown';
@@ -32,7 +28,7 @@ const defaultValues = {
   status: null,
 };
 
-const CreateAgencyGroup = () => {
+const CreateAgencyMapping = () => {
   const {
     userDto: {
       officeDto: { officeId, officeName, officeLevel, ofId },
@@ -45,16 +41,11 @@ const CreateAgencyGroup = () => {
 
   const isCreate = utils.stringComparison(
     path,
-    routes.agency.createAgencyGroup
+    routes.agency.createAgencyMapping
   );
   const isUpdate = utils.stringComparison(
     path,
-    routes.agency.modifyAgencyGroup
-  );
-  const isView = utils.stringComparison(path, routes.agency.viewAgencyGroup);
-  const isDealHistory = utils.stringComparison(
-    path,
-    routes.agency.agencyGroupHistory
+    routes.agency.modifyAgencyMapping
   );
 
   const [state, setState] = useState(defaultValues);
@@ -77,8 +68,8 @@ const CreateAgencyGroup = () => {
   const { status } = state;
 
   return (
-    <div className="CreateAgencyGroup">
-      <div className="CreateAgencyGroup-head">
+    <div className="CreateAgencyMapping">
+      <div className="CreateAgencyMapping-head">
         <div className="d-flex justify-content-between align-items-end pb-4">
           <div className="font-primary-semibold-24 pb-4">AGENCY GROUP</div>
           <IconWithBackground
@@ -93,17 +84,11 @@ const CreateAgencyGroup = () => {
         <Text
           showLeftBorder={true}
           text={`${
-            isCreate
-              ? 'CREATE AGENCY GROUP'
-              : isUpdate
-              ? 'MODIFY AGENCY GROUP'
-              : isView
-              ? 'VIEW AGENCY GROUP'
-              : 'AGENCY GROUP HISTORY'
+            isCreate ? 'CREATE AGENCY MAPPING' : 'MODIFY AGENCY MAPPING'
           }`}
           className="font-primary-medium-18 my-24"
         />
-        <Grid container spacing={3}>
+        <Grid container direction="row" alignItems="flex-end" spacing={3}>
           <Grid item xs={3}>
             <MultiSelect
               label="Service:"
@@ -114,7 +99,7 @@ const CreateAgencyGroup = () => {
               showValue
               width="auto"
               useReactHookForm={false}
-              disabled={!isCreate}
+              disabled={true}
             />
           </Grid>
 
@@ -125,7 +110,7 @@ const CreateAgencyGroup = () => {
               onChange={() => console.log('value')}
               useReactHookForm={false}
               placeholder="Name"
-              disabled={isView || isDealHistory}
+              disabled={true}
             />
           </Grid>
 
@@ -136,7 +121,7 @@ const CreateAgencyGroup = () => {
               onChange={() => console.log('value')}
               useReactHookForm={false}
               placeholder="Name"
-              disabled={isView || isDealHistory}
+              disabled={true}
             />
           </Grid>
 
@@ -149,59 +134,58 @@ const CreateAgencyGroup = () => {
               changeStyle={true}
               width="auto"
               useReactHookForm={false}
-              disabled={!isUpdate}
+              disabled={true}
               value={status}
             />
           </Grid>
-        </Grid>
-
-        {!isView && (
-          <Grid item xs={12} className="d-flex justify-content-between pt-32">
-            <Grid
-              container
-              spacing={3}
-              direction="row"
-              justify="space-between"
-              alignItems={isDealHistory ? 'flex-end' : 'center'}
-            >
-              {isDealHistory ? (
-                <Grid item xs={3}>
-                  <MultiSelect
-                    label="Agency Group History Date:"
-                    name="historyDate"
-                    options={[]}
-                    showBorder={true}
-                    changeStyle={true}
-                    width="auto"
-                    useReactHookForm={false}
-                    placegolder="Select Agency Group History Date"
-                  />
-                </Grid>
-              ) : (
-                <Grid item xs={9} className="font-primary-italic-14">
-                  <b>Please Note:</b> The Create Group button should only be
-                  clicked after giving the security rights below to this newly
-                  created group.
-                </Grid>
-              )}
-              <Grid item xs={3} className="d-flex justify-content-end">
-                <Button
-                  type="submit"
-                  text={`${
-                    isCreate
-                      ? 'Create Group'
-                      : isUpdate
-                      ? 'MODIFY Group'
-                      : 'Search Deal History'
-                  }`}
-                  className="px-48"
-                />
-              </Grid>
-            </Grid>
+          <Grid item xs={3}>
+            <MultiSelect
+              name="country"
+              label="Country:"
+              // disabled={isViewSecurityGroup}
+              useReactHookForm={false}
+              onChange={(value) => console.log(value)}
+              showBorder={true}
+              changeStyle={true}
+              options={[]}
+              width="auto"
+              placeholder="Select Country"
+            />
           </Grid>
-        )}
+
+          <Grid item xs={3}>
+            <MultiSelect
+              name="city"
+              label="City:"
+              // disabled={isViewSecurityGroup}
+              useReactHookForm={false}
+              onChange={(value) => console.log(value)}
+              showBorder={true}
+              changeStyle={true}
+              options={[[]]}
+              width="auto"
+              placeholder="Select City"
+            />
+          </Grid>
+
+          <Grid item xs={3}></Grid>
+          <Grid item xs={3} className="d-flex justify-content-end">
+            <Button type="submit" text="Search" className="mr-10" secondary />
+            <Button
+              type="submit"
+              text={`${
+                isCreate ? 'CREATE AGENCY MAPPING' : 'MODIFY AGENCY MAPPING'
+              }`}
+            />
+          </Grid>
+
+          <Grid item xs={9} className="font-primary-italic-14">
+            <b>Please Note:</b> The Create Agency Mapping button should only be
+            clicked after mapping agencie(s) below with this group.
+          </Grid>
+        </Grid>
       </div>
-      <div className="CreateAgencyGroup-panel">
+      <div className="CreateAgencyMapping-panel">
         <Panel hideHeader={true} expand={true} panelBodyClassName="px-32">
           <PrimaryTableHeader
             officeName={officeName}
@@ -216,16 +200,28 @@ const CreateAgencyGroup = () => {
               text: 'Flight',
             }}
           />
-
-          <Commission path={{ isCreate, isUpdate, isView, isDealHistory }} />
-          <Incentive path={{ isCreate, isUpdate, isView, isDealHistory }} />
-          <GdsDiscount path={{ isCreate, isUpdate, isView, isDealHistory }} />
-          <Discount path={{ isCreate, isUpdate, isView, isDealHistory }} />
-          <Markup path={{ isCreate, isUpdate, isView, isDealHistory }} />
+          <SecondaryAccordion text="MAP AGENCIE(S)" defaultOpen={true}>
+            <div className="CreateAgencyMapping-panel-transferList">
+              <TransferList
+                leftList={[
+                  'Asian Gulf Travel Verified',
+                  'Bin Dasmal Tourism LLC',
+                  'Al Abbas Travels LLC',
+                  'Al Arabi Travel Agency',
+                  'Fardan Al Fardan Tourism LLC',
+                ]}
+                rightList={[
+                  'Arabian Nights Tours LLC',
+                  'Al Majid Travel and Tourism',
+                  'Al Noobi Travel & Tourism',
+                ]}
+              />
+            </div>
+          </SecondaryAccordion>
         </Panel>
       </div>
     </div>
   );
 };
 
-export default CreateAgencyGroup;
+export default CreateAgencyMapping;

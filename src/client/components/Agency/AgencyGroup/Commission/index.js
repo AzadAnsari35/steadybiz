@@ -24,7 +24,18 @@ const Commission = ({ path }) => {
 
   return (
     <SecondaryAccordion
-      text="COMMISSION"
+      text={
+        isCreate || isUpdate ? (
+          <div className="d-flex align-items-center">
+            COMMISSION
+            <div className="font-primary-italic-14 pl-8">
+              [Applied on Base Fare]
+            </div>
+          </div>
+        ) : (
+          <>COMMISSION</>
+        )
+      }
       defaultOpen={true}
       // className={curData.className}
       className="Commission"
@@ -52,35 +63,6 @@ const Commission = ({ path }) => {
               />
             </Grid>
 
-            <Grid item xs={3}>
-              <MultiSelect
-                name="country"
-                label="Country:"
-                // disabled={isViewSecurityGroup}
-                useReactHookForm={false}
-                onChange={(value) => console.log(value)}
-                showBorder={true}
-                changeStyle={true}
-                options={[]}
-                width="auto"
-                placeholder="Select Country"
-              />
-            </Grid>
-
-            <Grid item xs={3}>
-              <MultiSelect
-                name="city"
-                label="City:"
-                // disabled={isViewSecurityGroup}
-                useReactHookForm={false}
-                onChange={(value) => console.log(value)}
-                showBorder={true}
-                changeStyle={true}
-                options={[[]]}
-                width="auto"
-                placeholder="Select City"
-              />
-            </Grid>
             <Grid item xs={3}>
               <TextInput
                 name="commission"
@@ -128,6 +110,17 @@ const Commission = ({ path }) => {
             </Grid>
 
             <Grid item xs={3}>
+              <DatePicker
+                name="endDate"
+                label="End Date:"
+                onChange={() => console.log('value')}
+                useReactHookForm={false}
+                disabled={isView || isDealHistory}
+              />
+            </Grid>
+            <Grid item xs={3}></Grid>
+
+            <Grid item xs={3}>
               <Button text="Add Commission" className="width-100 mt-12" />
             </Grid>
           </Grid>
@@ -139,19 +132,16 @@ const Commission = ({ path }) => {
               <TableRow>
                 <TableCell align="left">AIRLINE NAME</TableCell>
                 <TableCell align="center">AIRLINE CODE</TableCell>
-                <TableCell align="left">COUNTRY</TableCell>
-                <TableCell align="left">CITY</TableCell>
                 <TableCell align="center">COMMISSION ( % )</TableCell>
                 <TableCell align="center">CURRENCY</TableCell>
                 <TableCell align="center">COMMISSION AMOUNT</TableCell>
-                <TableCell style={isView ? { width: '8%' } : {}} align="center">
-                  START DATE
+                <TableCell align="center">START DATE</TableCell>
+                <TableCell
+                  style={isView || isDealHistory ? { width: '8%' } : {}}
+                  align="center"
+                >
+                  END DATE
                 </TableCell>
-                {isDealHistory && (
-                  <TableCell style={{ width: '8%' }} align="center">
-                    END DATE
-                  </TableCell>
-                )}
                 {!isView && !isDealHistory && (
                   <TableCell align="center">ACTION</TableCell>
                 )}
@@ -163,15 +153,13 @@ const Commission = ({ path }) => {
                   American Airlines
                 </TableCell>
                 <TableCell align="center">AA </TableCell>
-                <TableCell align="left">Texas</TableCell>
-                <TableCell align="left">Texas</TableCell>
+
                 <TableCell align="center">20</TableCell>
                 <TableCell align="center">USD</TableCell>
                 <TableCell align="center"></TableCell>
                 <TableCell align="center">07-OCT-2020</TableCell>
-                {isDealHistory && (
-                  <TableCell align="center">27-OCT-2020</TableCell>
-                )}
+                <TableCell align="center">27-OCT-2020</TableCell>
+
                 {!isView && !isDealHistory && (
                   <TableCell align="center">
                     {isUpdate && (
@@ -192,15 +180,12 @@ const Commission = ({ path }) => {
                   American Airlines
                 </TableCell>
                 <TableCell align="center">AA </TableCell>
-                <TableCell align="left">Texas</TableCell>
-                <TableCell align="left">Texas</TableCell>
+
                 <TableCell align="center">20</TableCell>
                 <TableCell align="center">USD</TableCell>
                 <TableCell align="center"></TableCell>
                 <TableCell align="center">07-OCT-2020</TableCell>
-                {isDealHistory && (
-                  <TableCell align="center">27-OCT-2020</TableCell>
-                )}
+                <TableCell align="center">27-OCT-2020</TableCell>
                 {!isView && !isDealHistory && (
                   <TableCell align="center">
                     {isUpdate && (

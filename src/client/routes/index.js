@@ -107,6 +107,11 @@ const AsyncCancelBooking = loadable({
   loading: LinearLoaderSecondary,
 });
 
+const AsyncCreateAgencyMapping = loadable({
+  loader: () => import('Views/agency/manageAgencyGroup/createAgencyMapping'),
+  loading: LinearLoaderSecondary,
+});
+
 const Routes = () => (
   <Switch>
     <Route exact path="/" component={Home} />
@@ -530,6 +535,12 @@ const Routes = () => (
       exact
       path={routes.transaction.cancelBooking}
       component={AsyncCancelBooking}
+    />
+
+    <PrivateRoute
+      exact
+      path={routes.agency.createAgencyMapping}
+      component={AsyncCreateAgencyMapping}
     />
   </Switch>
 );
