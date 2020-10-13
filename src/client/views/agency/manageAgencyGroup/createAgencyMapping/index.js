@@ -209,12 +209,61 @@ const CreateAgencyMapping = () => {
                   'Al Abbas Travels LLC',
                   'Al Arabi Travel Agency',
                   'Fardan Al Fardan Tourism LLC',
+                  'Axis tours and travel',
+                  'Urban Travelers',
+                  'Wonderland tours',
+                  '360 degree Travelers',
+                  'Travel with me',
                 ]}
+                leftHeading={isCreate? "Agency Name (Unassigned):":"Agency Name (Mapped):"}
+                leftHeadContent={
+                  <Grid container spacing={2} className="pb-20">
+                    {!isUpdate&& <Grid item xs={6}>
+                      <DatePicker
+                        name="startDate"
+                        label="Start Date:"
+                        onChange={() => console.log('value')}
+                        useReactHookForm={false}
+                      />
+                    </Grid>}
+                    <Grid item xs={6}>
+                      <DatePicker
+                        name="endDate"
+                        label="End Date:"
+                        onChange={() => console.log('value')}
+                        useReactHookForm={false}
+                      />
+                    </Grid>
+                  </Grid>
+                }
                 rightList={[
                   'Arabian Nights Tours LLC',
                   'Al Majid Travel and Tourism',
                   'Al Noobi Travel & Tourism',
                 ]}
+                rightHeading={isCreate?"Agency Name (Selected):" : "Agency Name (Unassigned):"}
+                rightHeadContent={
+                  <Grid container spacing={2} className={`pb-20 ${isUpdate?"visibility-hidden": ""}`}>
+                    <Grid item xs={6}>
+                      <DatePicker
+                        name="startDate"
+                        label="Start Date:"
+                        onChange={() => console.log('value')}
+                        useReactHookForm={false}
+                        disabled={true}
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <DatePicker
+                        name="endDate"
+                        label="End Date:"
+                        onChange={() => console.log('value')}
+                        useReactHookForm={false}
+                        disabled={true}
+                      />
+                    </Grid>
+                  </Grid>
+                }
               />
             </div>
           </SecondaryAccordion>

@@ -1,8 +1,9 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-
+import { Button } from 'Widgets';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import './style.scss';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +29,14 @@ function intersection(a, b) {
 }
 
 const TransferList = (props) => {
-  const { leftList, rightList } = props;
+  const {
+    leftList,
+    rightList,
+    leftHeading,
+    rightHeading,
+    leftHeadContent,
+    rightHeadContent,
+  } = props;
   const classes = useStyles();
   const [checked, setChecked] = React.useState([]);
   const [left, setLeft] = React.useState(leftList);
@@ -103,55 +111,63 @@ const TransferList = (props) => {
       alignItems="center"
       className="TransferList"
     >
-      <Grid item xs={5} className="TransferList-section">
-        {customList(left)}
+      <Grid item xs={5}>
+        {leftHeadContent}
+        <div className="font-primary-medium-14 mb-16">{leftHeading}</div>
+        <div className="TransferList-section">{customList(left)}</div>
       </Grid>
       <Grid item xs={2}>
-        <Grid container direction="column" alignItems="center">
+        <Grid container direction="column" alignItems="center" className="pt-125">
           <Button
-            variant="outlined"
-            size="small"
-            className={classes.button}
-            onClick={handleAllRight}
+            type="submit"
+            className="mb-16"
+            text={
+              <>
+                <ArrowForwardIosIcon fontSize="small" />
+                <ArrowForwardIosIcon fontSize="small" />
+              </>
+            }
+            secondary
             disabled={left.length === 0}
-            aria-label="move all right"
-          >
-            ≫
-          </Button>
+            onClick={handleAllRight}
+          />
+
           <Button
-            variant="outlined"
-            size="small"
-            className={classes.button}
-            onClick={handleCheckedRight}
+            type="submit"
+            className="mb-16"
+            text={<ArrowForwardIosIcon fontSize="small" />}
+            secondary
             disabled={leftChecked.length === 0}
-            aria-label="move selected right"
-          >
-            &gt;
-          </Button>
+            onClick={handleCheckedRight}
+          />
+
           <Button
-            variant="outlined"
-            size="small"
-            className={classes.button}
-            onClick={handleCheckedLeft}
+            type="submit"
+            className="mb-16"
+            text={<ArrowBackIosIcon fontSize="small" />}
+            secondary
             disabled={rightChecked.length === 0}
-            aria-label="move selected left"
-          >
-            &lt;
-          </Button>
+            onClick={handleCheckedLeft}
+          />
+
           <Button
-            variant="outlined"
-            size="small"
-            className={classes.button}
-            onClick={handleAllLeft}
+            type="submit"
+            text={
+              <>
+                <ArrowBackIosIcon fontSize="small" />
+                <ArrowBackIosIcon fontSize="small" />
+              </>
+            }
+            secondary
             disabled={right.length === 0}
-            aria-label="move all left"
-          >
-            ≪
-          </Button>
+            onClick={handleAllLeft}
+          />
         </Grid>
       </Grid>
-      <Grid item xs={5} className="TransferList-section">
-        {customList(right)}
+      <Grid item xs={5}>
+        {rightHeadContent}
+        <div className="font-primary-medium-14 mb-16">{rightHeading}</div>
+        <div className="TransferList-section">{customList(right)}</div>
       </Grid>
     </Grid>
   );

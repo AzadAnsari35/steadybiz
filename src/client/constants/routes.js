@@ -51,6 +51,8 @@ const routes = {
     createAgencyMapping: '/Agency/Create-Agency-Mapping',
     modifyAgencyMapping: '/Agency/Update-Agency-Mapping',
     viewAgencyMapping: '/Agency/View-Agency-Mapping',
+    agencyMappingHistory: '/Agency/Agency-Mapping-History',
+
   },
 
   office: {

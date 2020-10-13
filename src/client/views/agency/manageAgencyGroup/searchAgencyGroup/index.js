@@ -382,7 +382,7 @@ const SearchAgencyGroup = () => {
                 text="Mapping History"
                 secondary
                 className=" px-48 mr-10"
-                // onClick={() => handleCreate()}
+                onClick={() => history.push(routes.agency.agencyMappingHistory)}
               />
 
               <Button

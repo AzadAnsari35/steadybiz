@@ -11,8 +11,16 @@ $root: '.TransferList';
   }
 
   .customList {
+    min-height: 320px;
     &-selected {
       color: $royalBlue;
     }
+  }
+  .btn-text {
+    height: 20px;
+  }
+
+  .btn {
+    background-color: $white;
   }
 }
