@@ -112,6 +112,18 @@ const AsyncCreateAgencyMapping = loadable({
   loading: LinearLoaderSecondary,
 });
 
+
+const AsyncViewAgencyMapping = loadable({
+  loader: () => import('Views/agency/manageAgencyGroup/viewAgencyMapping'),
+  loading: LinearLoaderSecondary,
+});
+
+
+const AsyncAgencyMappingHistory  = loadable({
+  loader: () => import('Views/agency/manageAgencyGroup/agencyMappingHistory'),
+  loading: LinearLoaderSecondary,
+});
+
 const Routes = () => (
   <Switch>
     <Route exact path="/" component={Home} />
@@ -542,6 +554,26 @@ const Routes = () => (
       path={routes.agency.createAgencyMapping}
       component={AsyncCreateAgencyMapping}
     />
+     <PrivateRoute
+      exact
+      path={routes.agency.modifyAgencyMapping}
+      component={AsyncCreateAgencyMapping}
+    />
+
+<PrivateRoute
+      exact
+      path={routes.agency.viewAgencyMapping}
+      component={AsyncViewAgencyMapping}
+    />
+
+<PrivateRoute
+      exact
+      path={routes.agency.agencyMappingHistory}
+      component={AsyncAgencyMappingHistory}
+    />
+
+
+
   </Switch>
 );
 
