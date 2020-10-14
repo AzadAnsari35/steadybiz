@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
   //   reducerState,
   //   (action) => action.type === actionTypeConstant.orders.searchOrders
   // ),
-
+  reportsResult: commonType(actionTypeConstant.reports.reportsResult),
   ordersSearchOrders: commonType(actionTypeConstant.orders.searchOrders),
 
   loaderStatus: createFilteredReducer(

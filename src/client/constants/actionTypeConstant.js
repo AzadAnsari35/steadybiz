@@ -3,6 +3,9 @@ export const actionTypeConstant = {
     searchResult: 'override.searchResult',
     selectedOption: 'override.selectedOption',
   },
+  reports: {
+    reportsResult: 'reports.Result',
+  },
   orders: {
     searchOrders: 'orders.SearchOrders',
   },

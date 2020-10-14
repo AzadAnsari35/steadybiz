@@ -102,7 +102,7 @@ const SideDrawer = ({ showDrawer, setShowDrawer }) => {
         {
           text: 'Agency Group',
           link: routes.agency.searchAgencyGroup,
-          isHide: isAgency || isAgencyBranch || isSubAgencyBranch,
+          isHide: isAgencyBranch || isSubAgencyBranch,
         },
 
         // {
