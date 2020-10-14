@@ -4,14 +4,17 @@ import { commonAction, commonActionUpdate } from 'Actions/';
 import BookingReportsTableHeader from 'Components/Common/BookingReportsTableHeader/index';
 import ChangeOffice from 'Components/Offices/ChangeOffice';
 import endpoint from 'Config/endpoint.js';
+import { useHistory } from 'react-router-dom';
 import {
   BOOKING_CATEGORY,
   dropDownParam,
   officeType,
   OFFICE_CHANNEL,
   PNR_STATUS,
+  PNR_TYPE,
   SEARCH_DATE_TYPE,
 } from 'Constants/commonConstant';
+import { routes } from 'Constants';
 import { utils } from 'Helpers';
 import { customAddDays, displayImage } from 'Helpers/utils';
 import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
@@ -282,6 +285,7 @@ const BookingReport = () => {
     bookingCategory: '',
     officeChannel: '',
     officeType: '',
+    officeName: '',
     officeId: officeId,
     ofId: ofId,
     userName: '',
@@ -289,7 +293,7 @@ const BookingReport = () => {
     cityPos: '',
     transactionStatus: '',
   });
-
+  const history = useHistory();
   const { register, handleSubmit, reset } = useForm();
   //const ofId = utils.getItemFromStorage('officeId');
   const searchResult = useSelector(
@@ -503,17 +507,28 @@ const BookingReport = () => {
   };
   const handleReset = () => {
     //console.log('ddd');
+    history.push(routes.reports.bookingReport);
     reset(defaultValues);
     setStateKey(!stateKey);
     setFormData({
       ...formData,
       officeId: officeId,
       ofId: ofId,
+      pnrType: null,
       origin: '',
       destination: '',
+
+      pnrNumber: '',
+      bookingCategory: null,
+      officeChannel: null,
+      officeType: null,
+      userName: null,
+      transactionStatus: null,
+      countryPos: countriesList.dropDownItems.findItem(countryCode),
+      cityPos: citiesList && citiesList.findItem(cityCode),
     });
     //defaultCity();
-    defaultCountry();
+    //defaultCountry();
   };
 
   const handleFieldReset = () => {
@@ -645,20 +660,19 @@ const BookingReport = () => {
               <Grid item xs={3}>
                 <SelectWithTextInput
                   name="pnrNumber"
-                  selectInputName="sabre"
+                  selectInputName="pnrType"
                   type="text"
                   label="PNR: "
                   selectPlaceholder="Sabre"
                   placeholder="PNR Number"
                   value={formData.pnrNumber}
-                  data={[
-                    { value: 'Sabre', label: 'Sabre (1S)' },
-                    { value: 'Airline', label: 'Airline' },
-                  ]}
-                  showValue
+                  data={PNR_TYPE}
                   useReactHookForm={false}
                   selectWidth="50%"
                   onChange={handleInputChange}
+                  initialSelectedValue={
+                    formData.pnrType ? formData.pnrType : null
+                  }
                   onSelectChange={handleSelectOption}
                 />
               </Grid>
@@ -682,6 +696,9 @@ const BookingReport = () => {
                   width="auto"
                   isSearchable
                   useReactHookForm={false}
+                  defaultValue={
+                    formData.bookingCategory ? formData.bookingCategory : null
+                  }
                   onSelectChange={handleSelectOption}
                 />
               </Grid>
@@ -691,6 +708,9 @@ const BookingReport = () => {
                   id="officeChannel"
                   name="officeChannel"
                   options={OFFICE_CHANNEL}
+                  defaultValue={
+                    formData.officeChannel ? formData.officeChannel : null
+                  }
                   showBorder
                   changeStyle
                   width="auto"
@@ -705,6 +725,9 @@ const BookingReport = () => {
                   id="officeType"
                   name="officeType"
                   options={officeType}
+                  defaultValue={
+                    formData.officeType ? formData.officeType : null
+                  }
                   showBorder
                   changeStyle
                   width="auto"
@@ -742,6 +765,7 @@ const BookingReport = () => {
                   id="userName"
                   name="userName"
                   options={userNameListData}
+                  defaultValue={formData.userName ? formData.userName : null}
                   showBorder
                   changeStyle
                   width="auto"
@@ -796,6 +820,11 @@ const BookingReport = () => {
                   isSearchable
                   useReactHookForm={false}
                   onSelectChange={handleSelectOption}
+                  defaultValue={
+                    formData.transactionStatus
+                      ? formData.transactionStatus
+                      : null
+                  }
                   isMulti
                 />
               </Grid>
