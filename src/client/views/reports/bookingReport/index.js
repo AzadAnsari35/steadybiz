@@ -1,54 +1,49 @@
+import Grid from '@material-ui/core/Grid';
+import CachedIcon from '@material-ui/icons/Cached';
+import { commonAction, commonActionUpdate } from 'Actions/';
+import BookingReportsTableHeader from 'Components/Common/BookingReportsTableHeader/index';
+import ChangeOffice from 'Components/Offices/ChangeOffice';
+import endpoint from 'Config/endpoint.js';
+import { useHistory } from 'react-router-dom';
+import {
+  BOOKING_CATEGORY,
+  dropDownParam,
+  officeType,
+  OFFICE_CHANNEL,
+  PNR_STATUS,
+  PNR_TYPE,
+  SEARCH_DATE_TYPE,
+} from 'Constants/commonConstant';
+import { routes } from 'Constants';
+import { utils } from 'Helpers';
+import { customAddDays, displayImage } from 'Helpers/utils';
+import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
+import useDropDown from 'Hooks/useDropDown';
+import useToggle from 'Hooks/useToggle';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import Grid from '@material-ui/core/Grid';
-import CachedIcon from '@material-ui/icons/Cached';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import ChangeOffice from 'Components/Offices/ChangeOffice';
-import useAsyncEndpoint from 'Hooks/useAsyncEndpoint';
-import bookingReportData from './bookingReport.json';
 import {
-  BOOKING_CATEGORY,
-  officeType,
-  PNR_STATUS,
-  SEARCH_DATE_TYPE,
-  OFFICE_CHANNEL,
-  dropDownParam,
-} from 'Constants/commonConstant';
-import { commonAction, commonActionUpdate } from 'Actions/';
-import endpoint from 'Config/endpoint.js';
-import routes from 'Constants/routes';
-import { utils } from 'Helpers';
-import useDropDown from 'Hooks/useDropDown';
-import useCheckboxData from 'Hooks/useCheckboxData';
-
-import {
+  AutoSuggest,
   Button,
+  CustomDrawer,
   IconWithBackground,
   MultiSelect,
   PrimaryTable,
-  PrimaryTableHeader,
   SelectWithDatePickers,
   SelectWithTextInput,
   SimplePopover,
   Text,
   TextInput,
-  CustomDrawer,
-  AutoSuggest,
 } from 'Widgets';
-import useToggle from 'Hooks/useToggle';
-
+//import bookingReportData from './bookingReport.json';
 import './style.scss';
-import { customAddDays, displayImage } from 'Helpers/utils';
-import BookingReportsTableHeader from 'Components/Common/BookingReportsTableHeader/index';
-import useDropDownApi from 'Hooks/useDropDownApi';
 
 const BOOKING_REPORT_FILED_SELECTION_OPTIONS = [
   { value: 'bookingDate', label: 'BOOKING DATE' },
   { value: 'officeChannel', label: 'OFFICE CHANNEL' },
   { value: 'officeType', label: 'OFFICE TYPE' },
-  { value: 'officeId', label: 'ORDER ID' },
+  { value: 'officeId', label: 'OFFICE ID' },
   { value: 'officeLevel', label: 'ORDER LEVEL' },
   { value: 'userName', label: 'USER NAME' },
   { value: 'parentOfficeId', label: 'PARENT OFFICE ID' },
@@ -102,7 +97,7 @@ const headerData = [
   { id: 'bookingDate', value: 'BOOKING DATE', alignment: 'center' },
   { id: 'officeChannel', value: 'OFFICE CHANNEL', alignment: 'center' },
   { id: 'officeType', value: 'OFFICE TYPE', alignment: 'center' },
-  { id: 'officeId', value: 'ORDER ID', alignment: 'center' },
+  { id: 'officeId', value: 'OFFICE ID', alignment: 'center' },
   { id: 'officeLevel', value: 'ORDER LEVEL', alignment: 'center' },
   { id: 'userName', value: 'USER NAME', alignment: 'center' },
   { id: 'parentOfficeId', value: 'PARENT OFFICE ID', alignment: 'center' },
@@ -245,13 +240,15 @@ const PopoverAction = (props) => {
 };
 
 const BookingReport = () => {
-  const [requestJson, setReqeustJson] = useState(null);
+  const [requestJson, setRequestJson] = useState(null);
   const [page, setPage] = useState(1);
   const [size] = useState(10);
   const firstPageUpdate = useRef(true);
   const [stateKey, setStateKey] = useState(true);
   const [showChangeOffice, setShowChangeOffice] = useToggle(false);
-
+  const bookingReportData = useSelector(
+    (state) => state[endpoint.reports.reportsResult.reducerName]?.items
+  );
   let dispatch = useDispatch();
   const userData = JSON.parse(utils.getItemFromStorage('userData'));
   const {
@@ -268,7 +265,7 @@ const BookingReport = () => {
   } = userData;
 
   const defaultValues = {
-    bookingCategory: '',
+    // bookingCategory: '',
     officeId,
   };
   // const [defaultFormData, setDefaultFormData] = useState({
@@ -276,29 +273,31 @@ const BookingReport = () => {
   //   cityPos: null,
   // });
   const [formData, setFormData] = useState({
-    reportType: {},
+    reportType: '',
     dateFrom: '',
     dateTo: '',
     origin: '',
     destination: '',
-    orderNumber: '',
-    pnrType: {},
+    orderNo: '',
+    ticketNumber: '',
+    pnrType: '',
     pnrNumber: '',
-    bookingCategory: {},
-    officeChannel: {},
-    officeType: {},
+    bookingCategory: '',
+    officeChannel: '',
+    officeType: '',
+    officeName: '',
     officeId: officeId,
     ofId: ofId,
-    userName: {},
-    countryPos: null,
-    cityPos: null,
-    transactionStatus: {},
+    userName: '',
+    countryPos: '',
+    cityPos: '',
+    transactionStatus: '',
   });
-
+  const history = useHistory();
   const { register, handleSubmit, reset } = useForm();
   //const ofId = utils.getItemFromStorage('officeId');
   const searchResult = useSelector(
-    (state) => state[endpoint.orders.searchOrders.reducerName]?.items
+    (state) => state[endpoint.reports.reportsResult.reducerName]?.items
   );
   const countriesList = useDropDown(
     endpoint.master.countries,
@@ -452,10 +451,10 @@ const BookingReport = () => {
   };
 
   const callSearch = (page) => {
-    //console.log('hi', requestJson);
+    console.log('hi', requestJson);
     try {
       dispatch(
-        commonAction(endpoint.orders.searchOrders, {
+        commonAction(endpoint.reports.reportsResult, {
           ...requestJson,
           page: page - 1,
           size,
@@ -463,6 +462,7 @@ const BookingReport = () => {
         })
       );
     } catch (err) {
+      console.log('hii', err);
       dispatch(utils.showErrorBox(err.message));
     }
   };
@@ -472,10 +472,10 @@ const BookingReport = () => {
     setShowChangeOffice();
   };
 
-  const onSubmit = (data) => {
-    // console.log('data', data);
+  const onSubmit = () => {
+    console.log('data', formData);
     setPage(1);
-    setReqeustJson(data);
+    setRequestJson({ ...formData });
     //setPage(1);
   };
   const defaultCountry = () => {
@@ -506,17 +506,29 @@ const BookingReport = () => {
     }
   };
   const handleReset = () => {
+    //console.log('ddd');
+    history.push(routes.reports.bookingReport);
     reset(defaultValues);
     setStateKey(!stateKey);
     setFormData({
       ...formData,
       officeId: officeId,
       ofId: ofId,
+      pnrType: null,
       origin: '',
       destination: '',
+
+      pnrNumber: '',
+      bookingCategory: null,
+      officeChannel: null,
+      officeType: null,
+      userName: null,
+      transactionStatus: null,
+      countryPos: countriesList.dropDownItems.findItem(countryCode),
+      cityPos: citiesList && citiesList.findItem(cityCode),
     });
     //defaultCity();
-    defaultCountry();
+    //defaultCountry();
   };
 
   const handleFieldReset = () => {
@@ -648,28 +660,27 @@ const BookingReport = () => {
               <Grid item xs={3}>
                 <SelectWithTextInput
                   name="pnrNumber"
-                  selectInputName="sabre"
+                  selectInputName="pnrType"
                   type="text"
                   label="PNR: "
                   selectPlaceholder="Sabre"
                   placeholder="PNR Number"
                   value={formData.pnrNumber}
-                  data={[
-                    { value: 'Sabre', label: 'Sabre (1S)' },
-                    { value: 'Airline', label: 'Airline' },
-                  ]}
-                  showValue
+                  data={PNR_TYPE}
                   useReactHookForm={false}
                   selectWidth="50%"
                   onChange={handleInputChange}
+                  initialSelectedValue={
+                    formData.pnrType ? formData.pnrType : null
+                  }
                   onSelectChange={handleSelectOption}
                 />
               </Grid>
               <Grid item xs={3}>
                 <TextInput
                   label="Ticket No.:"
-                  id="ticketNo"
-                  name="officeId"
+                  id="ticketNumber"
+                  name="ticketNumber"
                   useReactHookForm={false}
                   onChange={handleInputChange}
                 />
@@ -685,6 +696,9 @@ const BookingReport = () => {
                   width="auto"
                   isSearchable
                   useReactHookForm={false}
+                  defaultValue={
+                    formData.bookingCategory ? formData.bookingCategory : null
+                  }
                   onSelectChange={handleSelectOption}
                 />
               </Grid>
@@ -694,6 +708,9 @@ const BookingReport = () => {
                   id="officeChannel"
                   name="officeChannel"
                   options={OFFICE_CHANNEL}
+                  defaultValue={
+                    formData.officeChannel ? formData.officeChannel : null
+                  }
                   showBorder
                   changeStyle
                   width="auto"
@@ -708,6 +725,9 @@ const BookingReport = () => {
                   id="officeType"
                   name="officeType"
                   options={officeType}
+                  defaultValue={
+                    formData.officeType ? formData.officeType : null
+                  }
                   showBorder
                   changeStyle
                   width="auto"
@@ -727,7 +747,7 @@ const BookingReport = () => {
                 />
               </Grid>
 
-              {console.log('formData::: ', formData)}
+              {/* {console.log('formData::: ', formData)} */}
               <Grid item xs={3}>
                 <TextInput
                   label="Office ID:"
@@ -745,6 +765,7 @@ const BookingReport = () => {
                   id="userName"
                   name="userName"
                   options={userNameListData}
+                  defaultValue={formData.userName ? formData.userName : null}
                   showBorder
                   changeStyle
                   width="auto"
@@ -799,6 +820,11 @@ const BookingReport = () => {
                   isSearchable
                   useReactHookForm={false}
                   onSelectChange={handleSelectOption}
+                  defaultValue={
+                    formData.transactionStatus
+                      ? formData.transactionStatus
+                      : null
+                  }
                   isMulti
                 />
               </Grid>
@@ -819,7 +845,7 @@ const BookingReport = () => {
             </Grid>
           </form>
         </div>
-        {bookingReportData && (
+        {bookingReportData?.status && (
           <PrimaryTable
             header={
               <BookingReportsTableHeader
@@ -834,10 +860,12 @@ const BookingReport = () => {
             }
             headerInArrOfObjFormat
             headerData={headerData}
-            subHeaderData={{
-              parent: 'Total',
-              ...bookingReportData.data.data.subHeaderData,
-            }}
+            subHeaderData={
+              bookingReportData.data.data?.subHeaderData && {
+                parent: 'Total',
+                ...bookingReportData.data.data.subHeaderData,
+              }
+            }
             bodyData={bookingReportData.data.data}
             page={page}
             AddElement={{

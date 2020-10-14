@@ -75,7 +75,7 @@ const SelectWithTextInput = (props) => {
               placeholder={placeholder}
               ref={register(validation)}
               style={{ paddingLeft: selectWidth }}
-              maxlength={maxLength}
+              maxLength={maxLength}
               autoComplete="chrome-off"
             />
             {errors[name] ? (
@@ -103,7 +103,7 @@ const SelectWithTextInput = (props) => {
               placeholder={selectPlaceholder}
               changeStyle={true}
               showBorder={false}
-              initialValue={initialSelectedValue}
+              defaultValue={initialSelectedValue}
               showValue={showValue}
               disabled={disabled}
               useReactHookForm={useReactHookForm}
@@ -119,7 +119,7 @@ const SelectWithTextInput = (props) => {
               value={value}
               disabled={disabled}
               style={{ paddingLeft: selectWidth }}
-              onFocus={() => (!!onFocus ? handleFocus(name) : () => {})}
+              onFocus={() => (onFocus ? handleFocus(name) : () => {})}
               onChange={(e) => onChange(name, e.target.value)}
               {...rest}
             />

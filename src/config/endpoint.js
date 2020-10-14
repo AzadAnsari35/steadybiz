@@ -1,6 +1,15 @@
 import config from './index';
 import { actionTypeConstant, commonConstant } from 'Constants/';
 export default {
+  reports: {
+    reportsResult: {
+      url: config.api.url + '/api/v1/reports/bookingReport',
+      isAuth: true,
+      httpVerb: commonConstant.HttpVerbsConstant.POST,
+      actionType: actionTypeConstant.reports.reportsResult,
+      reducerName: 'reportsResult',
+    },
+  },
   orders: {
     searchOrders: {
       url: config.api.url + '/api/v1/orders/searchOrder',
