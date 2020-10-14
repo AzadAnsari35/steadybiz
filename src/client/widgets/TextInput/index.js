@@ -53,6 +53,8 @@ const TextInput = (props) => {
           {errors[name].message}
         </p>
       )}
+
+      
     </div>
   );
 };

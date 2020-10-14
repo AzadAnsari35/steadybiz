@@ -88,6 +88,7 @@ const AgencyRegistrationForm = (props) => {
   const citiesList = useSelector(
     (state) => state.masterCities?.items?.data?.data
   );
+  
   const settlementPlans = useSelector(
     (state) => state.masterSettlementPlans?.items?.data
   );

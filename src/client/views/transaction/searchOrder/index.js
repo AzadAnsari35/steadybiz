@@ -37,6 +37,8 @@ import {
   CustomDrawer,
 } from 'Widgets';
 import securityOptionConstant from 'Constants/securityOptionConstant';
+import CancellationDetails from 'Components/Common/CancellationDetails';
+
 import './style.scss';
 
 const headerData = [
@@ -471,6 +473,11 @@ const SearchOrder = () => {
             className="font-primary-medium-18 my-24"
           />
           <Grid container spacing={3}>
+          <Grid item xs={12}>
+          <CancellationDetails />
+          </Grid>
+
+
             <Grid item xs={3}>
               <TextInput
                 label="Order Number:"

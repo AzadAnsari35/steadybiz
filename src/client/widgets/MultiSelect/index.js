@@ -232,6 +232,7 @@ const MultiSelect = (props) => {
           />
         </div>
       )}
+      
     </>
   );
 };

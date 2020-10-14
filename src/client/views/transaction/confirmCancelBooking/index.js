@@ -23,13 +23,17 @@ import MailIcon from 'Widgets/Icons/MailIcon';
 import PrintIcon from '@material-ui/icons/Print';
 import PassengerDetails from 'Components/Common/PassengerDetails';
 import PassengerInformationStatic from 'Components/Common/PassengerInformationStatic';
+import CancellationDetails from 'Components/Common/CancellationDetails';
+
 import CloseIcon from '@material-ui/icons/Close';
+import LocalAtmIcon from '@material-ui/icons/LocalAtm';
 import SearchAirplaneIcon from 'Widgets/Icons/SearchAirplaneIcon';
 import FlightSummary from 'Components/Flights/Availability/FlightSummary';
 
+
 import './style.scss';
 
-const CancelBooking = () => {
+const ConfirmCancelBooking = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -134,8 +138,8 @@ const CancelBooking = () => {
   );
 
   return (
-    <div className="CancelBooking ">
-      <div className="CancelBooking-head">
+    <div className="ConfirmCancelBooking ">
+      <div className="ConfirmCancelBooking-head">
         <div className="d-flex justify-content-between align-items-end pb-4">
           <div className="font-primary-semibold-24 pb-4">CANCEL BOOKING </div>
           <IconWithBackground
@@ -152,7 +156,7 @@ const CancelBooking = () => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Panel
-              cardClassName="CancelBooking-orderDetails"
+              cardClassName="ConfirmCancelBooking-orderDetails"
               title="order details"
               panelHeaderIcon={
                 <AssignmentIcon
@@ -203,10 +207,9 @@ const CancelBooking = () => {
                 onClick={handlePanelToggle}
                 addExtraMargin
               >
-                <div className="CancelBooking-details__content">
+                <div className="ConfirmCancelBooking-details__content">
                   <FlightDetails
                     itinerary={transactionData.outboundItinerary}
-                    segmentWithCheckbox={true}
                   />
                 </div>
               </Panel>
@@ -227,17 +230,29 @@ const CancelBooking = () => {
                 expand={panelsState.passengerDetailsPanel}
                 onClick={handlePanelToggle}
               >
-                <PassengerInformationStatic
+                 <PassengerInformationStatic
                   customersList={!!customerDetailList && customerDetailList}
                   flightSegments={flightSegments}
                   showAccordian={true}
+                  showCheckbox={false}
                 />
               </Panel>
 
+              <Panel
+                id="cancellationDetailsPanel"
+                title="Cancellation Details"
+                // panelHeaderIcon={<img alt="passenger" src={passengerIcon} />}
+                panelHeaderIcon={
+                  <LocalAtmIcon style={{fontSize:30,color:colors.white }} />                }
+                panelIconMarginLeft={'12'}
+                headerText="CANCEL BREAKUP : FOR SELECTED PAX AND SEGMENT(S)"
+                expand={panelsState.passengerDetailsPanel}
+                onClick={handlePanelToggle}
+              >
+               <CancellationDetails />
+              </Panel>
 
-             
-
-              <Grid item xs={12} className="d-flex justify-content-end">
+              {/* <Grid item xs={12} className="d-flex justify-content-end">
                 <Button
                   text="Cancel Selection"
                   className="mr-20"
@@ -246,9 +261,9 @@ const CancelBooking = () => {
                 />
                 <Button
                   text="Complete Cancel"
-                  onClick={()=>history.push(routes.transaction.confirmCancelBooking)}
+                  // onClick={handleCancelClick}
                 />
-              </Grid>
+              </Grid> */}
             </div>
           </Grid>
 
@@ -276,4 +291,4 @@ const CancelBooking = () => {
   );
 };
 
-export default CancelBooking;
+export default ConfirmCancelBooking;

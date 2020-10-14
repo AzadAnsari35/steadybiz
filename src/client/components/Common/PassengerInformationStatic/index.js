@@ -8,7 +8,7 @@ import { Text, SecondaryAccordion, CustomCheckbox } from 'Widgets';
 import './style.scss';
 
 const PassengerInformationStatic = (props) => {
-  const { customersList, flightSegments, showAccordian = false } = props;
+  const { customersList, flightSegments, showAccordian = false, showCheckbox=true } = props;
 
   return (
     <div className="PassengerInformationStatic">
@@ -16,7 +16,7 @@ const PassengerInformationStatic = (props) => {
         <SecondaryAccordion
           text={
             <div className="d-flex">
-              <CustomCheckbox
+{           showCheckbox &&   <CustomCheckbox
                 noLabel={true}
                 // value={cur.value}
                 // disabled={isViewSecurityGroup}
@@ -24,7 +24,7 @@ const PassengerInformationStatic = (props) => {
                 useReactHookForm={false}
                 className="pr-12 mb-0"
                 // name={name}
-              />
+              />}
               <>{`${getPassengerTypeName(
                 customer.passengerInfo.passengerType,
                 true

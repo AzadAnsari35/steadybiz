@@ -1,0 +1,34 @@
+@import '../../../styles/variables';
+$root: '.ConfirmCancelBooking';
+
+#{$root} {
+  &-head {
+    background-color: $white;
+    padding: 36px 100px 30px;
+    margin-bottom: 60px;
+  }
+  .alert-section {
+    margin-bottom: 20px;
+  }
+  .ConfirmCancelBooking-details {
+    .left-section {
+      margin-right: 8px;
+    }
+    &__content {
+      padding-bottom: 36px;
+    }
+    .right-section {
+      margin-left: 8px;
+      .FareDetailsCard {
+        color: $codGray;
+        .card {
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+
+  .SecondaryAccordion-content {
+    padding: 20px 30px;
+  }
+}
