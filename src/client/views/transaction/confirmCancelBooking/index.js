@@ -23,6 +23,8 @@ import MailIcon from 'Widgets/Icons/MailIcon';
 import PrintIcon from '@material-ui/icons/Print';
 import PassengerDetails from 'Components/Common/PassengerDetails';
 import PassengerInformationStatic from 'Components/Common/PassengerInformationStatic';
+import CustomerCancelBreakup from 'Components/Common/CustomerCancelBreakup';
+
 import CancellationDetails from 'Components/Common/CancellationDetails';
 
 import CloseIcon from '@material-ui/icons/Close';
@@ -271,12 +273,10 @@ const ConfirmCancelBooking = () => {
             <div className="right-section">
               <AgencyInformation
                 outboundItinerary={transactionData.outboundItinerary}
+                showCustomerPaymentDetails={false}
               />
-              {transactionData.isTicketing && (
-                <PaymentDetailsCard
-                  outboundItinerary={transactionData.outboundItinerary}
-                />
-              )}
+              <CustomerCancelBreakup />
+            
               {transactionData.customerDetails &&
                 transactionData.customerDetails.contactInfo && (
                   <ContactDetailsStatic

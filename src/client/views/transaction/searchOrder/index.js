@@ -473,9 +473,9 @@ const SearchOrder = () => {
             className="font-primary-medium-18 my-24"
           />
           <Grid container spacing={3}>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
           <CancellationDetails />
-          </Grid>
+          </Grid> */}
 
 
             <Grid item xs={3}>

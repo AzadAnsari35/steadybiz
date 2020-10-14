@@ -7,7 +7,7 @@ import CustomerPaymentDetails from '../CustomerPaymentDetails';
 import './style.scss';
 
 const AgencyInformation = (props) => {
-  const { outboundItinerary } = props;
+  const { outboundItinerary, showCustomerPaymentDetails=true } = props;
   //console.log('outboundItinerary', outboundItinerary);
   const location = useLocation();
 
@@ -22,10 +22,11 @@ const AgencyInformation = (props) => {
         outboundItinerary={outboundItinerary}
         isBooking={isBooking}
       />
-      <CustomerPaymentDetails
+
+     {showCustomerPaymentDetails && <CustomerPaymentDetails
         outboundItinerary={outboundItinerary}
         isBooking={isBooking}
-      />
+      />}
     </div>
   );
 };
