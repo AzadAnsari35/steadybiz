@@ -124,6 +124,11 @@ const AsyncAgencyMappingHistory  = loadable({
   loading: LinearLoaderSecondary,
 });
 
+const AsyncConfirmCancelBooking =  loadable({
+  loader: () => import('Views/transaction/confirmCancelBooking'),
+  loading: LinearLoaderSecondary,
+});
+
 const Routes = () => (
   <Switch>
     <Route exact path="/" component={Home} />
@@ -549,6 +554,13 @@ const Routes = () => (
       component={AsyncCancelBooking}
     />
 
+    
+<PrivateRoute
+      exact
+      path={routes.transaction.confirmCancelBooking}
+      component={AsyncConfirmCancelBooking}
+    />
+
     <PrivateRoute
       exact
       path={routes.agency.createAgencyMapping}
@@ -571,6 +583,9 @@ const Routes = () => (
       path={routes.agency.agencyMappingHistory}
       component={AsyncAgencyMappingHistory}
     />
+
+
+
 
 
 

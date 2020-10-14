@@ -5,6 +5,7 @@ import Text from 'Widgets/Text';
 import { utils } from 'Helpers';
 import Carousel from 'Components/Home/Carousel';
 
+
 import './style.scss';
 
 const Home = () => {

@@ -92,6 +92,8 @@ const routes = {
     issueTicket: '/Transaction/Issue-Ticket',
     viewBooking: '/Transaction/View-Booking',
     cancelBooking: '/Transaction/Cancel-Booking',
+    confirmCancelBooking: '/Transaction/Confirm-Cancel-Booking',
+
     viewPNR: '/Transaction/View-PNR',
     cancelPNR: '/Transaction/Cancel-PNR',
     bookingReport: '/Transaction/Booking-Report',
