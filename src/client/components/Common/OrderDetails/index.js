@@ -17,6 +17,8 @@ const OrderDetails = (props) => {
     ticketTimeLimit = '',
     refreshOrder,
   } = props;
+  const isWaiting =
+    actualStatus === 'HOLD_PNR' || actualStatus === 'SEGMENT_UNCONFIRMED';
   //console.log(actualStatus);
   const handleRefresh = () => {
     refreshOrder(orderNumber);
@@ -49,7 +51,7 @@ const OrderDetails = (props) => {
               <Text className="mr-4" text="Status" />
               <Text className="ml-4" text=" : " />
             </div>
-            {!!ticketTimeLimit && (
+            {isWaiting && (
               <div className="OrderDetails-summary__item d-flex">
                 <Text className="mr-4" text="Time Limit" />
                 <Text className="ml-4" text=" : " />
@@ -60,8 +62,7 @@ const OrderDetails = (props) => {
             <Text text={moment().format('DD MMM YYYY')} />
             {!!sourcePnr && <Text text={sourcePnr} />}
             <Text text={pnrStatus ? pnrStatus : '-'} />{' '}
-            {(actualStatus === 'HOLD_PNR' ||
-              actualStatus === 'SEGMENT_UNCONFIRMED') && (
+            {isWaiting && (
               <IconWithBackground
                 bgColor="#74D3DC33"
                 showCursor
@@ -71,12 +72,18 @@ const OrderDetails = (props) => {
               </IconWithBackground>
             )}
             {/* <Text text={!!isTicketing ? "Confirmed" : "Hold"} /> */}
-            {!!ticketTimeLimit && (
+            {isWaiting && (
               <Text
                 className="text-align-right"
-                text={`${moment(ticketTimeLimit).format(
-                  'DD MMMM YYYY, hh:mm'
-                )} Hrs`}
+                text={
+                  ticketTimeLimit == '' ||
+                  ticketTimeLimit == null ||
+                  ticketTimeLimit == undefined
+                    ? 'Waiting'
+                    : `${moment(ticketTimeLimit).format(
+                        'DD MMMM YYYY, hh:mm'
+                      )} Hrs`
+                }
               />
             )}
           </div>

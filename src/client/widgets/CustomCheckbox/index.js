@@ -112,7 +112,7 @@ const CustomCheckbox = (props) => {
             />
           }
           disableRipple
-          onChange={() => onChange(value)}
+          onChange={value ? () => onChange(value) : onChange}
           {...otherProps}
         />
       )}

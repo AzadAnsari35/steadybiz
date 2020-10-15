@@ -73,12 +73,6 @@ const CustomerPaymentDetails = (props) => {
               text={getFormattedPrice(totalAmount)}
             />
           </div>
-          {isBooking && (
-            <div className="price-category__description-price d-flex justify-content-between">
-              <Text className="font-primary-medium-16" text="Form of Payment" />
-              <Text className="font-primary-medium-16" text="Credit Limit" />
-            </div>
-          )}
         </div>
       </Card>
     </div>
