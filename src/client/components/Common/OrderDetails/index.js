@@ -58,7 +58,7 @@ const OrderDetails = (props) => {
               </div>
             )}
           </div>
-          <div className="font-primary-semibold-16-1 text-align-right">
+          <div className="position-relative font-primary-semibold-16-1 text-align-right">
             <Text text={moment().format('DD MMM YYYY')} />
             {!!sourcePnr && <Text text={sourcePnr} />}
             <Text text={pnrStatus ? pnrStatus : '-'} />{' '}
@@ -67,6 +67,7 @@ const OrderDetails = (props) => {
                 bgColor="#74D3DC33"
                 showCursor
                 onClick={handleRefresh}
+                className="OrderDetails-summary__refresh"
               >
                 <CachedIcon style={{ color: '#74D3DC' }} />
               </IconWithBackground>
