@@ -195,20 +195,25 @@ const CreateSecurityGroup = () => {
         (k) => utils.stringComparison(k, key) && (selectedData = data[k])
       );
     }
+
     selectedData = selectedData.map((c) => c.value);
     return selectedData;
   };
 
-  const handleAll = (key) => {
+  const handleAll = (event) => {
     let data = funtionalGroupsList?.data;
+    let key = event.target.name;
     let selectedData = getSelectedSectionValue(data, key);
 
-    console.log('selectedData', selectedData);
-
-    setAllSection([...allSection, ...selectedData]);
+    //  console.log('selectedData', selectedData);
+    //setAllSection([]);
+    if (event.target.checked) setAllSection([...allSection, ...selectedData]);
+    else {
+      const arr = allSection.filter((i) => !selectedData.includes(i));
+      console.log('hi', arr);
+      setAllSection([...arr]);
+    }
   };
-
-  const isAllSelected = (name) => {};
 
   const getCheckboxData = (data, handleChange, name) => {
     let checkboxData = [
@@ -219,7 +224,7 @@ const CreateSecurityGroup = () => {
             noLabel={true}
             // value={value}
             disabled={isViewSecurityGroup}
-            onChange={() => handleAll(name)}
+            onChange={handleAll}
             useReactHookForm={false}
             name={name}
             // checkedValues={() => isAllSelected(name)}
@@ -252,6 +257,7 @@ const CreateSecurityGroup = () => {
   const getSectionData = (sectionName) => {
     let sectionData;
     let allData = funtionalGroupsList?.data;
+
     if (allData) {
       const keys = Object.keys(allData);
 
@@ -290,6 +296,13 @@ const CreateSecurityGroup = () => {
       title: 'OFFICE',
       data: getSectionData('office')
         ? getCheckboxData(getSectionData('office'), setAllSection, 'office')
+        : [],
+      className: 'mb-32',
+    },
+    {
+      title: 'AGENCY',
+      data: getSectionData('agency')
+        ? getCheckboxData(getSectionData('agency'), setAllSection, 'agency')
         : [],
       className: 'mb-32',
     },
