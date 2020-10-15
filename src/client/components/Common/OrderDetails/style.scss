@@ -1,4 +1,4 @@
-$root: ".OrderDetails";
+$root: '.OrderDetails';
 
 #{$root} {
   padding: 32px 70px;
@@ -11,6 +11,12 @@ $root: ".OrderDetails";
     }
     &__item {
       justify-content: flex-end;
+    }
+
+    &__refresh {
+      position: absolute;
+      bottom: 0px;
+      right: -45px;
     }
   }
 }
