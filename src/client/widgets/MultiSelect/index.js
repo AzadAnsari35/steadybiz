@@ -164,11 +164,7 @@ const MultiSelect = (props) => {
             name={name}
             rules={validation}
           />
-          {errors[name] && (
-            <p className="error-message mt-6 font-primary-medium-16 mb-0">
-              {errors[name].message}
-            </p>
-          )}
+        
         </>
       ) : (
         <div
@@ -232,7 +228,11 @@ const MultiSelect = (props) => {
           />
         </div>
       )}
-      
+        {errors[name] && (
+            <p className="error-message mt-6 font-primary-medium-16 mb-0">
+              {errors[name].message}
+            </p>
+          )}
     </>
   );
 };

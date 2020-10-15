@@ -35,6 +35,7 @@ import {
   SimplePopover,
   Text,
   TextInput,
+  Alert
 } from 'Widgets';
 //import bookingReportData from './bookingReport.json';
 import './style.scss';
@@ -265,36 +266,35 @@ const BookingReport = () => {
   } = userData;
 
   const defaultValues = {
-    // bookingCategory: '',
-    officeId,
+    
+      reportType: '',
+      dateFrom: '',
+      dateTo: '',
+      origin: '',
+      destination: '',
+      orderNo: '',
+      ticketNumber: '',
+      pnrType: '',
+      pnrNumber: '',
+      bookingCategory: '',
+      officeChannel: '',
+      officeType: '',
+      officeName: '',
+      officeId: officeId,
+      ofId: ofId,
+      userName: '',
+      countryPos: '',
+      cityPos: '',
+      transactionStatus: '',
+    
   };
   // const [defaultFormData, setDefaultFormData] = useState({
   //   countryPos: null,
   //   cityPos: null,
   // });
-  const [formData, setFormData] = useState({
-    reportType: '',
-    dateFrom: '',
-    dateTo: '',
-    origin: '',
-    destination: '',
-    orderNo: '',
-    ticketNumber: '',
-    pnrType: '',
-    pnrNumber: '',
-    bookingCategory: '',
-    officeChannel: '',
-    officeType: '',
-    officeName: '',
-    officeId: officeId,
-    ofId: ofId,
-    userName: '',
-    countryPos: '',
-    cityPos: '',
-    transactionStatus: '',
-  });
+  const [formData, setFormData] = useState(defaultValues);
   const history = useHistory();
-  const { register, handleSubmit, reset } = useForm();
+  // const { register, handleSubmit, reset } = useForm();
   //const ofId = utils.getItemFromStorage('officeId');
   const searchResult = useSelector(
     (state) => state[endpoint.reports.reportsResult.reducerName]?.items
@@ -508,22 +508,11 @@ const BookingReport = () => {
   const handleReset = () => {
     //console.log('ddd');
     history.push(routes.reports.bookingReport);
-    reset(defaultValues);
     setStateKey(!stateKey);
     setFormData({
-      ...formData,
+      ...defaultValues,
       officeId: officeId,
       ofId: ofId,
-      pnrType: null,
-      origin: '',
-      destination: '',
-
-      pnrNumber: '',
-      bookingCategory: null,
-      officeChannel: null,
-      officeType: null,
-      userName: null,
-      transactionStatus: null,
       countryPos: countriesList.dropDownItems.findItem(countryCode),
       cityPos: citiesList && citiesList.findItem(cityCode),
     });
@@ -556,8 +545,8 @@ const BookingReport = () => {
             </IconWithBackground>
           </div>
           <div className="horizontal-grey-divider"></div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <input
+          <form onSubmit={onSubmit}>
+            {/* <input
               type="hidden"
               name="ofid"
               value={ofId}
@@ -568,7 +557,7 @@ const BookingReport = () => {
               name="size"
               value={size}
               ref={register}
-            ></input>
+            ></input> */}
 
             <Text
               showLeftBorder={true}
@@ -576,6 +565,22 @@ const BookingReport = () => {
               className="font-primary-medium-18 my-24"
             />
             <Grid container spacing={3}>
+            {/* <Grid item xs={12}>
+              <Alert alertTitle="Booking Has been cancelled." alertMessage="The booking has been successfully cancelled and the amount has been refunded back to credit limit."  showSecondaryAction
+                secondaryActionText="cancel"
+                showPrimaryAction={true}
+                primaryActionText="confirm"/>
+              </Grid>
+
+              <Grid item xs={12}>
+              <Alert alertTitle="Booking Has been cancelled." alertMessage="The booking has been successfully cancelled and the amount has been refunded back to credit limit."  showSecondaryAction
+                secondaryActionText="cancel"
+                showPrimaryAction={true}
+                primaryActionText="confirm"
+                danger
+                />
+              </Grid> */}
+
               <Grid item xs={6}>
                 <SelectWithDatePickers
                   label="Date:"
@@ -653,8 +658,10 @@ const BookingReport = () => {
                   id="orderNo"
                   name="orderNo"
                   maxLength={13}
+                  value={formData.orderNo}
                   useReactHookForm={false}
                   onChange={handleInputChange}
+                  errors={{orderNo:{message:"Please enter order number"}}}
                 />
               </Grid>
               <Grid item xs={3}>
@@ -681,6 +688,7 @@ const BookingReport = () => {
                   label="Ticket No.:"
                   id="ticketNumber"
                   name="ticketNumber"
+                  value={formData.ticketNumber}
                   useReactHookForm={false}
                   onChange={handleInputChange}
                 />
@@ -700,6 +708,8 @@ const BookingReport = () => {
                     formData.bookingCategory ? formData.bookingCategory : null
                   }
                   onSelectChange={handleSelectOption}
+                  errors={{bookingCategory:{message:"Please enter booking category"}}}
+
                 />
               </Grid>
               <Grid item xs={3}>

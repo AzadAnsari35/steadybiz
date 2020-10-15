@@ -17,10 +17,12 @@ const TextInput = (props) => {
     validation,
     useReactHookForm = true,
     onChange,
-    value = '',
+    value = null,
     ...rest
   } = props;
   const [inputValue, setInputValue] = useState(value);
+
+  // console.log("error", name, errors[name])
 
   useEffect(() => {
     setInputValue(value);
@@ -41,7 +43,7 @@ const TextInput = (props) => {
         disabled={disabled}
         placeholder={placeholder}
         ref={useReactHookForm ? register(validation) : null}
-        {...(value ? { value: useReactHookForm ? inputValue : value } : {})}
+        {...(!useReactHookForm ? { value: value } : {})}
         onChange={
           !useReactHookForm ? (e) => onChange(id, e.target.value) : null
         }

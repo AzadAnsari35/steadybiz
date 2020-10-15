@@ -20,12 +20,14 @@ const Alert = (props) => {
 
   return (
     <div
-      className={`alert box-shadow-primary ${danger ? 'danger' : 'success'} ${
+      className={`alert  ${danger ? 'danger' : 'success'} ${
         className ? className : ''
       }`}
     >
-      <div className={`alert-border ${danger ? 'danger' : 'success'}`} />
       <div className="alert-content">
+        <div className="d-flex">
+      <div className={`alert-border ${danger ? 'danger' : 'success'}`} />
+
         <div className="alert-content__text d-flex">
           <div
             className={`icon ${
@@ -43,6 +45,7 @@ const Alert = (props) => {
             <div className="alert-text__title">{alertTitle}</div>
             <div className="alert-text__message">{alertMessage}</div>
           </div>
+        </div>
         </div>
         <div className="alert-content__action d-flex justify-content-end">
           {!!showSecondaryAction && (
