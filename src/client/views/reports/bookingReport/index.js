@@ -565,21 +565,6 @@ const BookingReport = () => {
               className="font-primary-medium-18 my-24"
             />
             <Grid container spacing={3}>
-            {/* <Grid item xs={12}>
-              <Alert alertTitle="Booking Has been cancelled." alertMessage="The booking has been successfully cancelled and the amount has been refunded back to credit limit."  showSecondaryAction
-                secondaryActionText="cancel"
-                showPrimaryAction={true}
-                primaryActionText="confirm"/>
-              </Grid>
-
-              <Grid item xs={12}>
-              <Alert alertTitle="Booking Has been cancelled." alertMessage="The booking has been successfully cancelled and the amount has been refunded back to credit limit."  showSecondaryAction
-                secondaryActionText="cancel"
-                showPrimaryAction={true}
-                primaryActionText="confirm"
-                danger
-                />
-              </Grid> */}
 
               <Grid item xs={6}>
                 <SelectWithDatePickers
@@ -849,7 +834,7 @@ const BookingReport = () => {
                     onClick={() => handleChangeOffice()}
                   />
 
-                  <Button type="submit" text="Search" className=" px-48" />
+                  <Button type="submit" text="Search" className="px-48" />
                 </div>
               </Grid>
             </Grid>

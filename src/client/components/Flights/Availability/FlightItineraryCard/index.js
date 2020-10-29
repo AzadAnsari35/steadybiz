@@ -47,6 +47,7 @@ import {
   Text,
 } from 'Widgets';
 import FareRules from 'Components/Common/FareRules';
+import ShareQuote from 'Components/Common/ShareQuote';
 import AgencyInformation from 'Components/Common/AgencyInformation';
 
 const FlightDetails = lazy(() =>
@@ -95,6 +96,7 @@ const FlightItineraryCard = (props) => {
   const [fareRulesSegments, setFareRulesSegments] = useState([]);
   const [showFareRules, setShowFareRules] = useToggle(false);
   const [showAgencyInfo, setShowAgencyInfo] = useToggle(false);
+  const [showShareQuote, setShareQuote] = useToggle(false);
 
   const airlines = getDataFromRedux(masterAirlinesResponse).data;
   const fareRules = getDataFromRedux(fareRulesResponse);
@@ -459,7 +461,11 @@ const FlightItineraryCard = (props) => {
             <div className="FlightItineraryCard-bottom__rightAction d-flex">
               <div className="d-flex align-items-center cursor-pointer">
                 <ShareIcon />
-                <Text className="font-primary-medium-14" text="Quote" />
+                <Text
+                  className="font-primary-medium-14"
+                  text="Quote"
+                  onClick={setShareQuote}
+                />
               </div>
               <div
                 className="d-flex align-items-center cursor-pointer"
@@ -550,6 +556,18 @@ const FlightItineraryCard = (props) => {
           className="FlightItineraryCard-CustomDrawer-agencyInfo"
         >
           <AgencyInformation outboundItinerary={itinerary} />
+        </CustomDrawer>
+      )}
+      {!!showShareQuote && (
+        <CustomDrawer
+          title="Share Quote"
+          showDrawer={showShareQuote}
+          onCloseClick={setShareQuote}
+          width={calculateRem(1566)}
+          //width={calculateRem(450+Math.floor(Math.random() * 6) + 1  )}
+          className="BookingReport-CustomDrawer"
+        >
+          <ShareQuote outboundItinerary={itinerary} />
         </CustomDrawer>
       )}
     </>

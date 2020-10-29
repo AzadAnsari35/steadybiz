@@ -1,0 +1,35 @@
+@import '../../../styles/variables';
+$root: '.ShareQuote';
+
+#{$root} {
+  &-head {
+    padding: 0px 75px 36px;
+    background-color: $white;
+  }
+  &-tableAction {
+    padding: 12px 0px;
+    > div {
+      text-decoration: none;
+      color: $black;
+      padding: 6px 36px;
+      &:hover {
+        color: $royalBlue;
+        border-left: 2px solid $royalBlue;
+        padding-left: 34px;
+        padding-right: 34px;
+        font-family: 'Montserrat SemiBold';
+      }
+    }
+  }
+  &-table {
+    background-color: $athensGray;
+    padding: 36px 75px;
+    min-height: 500px;
+    .PrimaryTable {
+      margin: 0px;
+    }
+    .FlightDetails {
+      padding-bottom: 32px;
+    }
+  }
+}
